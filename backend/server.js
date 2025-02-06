@@ -1,11 +1,19 @@
 const express = require("express");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 
+// Middleware
+app.use(express.json());
+
 app.get("/", (req, res) => {
-  res.send("hello");
+  return res.send("hello");
 });
 
-app.listen(6000, () => {
-  console.log("6000");
+const PORT = process.env.PORT || 6000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
