@@ -4,36 +4,36 @@ export default function Footer() {
   return (
     <>
       {/* <!-- START FOOTER --> */}
-      <footer class="pt-12 pb-10 mt-auto text-white bg-gray-800 sm:pt-16">
-        <div class="container">
-          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-y-10 gap-x-8">
-            <div class="col-span-2 md:col-span-4 lg:col-span-3">
-              <a href="index.html" title="" class="block mr-auto">
+      <footer className="pt-12 pb-10 mt-auto text-white bg-gray-800 sm:pt-16">
+        <div className="container">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-y-10 gap-x-8">
+            <div className="col-span-2 md:col-span-4 lg:col-span-3">
+              <a href="index.html" title="" className="block mr-auto">
                 <img
-                  class="w-auto h-10"
+                  className="w-auto h-10"
                   src="../assets/images/logo-alt.png"
                   alt=""
                 />
               </a>
 
-              <p class="mt-4">
+              <p className="mt-4">
                 1487 Rocky Horse Carrefour
                 <br />
                 Arlington, TX 16819
               </p>
 
-              <ul class="flex items-center mt-6 space-x-3">
+              <ul className="flex items-center mt-6 space-x-3">
                 <li>
                   <a
                     href="#"
                     title="Facebook"
-                    class="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-facebook hover:-translate-y-1 hover:shadow"
+                    className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-facebook hover:-translate-y-1 hover:shadow"
                     target="_blank"
                     rel="noopener"
                   >
-                    <span class="sr-only"> Facebook </span>
+                    <span className="sr-only"> Facebook </span>
                     <svg
-                      class="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
+                      className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -47,13 +47,13 @@ export default function Footer() {
                   <a
                     href="#"
                     title="Twitter"
-                    class="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-twitter hover:-translate-y-1 hover:shadow"
+                    className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-twitter hover:-translate-y-1 hover:shadow"
                     target="_blank"
                     rel="noopener"
                   >
-                    <span class="sr-only"> Twitter </span>
+                    <span className="sr-only"> Twitter </span>
                     <svg
-                      class="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
+                      className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -67,13 +67,13 @@ export default function Footer() {
                   <a
                     href="#"
                     title="Instagram"
-                    class="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-instagram hover:-translate-y-1 hover:shadow"
+                    className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-instagram hover:-translate-y-1 hover:shadow"
                     target="_blank"
                     rel="noopener"
                   >
-                    <span class="sr-only"> Instagram </span>
+                    <span className="sr-only"> Instagram </span>
                     <svg
-                      class="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
+                      className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -88,13 +88,13 @@ export default function Footer() {
                   <a
                     href="#"
                     title="Pinterest"
-                    class="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-pinterest hover:-translate-y-1 hover:shadow"
+                    className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-pinterest hover:-translate-y-1 hover:shadow"
                     target="_blank"
                     rel="noopener"
                   >
-                    <span class="sr-only"> Pinterest </span>
+                    <span className="sr-only"> Pinterest </span>
                     <svg
-                      class="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
+                      className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -111,13 +111,13 @@ export default function Footer() {
                   <a
                     href="#"
                     title="LinkedIn"
-                    class="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-linkedin hover:-translate-y-1 hover:shadow"
+                    className="flex items-center justify-center w-10 h-10 text-white transition-all duration-300 transform rounded-full shadow-sm lg:w-8 lg:h-8 xl:w-10 xl:h-10 bg-network-linkedin hover:-translate-y-1 hover:shadow"
                     target="_blank"
                     rel="noopener"
                   >
-                    <span class="sr-only"> LinkedIn </span>
+                    <span className="sr-only"> LinkedIn </span>
                     <svg
-                      class="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
+                      className="w-6 h-6 lg:w-5 lg:h-5 xl:w-6 xl:-h-6"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -129,15 +129,15 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div class="lg:col-span-3">
-              <p class="text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            <div className="lg:col-span-3">
+              <p className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
                 Need help?
               </p>
 
-              <ul class="mt-6 space-y-4">
-                <li class="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
+              <ul className="mt-6 space-y-4">
+                <li className="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
                   <svg
-                    class="flex-none w-5 h-5 mr-3"
+                    className="flex-none w-5 h-5 mr-3"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -150,12 +150,12 @@ export default function Footer() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span class="break-all"> (885) 242-9095 </span>
+                  <span className="break-all"> (885) 242-9095 </span>
                 </li>
 
-                <li class="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
+                <li className="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
                   <svg
-                    class="flex-none w-5 h-5 mr-3"
+                    className="flex-none w-5 h-5 mr-3"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -169,16 +169,18 @@ export default function Footer() {
                     />
                   </svg>
                   <div>
-                    <span class="block break-all">
+                    <span className="block break-all">
                       Monday – Friday: 9:00-20:00
                     </span>
-                    <span class="block break-all">Saturday: 11:00 – 15:00</span>
+                    <span className="block break-all">
+                      Saturday: 11:00 – 15:00
+                    </span>
                   </div>
                 </li>
 
-                <li class="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
+                <li className="flex items-start transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1">
                   <svg
-                    class="flex-none w-5 h-5 mr-3"
+                    className="flex-none w-5 h-5 mr-3"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -191,22 +193,22 @@ export default function Footer() {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  <span class="break-all"> contact@example.com </span>
+                  <span className="break-all"> contact@example.com </span>
                 </li>
               </ul>
             </div>
 
-            <div class="lg:col-span-2">
-              <p class="text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            <div className="lg:col-span-2">
+              <p className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
                 Information
               </p>
 
-              <ul class="mt-6 space-y-3">
+              <ul className="mt-6 space-y-3">
                 <li>
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     About us
                   </a>
@@ -215,7 +217,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Delivery information
                   </a>
@@ -224,7 +226,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Privacy Policy
                   </a>
@@ -233,7 +235,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Sales
                   </a>
@@ -242,7 +244,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Terms & Conditions
                   </a>
@@ -250,17 +252,17 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div class="lg:col-span-2">
-              <p class="text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            <div className="lg:col-span-2">
+              <p className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
                 Account
               </p>
 
-              <ul class="mt-6 space-y-3">
+              <ul className="mt-6 space-y-3">
                 <li>
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     My account
                   </a>
@@ -269,7 +271,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     My orders
                   </a>
@@ -278,7 +280,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Returns
                   </a>
@@ -287,7 +289,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Shipping
                   </a>
@@ -296,7 +298,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Wishlist
                   </a>
@@ -304,17 +306,17 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div class="lg:col-span-2">
-              <p class="text-sm font-semibold tracking-wider text-gray-400 uppercase">
+            <div className="lg:col-span-2">
+              <p className="text-sm font-semibold tracking-wider text-gray-400 uppercase">
                 Store
               </p>
 
-              <ul class="mt-6 space-y-3">
+              <ul className="mt-6 space-y-3">
                 <li>
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Affiliate
                   </a>
@@ -323,7 +325,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Bestsellers
                   </a>
@@ -332,7 +334,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Discount
                   </a>
@@ -341,7 +343,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Latest products
                   </a>
@@ -350,7 +352,7 @@ export default function Footer() {
                   <a
                     href="#"
                     title=""
-                    class="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
+                    className="inline-block transition-all duration-200 transform hover:text-opacity-80 hover:translate-x-1"
                   >
                     Sale
                   </a>
@@ -359,20 +361,21 @@ export default function Footer() {
             </div>
           </div>
 
-          <hr class="my-10 border-gray-600" />
+          <hr className="my-10 border-gray-600" />
 
-          <div class="text-center md:text-left md:flex md:items-center md:justify-between">
-            <div class="md:order-2">
+          <div className="text-center md:text-left md:flex md:items-center md:justify-between">
+            <div className="md:order-2">
               <img
-                class="w-auto h-5 mx-auto md:mx-0"
+                className="w-auto h-5 mx-auto md:mx-0"
                 src="../assets/images/payment-options.png"
                 alt=""
               />
             </div>
 
-            <p class="mt-6 text-sm md:order-1 md:mt-0">
+            <p className="mt-6 text-sm md:order-1 md:mt-0">
               Copyright © <span id="currentYear"></span>
-              <span class="font-semibold">HepsTech</span>. All Rights Reserved
+              <span className="font-semibold">HepsTech</span>. All Rights
+              Reserved
             </p>
           </div>
         </div>
