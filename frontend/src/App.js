@@ -1,11 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./index.css";
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Testimonials from "./components/Testimonials/Testimonials";
 import Information from "./components/Testimonials/Information";
 import Slider from "./components/Slider/Slider";
-import CategorySlider from "./components/category slider/CategorySlider";
+import CategorySlider from "./components/category slider - 8 Items/CategorySlider";
 import HorizontalBanner1 from "./components/Horizontal Banner/HorizontalBanner1";
 import FlashSaleSlider from "./components/Flash Sale Slider/FlashSaleSlider";
 import HorizontalBanners3Items from "./components/Horizontal Banners - 3 Items/HorizontalBanners3Items";

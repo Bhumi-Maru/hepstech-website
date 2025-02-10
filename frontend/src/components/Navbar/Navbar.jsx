@@ -3,6 +3,22 @@ import "./Navbar.css";
 
 export default function Navbar() {
   const [hoveredMenu, setHoveredMenu] = useState(null);
+  // State to manage the dropdown visibility
+  const [isOpen, setIsOpen] = useState({
+    contact: false,
+    profile: false,
+  });
+
+  // Function to toggle the dropdown menu
+  const toggleDropdown = (dropdown) => {
+    setIsOpen((prevState) => {
+      // Close the other dropdown while keeping the one clicked open
+      return {
+        contact: dropdown === "contact" ? !prevState.contact : false,
+        profile: dropdown === "profile" ? !prevState.profile : false,
+      };
+    });
+  };
 
   // Function to handle mouse enter
   const handleMouseEnter = (menu) => {
@@ -136,10 +152,9 @@ export default function Navbar() {
                   <button
                     type="button"
                     className="flex flex-col items-center transition-all duration-200 focus:outline-none hover:text-skin-primary dropdown-toggle"
-                    data-toggle="dropdown"
-                    id="dropdownMenuButton"
+                    onClick={() => toggleDropdown("contact")} // Toggle the dropdown on click
                     aria-haspopup="true"
-                    aria-expanded="true"
+                    aria-expanded={isOpen ? "true" : "false"}
                   >
                     <svg
                       className="w-6 h-6"
@@ -149,9 +164,9 @@ export default function Navbar() {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                         d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                       />
                     </svg>
@@ -161,12 +176,15 @@ export default function Navbar() {
                     </span>
                   </button>
 
+                  {/* Dropdown Menu */}
                   <div
-                    className="dropdown-menu"
+                    className={`dropdown-menu ${
+                      isOpen.contact ? "block" : "hidden"
+                    }`} // Show or hide based on isOpen state
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="menu-button"
-                    tabindex="-1"
+                    tabIndex="-1"
                   >
                     <div className="divide-y divide-gray-100">
                       <div className="px-4 py-5" role="none">
@@ -214,15 +232,15 @@ export default function Navbar() {
                               >
                                 <path
                                   d="M45.429,176.99811A95.95978,95.95978,0,1,1,79.00277,210.5717l.00023-.001L45.84643,220.044a8,8,0,0,1-9.89-9.89l9.47331-33.15657Z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="16"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="16"
                                 ></path>
                                 <path
                                   d="M152.11369,183.99992a80,80,0,0,1-80.11361-80.11361A27.97622,27.97622,0,0,1,100,76h0a6.89265,6.89265,0,0,1,5.98451,3.47295l11.69105,20.45931a8,8,0,0,1-.086,8.08508l-9.38907,15.64844h0a48.18239,48.18239,0,0,0,24.13373,24.13373l0,0,15.64841-9.389a8,8,0,0,1,8.08508-.086l20.45931,11.691A6.89265,6.89265,0,0,1,180,156v0A28.081,28.081,0,0,1,152.11369,183.99992Z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="16"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="16"
                                 ></path>
                               </svg>
                               <span className="block mt-1"> WhatsApp Us </span>
@@ -243,9 +261,9 @@ export default function Navbar() {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                                 />
                               </svg>
@@ -306,11 +324,12 @@ export default function Navbar() {
               <div className="dropdown">
                 <button
                   type="button"
+                  onClick={() => toggleDropdown("profile")}
                   className="flex flex-col items-center transition-all duration-200 focus:outline-none hover:text-skin-primary dropdown-toggle"
                   data-toggle="dropdown"
                   id="dropdownMenuButton"
                   aria-haspopup="true"
-                  aria-expanded="true"
+                  aria-expanded={isOpen.profile ? "true" : "false"}
                 >
                   <svg
                     className="w-6 h-6"
@@ -324,13 +343,15 @@ export default function Navbar() {
                       stroke-linejoin="round"
                       stroke-width="1.5"
                       d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                    ></path>
                   </svg>
                   <span className="mt-1 text-xs font-semibold"> Profile </span>
                 </button>
 
                 <div
-                  className="dropdown-menu"
+                  className={`dropdown-menu ${
+                    isOpen.profile ? "block" : "hidden"
+                  }`}
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="menu-button"
