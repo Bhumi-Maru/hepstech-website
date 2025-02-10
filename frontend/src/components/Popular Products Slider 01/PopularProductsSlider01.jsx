@@ -27,14 +27,17 @@ export default function PopularProductsSlider01() {
           </div>
 
           <div className="relative mt-3">
-            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-popular-four-01"></div>
+            <div
+              className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-popular-four-01"
+              style={{ display: "none" }}
+            ></div>
 
             <div className="swiper-container swiper-popular-four-01">
-              <div
-                className="swiper-wrapper products"
-                style={{ height: "420px", width: "295px", gap: "20px" }}
-              >
-                <div className="product-card swiper-slide">
+              <div className="swiper-wrapper products" style={{ gap: "20px" }}>
+                <div
+                  className="product-card swiper-slide"
+                  style={{ width: "295px" }}
+                >
                   <button type="button" className="btn-wishlist-top">
                     <svg
                       className="w-5 h-5"
@@ -186,7 +189,10 @@ export default function PopularProductsSlider01() {
                   </div>
                 </div>
 
-                <div className="product-card swiper-slide out-of-stock">
+                <div
+                  className="product-card swiper-slide out-of-stock"
+                  style={{ width: "295px" }}
+                >
                   <span className="status-badge out-of-stock">
                     Out of Stock
                   </span>
@@ -343,7 +349,10 @@ export default function PopularProductsSlider01() {
               </div>
             </div>
 
-            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-popular-four-01"></div>
+            <div
+              className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-popular-four-01"
+              style={{ display: "none" }}
+            ></div>
           </div>
         </div>
       </section>

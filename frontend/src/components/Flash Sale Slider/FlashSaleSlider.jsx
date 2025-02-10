@@ -139,7 +139,10 @@ export default function FlashSaleSlider() {
           </div>
 
           <div className="relative mt-4">
-            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-flash-sale"></div>
+            <div
+              className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-flash-sale"
+              style={{ display: "none" }}
+            ></div>
 
             <div className="swiper-container swiper-flash-sale">
               <div
@@ -451,7 +454,10 @@ export default function FlashSaleSlider() {
               </div>
             </div>
 
-            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-flash-sale"></div>
+            <div
+              className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-flash-sale"
+              style={{ display: "none" }}
+            ></div>
           </div>
         </div>
       </section>
