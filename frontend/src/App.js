@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Testimonials from "./components/Testimonials/Testimonials";
@@ -20,53 +21,70 @@ import BestSellingProductsSlider02_6Items from "./components/Best Selling Produc
 import HorizontalBannerSmall_1Item from "./components/Horizontal Banner - Small - 1 Item/HorizontalBannerSmall_1Item";
 import VerticalBanners_4Items from "./components/Vertical Banners - 4 Items/VerticalBanners_4Items";
 import BestSellingProductsSlider_03_6Items from "./components/Best Selling Products Slider 03 - 6 Items/BestSellingProductsSlider_03_6Items";
+import Horizontal_Banner_Large_1_Item from "./components/Horizontal_Banner_Large_1_Item/Horizontal_Banner_Large_1_Item";
+import BestSellingProductsSlider_04_6_Items from "./components/Best Selling Products Slider 04 - 6 Items/BestSellingProductsSlider_04_6_Items";
+import Vertical_Banners_4_Items from "./components/Vertical_Banners_4_Items/Vertical_Banners_4_Items";
+import Horizontal_Banner_Small_1_Item from "./components/Horizontal_Banner_Small_1_Item/Horizontal_Banner_Small_1_Item";
 
 export default function App() {
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main class="flex-1">
-          {/* slider */}
-          <Slider />
-          {/* CATEGORY SLIDER - 8 ITEMS */}
-          <CategorySlider />
-          {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
-          <HorizontalBanner1 />
-          {/*  FLASH SALE SLIDER  */}
-          <FlashSaleSlider />
-          {/* HORIZONTAL BANNERS - 3 ITEMS */}
-          <HorizontalBanners3Items />
-          {/* CATEGORY SLIDER - 5 ITEMS */}
-          <CategorySlider5Items />
-          {/* POPULAR PRODUCTS SLIDER 01 - 4 ITEMS */}
-          <PopularProductsSlider01 />
-          {/* HORIZONTAL BANNERS - LARGE - 2 ITEMS */}
-          <HorizontalBannersLarge2Items />
-          {/* POPULAR PRODUCTS SLIDER 02 - 4 ITEMS */}
-          <PopularProductsSlider02_4Items />
-          {/* HORIZONTAL BANNERS - 2 ITEMS */}
-          <HorizontalBanners_2Items />
-          {/* BEST SELLING PRODUCTS SLIDER 01 - 6 ITEMS */}
-          <BestSellingProductsSlider01_6Items />
-          {/* VERTICAL BANNERS - 4 ITEMS */}
-          <VeticalBanners_4Items />
-          {/* HORIZONTAL BANNER - LARGE - 1 ITEM */}
-          <HorizontalBanner_Large_1Item />
-          {/* BEST SELLING PRODUCTS SLIDER 02 - 6 ITEMS */}
-          <BestSellingProductsSlider02_6Items />
-          {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
-          <HorizontalBannerSmall_1Item />
-          {/* VERTICAL BANNERS - 4 ITEMS */}
-          <VerticalBanners_4Items />
-          {/* BEST SELLING PRODUCTS SLIDER 03 - 6 ITEMS */}
-          <BestSellingProductsSlider_03_6Items />
-          <Testimonials />
-          <Information />
-        </main>
+    // <BrowserRouter>
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-1">
+        {/* <Routes> */}
+        {/* slider */}
+        {/* <Route path="/slider" element={<Slider />} /> */}
 
-        <Footer />
-      </div>
-    </>
+        <Slider />
+        {/* CATEGORY SLIDER - 8 ITEMS */}
+        <CategorySlider />
+        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
+        <HorizontalBanner1 />
+        {/* FLASH SALE SLIDER */}
+        <FlashSaleSlider />
+        {/* HORIZONTAL BANNERS - 3 ITEMS */}
+        <HorizontalBanners3Items />
+        {/* CATEGORY SLIDER - 5 ITEMS */}
+        <CategorySlider5Items />
+        {/* POPULAR PRODUCTS SLIDER 01 - 4 ITEMS */}
+        <PopularProductsSlider01 />
+        {/* HORIZONTAL BANNERS - LARGE - 2 ITEMS */}
+        <HorizontalBannersLarge2Items />
+        {/* POPULAR PRODUCTS SLIDER 02 - 4 ITEMS */}
+        <PopularProductsSlider02_4Items />
+        {/* HORIZONTAL BANNERS - 2 ITEMS */}
+        <HorizontalBanners_2Items />
+        {/* BEST SELLING PRODUCTS SLIDER 01 - 6 ITEMS */}
+        <BestSellingProductsSlider01_6Items />
+        {/* VERTICAL BANNERS - 4 ITEMS */}
+        <VeticalBanners_4Items />
+        {/* HORIZONTAL BANNER - LARGE - 1 ITEM */}
+        <HorizontalBanner_Large_1Item />
+        {/* BEST SELLING PRODUCTS SLIDER 02 - 6 ITEMS */}
+        <BestSellingProductsSlider02_6Items />
+        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
+        <HorizontalBannerSmall_1Item />
+        {/* VERTICAL BANNERS - 4 ITEMS */}
+        <VerticalBanners_4Items />
+        {/* BEST SELLING PRODUCTS SLIDER 03 - 6 ITEMS */}
+        <BestSellingProductsSlider_03_6Items />
+        {/* HORIZONTAL BANNERS - LARGE - 2 ITEMS */}
+        <HorizontalBannersLarge2Items />
+        {/* HORIZONTAL_BANNER_LARGE_1_ITEM */}
+        <Horizontal_Banner_Large_1_Item />
+        {/* BEST SELLING PRODUCTS SLIDER 04 - 6 ITEMS */}
+        <BestSellingProductsSlider_04_6_Items />
+        {/* VERTICAL_BANNERS_4_ITEMS */}
+        <Vertical_Banners_4_Items />
+        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
+        <Horizontal_Banner_Small_1_Item />
+        <Testimonials />
+        <Information />
+        {/* </Routes> */}
+      </main>
+      <Footer />
+    </div>
+    // </BrowserRouter>
   );
 }

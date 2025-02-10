@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import "./Navbar.css";
 
 export default function Navbar() {
+  const [hoveredMenu, setHoveredMenu] = useState(null);
+
+  // Function to handle mouse enter
+  const handleMouseEnter = (menu) => {
+    setHoveredMenu(menu);
+  };
+
+  // Function to handle mouse leave
+  const handleMouseLeave = () => {
+    setHoveredMenu(null);
+  };
+
   return (
     <>
       {/* <!-- START OFFER ANNOUNCEMENT --> */}
@@ -45,8 +58,8 @@ export default function Navbar() {
             </button>
 
             <a
-              href="index.html"
-              title=""
+              href="/"
+              title="logo"
               className="flex flex-shrink-0 ml-5 mr-auto xl:ml-0 sm:mr-0"
             >
               <img
@@ -454,11 +467,18 @@ export default function Navbar() {
                 </a>
               </li>
 
-              <li>
+              <li
+                onMouseEnter={() => handleMouseEnter("furniture")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" title="" className="parent-category-title">
                   Furniture
                 </a>
-                <div className="menu-content">
+                <div
+                  className={`menu-content ${
+                    hoveredMenu === "furniture" ? "visible" : ""
+                  }`}
+                >
                   <div className="grid grid-flow-col divide-x divide-gray-200 auto-cols-fr">
                     <div className="menu-column">
                       <div className="px-4 py-3 border-b border-gray-200">
@@ -743,13 +763,25 @@ export default function Navbar() {
                 </div>
               </li>
 
-              <li>
+              <li
+                onMouseEnter={() => handleMouseEnter("living")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" title="" className="parent-category-title">
                   {" "}
                   Living{" "}
                 </a>
 
-                <div className="menu-content">
+                <div
+                  className={`menu-content ${
+                    hoveredMenu === "living" ? "visible" : ""
+                  }`}
+                  style={{
+                    position: "absolute",
+                    left: "165px",
+                    width: "170px",
+                  }}
+                >
                   <div className="flow-root px-4 py-4">
                     <ul className="-my-1.5 space-y-1.5 sub-menu">
                       <li>
@@ -772,12 +804,19 @@ export default function Navbar() {
                 </div>
               </li>
 
-              <li>
+              <li
+                onMouseEnter={() => handleMouseEnter("bedroom")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <a href="#" title="" className="parent-category-title">
                   {" "}
                   Bedroom{" "}
                 </a>
-                <div className="menu-content">
+                <div
+                  className={`menu-content ${
+                    hoveredMenu === "bedroom" ? "visible" : ""
+                  }`}
+                >
                   <div className="grid grid-flow-col divide-x divide-gray-200 auto-cols-fr">
                     <div className="menu-column">
                       <div className="px-4 py-3 border-b border-gray-200">
