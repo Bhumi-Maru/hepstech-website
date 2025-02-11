@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -482,10 +483,9 @@ export default function Navbar() {
           <div className="mega-menu">
             <ul>
               <li>
-                <a href="#" title="" className="parent-category-title">
-                  {" "}
-                  Shop{" "}
-                </a>
+                <Link to="/shop" title="" className="parent-category-title">
+                  Shop
+                </Link>
               </li>
 
               <li

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Testimonials from "./components/Testimonials/Testimonials";
@@ -26,66 +26,60 @@ import Horizontal_Banner_Large_1_Item from "./components/Horizontal_Banner_Large
 import BestSellingProductsSlider_04_6_Items from "./components/Best Selling Products Slider 04 - 6 Items/BestSellingProductsSlider_04_6_Items";
 import Vertical_Banners_4_Items from "./components/Vertical_Banners_4_Items/Vertical_Banners_4_Items";
 import Horizontal_Banner_Small_1_Item from "./components/Horizontal_Banner_Small_1_Item/Horizontal_Banner_Small_1_Item";
+import Shop_Section_1 from "./components/shop/Shop_Section_1";
+import ShopLayout from "./components/shop/ShopLayout";
+import Shop_Section_2 from "./components/shop/Shop_Section_2";
 
 export default function App() {
   return (
-    // <BrowserRouter>
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">
-        {/* <Routes> */}
-        {/* slider */}
-        {/* <Route path="/slider" element={<Slider />} /> */}
-
-        <Slider />
-        {/* CATEGORY SLIDER - 8 ITEMS */}
-        <CategorySlider />
-        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
-        <HorizontalBanner1 />
-        {/* FLASH SALE SLIDER */}
-        <FlashSaleSlider />
-        {/* HORIZONTAL BANNERS - 3 ITEMS */}
-        <HorizontalBanners3Items />
-        {/* CATEGORY SLIDER - 5 ITEMS */}
-        <CategorySlider5Items />
-        {/* POPULAR PRODUCTS SLIDER 01 - 4 ITEMS */}
-        <PopularProductsSlider01 />
-        {/* HORIZONTAL BANNERS - LARGE - 2 ITEMS */}
-        <HorizontalBannersLarge2Items />
-        {/* POPULAR PRODUCTS SLIDER 02 - 4 ITEMS */}
-        <PopularProductsSlider02_4Items />
-        {/* HORIZONTAL BANNERS - 2 ITEMS */}
-        <HorizontalBanners_2Items />
-        {/* BEST SELLING PRODUCTS SLIDER 01 - 6 ITEMS */}
-        <BestSellingProductsSlider01_6Items />
-        {/* VERTICAL BANNERS - 4 ITEMS */}
-        <VeticalBanners_4Items />
-        {/* HORIZONTAL BANNER - LARGE - 1 ITEM */}
-        <HorizontalBanner_Large_1Item />
-        {/* BEST SELLING PRODUCTS SLIDER 02 - 6 ITEMS */}
-        <BestSellingProductsSlider02_6Items />
-        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
-        <HorizontalBannerSmall_1Item />
-        {/* VERTICAL BANNERS - 4 ITEMS */}
-        <VerticalBanners_4Items />
-        {/* BEST SELLING PRODUCTS SLIDER 03 - 6 ITEMS */}
-        <BestSellingProductsSlider_03_6Items />
-        {/* HORIZONTAL BANNERS - LARGE - 2 ITEMS */}
-        <HorizontalBannersLarge2Items />
-        {/* HORIZONTAL_BANNER_LARGE_1_ITEM */}
-        <Horizontal_Banner_Large_1_Item />
-        {/* BEST SELLING PRODUCTS SLIDER 04 - 6 ITEMS */}
-        <BestSellingProductsSlider_04_6_Items />
-        {/* VERTICAL_BANNERS_4_ITEMS */}
-        <Vertical_Banners_4_Items />
-        {/* HORIZONTAL BANNER - SMALL - 1 ITEM */}
-        <Horizontal_Banner_Small_1_Item />
-        <Testimonials />
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  {/* Components outside Routes */}
+                  <Slider />
+                  <CategorySlider />
+                  <HorizontalBanner1 />
+                  <FlashSaleSlider />
+                  <HorizontalBanners3Items />
+                  <CategorySlider5Items />
+                  <PopularProductsSlider01 />
+                  <HorizontalBannersLarge2Items />
+                  <PopularProductsSlider02_4Items />
+                  <HorizontalBanners_2Items />
+                  <BestSellingProductsSlider01_6Items />
+                  <VeticalBanners_4Items />
+                  <HorizontalBanner_Large_1Item />
+                  <BestSellingProductsSlider02_6Items />
+                  <HorizontalBannerSmall_1Item />
+                  <VerticalBanners_4Items />
+                  <BestSellingProductsSlider_03_6Items />
+                  <HorizontalBannersLarge2Items />
+                  <Horizontal_Banner_Large_1_Item />
+                  <BestSellingProductsSlider_04_6_Items />
+                  <Vertical_Banners_4_Items />
+                  <Horizontal_Banner_Small_1_Item />
+                  <Testimonials />
+                </>
+              }
+            />
+            <Route path="/shop" element={<ShopLayout />}>
+              {/* SHOP SECTION 1 */}
+              <Route index element={<Shop_Section_1 />} />
+              {/* SHOP SECTION 2 */}
+              <Route index path="section-2" element={<Shop_Section_2 />} />
+              {/* <Route path="section-3" element={<Shop_Section_3 />} /> */}
+            </Route>
+          </Routes>
+        </main>
         <Information />
-        {/* </Routes> */}
-      </main>
-      <Footer />
-    </div>
-    // </BrowserRouter>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
