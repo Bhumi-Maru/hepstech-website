@@ -409,10 +409,11 @@ export default function Shop_Section_2() {
                           id="priceRangeSlider"
                           className="w-full"
                           min="0"
-                          max="1000"
+                          max="10000"
                           step="10"
                           value={priceValue}
                           onChange={handleSliderChange}
+                          style={{ height: "5px" }}
                         />
                         <div className="flex justify-between text-sm text-gray-500">
                           <span>₹0</span>

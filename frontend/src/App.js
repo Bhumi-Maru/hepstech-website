@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
@@ -32,10 +32,20 @@ import Shop_Section_2 from "./components/shop/Shop_Section_2";
 import Login from "./components/Authentication/Login";
 
 export default function App() {
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+
+  const handleLoginClick = () => {
+    setLoginModalOpen(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setLoginModalOpen(false);
+  };
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        <Navbar onLoginClick={handleLoginClick} />
+        <Login isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
         <main className="flex-1">
           <Routes>
             <Route

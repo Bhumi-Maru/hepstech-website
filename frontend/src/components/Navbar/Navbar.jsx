@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import Login from "../Authentication/Login";
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick }) {
   const [hoveredMenu, setHoveredMenu] = useState(null);
   // State to manage the dropdown visibility
   const [isOpen, setIsOpen] = useState({
@@ -368,14 +369,15 @@ export default function Navbar() {
                       <p className="text-sm text-gray-600 truncate" role="none">
                         To access account and manage orders
                       </p>
-                      <Link
-                        to="/login"
+                      <a
                         title=""
                         className="w-full mt-3 mb-1 btn btn-primary"
                         role="button"
+                        id="loginBtn"
+                        onClick={onLoginClick}
                       >
                         Login to continue
-                      </Link>
+                      </a>
                     </div>
                     <div className="py-1" role="none">
                       <a
@@ -1011,6 +1013,9 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
+      {/* Modal component */}
+      {/* <Login isOpen={isModalOpen} onClose={closeModal} /> */}
     </>
   );
 }
