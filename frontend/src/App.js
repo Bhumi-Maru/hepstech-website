@@ -29,6 +29,7 @@ import Horizontal_Banner_Small_1_Item from "./components/Horizontal_Banner_Small
 import Shop_Section_1 from "./components/shop/Shop_Section_1";
 import ShopLayout from "./components/shop/ShopLayout";
 import Shop_Section_2 from "./components/shop/Shop_Section_2";
+import Login from "./components/Authentication/Login";
 
 export default function App() {
   return (
@@ -75,6 +76,8 @@ export default function App() {
               <Route index path="section-2" element={<Shop_Section_2 />} />
               {/* <Route path="section-3" element={<Shop_Section_3 />} /> */}
             </Route>
+
+            <Route path="/login" element={<Login />} />
           </Routes>
         </main>
         <Information />

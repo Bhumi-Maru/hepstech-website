@@ -6,9 +6,34 @@ export default function Shop_Section_2() {
     priceRange: false,
     discount: false,
     color: false,
-    rating: false,
+    ratings: false,
     availability: false,
   });
+  const [priceValue, setPriceValue] = useState(0);
+  const [layout, setLayout] = useState("three-columns");
+  const products = [
+    {
+      title: "Sassie Basic 31 LTR Navy Backpack Waterproof School Bag",
+      price: "₹12,899/-",
+      oldPrice: "₹12,899/-",
+      rating: 4, // assuming 4 stars for the example
+      imageSrc: "", // add product image URL here
+      link: "#", // product link
+    },
+    {
+      title: "Sassie Basic 31",
+      price: "₹12,899/-",
+      oldPrice: "₹12,899/-",
+      rating: 4,
+      imageSrc: "",
+      link: "#",
+    },
+    // Add more products as needed
+  ];
+
+  const handleSliderChange = (e) => {
+    setPriceValue(e.target.value);
+  };
 
   const handleDropDown = (dropdown) => {
     setIsDropDownOpen((prevState) => {
@@ -18,11 +43,15 @@ export default function Shop_Section_2() {
         priceRange: dropdown === "priceRange" ? !prevState.priceRange : false,
         discount: dropdown === "discount" ? !prevState.discount : false,
         color: dropdown === "color" ? !prevState.color : false,
-        rating: dropdown === "rating" ? !prevState.rating : false,
+        ratings: dropdown === "ratings" ? !prevState.ratings : false,
         availability:
           dropdown === "availability" ? !prevState.availability : false,
       };
     });
+  };
+
+  const handleLayoutChange = (newLayout) => {
+    setLayout(newLayout);
   };
 
   return (
@@ -297,6 +326,7 @@ export default function Shop_Section_2() {
                     </div>
                   </div>
 
+                  {/* Size Filter */}
                   <div className="py-5">
                     <button
                       type="button"
@@ -374,7 +404,20 @@ export default function Shop_Section_2() {
 
                     {isDropDownOpen.priceRange && (
                       <div className="mt-3">
-                        <input type="text" id="priceRangeSlider" value="" />
+                        <input
+                          type="range"
+                          id="priceRangeSlider"
+                          className="w-full"
+                          min="0"
+                          max="1000"
+                          step="10"
+                          value={priceValue}
+                          onChange={handleSliderChange}
+                        />
+                        <div className="flex justify-between text-sm text-gray-500">
+                          <span>₹0</span>
+                          <span>₹{priceValue}</span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -431,9 +474,11 @@ export default function Shop_Section_2() {
                     )}
                   </div>
 
+                  {/* Color Filter */}
                   <div className="py-5">
                     <button
                       type="button"
+                      onClick={() => handleDropDown("color")}
                       className="flex items-center justify-between w-full text-base font-medium text-gray-900 focus:outline-none hover:text-skin-primary"
                       data-toggle="collapse"
                       data-target="#colorsFilter"
@@ -453,147 +498,47 @@ export default function Shop_Section_2() {
                       </svg>
                     </button>
 
-                    <div className="hidden mt-3 collapse" id="colorsFilter">
-                      <div className="inline-grid grid-cols-5 gap-x-3 gap-y-1.5">
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-blue-600 form-colorinput-color"></span>
-                          </label>
+                    {isDropDownOpen.color && (
+                      <>
+                        <div className="mt-3" id="colorsFilter">
+                          <div className="inline-grid grid-cols-5 gap-x-3 gap-y-1.5">
+                            {[
+                              "blue-600",
+                              "red-600",
+                              "purple-500",
+                              "indigo-600",
+                              "yellow-500",
+                              "teal-500",
+                              "orange-600",
+                              "lime-500",
+                              "purple-600",
+                              "cyan-500",
+                            ].map((color, index) => (
+                              <div key={index}>
+                                <label className="form-colorinput">
+                                  <input
+                                    type="checkbox"
+                                    name="color"
+                                    className="form-colorinput-input"
+                                  />
+                                  <span
+                                    className={`bg-${color} form-colorinput-color`}
+                                  ></span>
+                                </label>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-red-600 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-purple-500 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-indigo-600 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-yellow-500 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-teal-500 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-orange-600 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-lime-500 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-purple-600 form-colorinput-color"></span>
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className="form-colorinput">
-                            <input
-                              type="checkbox"
-                              name="color"
-                              id=""
-                              value=""
-                              className="form-colorinput-input"
-                            />
-                            <span className="bg-cyan-500 form-colorinput-color"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
+                      </>
+                    )}
                   </div>
 
+                  {/* Ratings Filter */}
                   <div className="py-5">
                     <button
                       type="button"
+                      onClick={() => handleDropDown("ratings")}
                       className="flex items-center justify-between w-full text-base font-medium text-gray-900 focus:outline-none hover:text-skin-primary"
-                      data-toggle="collapse"
-                      data-target="#ratingsFilter"
                     >
                       Ratings
                       <svg
@@ -603,341 +548,65 @@ export default function Shop_Section_2() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </button>
 
-                    <div className="hidden mt-3 collapse" id="ratingsFilter">
-                      <div className="space-y-3">
-                        <div className="relative flex items-center">
-                          <div className="flex items-center h-5">
-                            <input
-                              type="checkbox"
-                              id="fiveStars"
-                              name="fiveStars"
-                              className=""
-                            />
-                          </div>
-                          <div className="ml-3">
-                            <label
-                              for="fiveStars"
-                              className="flex items-center cursor-pointer"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="flex items-center">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
+                    {isDropDownOpen.ratings && (
+                      <div className="mt-3 space-y-3">
+                        {[
+                          "fiveStars",
+                          "fourStars",
+                          "threeStars",
+                          "twoStars",
+                          "oneStars",
+                        ].map((star, index) => (
+                          <div
+                            className="relative flex items-center"
+                            key={index}
+                          >
+                            <div className="flex items-center h-5">
+                              <input
+                                type="checkbox"
+                                id={star}
+                                name={star}
+                                className=""
+                              />
+                            </div>
+                            <div className="ml-3">
+                              <label
+                                htmlFor={star}
+                                className="flex items-center cursor-pointer"
+                              >
+                                <div className="flex items-center space-x-3">
+                                  {[...Array(5)].map((_, starIndex) => (
+                                    <svg
+                                      key={starIndex}
+                                      className={`w-5 h-5 ${
+                                        starIndex < 5 - index
+                                          ? "text-yellow-500"
+                                          : "text-gray-300"
+                                      }`}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                    >
+                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                  ))}
+                                  <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
+                                    ({5 - index})
+                                  </span>
                                 </div>
-                                <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
-                                  (1)
-                                </span>
-                              </div>
-                            </label>
+                              </label>
+                            </div>
                           </div>
-                        </div>
-
-                        <div className="relative flex items-center">
-                          <div className="flex items-center h-5">
-                            <input
-                              type="checkbox"
-                              id="fourStars"
-                              name="fourStars"
-                              className=""
-                            />
-                          </div>
-                          <div className="ml-3">
-                            <label
-                              for="fourStars"
-                              className="flex items-center cursor-pointer"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="flex items-center">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
-                                  (1)
-                                </span>
-                              </div>
-                            </label>
-                          </div>
-                        </div>
-
-                        <div className="relative flex items-center">
-                          <div className="flex items-center h-5">
-                            <input
-                              type="checkbox"
-                              id="threeStars"
-                              name="threeStars"
-                              className=""
-                            />
-                          </div>
-                          <div className="ml-3">
-                            <label
-                              for="threeStars"
-                              className="flex items-center cursor-pointer"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="flex items-center">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
-                                  (1)
-                                </span>
-                              </div>
-                            </label>
-                          </div>
-                        </div>
-
-                        <div className="relative flex items-center">
-                          <div className="flex items-center h-5">
-                            <input
-                              type="checkbox"
-                              id="twoStars"
-                              name="twoStars"
-                              className=""
-                            />
-                          </div>
-                          <div className="ml-3">
-                            <label
-                              for="twoStars"
-                              className="flex items-center cursor-pointer"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="flex items-center">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
-                                  (1)
-                                </span>
-                              </div>
-                            </label>
-                          </div>
-                        </div>
-
-                        <div className="relative flex items-center">
-                          <div className="flex items-center h-5">
-                            <input
-                              type="checkbox"
-                              id="oneStar"
-                              name="oneStar"
-                              className=""
-                            />
-                          </div>
-                          <div className="ml-3">
-                            <label
-                              for="oneStar"
-                              className="flex items-center cursor-pointer"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="flex items-center">
-                                  <svg
-                                    className="w-5 h-5 text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                  <svg
-                                    className="w-5 h-5 text-gray-300"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <span className="inline-flex pt-1 text-sm font-medium leading-none text-gray-500">
-                                  (1)
-                                </span>
-                              </div>
-                            </label>
-                          </div>
-                        </div>
+                        ))}
                       </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Availability Filter */}
@@ -1079,7 +748,8 @@ export default function Shop_Section_2() {
                           role="radio"
                           tabindex="0"
                           name="layoutType"
-                          checked
+                          checked={layout === "three-columns"}
+                          onChange={() => handleLayoutChange("three-columns")}
                         />
                         <label
                           for="threeGridViewButton"
@@ -1114,6 +784,8 @@ export default function Shop_Section_2() {
                           role="radio"
                           tabindex="0"
                           name="layoutType"
+                          checked={layout === "four-columns"}
+                          onChange={() => handleLayoutChange("four-columns")}
                         />
                         <label
                           for="fourGridViewButton"
@@ -1148,6 +820,8 @@ export default function Shop_Section_2() {
                           role="radio"
                           tabindex="0"
                           name="layoutType"
+                          checked={layout === "list-view"}
+                          onChange={() => handleLayoutChange("list-view")}
                         />
                         <label
                           for="listViewButton"
@@ -1168,309 +842,144 @@ export default function Shop_Section_2() {
                 </div>
               </div>
 
-              <div className="mt-5 products products-list three-columns four-columns">
-                <div className="product-card">
-                  <button type="button" className="btn-wishlist-top">
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  </button>
+              <div
+                className={`mt-5 products ${
+                  layout === "three-columns" || layout === "four-columns"
+                    ? "products-grid"
+                    : "products-list"
+                } ${layout}`}
+              >
+                {products.map((product, index) => (
+                  <div key={index} className="product-card">
+                    <button type="button" className="btn-wishlist-top">
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                        />
+                      </svg>
+                    </button>
 
-                  <a href="#" title="" className="block">
-                    <div className="product-image">
-                      <img
-                        className="object-cover w-full h-full"
-                        src=""
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
-                  </a>
+                    <a href={product.link} title="" className="block">
+                      <div className="product-image">
+                        <img
+                          className="object-cover w-full h-full"
+                          src={product.imageSrc}
+                          alt=""
+                          loading="lazy"
+                        />
+                      </div>
+                    </a>
 
-                  <div className="product-details">
-                    <div className="flex flex-col flex-1">
-                      <div className="flex-1 w-full max-w-sm">
-                        <p className="product-title">
-                          <a
-                            href="#"
-                            title=""
-                            className="hover:text-skin-primary"
-                          >
-                            Sassie Basic 31 LTR Navy Backpack Waterproof School
-                            Bag
-                          </a>
-                        </p>
+                    <div className="product-details">
+                      <div className="flex flex-col flex-1">
+                        <div className="flex-1 w-full max-w-sm">
+                          <p className="product-title">
+                            <a
+                              href={product.link}
+                              title=""
+                              className="hover:text-skin-primary"
+                            >
+                              {product.title}
+                            </a>
+                          </p>
 
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center flex-1 space-x-2">
-                            <span className="product-price"> ₹12,899/- </span>
-                            <s className="product-price-old"> ₹12,899/- </s>
+                          <div className="flex items-center justify-between mt-2">
+                            <div className="flex items-center flex-1 space-x-2">
+                              <span className="product-price">
+                                {product.price}
+                              </span>
+                              <s className="product-price-old">
+                                {product.oldPrice}
+                              </s>
+                            </div>
+                          </div>
+
+                          <div className="product-ratings">
+                            {[...Array(5)].map((_, i) => (
+                              <svg
+                                key={i}
+                                className={`w-5 h-5 ${
+                                  i < product.rating
+                                    ? "text-yellow-500"
+                                    : "text-gray-300"
+                                }`}
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
                           </div>
                         </div>
 
-                        <div className="product-ratings">
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                        <div className="product-buttons">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-primary btn-cart"
+                            data-toggle="modal"
+                            data-target="#quickViewModal"
                           >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                            <svg
+                              className="w-4 h-4 mr-2"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                            </svg>
+                            Add to Cart
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-white !py-1.5 btn-delete"
                           >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-gray-300"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
+                            <svg
+                              className="w-5 h-5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              ></path>
+                            </svg>
+                          </button>
                         </div>
                       </div>
 
-                      <div className="product-buttons">
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-primary btn-cart"
-                          data-toggle="modal"
-                          data-target="#quickViewModal"
+                      <button type="button" className="btn-wishlist">
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
-                          <svg
-                            className="w-4 h-4 mr-2"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                          </svg>
-                          Add to Cart
-                        </button>
-
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-white !py-1.5 btn-delete"
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            ></path>
-                          </svg>
-                        </button>
-                      </div>
+                          <path
+                            fillRule="evenodd"
+                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Add to Wishlist
+                      </button>
                     </div>
-
-                    <button type="button" className="btn-wishlist">
-                      <svg
-                        className="w-4 h-4 mr-2"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      Add to Wishlist
-                    </button>
                   </div>
-                </div>
-
-                <div className="product-card">
-                  <button type="button" className="btn-wishlist-top">
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  </button>
-
-                  <a href="#" title="" className="block">
-                    <div className="product-image">
-                      <img
-                        className="object-cover w-full h-full"
-                        src=""
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
-                  </a>
-
-                  <div className="product-details">
-                    <div className="flex flex-col flex-1">
-                      <div className="flex-1 w-full max-w-sm">
-                        <p className="product-title">
-                          <a
-                            href="#"
-                            title=""
-                            className="hover:text-skin-primary"
-                          >
-                            Sassie Basic 31
-                          </a>
-                        </p>
-
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center flex-1 space-x-2">
-                            <span className="product-price"> ₹12,899/- </span>
-                            <s className="product-price-old"> ₹12,899/- </s>
-                          </div>
-                        </div>
-
-                        <div className="product-ratings">
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-yellow-500"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <svg
-                            className="w-5 h-5 text-gray-300"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        </div>
-                      </div>
-
-                      <div className="product-buttons">
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-primary btn-cart"
-                          data-toggle="modal"
-                          data-target="#quickViewModal"
-                        >
-                          <svg
-                            className="w-4 h-4 mr-2"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                          </svg>
-                          Add to Cart
-                        </button>
-
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-white !py-1.5 btn-delete"
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            ></path>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-
-                    <button type="button" className="btn-wishlist">
-                      <svg
-                        className="w-4 h-4 mr-2"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      Add to Wishlist
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <hr className="my-6 border-gray-200" />

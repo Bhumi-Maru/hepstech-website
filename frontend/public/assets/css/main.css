@@ -4557,6 +4557,7 @@ table.custom-table thead th.nowrap {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
 @media (min-width: 640px) {
   .sm\:order-3 {
     order: 3;

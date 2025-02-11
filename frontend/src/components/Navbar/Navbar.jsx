@@ -128,7 +128,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-10">
               <a
                 href="#"
-                title="Wishlist"
+                title="Offers"
                 className="flex-col items-center hidden transition-all duration-200 lg:flex hover:text-skin-primary"
               >
                 <svg
@@ -151,6 +151,7 @@ export default function Navbar() {
               <div className="hidden lg:flex">
                 <div className="dropdown">
                   <button
+                    title="Contact"
                     type="button"
                     className="flex flex-col items-center transition-all duration-200 focus:outline-none hover:text-skin-primary dropdown-toggle"
                     onClick={() => toggleDropdown("contact")} // Toggle the dropdown on click
@@ -324,6 +325,7 @@ export default function Navbar() {
 
               <div className="dropdown">
                 <button
+                  title="Profile"
                   type="button"
                   onClick={() => toggleDropdown("profile")}
                   className="flex flex-col items-center transition-all duration-200 focus:outline-none hover:text-skin-primary dropdown-toggle"
@@ -366,14 +368,14 @@ export default function Navbar() {
                       <p className="text-sm text-gray-600 truncate" role="none">
                         To access account and manage orders
                       </p>
-                      <a
-                        href="#"
+                      <Link
+                        to="/login"
                         title=""
                         className="w-full mt-3 mb-1 btn btn-primary"
                         role="button"
                       >
                         Login to continue
-                      </a>
+                      </Link>
                     </div>
                     <div className="py-1" role="none">
                       <a
