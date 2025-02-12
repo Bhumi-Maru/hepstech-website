@@ -39,14 +39,14 @@ export default function ShoppingCart_Checkout_3() {
             </div>
 
             <div class="mt-5 space-y-3">
-              <a
-                href="checkout.html"
+              <Link
+                to="/checkout"
                 title="Proceed to Checkout"
                 class="w-full btn btn-primary"
                 role="button"
               >
                 Proceed to Checkout
-              </a>
+              </Link>
 
               <Link
                 to="/shop"

@@ -36,6 +36,9 @@ import MyOrders from "./components/Profile/My Orders/MyOrders";
 import OrderDetails from "./components/Profile/My Orders/OrderDetails";
 import MyAccount from "./components/Profile/My Account/MyAccount";
 import ShoppingCart from "./components/Shopping Cart/ShoppingCart";
+import Checkout from "./components/Shopping Cart/CheckOut/Checkout";
+import Privacy_Policy from "./components/Privacy Policy/Privacy_Policy";
+import Error from "./components/Error/Error";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -108,6 +111,7 @@ export default function App() {
 
             {/* CART */}
             <Route path="/shopping-cart" element={<ShoppingCart />} />
+            <Route path="/checkout" element={<Checkout />} />
 
             {/* MY-ADDRESSES */}
             <Route
@@ -144,6 +148,12 @@ export default function App() {
                 </section>
               }
             />
+
+            {/* PRIVACY POLICY */}
+            <Route path="/privacy-policy" element={<Privacy_Policy />} />
+
+            {/* 404 ERROR  PAGE */}
+            <Route path="*" element={<Error />} />
           </Routes>
         </main>
         <Information />
