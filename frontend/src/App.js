@@ -29,7 +29,9 @@ import Horizontal_Banner_Small_1_Item from "./components/Horizontal_Banner_Small
 import Shop_Section_1 from "./components/shop/Shop_Section_1";
 import ShopLayout from "./components/shop/ShopLayout";
 import Shop_Section_2 from "./components/shop/Shop_Section_2";
-import Login from "./components/Authentication/Login";
+import Login from "./components/Profile/Authentication/Login";
+import WishList from "./components/Profile/WishList/WishList";
+import MyAddresses from "./components/Profile/My Addresses/MyAddresses";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -88,6 +90,27 @@ export default function App() {
             </Route>
 
             <Route path="/login" element={<Login />} />
+
+            <Route
+              path="/wishlist"
+              element={
+                <section className="py-10 bg-white">
+                  <div className="container">
+                    <WishList />
+                  </div>
+                </section>
+              }
+            />
+            <Route
+              path="/my-addresses"
+              element={
+                <section className="py-10 bg-white">
+                  <div className="container">
+                    <MyAddresses />
+                  </div>
+                </section>
+              }
+            />
           </Routes>
         </main>
         <Information />

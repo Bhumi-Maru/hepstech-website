@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import Login from "../Authentication/Login";
+import Login from "../Profile/Authentication/Login";
 
 export default function Navbar({ onLoginClick }) {
   const [hoveredMenu, setHoveredMenu] = useState(null);
@@ -280,8 +280,8 @@ export default function Navbar({ onLoginClick }) {
                 </div>
               </div>
 
-              <a
-                href="wishlist.html"
+              <Link
+                to="/wishlist"
                 title="Wishlist"
                 className="flex-col items-center hidden transition-all duration-200 md:flex hover:text-skin-primary"
               >
@@ -300,7 +300,7 @@ export default function Navbar({ onLoginClick }) {
                   />
                 </svg>
                 <span className="mt-1 text-xs font-semibold"> Wishlist </span>
-              </a>
+              </Link>
 
               <a
                 href="shopping-cart.html"
@@ -380,8 +380,8 @@ export default function Navbar({ onLoginClick }) {
                       </a>
                     </div>
                     <div className="py-1" role="none">
-                      <a
-                        href="my-account.html"
+                      <Link
+                        to="/my-account"
                         title="My Account"
                         className="dropdown-item"
                         role="menuitem"
@@ -401,7 +401,7 @@ export default function Navbar({ onLoginClick }) {
                           />
                         </svg>
                         My Account
-                      </a>
+                      </Link>
                       <a
                         href="my-orders.html"
                         title="My Orders"
@@ -424,8 +424,8 @@ export default function Navbar({ onLoginClick }) {
                         </svg>
                         My Orders
                       </a>
-                      <a
-                        href="wishlist.html"
+                      <Link
+                        to="/wishlist"
                         title="Wishlist"
                         className="dropdown-item"
                         role="menuitem"
@@ -445,7 +445,7 @@ export default function Navbar({ onLoginClick }) {
                           />
                         </svg>
                         Wishlist
-                      </a>
+                      </Link>
                     </div>
                     <div className="py-1" role="none">
                       <form method="POST" action="#" role="none">
