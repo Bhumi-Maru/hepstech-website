@@ -32,22 +32,23 @@ import Shop_Section_2 from "./components/shop/Shop_Section_2";
 import Login from "./components/Profile/Authentication/Login";
 import WishList from "./components/Profile/WishList/WishList";
 import MyAddresses from "./components/Profile/My Addresses/MyAddresses";
+import MyOrders from "./components/Profile/My Orders/MyOrders";
+import OrderDetails from "./components/Profile/My Orders/OrderDetails";
+import MyAccount from "./components/Profile/My Account/MyAccount";
+import ShoppingCart from "./components/Shopping Cart/ShoppingCart";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
 
-  const handleLoginClick = () => {
-    setLoginModalOpen(true);
-  };
-
-  const handleCloseLoginModal = () => {
-    setLoginModalOpen(false);
-  };
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar onLoginClick={handleLoginClick} />
-        <Login isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
+        <Navbar setLoginModalOpen={setLoginModalOpen} />
+        {isLoginModalOpen && (
+          <>
+            <Login setLoginModalOpen={setLoginModalOpen} />
+          </>
+        )}
         <main className="flex-1">
           <Routes>
             <Route
@@ -81,6 +82,7 @@ export default function App() {
                 </>
               }
             />
+            {/* SHOP */}
             <Route path="/shop" element={<ShopLayout />}>
               {/* SHOP SECTION 1 */}
               <Route index element={<Shop_Section_1 />} />
@@ -89,8 +91,10 @@ export default function App() {
               {/* <Route path="section-3" element={<Shop_Section_3 />} /> */}
             </Route>
 
-            <Route path="/login" element={<Login />} />
+            {/* LOGIN */}
+            {/* <Route path="/login" element={<Login />} /> */}
 
+            {/* WISHLIST */}
             <Route
               path="/wishlist"
               element={
@@ -101,12 +105,41 @@ export default function App() {
                 </section>
               }
             />
+
+            {/* CART */}
+            <Route path="/shopping-cart" element={<ShoppingCart />} />
+
+            {/* MY-ADDRESSES */}
             <Route
               path="/my-addresses"
               element={
                 <section className="py-10 bg-white">
                   <div className="container">
                     <MyAddresses />
+                  </div>
+                </section>
+              }
+            />
+            {/* MY-ORDERS */}
+            <Route
+              path="/my-orders"
+              element={
+                <section className="py-10 bg-white">
+                  <div className="container">
+                    <MyOrders />
+                  </div>
+                </section>
+              }
+            />
+            <Route path="/order-details/:id" element={<OrderDetails />} />
+
+            {/* MY ACCOUNT */}
+            <Route
+              path="/my-account"
+              element={
+                <section className="py-10 bg-white">
+                  <div className="container">
+                    <MyAccount />
                   </div>
                 </section>
               }

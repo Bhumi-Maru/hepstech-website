@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import Login from "../Profile/Authentication/Login";
 
-export default function Navbar({ onLoginClick }) {
+export default function Navbar({ setLoginModalOpen }) {
   const [hoveredMenu, setHoveredMenu] = useState(null);
   // State to manage the dropdown visibility
   const [isOpen, setIsOpen] = useState({
@@ -127,6 +126,7 @@ export default function Navbar({ onLoginClick }) {
             </form>
 
             <div className="flex items-center space-x-10">
+              {/* OFFERS */}
               <a
                 href="#"
                 title="Offers"
@@ -149,6 +149,7 @@ export default function Navbar({ onLoginClick }) {
                 <span className="mt-1 text-xs font-semibold"> Offers </span>
               </a>
 
+              {/* CONTACT */}
               <div className="hidden lg:flex">
                 <div className="dropdown">
                   <button
@@ -280,6 +281,7 @@ export default function Navbar({ onLoginClick }) {
                 </div>
               </div>
 
+              {/* WISHLIST */}
               <Link
                 to="/wishlist"
                 title="Wishlist"
@@ -302,8 +304,9 @@ export default function Navbar({ onLoginClick }) {
                 <span className="mt-1 text-xs font-semibold"> Wishlist </span>
               </Link>
 
-              <a
-                href="shopping-cart.html"
+              {/* CART */}
+              <Link
+                to="/shopping-cart"
                 title="Shopping Cart"
                 className="flex flex-col items-center transition-all duration-200 hover:text-skin-primary"
               >
@@ -322,8 +325,9 @@ export default function Navbar({ onLoginClick }) {
                   />
                 </svg>
                 <span className="mt-1 text-xs font-semibold"> Cart </span>
-              </a>
+              </Link>
 
+              {/* PROFILE */}
               <div className="dropdown">
                 <button
                   title="Profile"
@@ -369,15 +373,14 @@ export default function Navbar({ onLoginClick }) {
                       <p className="text-sm text-gray-600 truncate" role="none">
                         To access account and manage orders
                       </p>
-                      <a
-                        title=""
+                      <button
                         className="w-full mt-3 mb-1 btn btn-primary"
                         role="button"
                         id="loginBtn"
-                        onClick={onLoginClick}
+                        onClick={() => setLoginModalOpen(true)}
                       >
                         Login to continue
-                      </a>
+                      </button>
                     </div>
                     <div className="py-1" role="none">
                       <Link
@@ -402,8 +405,8 @@ export default function Navbar({ onLoginClick }) {
                         </svg>
                         My Account
                       </Link>
-                      <a
-                        href="my-orders.html"
+                      <Link
+                        to="/my-orders"
                         title="My Orders"
                         className="dropdown-item"
                         role="menuitem"
@@ -423,7 +426,7 @@ export default function Navbar({ onLoginClick }) {
                           />
                         </svg>
                         My Orders
-                      </a>
+                      </Link>
                       <Link
                         to="/wishlist"
                         title="Wishlist"

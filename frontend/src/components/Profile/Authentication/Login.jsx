@@ -1,19 +1,18 @@
 import React from "react";
 
-export default function Login({ isOpen, onClose }) {
-  if (!isOpen) return null;
+export default function Login({ setLoginModalOpen }) {
   return (
     <>
       {/* <!-- START LOGIN MODAL --> */}
       <div className="modal" role="dialog" aria-hidden="false" tabindex="-1">
-        <div className="modal-overlay" onClick={onClose} tabindex="-1"></div>
+        <div className="modal-overlay" tabindex="-1"></div>
         <div className="modal-dialog sm:max-w-lg">
           <div className="modal-content" role="document">
             <button
               type="button"
               className="btn-close"
-              onClick={onClose}
               aria-label="Close"
+              onClick={() => setLoginModalOpen(false)}
             >
               <span className="sr-only"> Close </span>
               <svg

@@ -33,7 +33,7 @@ export default function Profile_Sidebar() {
             <span class="truncate"> My Account </span>
           </Link>
 
-          <a href="my-orders.html" class="side-nav-link">
+          <Link to="/my-orders" className={isActive("/my-orders")}>
             <svg
               class="w-5 h-5 mr-3"
               xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ export default function Profile_Sidebar() {
               />
             </svg>
             <span class="truncate"> My Orders </span>
-          </a>
+          </Link>
 
           <Link to="/my-addresses" className={isActive("/my-addresses")}>
             <svg
