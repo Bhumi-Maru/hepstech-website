@@ -39,6 +39,7 @@ import ShoppingCart from "./components/Shopping Cart/ShoppingCart";
 import Checkout from "./components/Shopping Cart/CheckOut/Checkout";
 import Privacy_Policy from "./components/Privacy Policy/Privacy_Policy";
 import Error from "./components/Error/Error";
+import EmptyShoppingCart from "./components/Empty Shopping Cart/EmptyShoppingCart";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -154,6 +155,12 @@ export default function App() {
 
             {/* 404 ERROR  PAGE */}
             <Route path="*" element={<Error />} />
+
+            {/*EMPTY SHOPPING CART  */}
+            <Route
+              path="/empty-shopping-cart"
+              element={<EmptyShoppingCart />}
+            />
           </Routes>
         </main>
         <Information />
