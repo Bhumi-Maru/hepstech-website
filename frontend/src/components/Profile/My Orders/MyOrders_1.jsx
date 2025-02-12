@@ -141,7 +141,7 @@ export default function MyOrders_1() {
                         <td className="nowrap">
                           <div className="flex items-center space-x-4">
                             <Link
-                              to={`/order-details/${order.id}`}
+                              to="/order-details"
                               title="View Order Details"
                               className="btn-circle"
                               aria-label="View"

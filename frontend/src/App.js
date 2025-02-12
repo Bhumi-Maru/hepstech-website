@@ -40,6 +40,7 @@ import Checkout from "./components/Shopping Cart/CheckOut/Checkout";
 import Privacy_Policy from "./components/Privacy Policy/Privacy_Policy";
 import Error from "./components/Error/Error";
 import EmptyShoppingCart from "./components/Empty Shopping Cart/EmptyShoppingCart";
+import Thank_You from "./components/Thank You/Thank_You";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -136,7 +137,7 @@ export default function App() {
                 </section>
               }
             />
-            <Route path="/order-details/:id" element={<OrderDetails />} />
+            <Route path="/order-details" element={<OrderDetails />} />
 
             {/* MY ACCOUNT */}
             <Route
@@ -161,6 +162,9 @@ export default function App() {
               path="/empty-shopping-cart"
               element={<EmptyShoppingCart />}
             />
+
+            {/* THANK YOU */}
+            <Route path="/thank-you" element={<Thank_You />} />
           </Routes>
         </main>
         <Information />
