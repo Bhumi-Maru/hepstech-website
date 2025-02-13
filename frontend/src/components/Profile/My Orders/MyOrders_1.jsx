@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import NoOrderHistory from "./NoOrderHistory";
 
 export default function MyOrders_1() {
   const [orders, setOrders] = useState([
@@ -210,6 +211,9 @@ export default function MyOrders_1() {
           </div>
         </div>
       </div>
+
+      {/* You don't have any order history */}
+      <NoOrderHistory />
     </div>
   );
 }

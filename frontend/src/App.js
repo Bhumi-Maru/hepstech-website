@@ -41,9 +41,11 @@ import Privacy_Policy from "./components/Privacy Policy/Privacy_Policy";
 import Error from "./components/Error/Error";
 import EmptyShoppingCart from "./components/Empty Shopping Cart/EmptyShoppingCart";
 import Thank_You from "./components/Thank You/Thank_You";
+import Cancel_Order_Modal from "./components/Profile/My Orders/Cancel_Order_Modal";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isCancelOrderModalOpen, setIsCancelOrderModalOpen] = useState(false);
 
   return (
     <BrowserRouter>
@@ -132,12 +134,20 @@ export default function App() {
               element={
                 <section className="py-10 bg-white">
                   <div className="container">
-                    <MyOrders />
+                    <MyOrders isCancelOrderModalOpen={isCancelOrderModalOpen} />
                   </div>
                 </section>
               }
             />
-            <Route path="/order-details" element={<OrderDetails />} />
+            {/* ORDER DETAILS */}
+            <Route
+              path="/order-details"
+              element={
+                <OrderDetails
+                  setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
+                />
+              }
+            />
 
             {/* MY ACCOUNT */}
             <Route
@@ -166,6 +176,12 @@ export default function App() {
             {/* THANK YOU */}
             <Route path="/thank-you" element={<Thank_You />} />
           </Routes>
+          {/* Global Cancel Order Modal */}
+          {isCancelOrderModalOpen && (
+            <Cancel_Order_Modal
+              setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
+            />
+          )}
         </main>
         <Information />
         <Footer />

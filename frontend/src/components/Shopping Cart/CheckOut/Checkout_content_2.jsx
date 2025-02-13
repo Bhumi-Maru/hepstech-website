@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import Coupons_Menu from "./Coupons_Menu";
 
-export default function Checkout_content_2() {
-  const [isCouponMenuOpen, setIsCouponMenuOpen] = useState(false);
+export default function Checkout_content_2({ setIsCouponMenuOpen }) {
   return (
     <>
       {/* CHECKOUT CONTENT 2 */}
@@ -111,10 +109,6 @@ export default function Checkout_content_2() {
           </span>
         </div>
       </div>
-
-      {/* {isCouponMenuOpen && ( */}
-      <Coupons_Menu setIsCouponMenuOpen={setIsCouponMenuOpen} />
-      {/* )} */}
     </>
   );
 }

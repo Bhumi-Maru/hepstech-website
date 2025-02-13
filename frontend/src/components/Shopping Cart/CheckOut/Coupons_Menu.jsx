@@ -1,13 +1,17 @@
 import React from "react";
 
-export default function Coupons_Menu({ setIsCouponMenuOpen }) {
+export default function Coupons_Menu({
+  setIsCouponMenuOpen,
+  isCouponMenuOpen,
+}) {
+  console.log("isCouponMenuOpen checkout", isCouponMenuOpen);
   return (
     <>
       {/* <!-- START COUPONS MENU --> */}
       <aside
         class="max-w-md drawer drawer-right"
         id="couponsMenu"
-        aria-hidden="true"
+        aria-hidden={!isCouponMenuOpen}
         tabindex="-1"
       >
         <div class="px-4 py-5 sm:px-6 drawer-header">
@@ -19,7 +23,6 @@ export default function Coupons_Menu({ setIsCouponMenuOpen }) {
             class="btn-close"
             data-dismiss="drawer"
             aria-label="Close"
-            onClick={() => setIsCouponMenuOpen(false)}
           >
             <svg
               class="w-6 h-6"
