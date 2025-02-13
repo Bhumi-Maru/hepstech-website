@@ -1,6 +1,8 @@
 import React from "react";
 
-export default function PopularProductsSlider02_4Items() {
+export default function PopularProductsSlider02_4Items({
+  setIsAddToCartModal,
+}) {
   return (
     <>
       {/* <!-- POPULAR PRODUCTS SLIDER 02 - 4 ITEMS  --> */}

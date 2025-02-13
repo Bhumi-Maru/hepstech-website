@@ -83,20 +83,32 @@ export default function App() {
                   <FlashSaleSlider setIsAddToCartModal={setIsAddToCartModal} />
                   <HorizontalBanners3Items />
                   <CategorySlider5Items />
-                  <PopularProductsSlider01 />
+                  <PopularProductsSlider01
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <HorizontalBannersLarge2Items />
-                  <PopularProductsSlider02_4Items />
+                  <PopularProductsSlider02_4Items
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <HorizontalBanners_2Items />
-                  <BestSellingProductsSlider01_6Items />
+                  <BestSellingProductsSlider01_6Items
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <VeticalBanners_4Items />
                   <HorizontalBanner_Large_1Item />
-                  <BestSellingProductsSlider02_6Items />
+                  <BestSellingProductsSlider02_6Items
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <HorizontalBannerSmall_1Item />
                   <VerticalBanners_4Items />
-                  <BestSellingProductsSlider_03_6Items />
+                  <BestSellingProductsSlider_03_6Items
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <HorizontalBannersLarge2Items />
                   <Horizontal_Banner_Large_1_Item />
-                  <BestSellingProductsSlider_04_6_Items />
+                  <BestSellingProductsSlider_04_6_Items
+                    setIsAddToCartModal={setIsAddToCartModal}
+                  />
                   <Vertical_Banners_4_Items />
                   <Horizontal_Banner_Small_1_Item />
                   <Testimonials />
@@ -104,13 +116,10 @@ export default function App() {
               }
             />
             {/* SHOP */}
-            <Route path="/shop" element={<ShopLayout />}>
-              {/* SHOP SECTION 1 */}
-              <Route index element={<Shop_Section_1 />} />
-              {/* SHOP SECTION 2 */}
-              <Route index path="section-2" element={<Shop_Section_2 />} />
-              {/* <Route path="section-3" element={<Shop_Section_3 />} /> */}
-            </Route>
+            <Route
+              path="/shop"
+              element={<ShopLayout setIsAddToCartModal={setIsAddToCartModal} />}
+            />
 
             {/* LOGIN */}
             {/* <Route path="/login" element={<Login />} /> */}
@@ -121,7 +130,7 @@ export default function App() {
               element={
                 <section className="py-10 bg-white">
                   <div className="container">
-                    <WishList />
+                    <WishList setIsAddToCartModal={setIsAddToCartModal} />
                   </div>
                 </section>
               }
@@ -229,7 +238,10 @@ export default function App() {
 
         {isAddToCartModal && (
           <>
-            <AddToCart_Quick_View_Modal />
+            <AddToCart_Quick_View_Modal
+              isAddToCartModal={isAddToCartModal}
+              setIsAddToCartModal={setIsAddToCartModal}
+            />
           </>
         )}
         <Information />

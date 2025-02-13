@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Shop_Section_2() {
+export default function Shop_Section_2({ setIsAddToCartModal }) {
   const [isDropDownOpen, setIsDropDownOpen] = useState({
     size: false,
     priceRange: false,
@@ -929,6 +929,7 @@ export default function Shop_Section_2() {
                             className="btn btn-sm btn-primary btn-cart"
                             data-toggle="modal"
                             data-target="#quickViewModal"
+                            onClick={() => setIsAddToCartModal(true)}
                           >
                             <svg
                               className="w-4 h-4 mr-2"

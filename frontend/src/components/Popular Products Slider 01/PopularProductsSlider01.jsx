@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PopularProductsSlider01() {
+export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   return (
     <>
       {/* <!-- POPULAR PRODUCTS SLIDER 01 - 4 ITEMS --> */}
@@ -137,6 +137,7 @@ export default function PopularProductsSlider01() {
                           className="btn btn-sm btn-primary btn-cart"
                           data-toggle="modal"
                           data-target="#quickViewModal"
+                          onClick={() => setIsAddToCartModal(true)}
                         >
                           <svg
                             className="w-4 h-4 mr-2"
