@@ -7,9 +7,9 @@ export default function OrderDetails() {
   return (
     <>
       <div className="relative grid items-start grid-cols-1 gap-y-10 md:grid-cols-4 md:gap-x-10 lg:gap-x-16">
-        <div class="md:sticky md:left-0 md:top-24">
+        {/* <div class="md:sticky md:left-0 md:top-24">
           <Profile_Sidebar />
-        </div>
+        </div> */}
         {/* ORDER DETAILS */}
         <div class="md:col-span-3">
           <nav aria-label="Back">
