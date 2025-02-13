@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Swiper from "swiper";
 
-export default function FlashSaleSlider() {
+export default function FlashSaleSlider({ setIsAddToCartModal }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -249,6 +249,7 @@ export default function FlashSaleSlider() {
                           className="btn btn-sm btn-primary btn-cart"
                           data-toggle="modal"
                           data-target="#quickViewModal"
+                          onClick={() => setIsAddToCartModal(true)}
                         >
                           <svg
                             className="w-4 h-4 mr-2"

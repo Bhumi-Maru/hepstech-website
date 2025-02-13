@@ -4,28 +4,34 @@ export default function Coupons_Menu({
   setIsCouponMenuOpen,
   isCouponMenuOpen,
 }) {
-  console.log("isCouponMenuOpen checkout", isCouponMenuOpen);
   return (
     <>
       {/* <!-- START COUPONS MENU --> */}
       <aside
-        class="max-w-md drawer drawer-right"
+        className={`max-w-md drawer drawer-right ${
+          isCouponMenuOpen ? "active" : ""
+        }`}
         id="couponsMenu"
         aria-hidden={!isCouponMenuOpen}
         tabindex="-1"
+        style={{
+          transform: isCouponMenuOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.3s ease-in-out",
+        }}
       >
-        <div class="px-4 py-5 sm:px-6 drawer-header">
-          <h5 class="mr-12 text-lg font-bold truncate">Coupon Codes</h5>
+        <div className="px-4 py-5 sm:px-6 drawer-header">
+          <h5 className="mr-12 text-lg font-bold truncate">Coupon Codes</h5>
 
           {/* <!-- close button --> */}
           <button
             type="button"
-            class="btn-close"
+            className="btn-close"
             data-dismiss="drawer"
             aria-label="Close"
+            onClick={() => setIsCouponMenuOpen(false)}
           >
             <svg
-              class="w-6 h-6"
+              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -40,10 +46,10 @@ export default function Coupons_Menu({
           </button>
         </div>
 
-        <div class="px-4 py-5 sm:p-6 drawer-body">
+        <div className="px-4 py-5 sm:p-6 drawer-body">
           <form action="#">
-            <div class="flex items-center space-x-4">
-              <div class="flex-1">
+            <div className="flex items-center space-x-4">
+              <div className="flex-1">
                 <label for=""></label>
                 <div>
                   <input
@@ -51,125 +57,64 @@ export default function Coupons_Menu({
                     name=""
                     id=""
                     placeholder="Enter Coupon Code"
-                    class=""
+                    className=""
                   />
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </div>
           </form>
 
-          <p class="mt-6 font-medium">Available Coupon Codes</p>
+          <p className="mt-6 font-medium">Available Coupon Codes</p>
 
-          <div class="mt-3 space-y-4">
-            <div class="coupon">
-              <div class="left-part">
-                <div>
-                  <p class="font-medium leading-tight line-clamp-3">
-                    Get flat INR 30/- cashback using Amazong Pay
-                  </p>
-                  <p class="mt-2 text-sm text-gray-700">
-                    Minimum Order: <span class="font-semibold">$1,000</span>
-                  </p>
-                  <p class="mt-1 text-sm text-gray-700">
-                    Expires on: <span class="font-semibold">10 Feb 2020</span>
-                  </p>
+          <div className="mt-3 space-y-4">
+            {/* Coupon Item Example */}
+            {Array(3)
+              .fill()
+              .map((_, index) => (
+                <div key={index} className="coupon">
+                  <div className="left-part">
+                    <div>
+                      <p className="font-medium leading-tight line-clamp-3">
+                        Get flat INR 30/- cashback using Amazon Pay
+                      </p>
+                      <p className="mt-2 text-sm text-gray-700">
+                        Minimum Order:{" "}
+                        <span className="font-semibold">$1,000</span>
+                      </p>
+                      <p className="mt-1 text-sm text-gray-700">
+                        Expires on:{" "}
+                        <span className="font-semibold">10 Feb 2020</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="right-part">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 text-skin-primary-light">
+                        Coupon Code
+                      </p>
+                      <p className="mt-2 mb-3 text-xl font-medium tracking-wide uppercase">
+                        M3D1C4lC
+                      </p>
+                      <a
+                        href="#"
+                        title=""
+                        className="btn btn-sm btn-primary-outline"
+                        role="button"
+                      >
+                        Apply Code
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="right-part">
-                <div>
-                  <p class="text-sm font-medium text-gray-600 text-skin-primary-ligt">
-                    Coupon Code
-                  </p>
-                  <p class="mt-2 mb-3 text-xl font-medium tracking-wide uppercase">
-                    M3D1C4lC
-                  </p>
-                  <a
-                    href="#"
-                    title=""
-                    class="btn btn-sm btn-primary-outline"
-                    role="button"
-                  >
-                    Apply Code
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="coupon">
-              <div class="left-part">
-                <div>
-                  <p class="font-medium leading-tight line-clamp-3">
-                    Get flat INR 30/- cashback using Amazong Pay
-                  </p>
-                  <p class="mt-2 text-sm text-gray-700">
-                    Minimum Order: <span class="font-semibold">$1,000</span>
-                  </p>
-                  <p class="mt-1 text-sm text-gray-700">
-                    Expires on: <span class="font-semibold">10 Feb 2020</span>
-                  </p>
-                </div>
-              </div>
-              <div class="right-part">
-                <div>
-                  <p class="text-sm font-medium text-gray-600 text-skin-primary-ligt">
-                    Coupon Code
-                  </p>
-                  <p class="mt-2 mb-3 text-xl font-medium tracking-wide uppercase">
-                    M3D1C4lC
-                  </p>
-                  <a
-                    href="#"
-                    title=""
-                    class="btn btn-sm btn-primary-outline"
-                    role="button"
-                  >
-                    Apply Code
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="coupon">
-              <div class="left-part">
-                <div>
-                  <p class="font-medium leading-tight line-clamp-3">
-                    Get flat INR 30/- cashback using Amazong Pay
-                  </p>
-                  <p class="mt-2 text-sm text-gray-700">
-                    Minimum Order: <span class="font-semibold">$1,000</span>
-                  </p>
-                  <p class="mt-1 text-sm text-gray-700">
-                    Expires on: <span class="font-semibold">10 Feb 2020</span>
-                  </p>
-                </div>
-              </div>
-              <div class="right-part">
-                <div>
-                  <p class="text-sm font-medium text-gray-600 text-skin-primary-ligt">
-                    Coupon Code
-                  </p>
-                  <p class="mt-2 mb-3 text-xl font-medium tracking-wide uppercase">
-                    M3D1C4lC
-                  </p>
-                  <a
-                    href="#"
-                    title=""
-                    class="btn btn-sm btn-primary-outline"
-                    role="button"
-                  >
-                    Apply Code
-                  </a>
-                </div>
-              </div>
-            </div>
+              ))}
           </div>
         </div>
       </aside>
       {/* <!-- END COUPONS MENU --> */}
-      <div class="drawer-overlay show" tabindex="-1"></div>
+      <div className="drawer-overlay show" tabindex="-1"></div>
     </>
   );
 }

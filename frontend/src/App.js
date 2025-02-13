@@ -44,15 +44,27 @@ import Thank_You from "./components/Thank You/Thank_You";
 import Cancel_Order_Modal from "./components/Profile/My Orders/Cancel_Order_Modal";
 import Product_Details from "./components/Product Details/Product_Details";
 import Customer_Reviews from "./components/Product Details/Customer_Reviews/Customer_Reviews";
+import Mobile_Navigation_Modal from "./components/Navbar/Mobile_Navigation_Modal";
+import AddToCart_Quick_View_Modal from "./components/AddToCart_Quick_View_Modal";
 
 export default function App() {
+  // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  // CANCEL ORDER MODAL
   const [isCancelOrderModalOpen, setIsCancelOrderModalOpen] = useState(false);
+  // MOBILE NAVIGATION MENU MODAL
+  const [isMobileNavigationModal, setIsMobileNavigationModal] = useState(false);
+  // ADD TO CART QUICK VIEW MODAL
+  const [isAddToCartModal, setIsAddToCartModal] = useState(false);
 
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        <Navbar setLoginModalOpen={setLoginModalOpen} />
+        <Navbar
+          setLoginModalOpen={setLoginModalOpen}
+          setIsMobileNavigationModal={setIsMobileNavigationModal}
+        />
+        {/* login popup modal */}
         {isLoginModalOpen && (
           <>
             <Login setLoginModalOpen={setLoginModalOpen} />
@@ -68,7 +80,7 @@ export default function App() {
                   <Slider />
                   <CategorySlider />
                   <HorizontalBanner1 />
-                  <FlashSaleSlider />
+                  <FlashSaleSlider setIsAddToCartModal={setIsAddToCartModal} />
                   <HorizontalBanners3Items />
                   <CategorySlider5Items />
                   <PopularProductsSlider01 />
@@ -206,6 +218,20 @@ export default function App() {
             />
           )}
         </main>
+        {/* MOBILE NAVIGATION MODAL [SMALL SCREEN MENU BTN] */}
+        {isMobileNavigationModal && (
+          <>
+            <Mobile_Navigation_Modal
+              setIsMobileNavigationModal={setIsMobileNavigationModal}
+            />
+          </>
+        )}
+
+        {isAddToCartModal && (
+          <>
+            <AddToCart_Quick_View_Modal />
+          </>
+        )}
         <Information />
         <Footer />
       </div>

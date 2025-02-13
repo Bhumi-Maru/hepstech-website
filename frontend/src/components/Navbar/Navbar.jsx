@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
-export default function Navbar({ setLoginModalOpen }) {
+export default function Navbar({
+  setLoginModalOpen,
+  setIsMobileNavigationModal,
+}) {
   const [hoveredMenu, setHoveredMenu] = useState(null);
   // State to manage the dropdown visibility
   const [isOpen, setIsOpen] = useState({
@@ -57,6 +60,7 @@ export default function Navbar({ setLoginModalOpen }) {
               className="p-1 xl:hidden"
               data-toggle="drawer"
               data-target="#mobileNavigation"
+              onClick={() => setIsMobileNavigationModal(true)}
             >
               <svg
                 className="w-6 h-6"
