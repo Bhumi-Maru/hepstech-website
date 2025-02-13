@@ -42,6 +42,8 @@ import Error from "./components/Error/Error";
 import EmptyShoppingCart from "./components/Empty Shopping Cart/EmptyShoppingCart";
 import Thank_You from "./components/Thank You/Thank_You";
 import Cancel_Order_Modal from "./components/Profile/My Orders/Cancel_Order_Modal";
+import Product_Details from "./components/Product Details/Product_Details";
+import Customer_Reviews from "./components/Product Details/Customer_Reviews/Customer_Reviews";
 
 export default function App() {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -158,6 +160,27 @@ export default function App() {
                     <MyAccount />
                   </div>
                 </section>
+              }
+            />
+
+            {/* PRODUCT DETAILS */}
+            <Route
+              path="/product-details"
+              element={
+                <>
+                  <section className="pt-10 pb-20 bg-white">
+                    <div className="container">
+                      <Product_Details />
+                    </div>
+                  </section>
+
+                  {/* CUSTOMER REVIEWS */}
+                  <section class="py-16 border-t border-gray-200">
+                    <div class="container">
+                      <Customer_Reviews />
+                    </div>
+                  </section>
+                </>
               }
             />
 

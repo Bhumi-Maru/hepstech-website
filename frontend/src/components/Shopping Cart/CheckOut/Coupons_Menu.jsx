@@ -169,6 +169,7 @@ export default function Coupons_Menu({
         </div>
       </aside>
       {/* <!-- END COUPONS MENU --> */}
+      <div class="drawer-overlay show" tabindex="-1"></div>
     </>
   );
 }
