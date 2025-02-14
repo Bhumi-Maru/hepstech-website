@@ -46,16 +46,22 @@ import Product_Details from "./components/Product Details/Product_Details";
 import Customer_Reviews from "./components/Product Details/Customer_Reviews/Customer_Reviews";
 import Mobile_Navigation_Modal from "./components/Navbar/Mobile_Navigation_Modal";
 import AddToCart_Quick_View_Modal from "./components/AddToCart_Quick_View_Modal";
+import SignUp from "./components/Profile/Authentication/SignUp";
+import SignupOtpConfirmationForm from "./components/Profile/Authentication/SignupOtpConfirmationForm";
 
 export default function App() {
   // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  // SIGNUP MODAL
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   // CANCEL ORDER MODAL
   const [isCancelOrderModalOpen, setIsCancelOrderModalOpen] = useState(false);
   // MOBILE NAVIGATION MENU MODAL
   const [isMobileNavigationModal, setIsMobileNavigationModal] = useState(false);
   // ADD TO CART QUICK VIEW MODAL
   const [isAddToCartModal, setIsAddToCartModal] = useState(false);
+  // State to control OTP modal visibility
+  const [isOtpModalOpen, setOtpModalOpen] = useState(false);
 
   return (
     <BrowserRouter>
@@ -67,7 +73,32 @@ export default function App() {
         {/* login popup modal */}
         {isLoginModalOpen && (
           <>
-            <Login setLoginModalOpen={setLoginModalOpen} />
+            <Login
+              setLoginModalOpen={setLoginModalOpen}
+              setSignupModalOpen={setSignupModalOpen}
+              isLoginModalOpen={isLoginModalOpen}
+            />
+          </>
+        )}
+
+        {/* SIGNUP POPUP MODAL */}
+        {isSignupModalOpen && (
+          <>
+            {" "}
+            <SignUp
+              setLoginModalOpen={setLoginModalOpen}
+              setSignupModalOpen={setSignupModalOpen}
+              setOtpModalOpen={setOtpModalOpen}
+            />
+          </>
+        )}
+        {/* verify otp by mobile number from signup form */}
+        {isOtpModalOpen && (
+          <>
+            <SignupOtpConfirmationForm
+              isOtpModalOpen={isOtpModalOpen}
+              closeOtpModal={() => setOtpModalOpen(false)}
+            />
           </>
         )}
         <main className="flex-1">
@@ -123,6 +154,11 @@ export default function App() {
 
             {/* LOGIN */}
             {/* <Route path="/login" element={<Login />} /> */}
+            {/* SIGNUP */}
+            {/* <Route
+              path="/signup"
+              element={<SignUp setLoginModalOpen={setLoginModalOpen} />}
+            /> */}
 
             {/* WISHLIST */}
             <Route

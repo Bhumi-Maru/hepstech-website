@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../context/GlobalContext";
 
 export default function AddToCart_Quick_View_Modal({
   isAddToCartModal,
   setIsAddToCartModal,
 }) {
+  const { quantity, increment, decrement } = useGlobalContext();
   return (
     <>
       <div
@@ -130,6 +132,7 @@ export default function AddToCart_Quick_View_Modal({
                       <button
                         type="button"
                         className="absolute top-0 right-0 px-1 py-[2.5px] border-l border-gray-300 rounded-none focus:outline-none addQty hover:bg-gray-100"
+                        onClick={() => increment()}
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -151,7 +154,7 @@ export default function AddToCart_Quick_View_Modal({
                         type="text"
                         name=""
                         id="productQty"
-                        value="1"
+                        value={quantity}
                         min="1"
                         max="100"
                         className="!w-24 py-2 sm:py-2.5 !border-none font-semibold rounded-none"
@@ -160,6 +163,7 @@ export default function AddToCart_Quick_View_Modal({
                       <button
                         type="button"
                         className="absolute bottom-0 right-0 px-1 py-[2.5px] border-t border-l border-gray-300 rounded-none focus:outline-none subQty hover:bg-gray-100"
+                        onClick={() => decrement()}
                       >
                         <svg
                           className="w-3.5 h-3.5"

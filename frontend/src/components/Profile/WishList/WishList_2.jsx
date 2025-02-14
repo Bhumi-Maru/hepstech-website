@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
 export default function WishList_2({ setIsAddToCartModal }) {
   const [wishlist, setWishlist] = useState([
@@ -20,6 +21,7 @@ export default function WishList_2({ setIsAddToCartModal }) {
       rating: 4,
     },
   ]);
+
   return (
     <>
       <div class="md:col-span-3">
@@ -71,7 +73,7 @@ export default function WishList_2({ setIsAddToCartModal }) {
                     <img
                       className="object-cover w-full h-full"
                       src={product.imageUrl}
-                      alt={product.title}
+                      alt=""
                       loading="lazy"
                     />
                   </div>
@@ -140,7 +142,6 @@ export default function WishList_2({ setIsAddToCartModal }) {
                       <button
                         type="button"
                         className="btn btn-sm btn-white !py-1.5 btn-delete"
-                        onClick={() => removeItem(product.id)}
                       >
                         <svg
                           className="w-5 h-5"
