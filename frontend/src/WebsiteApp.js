@@ -50,7 +50,7 @@ import ForgotPasswordModal from "./Website/components/Profile/Authentication/For
 import LoginOtpConfirmationForm from "./Website/components/Profile/Authentication/LoginOtpConfirmationForm";
 import SetPassword_From_Login from "./Website/components/Profile/Authentication/SetPassword_From_Login";
 
-export default function App() {
+export default function WebsiteApp() {
   // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   // SIGNUP MODAL
