@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Login({
   setLoginModalOpen,
   setSignupModalOpen,
-  isLoginModalOpen,
+  setIsForgotPasswordModalOpen,
 }) {
   // HIDE AND SHOW PASSWORD
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +12,11 @@ export default function Login({
   const handleAuthenticationToggleModal = () => {
     setLoginModalOpen(false); // Close the login modal
     setSignupModalOpen(true); // Open the signup modal
+  };
+
+  const haandleForgotPasswordModal = () => {
+    setIsForgotPasswordModalOpen(true);
+    setLoginModalOpen(false);
   };
 
   return (
@@ -189,12 +194,12 @@ export default function Login({
                     <div className="flex items-center justify-between">
                       <label for="password"> Enter Password </label>
 
-                      <a
-                        href="#"
+                      <Link
                         className="text-sm font-medium text-skin-primary-hover hover:text-skin-primary-hover hover:underline"
+                        onClick={haandleForgotPasswordModal}
                       >
                         Forgot your password?
-                      </a>
+                      </Link>
                     </div>
                     <div className="mt-1">
                       <div
@@ -330,51 +335,6 @@ export default function Login({
                     &nbsp; Create an account &nbsp;
                   </Link>
                 </p>
-              </div>
-
-              {/* <!-- REQUEST OTP FORM --> */}
-              <div className="hidden">
-                <p className="text-center">
-                  Please enter the OTP sent to
-                  <br />
-                  <span className="font-medium">+91 98765 43210</span>
-                </p>
-                <p className="mt-2 text-center">
-                  <a
-                    href="#"
-                    title=""
-                    className="font-medium text-skin-primary-hover hover:text-skin-primary-hover hover:underline"
-                  >
-                    Change Number
-                  </a>
-                </p>
-
-                <form className="mt-6 space-y-4" action="#" method="POST">
-                  <div>
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      className="text-center"
-                      maxlength="6"
-                    />
-                  </div>
-
-                  <div>
-                    <button className="w-full btn btn-primary">Verify</button>
-                  </div>
-
-                  <p className="text-sm text-center">
-                    Not received your code?
-                    <a
-                      href="#"
-                      title=""
-                      className="font-medium text-skin-primary-hover hover:text-skin-primary-hover hover:underline"
-                    >
-                      Resend code
-                    </a>
-                  </p>
-                </form>
               </div>
             </div>
           </div>

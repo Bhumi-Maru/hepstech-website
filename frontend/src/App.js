@@ -1,34 +1,32 @@
 import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Home Page/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import Testimonials from "./components/Testimonials/Testimonials";
-import Information from "./components/Testimonials/Information";
-import Slider from "./components/Slider/Slider";
-import CategorySlider from "./components/category slider - 8 Items/CategorySlider";
-import HorizontalBanner1 from "./components/Horizontal Banner/HorizontalBanner1";
-import FlashSaleSlider from "./components/Flash Sale Slider/FlashSaleSlider";
-import HorizontalBanners3Items from "./components/Horizontal Banners - 3 Items/HorizontalBanners3Items";
-import CategorySlider5Items from "./components/Category Slider - 5 Items/CategorySlider5Items";
-import PopularProductsSlider01 from "./components/Popular Products Slider 01/PopularProductsSlider01";
-import HorizontalBannersLarge2Items from "./components/Horizontal Banners - Large - 2 Items/HorizontalBannersLarge2Items";
-import PopularProductsSlider02_4Items from "./components/Popular Products Slider 02 - 4 Items/PopularProductsSlider02_4Items";
-import HorizontalBanners_2Items from "./components/Horizontal Banners - 2 Items/HorizontalBanners_2Items";
-import BestSellingProductsSlider01_6Items from "./components/Best Selling Products Slider 01 - 6 Items/BestSellingProductsSlider01_6Items";
-import VeticalBanners_4Items from "./components/Vetical Banners - 4 Items/VeticalBanners_4Items";
-import HorizontalBanner_Large_1Item from "./components/Horizontal Banner - Large - 1 Item/HorizontalBanner_Large_1Item";
-import BestSellingProductsSlider02_6Items from "./components/Best Selling Products Slider 02 - 6 Items/BestSellingProductsSlider02_6Items";
-import HorizontalBannerSmall_1Item from "./components/Horizontal Banner - Small - 1 Item/HorizontalBannerSmall_1Item";
-import VerticalBanners_4Items from "./components/Vertical Banners - 4 Items/VerticalBanners_4Items";
-import BestSellingProductsSlider_03_6Items from "./components/Best Selling Products Slider 03 - 6 Items/BestSellingProductsSlider_03_6Items";
-import Horizontal_Banner_Large_1_Item from "./components/Horizontal_Banner_Large_1_Item/Horizontal_Banner_Large_1_Item";
-import BestSellingProductsSlider_04_6_Items from "./components/Best Selling Products Slider 04 - 6 Items/BestSellingProductsSlider_04_6_Items";
-import Vertical_Banners_4_Items from "./components/Vertical_Banners_4_Items/Vertical_Banners_4_Items";
-import Horizontal_Banner_Small_1_Item from "./components/Horizontal_Banner_Small_1_Item/Horizontal_Banner_Small_1_Item";
-import Shop_Section_1 from "./components/shop/Shop_Section_1";
+import Testimonials from "./components/Home Page/Testimonials/Testimonials";
+import Information from "./components/Home Page/Testimonials/Information";
+import Slider from "./components/Home Page/Slider/Slider";
+import CategorySlider from "./components/Home Page/category slider - 8 Items/CategorySlider";
+import HorizontalBanner1 from "./components/Home Page/Horizontal Banner/HorizontalBanner1";
+import FlashSaleSlider from "./components/Home Page/Flash Sale Slider/FlashSaleSlider";
+import HorizontalBanners3Items from "./components/Home Page/Horizontal Banners - 3 Items/HorizontalBanners3Items";
+import CategorySlider5Items from "./components/Home Page/Category Slider - 5 Items/CategorySlider5Items";
+import PopularProductsSlider01 from "./components/Home Page/Popular Products Slider 01/PopularProductsSlider01";
+import HorizontalBannersLarge2Items from "./components/Home Page/Horizontal Banners - Large - 2 Items/HorizontalBannersLarge2Items";
+import PopularProductsSlider02_4Items from "./components/Home Page/Popular Products Slider 02 - 4 Items/PopularProductsSlider02_4Items";
+import HorizontalBanners_2Items from "./components/Home Page/Horizontal Banners - 2 Items/HorizontalBanners_2Items";
+import BestSellingProductsSlider01_6Items from "./components/Home Page/Best Selling Products Slider 01 - 6 Items/BestSellingProductsSlider01_6Items";
+import VeticalBanners_4Items from "./components/Home Page/Vetical Banners - 4 Items/VeticalBanners_4Items";
+import HorizontalBanner_Large_1Item from "./components/Home Page/Horizontal Banner - Large - 1 Item/HorizontalBanner_Large_1Item";
+import BestSellingProductsSlider02_6Items from "./components/Home Page/Best Selling Products Slider 02 - 6 Items/BestSellingProductsSlider02_6Items";
+import HorizontalBannerSmall_1Item from "./components/Home Page/Horizontal Banner - Small - 1 Item/HorizontalBannerSmall_1Item";
+import VerticalBanners_4Items from "./components/Home Page/Vertical Banners - 4 Items/VerticalBanners_4Items";
+import BestSellingProductsSlider_03_6Items from "./components/Home Page/Best Selling Products Slider 03 - 6 Items/BestSellingProductsSlider_03_6Items";
+import Horizontal_Banner_Large_1_Item from "./components/Home Page/Horizontal_Banner_Large_1_Item/Horizontal_Banner_Large_1_Item";
+import BestSellingProductsSlider_04_6_Items from "./components/Home Page/Best Selling Products Slider 04 - 6 Items/BestSellingProductsSlider_04_6_Items";
+import Vertical_Banners_4_Items from "./components/Home Page/Vertical_Banners_4_Items/Vertical_Banners_4_Items";
+import Horizontal_Banner_Small_1_Item from "./components/Home Page/Horizontal_Banner_Small_1_Item/Horizontal_Banner_Small_1_Item";
 import ShopLayout from "./components/shop/ShopLayout";
-import Shop_Section_2 from "./components/shop/Shop_Section_2";
 import Login from "./components/Profile/Authentication/Login";
 import WishList from "./components/Profile/WishList/WishList";
 import MyAddresses from "./components/Profile/My Addresses/MyAddresses";
@@ -44,10 +42,13 @@ import Thank_You from "./components/Thank You/Thank_You";
 import Cancel_Order_Modal from "./components/Profile/My Orders/Cancel_Order_Modal";
 import Product_Details from "./components/Product Details/Product_Details";
 import Customer_Reviews from "./components/Product Details/Customer_Reviews/Customer_Reviews";
-import Mobile_Navigation_Modal from "./components/Navbar/Mobile_Navigation_Modal";
+import Mobile_Navigation_Modal from "./components/Home Page/Navbar/Mobile_Navigation_Modal";
 import AddToCart_Quick_View_Modal from "./components/AddToCart_Quick_View_Modal";
 import SignUp from "./components/Profile/Authentication/SignUp";
 import SignupOtpConfirmationForm from "./components/Profile/Authentication/SignupOtpConfirmationForm";
+import ForgotPasswordModal from "./components/Profile/Authentication/ForgotPasswordModal";
+import LoginOtpConfirmationForm from "./components/Profile/Authentication/LoginOtpConfirmationForm";
+import SetPassword_From_Login from "./components/Profile/Authentication/SetPassword_From_Login";
 
 export default function App() {
   // LOGIN MODAL
@@ -60,8 +61,15 @@ export default function App() {
   const [isMobileNavigationModal, setIsMobileNavigationModal] = useState(false);
   // ADD TO CART QUICK VIEW MODAL
   const [isAddToCartModal, setIsAddToCartModal] = useState(false);
-  // State to control OTP modal visibility
+  // State to control OTP modal visibility from signup form
   const [isOtpModalOpen, setOtpModalOpen] = useState(false);
+  // Forgot Password modal
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState(false);
+  // State to control OTP modal visibility from Login form
+  const [isOtpFromLogin, setIsOtpFromLogin] = useState(false);
+  //set password in login form for forgot password
+  const [isSetPassword, setIsSetPassword] = useState(false);
 
   return (
     <BrowserRouter>
@@ -77,6 +85,7 @@ export default function App() {
               setLoginModalOpen={setLoginModalOpen}
               setSignupModalOpen={setSignupModalOpen}
               isLoginModalOpen={isLoginModalOpen}
+              setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
             />
           </>
         )}
@@ -101,6 +110,36 @@ export default function App() {
             />
           </>
         )}
+
+        {/* forgot password modal */}
+        {isForgotPasswordModalOpen && (
+          <>
+            <ForgotPasswordModal
+              setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+              isForgotPasswordModalOpen={isForgotPasswordModalOpen}
+              setIsOtpFromLogin={setIsOtpFromLogin}
+            />
+          </>
+        )}
+
+        {/* verify otp by mobile number from Login form */}
+        {isOtpFromLogin && (
+          <>
+            <LoginOtpConfirmationForm
+              isOtpFromLogin={isOtpFromLogin}
+              closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
+              setIsSetPassword={setIsSetPassword}
+            />
+          </>
+        )}
+
+        {/* set password [old password and || new password || confirm password] */}
+        {isSetPassword && (
+          <>
+            <SetPassword_From_Login setIsSetPassword={setIsSetPassword} />
+          </>
+        )}
+
         <main className="flex-1">
           <Routes>
             <Route

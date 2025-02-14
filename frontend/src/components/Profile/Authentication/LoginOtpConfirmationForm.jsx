@@ -1,14 +1,17 @@
 import React from "react";
 
-export default function SignupOtpConfirmationForm({
-  isOtpModalOpen,
-  closeOtpModal,
+export default function LoginOtpConfirmationForm({
+  closeOtpModalFromLogin,
+  setIsSetPassword,
 }) {
-  if (!isOtpModalOpen) return null;
+  const handleOtpLoginModal = () => {
+    setIsSetPassword(true);
+    closeOtpModalFromLogin();
+  };
 
   return (
     <div
-      className={`modal ${isOtpModalOpen ? "active" : ""}`}
+      className="modal active"
       role="dialog"
       aria-hidden="false"
       tabIndex="-1"
@@ -21,7 +24,7 @@ export default function SignupOtpConfirmationForm({
             className="btn-close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={closeOtpModal}
+            onClick={closeOtpModalFromLogin}
           >
             <span className="sr-only">Close</span>
             <svg
@@ -55,7 +58,7 @@ export default function SignupOtpConfirmationForm({
                     type="text"
                     name="otp"
                     id="otp"
-                    required
+                    // required
                     className="input-field"
                     placeholder="Enter OTP"
                   />
@@ -66,7 +69,7 @@ export default function SignupOtpConfirmationForm({
                 <button
                   type="submit"
                   className="w-full btn btn-primary mt-4"
-                  onClick={closeOtpModal}
+                  onClick={handleOtpLoginModal}
                 >
                   Verify OTP
                 </button>

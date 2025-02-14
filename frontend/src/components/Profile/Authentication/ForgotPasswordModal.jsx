@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function SignupOtpConfirmationForm({
-  isOtpModalOpen,
-  closeOtpModal,
+export default function ForgotPasswordModal({
+  isForgotPasswordModalOpen,
+  setIsForgotPasswordModalOpen,
+  setIsOtpFromLogin,
 }) {
-  if (!isOtpModalOpen) return null;
+  const [emailOrMobile, setEmailOrMobile] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle the form submission logic here (e.g., sending an OTP to the provided email/mobile)
+    // alert(`Verification link sent to: ${emailOrMobile}`);
+    setIsForgotPasswordModalOpen(false); // Close modal after submission
+  };
 
   return (
     <div
-      className={`modal ${isOtpModalOpen ? "active" : ""}`}
+      className={`modal ${isForgotPasswordModalOpen ? "active" : ""}`}
       role="dialog"
       aria-hidden="false"
       tabIndex="-1"
@@ -21,7 +29,7 @@ export default function SignupOtpConfirmationForm({
             className="btn-close"
             data-dismiss="modal"
             aria-label="Close"
-            onClick={closeOtpModal}
+            onClick={() => setIsForgotPasswordModalOpen(false)}
           >
             <span className="sr-only">Close</span>
             <svg
@@ -42,22 +50,30 @@ export default function SignupOtpConfirmationForm({
           </button>
           <div className="px-4 py-8 modal-body sm:px-10">
             <h2 className="text-2xl font-bold text-center text-gray-900">
-              OTP Verification
+              Forgot Password
             </h2>
             <p className="text-center text-gray-600 mt-2">
-              Please enter the OTP sent to your mobile number.
+              Please enter your mobile number or email address to receive a
+              verification link.
             </p>
-            <form className="mt-6 space-y-4">
+            <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="otp">Enter OTP</label>
+                <label
+                  htmlFor="emailOrMobile"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Enter Email or Mobile Number
+                </label>
                 <div className="mt-1">
                   <input
                     type="text"
-                    name="otp"
-                    id="otp"
-                    required
+                    id="emailOrMobile"
+                    name="emailOrMobile"
+                    value={emailOrMobile}
+                    onChange={(e) => setEmailOrMobile(e.target.value)}
+                    // required
                     className="input-field"
-                    placeholder="Enter OTP"
+                    placeholder="Enter email or mobile number"
                   />
                 </div>
               </div>
@@ -66,9 +82,9 @@ export default function SignupOtpConfirmationForm({
                 <button
                   type="submit"
                   className="w-full btn btn-primary mt-4"
-                  onClick={closeOtpModal}
+                  onClick={() => setIsOtpFromLogin(true)}
                 >
-                  Verify OTP
+                  Send Verification Link
                 </button>
               </div>
             </form>
