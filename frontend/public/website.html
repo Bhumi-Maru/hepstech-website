@@ -55,44 +55,10 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- END WEBSITE CDN -->
-    <!-- ------------------------------------------- -->
-
-    <!-- START ADMIN CDN -->
-    <script>
-      const currentPath = window.location.pathname;
-
-      // Remove any previously added CSS files
-      function removeOldCSS(href) {
-        document.querySelectorAll("link[rel='stylesheet']").forEach((link) => {
-          if (link.href.includes(href)) {
-            link.remove();
-          }
-        });
-      }
-
-      if (currentPath.startsWith("/admin")) {
-        removeOldCSS("website_assets/css/main.css"); // Remove website CSS if admin
-        const adminCssLink = document.createElement("link");
-        adminCssLink.rel = "stylesheet";
-        adminCssLink.href = "/admin_assets/css/main.css";
-        document.head.appendChild(adminCssLink);
-      } else {
-        removeOldCSS("admin_assets/css/main.css"); // Remove admin CSS if website
-        const websiteCssLink = document.createElement("link");
-        websiteCssLink.rel = "stylesheet";
-        websiteCssLink.href = "/website_assets/css/main.css";
-        document.head.appendChild(websiteCssLink);
-      }
-    </script>
-
-    <!-- END ADMIN CDN -->
-
-    <title>Hepstech Website</title>
+    <title>Document</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="website_root"></div>
-    <div id="admin_panel_root"></div>
 
     <!-- START WEBSITE CDN -->
 
@@ -101,23 +67,5 @@
 
     <!-- PLUGINS -->
     <script src="%PUBLIC_URL%/website_assets/plugins/swiper/swiper-bundle.min.js"></script>
-
-    <!-- END WEBSITE CDN -->
-    <!-- ------------------------------------------------ -->
-    <!-- START ADMIN CDN -->
-    <!-- JQUERY -->
-    <script src="%PUBLIC_URL%/admin_assets/plugins/jquery-3.4.1.min.js"></script>
-
-    <!-- PLUGINS -->
-    <script src="%PUBLIC_URL%/admin_assets/plugins/listjs/list.min.js"></script>
-    <script src="%PUBLIC_URL%/admin_assets/plugins/moment.min.js"></script>
-    <script src="%PUBLIC_URL%/admin_assets/plugins/daterangepicker/daterangepicker.min.js"></script>
-
-    <!-- CUSTOM SCRIPT -->
-    <script src="%PUBLIC_URL%/admin_assets/js/main.js"></script>
-    <!-- END ADMIN CDN -->
-
-    <!-- index.js -->
-    <script src="index.js"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./Admin Panel/Sidebar/Sidebar";
 import Navbar from "./Admin Panel/Navbar/Navbar";
 import Dashboard from "./Admin Panel/Dashboard/Dashboard";
@@ -13,95 +13,64 @@ import Coupon_Codes from "./Admin Panel/Coupon Codes/Coupon_Codes";
 import Shipping from "./Admin Panel/Shipping/Shipping";
 import Time_Slots from "./Admin Panel/Time Slots/Time_Slots";
 import Store_Settings from "./Admin Panel/Store Settings/Store_Settings";
+import Website_Setup from "./Admin Panel/Website Setup/Website_Setup";
 
 export default function Admin_Panel_App() {
   return (
     <div className="min-h-screen overflow-x-hidden font-sans antialiased text-gray-900 bg-gray-50 selection:bg-skin-primary selection:text-white">
-      {/* ------------------------------------------------------------ */}
       {/* <!-- START WRAPPER --> */}
-      <div class="flex h-screen overflow-hidden">
-        <BrowserRouter>
-          {/* ------------------------------------------------------------ */}
-          {/* START SIDEBAR */}
+      <div className="flex h-screen overflow-hidden">
+        <Router basename="/admin">
+          {/* SIDEBAR */}
           <Sidebar />
-          {/* END SIDEBAR */}
-          {/* ------------------------------------------------------------ */}
+          {/* MAIN CONTENT */}
           <main className="flex flex-col flex-1 w-0 bg-gray-50">
-            {/* ------------------------------------------------------------ */}
-            {/* START NAVBAR */}
+            {/* NAVBAR */}
             <Navbar />
-            {/* END NAVBAR */}
-            {/* ------------------------------------------------------------ */}
-            {/* START ROUTES */}
+            {/* ROUTES */}
             <section className="relative flex-1 overflow-x-hidden overflow-y-auto focus:outline-none">
               <div className="flex flex-col justify-between h-full">
                 <div className="flex-1 py-6">
                   <Routes>
-                    {/* START DASHBOARD */}
-                    <Route path="/admin/dashboard" element={<Dashboard />} />
-                    {/* END DASHBOARD */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START ALL MEDIA */}
-                    <Route path="/admin/all-media" element={<All_Media />} />
-                    {/* END ALL MEDIA */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START MAIN CATEGORIES */}
+                    {/* DASHBOARD */}
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    {/* ALL MEDIA */}
+                    <Route path="/all-media" element={<All_Media />} />
+                    {/* MAIN CATEGORIES */}
                     <Route
-                      path="/admin/categories/main-categories"
+                      path="/categories/main-categories"
                       element={<MainCategories />}
                     />
-                    {/* END MAIN CATEGOROIES */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START SUB CATEGORIES */}
+                    {/* SUB CATEGORIES */}
                     <Route
-                      path="/admin/categories/sub-categories"
+                      path="/categories/sub-categories"
                       element={<SubCategories />}
                     />
-                    {/* END SUB CATEGOROIES */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START ORDERS */}
-                    <Route path="/admin/orders" element={<Orders />} />
-                    {/* END ORDERS */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START CUSTOMERS PAGE */}
-                    <Route path="/admin/customers" element={<Customers />} />
-                    {/* END CUSTOMERS PAGE */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START COUPON-CODES PAGE */}
+                    {/* ORDERS */}
+                    <Route path="/orders" element={<Orders />} />
+                    {/* CUSTOMERS */}
+                    <Route path="/customers" element={<Customers />} />
+                    {/* COUPON CODES */}
+                    <Route path="/coupon-codes" element={<Coupon_Codes />} />
+                    {/* SHIPPING */}
+                    <Route path="/shipping" element={<Shipping />} />
+                    {/* TIME SLOTS */}
+                    <Route path="/time-slots" element={<Time_Slots />} />
+                    {/* WEBSITE SETUP */}
                     <Route
-                      path="/admin/coupon-codes"
-                      element={<Coupon_Codes />}
+                      path="/website-setup/*"
+                      element={<Website_Setup />}
                     />
-                    {/* END COUPON-CODES PAGE */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START SHIPPING PAGE */}
-                    <Route path="/admin/shipping" element={<Shipping />} />
-                    {/* END SHIPPING PAGE */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START TIME-SLOTS PAGE */}
-                    <Route path="/admin/time-slots" element={<Time_Slots />} />
-                    {/* END TIME-SLOTS PAGE */}
-                    {/* ------------------------------------------------------------ */}
-                    {/* START STORE SETTING PAGE */}
-                    <Route
-                      path="/admin/store-setting"
-                      element={<Store_Settings />}
-                    />
-                    {/* END STORE SETTING PAGE */}
+                    {/* STORE SETTINGS */}
+                    <Route path="/store-setting" element={<Store_Settings />} />
                   </Routes>
                 </div>
-
-                {/* ------------------------------------------------------------ */}
-                {/* START FOOTER */}
+                {/* FOOTER */}
                 <Footer />
-                {/* END FOOTER */}
-                {/* ------------------------------------------------------------ */}
               </div>
             </section>
-            {/* END ROUTES */}
-            {/* ------------------------------------------------------------ */}
           </main>
-        </BrowserRouter>
+        </Router>
       </div>
       {/* <!-- END WRAPPER --> */}
     </div>

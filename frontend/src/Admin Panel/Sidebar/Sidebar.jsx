@@ -32,11 +32,7 @@ export default function Sidebar() {
             <div className="flex flex-col justify-between min-h-full">
               <div className="flex flex-col flex-grow pr-4 mt-4">
                 <div className="flex-1 space-y-1">
-                  <Link
-                    to="/admin/dashboard"
-                    title="Dashboard"
-                    className="nav-link"
-                  >
+                  <Link to="/dashboard" title="Dashboard" className="nav-link">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -55,7 +51,7 @@ export default function Sidebar() {
                   </Link>
 
                   <Link
-                    to="/admin/all-media"
+                    to="/all-media"
                     title="All Media"
                     className="nav-link active"
                   >
@@ -78,7 +74,7 @@ export default function Sidebar() {
 
                   {/* CATEGORIES */}
                   <Link
-                    to="/admin/categories"
+                    to="/categories"
                     title="Categories"
                     className="nav-link"
                     data-toggle="collapse"
@@ -119,7 +115,7 @@ export default function Sidebar() {
                     id="categoryLinks"
                   >
                     <Link
-                      to="/admin/categories/main-categories"
+                      to="/categories/main-categories"
                       title="Main Categories"
                       className="!pl-12 nav-link"
                     >
@@ -128,7 +124,7 @@ export default function Sidebar() {
 
                     {/* SUB CATEGORIES */}
                     <Link
-                      to="/admin/categories/sub-categories"
+                      to="/categories/sub-categories"
                       title="Sub Categories"
                       className="!pl-12 nav-link"
                     >
@@ -206,7 +202,7 @@ export default function Sidebar() {
                   </div>
 
                   {/* ORDERS */}
-                  <Link to="/admin/orders" title="Orders" className="nav-link">
+                  <Link to="/orders" title="Orders" className="nav-link">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -228,11 +224,7 @@ export default function Sidebar() {
                   </Link>
 
                   {/* CUSTOMERS */}
-                  <Link
-                    to="/admin/customers"
-                    title="Customers"
-                    className="nav-link"
-                  >
+                  <Link to="/customers" title="Customers" className="nav-link">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -252,7 +244,7 @@ export default function Sidebar() {
 
                   {/* COUPON CODES */}
                   <Link
-                    to="/admin/coupon-codes"
+                    to="/coupon-codes"
                     title="Coupon Codes"
                     className="nav-link"
                   >
@@ -274,11 +266,7 @@ export default function Sidebar() {
                   </Link>
 
                   {/* SHIPPING PAGE */}
-                  <Link
-                    to="/admin/shipping"
-                    title="Shipping"
-                    className="nav-link"
-                  >
+                  <Link to="/shipping" title="Shipping" className="nav-link">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -304,7 +292,7 @@ export default function Sidebar() {
 
                   {/* TIME SLOTS */}
                   <Link
-                    to="/admin/time-slots"
+                    to="/time-slots"
                     title="Time Slots"
                     className="nav-link"
                   >
@@ -325,8 +313,9 @@ export default function Sidebar() {
                     Time Slots
                   </Link>
 
-                  <a
-                    href="#"
+                  {/* WEBSITE SETUP */}
+                  <Link
+                    href="/website-setup"
                     title="Website Setup"
                     className="nav-link"
                     data-toggle="collapse"
@@ -359,33 +348,34 @@ export default function Sidebar() {
                         clip-rule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </Link>
 
                   <div
                     className="hidden mt-2 space-y-1 collapse"
                     id="websiteSetupLinks"
                   >
-                    <a
-                      href="header-section.html"
+                    {/* Header Section */}
+                    <Link
+                      to="/website-setup/header-section"
                       title="Header Section"
                       className="!pl-12 nav-link"
                     >
                       Header Section
-                    </a>
-                    <a
-                      href="header-menu.html"
+                    </Link>
+                    <Link
+                      to="/website-setup/header-menu"
                       title="Header Menu"
                       className="!pl-12 nav-link"
                     >
                       Header Menu
-                    </a>
-                    <a
-                      href="home-page.html"
+                    </Link>
+                    <Link
+                      to="/website-setup/home-page"
                       title="Home Page"
                       className="!pl-12 nav-link"
                     >
                       Home Page
-                    </a>
+                    </Link>
                     <a
                       href="footer-section.html"
                       title="Footer Section"
