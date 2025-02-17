@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import WebsiteApp from "./WebsiteApp";
+import Website_App from "./Website_App";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalProvider } from "./Website/context/GlobalContext";
 import Admin_Panel_App from "./Admin_Panel_App";
@@ -24,7 +24,7 @@ if (currentPath.startsWith("/admin")) {
   website_root.render(
     <React.StrictMode>
       <GlobalProvider>
-        <WebsiteApp />
+        <Website_App />
       </GlobalProvider>
     </React.StrictMode>
   );

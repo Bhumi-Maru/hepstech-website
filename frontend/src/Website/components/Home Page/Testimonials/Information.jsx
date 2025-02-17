@@ -10,7 +10,7 @@ export default function Information() {
             <div className="flex items-start">
               <img
                 className="flex-none w-8 h-8"
-                src="../assets/images/truck.png"
+                src="../website assets/images/truck.png"
                 alt=""
               />
               <div className="ml-4">
@@ -24,7 +24,7 @@ export default function Information() {
             <div className="flex items-start">
               <img
                 className="flex-none w-8 h-8"
-                src="../assets/images/support.png"
+                src="../website assets/images/support.png"
                 alt=""
               />
               <div className="ml-4">
@@ -38,7 +38,7 @@ export default function Information() {
             <div className="flex items-start">
               <img
                 className="flex-none w-8 h-8"
-                src="../assets/images/refresh.png"
+                src="../website assets/images/refresh.png"
                 alt=""
               />
               <div className="ml-4">
@@ -52,7 +52,7 @@ export default function Information() {
             <div className="flex items-start">
               <img
                 className="flex-none w-8 h-8"
-                src="../assets/images/shield-check.png"
+                src="../website assets/images/shield-check.png"
                 alt=""
               />
               <div className="ml-4">

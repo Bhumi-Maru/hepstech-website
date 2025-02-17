@@ -11,7 +11,7 @@ export default function Footer() {
               <a href="index.html" title="" className="block mr-auto">
                 <img
                   className="w-auto h-10"
-                  src="../assets/images/logo-alt.png"
+                  src="../website assets/images/logo-alt.png"
                   alt=""
                 />
               </a>
@@ -367,13 +367,13 @@ export default function Footer() {
             <div className="md:order-2">
               <img
                 className="w-auto h-5 mx-auto md:mx-0"
-                src="../assets/images/payment-options.png"
+                src="../website assets/images/payment-options.png"
                 alt=""
               />
             </div>
 
             <p className="mt-6 text-sm md:order-1 md:mt-0">
-              Copyright © <span id="currentYear"></span>
+              Copyright © <span id="currentYear">2025 </span>
               <span className="font-semibold">HepsTech</span>. All Rights
               Reserved
             </p>

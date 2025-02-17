@@ -85,7 +85,7 @@ export default function Navbar({
             >
               <img
                 className="w-auto h-10"
-                src="../assets/images/logo.png"
+                src="../admin assets/images/logo.png"
                 alt=""
               />
             </a>

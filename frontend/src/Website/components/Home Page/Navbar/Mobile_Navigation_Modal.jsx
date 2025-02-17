@@ -39,7 +39,11 @@ export default function Mobile_Navigation_Modal({
         aria-hidden="false"
       >
         <div className="px-4 py-3 drawer-header">
-          <img className="w-auto h-10" src="../assets/images/logo.png" alt="" />
+          <img
+            className="w-auto h-10"
+            src="../website assets/images/logo.png"
+            alt=""
+          />
 
           <button
             type="button"
