@@ -78,7 +78,7 @@ export default function Sidebar() {
 
                   {/* CATEGORIES */}
                   <Link
-                    to="/categories"
+                    to="/admin/categories"
                     title="Categories"
                     className="nav-link"
                     data-toggle="collapse"
@@ -119,7 +119,7 @@ export default function Sidebar() {
                     id="categoryLinks"
                   >
                     <Link
-                      to="/categories/main-categories"
+                      to="/admin/categories/main-categories"
                       title="Main Categories"
                       className="!pl-12 nav-link"
                     >
@@ -127,15 +127,16 @@ export default function Sidebar() {
                     </Link>
 
                     {/* SUB CATEGORIES */}
-                    <a
-                      href="sub-categories.html"
+                    <Link
+                      to="/admin/categories/sub-categories"
                       title="Sub Categories"
                       className="!pl-12 nav-link"
                     >
                       Sub Categories
-                    </a>
+                    </Link>
                   </div>
 
+                  {/* PRODUCTS */}
                   <a
                     href="#"
                     title="Products"
@@ -176,6 +177,7 @@ export default function Sidebar() {
                     className="hidden mt-2 space-y-1 collapse"
                     id="productsLinks"
                   >
+                    {/* ALL PRODDUCTS */}
                     <a
                       href="products.html"
                       title="All Products"
@@ -184,6 +186,7 @@ export default function Sidebar() {
                       All Products
                     </a>
 
+                    {/* CREATE PRODUCTS */}
                     <a
                       href="create-product.html"
                       title="Create Product"
@@ -192,6 +195,7 @@ export default function Sidebar() {
                       Create Product
                     </a>
 
+                    {/* PRODUCT REVIEWS */}
                     <a
                       href="product-reviews.html"
                       title="Product Reviews"
@@ -201,7 +205,8 @@ export default function Sidebar() {
                     </a>
                   </div>
 
-                  <a href="orders.html" title="Orders" className="nav-link">
+                  {/* ORDERS */}
+                  <Link to="/admin/orders" title="Orders" className="nav-link">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -220,10 +225,11 @@ export default function Sidebar() {
                     <span className="px-3 py-1 ml-auto text-sm bg-gray-200 rounded-full">
                       11
                     </span>
-                  </a>
+                  </Link>
 
-                  <a
-                    href="customers.html"
+                  {/* CUSTOMERS */}
+                  <Link
+                    to="/admin/customers"
                     title="Customers"
                     className="nav-link"
                   >
@@ -242,7 +248,7 @@ export default function Sidebar() {
                       />
                     </svg>
                     Customers
-                  </a>
+                  </Link>
 
                   <a
                     href="coupon-codes.html"

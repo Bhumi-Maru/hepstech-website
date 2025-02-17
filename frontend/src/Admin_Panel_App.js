@@ -6,6 +6,8 @@ import Dashboard from "./Admin Panel/Dashboard/Dashboard";
 import Footer from "./Admin Panel/Footer/Footer";
 import All_Media from "./Admin Panel/All Media/All_Media";
 import MainCategories from "./Admin Panel/Categories/Main Categories/MainCategories";
+import SubCategories from "./Admin Panel/Categories/Sub Categories/SubCategories";
+import Orders from "./Admin Panel/Orders/Orders";
 
 export default function Admin_Panel_App() {
   return (
@@ -30,12 +32,31 @@ export default function Admin_Panel_App() {
               <div className="flex flex-col justify-between h-full">
                 <div className="flex-1 py-6">
                   <Routes>
+                    {/* START DASHBOARD */}
                     <Route path="/admin/dashboard" element={<Dashboard />} />
+                    {/* END DASHBOARD */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START ALL MEDIA */}
                     <Route path="/admin/all-media" element={<All_Media />} />
+                    {/* END ALL MEDIA */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START MAIN CATEGORIES */}
                     <Route
-                      path="/categories/main-categories"
+                      path="/admin/categories/main-categories"
                       element={<MainCategories />}
                     />
+                    {/* END MAIN CATEGOROIES */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START SUB CATEGORIES */}
+                    <Route
+                      path="/admin/categories/sub-categories"
+                      element={<SubCategories />}
+                    />
+                    {/* END SUB CATEGOROIES */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START ORDERS */}
+                    <Route path="/admin/orders" element={<Orders />} />
+                    {/* END ORDERS */}
                   </Routes>
                 </div>
 
