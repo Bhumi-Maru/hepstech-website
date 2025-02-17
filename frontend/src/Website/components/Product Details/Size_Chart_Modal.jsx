@@ -54,7 +54,7 @@ export default function Size_Chart_Modal({
             <div className="modal-body">
               <img
                 className="w-full h-full"
-                src="../assets/images/size-chart.png"
+                src="../website assets/images/size-chart.png"
                 alt=""
                 loading="lazy"
               />

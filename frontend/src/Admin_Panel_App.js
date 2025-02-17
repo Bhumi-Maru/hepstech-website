@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./Admin Panel/Sidebar/Sidebar";
+import Navbar from "./Admin Panel/Navbar/Navbar";
 
 export default function Admin_Panel_App() {
   return (
@@ -8,8 +9,14 @@ export default function Admin_Panel_App() {
       {/* <!-- START WRAPPER --> */}
       <div class="flex h-screen overflow-hidden">
         <BrowserRouter>
+          {/* START SIDEBAR */}
           <Sidebar />
-          <main className="flex flex-col flex-1 w-0 bg-gray-50"></main>
+          {/* END SIDEBAR */}
+          <main className="flex flex-col flex-1 w-0 bg-gray-50">
+            {/* START NAVBAR */}
+            <Navbar />
+            {/* END NAVBAR */}
+          </main>
         </BrowserRouter>
       </div>
       {/* <!-- END WRAPPER --> */}

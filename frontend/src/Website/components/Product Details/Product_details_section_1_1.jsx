@@ -24,7 +24,7 @@ export default function Product_details_section_1_1() {
 
     const loadXZoom = () => {
       xzoomScript = document.createElement("script");
-      xzoomScript.src = "../assets/plugins/xzoom/xzoom.min.js"; // Ensure the correct path
+      xzoomScript.src = "../website assets/plugins/xzoom/xzoom.min.js"; // Ensure the correct path
       xzoomScript.async = true;
       document.body.appendChild(xzoomScript);
       return xzoomScript;
@@ -112,8 +112,8 @@ export default function Product_details_section_1_1() {
               <div className="bg-white swiper-slide">
                 <img
                   className="xzoom"
-                  src={`../assets/images/${selectedImage}`}
-                  xoriginal={`../assets/images/${selectedImage}`}
+                  src={`../website assets/images/${selectedImage}`}
+                  xoriginal={`../website assets/images/${selectedImage}`}
                   alt="Main Product"
                 />
               </div>
@@ -132,7 +132,7 @@ export default function Product_details_section_1_1() {
                     onClick={() => setSelectedImage(img)} // Set selected image on click
                   >
                     <img
-                      src={`../assets/images/${img}`}
+                      src={`../website assets/images/${img}`}
                       alt={`Thumbnail ${index + 1}`}
                     />
                   </div>
