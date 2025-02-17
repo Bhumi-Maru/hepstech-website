@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -31,8 +32,8 @@ export default function Sidebar() {
             <div className="flex flex-col justify-between min-h-full">
               <div className="flex flex-col flex-grow pr-4 mt-4">
                 <div className="flex-1 space-y-1">
-                  <a
-                    href="dashboard.html"
+                  <Link
+                    to="/admin/dashboard"
                     title="Dashboard"
                     className="nav-link"
                   >
@@ -51,10 +52,10 @@ export default function Sidebar() {
                       />
                     </svg>
                     Dashboard
-                  </a>
+                  </Link>
 
-                  <a
-                    href="all-media.html"
+                  <Link
+                    to="/admin/all-media"
                     title="All Media"
                     className="nav-link active"
                   >
@@ -73,10 +74,11 @@ export default function Sidebar() {
                       />
                     </svg>
                     All Media
-                  </a>
+                  </Link>
 
-                  <a
-                    href="#"
+                  {/* CATEGORIES */}
+                  <Link
+                    to="/categories"
                     title="Categories"
                     className="nav-link"
                     data-toggle="collapse"
@@ -109,20 +111,22 @@ export default function Sidebar() {
                         clip-rule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </Link>
 
+                  {/* MAIN CATEGORIES */}
                   <div
                     className="hidden mt-2 space-y-1 collapse"
                     id="categoryLinks"
                   >
-                    <a
-                      href="main-categories.html"
+                    <Link
+                      to="/categories/main-categories"
                       title="Main Categories"
                       className="!pl-12 nav-link"
                     >
                       Main Categories
-                    </a>
+                    </Link>
 
+                    {/* SUB CATEGORIES */}
                     <a
                       href="sub-categories.html"
                       title="Sub Categories"
