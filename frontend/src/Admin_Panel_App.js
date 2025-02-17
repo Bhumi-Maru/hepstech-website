@@ -8,6 +8,11 @@ import All_Media from "./Admin Panel/All Media/All_Media";
 import MainCategories from "./Admin Panel/Categories/Main Categories/MainCategories";
 import SubCategories from "./Admin Panel/Categories/Sub Categories/SubCategories";
 import Orders from "./Admin Panel/Orders/Orders";
+import Customers from "./Admin Panel/Customers/Customers";
+import Coupon_Codes from "./Admin Panel/Coupon Codes/Coupon_Codes";
+import Shipping from "./Admin Panel/Shipping/Shipping";
+import Time_Slots from "./Admin Panel/Time Slots/Time_Slots";
+import Store_Settings from "./Admin Panel/Store Settings/Store_Settings";
 
 export default function Admin_Panel_App() {
   return (
@@ -57,6 +62,32 @@ export default function Admin_Panel_App() {
                     {/* START ORDERS */}
                     <Route path="/admin/orders" element={<Orders />} />
                     {/* END ORDERS */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START CUSTOMERS PAGE */}
+                    <Route path="/admin/customers" element={<Customers />} />
+                    {/* END CUSTOMERS PAGE */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START COUPON-CODES PAGE */}
+                    <Route
+                      path="/admin/coupon-codes"
+                      element={<Coupon_Codes />}
+                    />
+                    {/* END COUPON-CODES PAGE */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START SHIPPING PAGE */}
+                    <Route path="/admin/shipping" element={<Shipping />} />
+                    {/* END SHIPPING PAGE */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START TIME-SLOTS PAGE */}
+                    <Route path="/admin/time-slots" element={<Time_Slots />} />
+                    {/* END TIME-SLOTS PAGE */}
+                    {/* ------------------------------------------------------------ */}
+                    {/* START STORE SETTING PAGE */}
+                    <Route
+                      path="/admin/store-setting"
+                      element={<Store_Settings />}
+                    />
+                    {/* END STORE SETTING PAGE */}
                   </Routes>
                 </div>
 

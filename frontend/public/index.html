@@ -17,7 +17,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="./website assets/images/favicon.ico"
+      href="./website_assets/images/favicon.ico"
     />
 
     <!-- GOOGLE FONTS -->
@@ -32,19 +32,19 @@
     <!-- PLUGINS -->
     <link
       rel="stylesheet"
-      href="./website assets/plugins/swiper/swiper-bundle.min.css"
+      href="%PUBLIC_URL%/website_assets/plugins/swiper/swiper-bundle.min.css"
     />
     <link
       rel="stylesheet"
-      href="./website assets/plugins/microtip/microtip.css"
+      href="%PUBLIC_URL%/website_assets/plugins/microtip/microtip.css"
     />
     <link
       rel="stylesheet"
-      href="./website assets/plugins/xzoom/xzoom.min.css"
+      href="%PUBLIC_URL%/website_assets/plugins/xzoom/xzoom.min.css"
     />
 
     <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="./website assets/css/main.css" />
+    <link rel="stylesheet" href="%PUBLIC_URL%/website_assets/css/main.css" />
 
     <!-- Swiper CSS -->
     <link
@@ -67,15 +67,15 @@
     <!-- PLUGINS -->
     <link
       rel="stylesheet"
-      href="./admin assets/plugins/microtip/microtip.css"
+      href="%PUBLIC_URL%/admin_assets/plugins/microtip/microtip.css"
     />
     <link
       rel="stylesheet"
-      href="./admin assets/plugins/daterangepicker/daterangepicker.css"
+      href="%PUBLIC_URL%/admin_assets/plugins/daterangepicker/daterangepicker.css"
     />
 
     <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="./admin assets/css/main.css" />
+    <link rel="stylesheet" href="%PUBLIC_URL%/admin assets/css/main.css" />
 
     <!-- END ADMIN CDN -->
 
@@ -86,27 +86,32 @@
     <div id="website_root"></div>
     <div id="admin_panel_root"></div>
 
+    <script>
+      var a = "%PUBLIC_URL%";
+      console.log("%PUBLIC_URL%", a);
+    </script>
+
     <!-- START WEBSITE CDN -->
 
     <!-- JQUERY -->
-    <script src="./website assets/plugins/jquery-3.4.1.min.js"></script>
+    <script src="%PUBLIC_URL%/website_assets/plugins/jquery-3.4.1.min.js"></script>
 
     <!-- PLUGINS -->
-    <script src="./website assets/plugins/swiper/swiper-bundle.min.js"></script>
+    <script src="%PUBLIC_URL%/website_assets/plugins/swiper/swiper-bundle.min.js"></script>
 
     <!-- END WEBSITE CDN -->
     <!-- ------------------------------------------------ -->
     <!-- START ADMIN CDN -->
     <!-- JQUERY -->
-    <script src="./admin assets/plugins/jquery-3.4.1.min.js"></script>
+    <script src="%PUBLIC_URL%/admin_assets/plugins/jquery-3.4.1.min.js"></script>
 
     <!-- PLUGINS -->
-    <script src="./admin assets/plugins/listjs/list.min.js"></script>
-    <script src="./admin assets/plugins/moment.min.js"></script>
-    <script src="./admin assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+    <script src="%PUBLIC_URL%/admin_assets/plugins/listjs/list.min.js"></script>
+    <script src="%PUBLIC_URL%/admin_assets/plugins/moment.min.js"></script>
+    <script src="%PUBLIC_URL%/admin_assets/plugins/daterangepicker/daterangepicker.min.js"></script>
 
     <!-- CUSTOM SCRIPT -->
-    <script src="./admin assets/js/main.js"></script>
+    <script src="%PUBLIC_URL%/admin_assets/js/main.js"></script>
     <!-- END ADMIN CDN -->
 
     <!-- index.js -->

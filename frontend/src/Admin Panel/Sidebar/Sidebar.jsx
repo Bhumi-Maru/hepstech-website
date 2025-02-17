@@ -250,8 +250,9 @@ export default function Sidebar() {
                     Customers
                   </Link>
 
-                  <a
-                    href="coupon-codes.html"
+                  {/* COUPON CODES */}
+                  <Link
+                    to="/admin/coupon-codes"
                     title="Coupon Codes"
                     className="nav-link"
                   >
@@ -270,9 +271,14 @@ export default function Sidebar() {
                       />
                     </svg>
                     Coupon Codes
-                  </a>
+                  </Link>
 
-                  <a href="shipping.html" title="Shipping" className="nav-link">
+                  {/* SHIPPING PAGE */}
+                  <Link
+                    to="/admin/shipping"
+                    title="Shipping"
+                    className="nav-link"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -294,10 +300,11 @@ export default function Sidebar() {
                       />
                     </svg>
                     Shipping
-                  </a>
+                  </Link>
 
-                  <a
-                    href="time-slots.html"
+                  {/* TIME SLOTS */}
+                  <Link
+                    to="/admin/time-slots"
                     title="Time Slots"
                     className="nav-link"
                   >
@@ -316,7 +323,7 @@ export default function Sidebar() {
                       />
                     </svg>
                     Time Slots
-                  </a>
+                  </Link>
 
                   <a
                     href="#"
@@ -394,8 +401,9 @@ export default function Sidebar() {
 
           <div className="mb-2 border-t border-gray-200">
             <div className="flex-shrink-0 block w-full pr-4 mt-2">
-              <a
-                href="store-settings.html"
+              {/* STORE SETTING  */}
+              <Link
+                to="/admin/store-setting"
                 title="Store Settings"
                 className="nav-link"
               >
@@ -420,7 +428,7 @@ export default function Sidebar() {
                   />
                 </svg>
                 Store Settings
-              </a>
+              </Link>
             </div>
           </div>
         </div>
