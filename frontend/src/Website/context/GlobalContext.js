@@ -13,7 +13,7 @@ export const GlobalProvider = ({ children }) => {
   const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <GlobalContext
+    <GlobalContext.Provider
       value={{
         quantity,
         increment,
@@ -21,10 +21,10 @@ export const GlobalProvider = ({ children }) => {
       }}
     >
       {children}
-    </GlobalContext>
+    </GlobalContext.Provider>
   );
 };
 
 export const useGlobalContext = () => useContext(GlobalContext);
 
-export default GlobalContext;
+export default GlobalProvider;

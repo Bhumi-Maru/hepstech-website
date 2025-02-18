@@ -5,6 +5,7 @@ import Website_App from "./Website_App";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalProvider } from "./Website/context/GlobalContext";
 import Admin_Panel_App from "./Admin_Panel_App";
+import AdminGlobalProvider from "./Admin Panel/context/Admin_Global_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -22,7 +23,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     {currentPath.startsWith("/admin") ? (
-      <Admin_Panel_App />
+      <AdminGlobalProvider>
+        <Admin_Panel_App />
+      </AdminGlobalProvider>
     ) : (
       <GlobalProvider>
         <Website_App />

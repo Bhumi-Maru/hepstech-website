@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Dashboard_2() {
   return (
@@ -11,13 +12,13 @@ export default function Dashboard_2() {
           </h3>
 
           <div className="sm:flex sm:items-center sm:flex-1 sm:space-x-4 sm:justify-end">
-            <a
-              href="orders.html"
+            <Link
+              to="/orders"
               title="View All Orders"
               className="flex-shrink-0 w-full mt-3 sm:w-auto sm:ml-5 btn btn-primary sm:order-3 sm:mt-0"
             >
               View All Orders
-            </a>
+            </Link>
 
             <div className="mt-4 sm:ml-auto sm:order-2 sm:mt-0 sm:flex-1 sm:max-w-md">
               <label for="searchOrders" className="sr-only">

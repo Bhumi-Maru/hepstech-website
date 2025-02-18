@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Dashboard_1() {
+  const { isActive, handleActive } = useAdminGlobalContext();
   return (
     <>
       {/* START DASHBOARD SUB SECTION 1 */}
@@ -36,8 +39,8 @@ export default function Dashboard_1() {
             </div>
             <div className="flex items-baseline pb-6 ml-16 sm:pb-7">
               <div className="absolute inset-x-0 bottom-0 px-4 py-3.5 bg-white border-t border-gray-200 sm:px-6">
-                <a
-                  href="customers.html"
+                <Link
+                  to="/customers"
                   title=""
                   className="flex items-center justify-between text-sm font-medium text-gray-600 transition-all duration-200 hover:text-skin-primary"
                 >
@@ -54,7 +57,7 @@ export default function Dashboard_1() {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -89,9 +92,9 @@ export default function Dashboard_1() {
             </div>
             <div className="flex items-baseline pb-6 ml-16 sm:pb-7">
               <div className="absolute inset-x-0 bottom-0 px-4 py-3.5 bg-white border-t border-gray-200 sm:px-6">
-                <a
-                  href="orders.html"
-                  title=""
+                <Link
+                  to="/orders"
+                  title="orders"
                   className="flex items-center justify-between text-sm font-medium text-gray-600 transition-all duration-200 hover:text-skin-primary"
                 >
                   View Orders
@@ -107,7 +110,7 @@ export default function Dashboard_1() {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -142,10 +145,13 @@ export default function Dashboard_1() {
             </div>
             <div className="flex items-baseline pb-6 ml-16 sm:pb-7">
               <div className="absolute inset-x-0 bottom-0 px-4 py-3.5 bg-white border-t border-gray-200 sm:px-6">
-                <a
-                  href="products.html"
-                  title=""
-                  className="flex items-center justify-between text-sm font-medium text-gray-600 transition-all duration-200 hover:text-skin-primary"
+                <Link
+                  to="/products/all-products"
+                  title="products"
+                  className={`flex items-center justify-between text-sm font-medium text-gray-600 transition-all duration-200 hover:text-skin-primary ${
+                    isActive === "All Products" ? "active" : ""
+                  }`}
+                  onClick={() => handleActive("All Products")}
                 >
                   View Products
                   <svg
@@ -160,7 +166,7 @@ export default function Dashboard_1() {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -195,8 +201,8 @@ export default function Dashboard_1() {
             </div>
             <div className="flex items-baseline pb-6 ml-16 sm:pb-7">
               <div className="absolute inset-x-0 bottom-0 px-4 py-3.5 bg-white border-t border-gray-200 sm:px-6">
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   title=""
                   className="flex items-center justify-between text-sm font-medium text-gray-600 transition-all duration-200 hover:text-skin-primary"
                 >
@@ -213,7 +219,7 @@ export default function Dashboard_1() {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

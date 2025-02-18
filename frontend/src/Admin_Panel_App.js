@@ -1,19 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Sidebar from "./Admin Panel/Sidebar/Sidebar";
-import Navbar from "./Admin Panel/Navbar/Navbar";
-import Dashboard from "./Admin Panel/Dashboard/Dashboard";
-import Footer from "./Admin Panel/Footer/Footer";
-import All_Media from "./Admin Panel/All Media/All_Media";
-import MainCategories from "./Admin Panel/Categories/Main Categories/MainCategories";
-import SubCategories from "./Admin Panel/Categories/Sub Categories/SubCategories";
-import Orders from "./Admin Panel/Orders/Orders";
-import Customers from "./Admin Panel/Customers/Customers";
-import Coupon_Codes from "./Admin Panel/Coupon Codes/Coupon_Codes";
-import Shipping from "./Admin Panel/Shipping/Shipping";
-import Time_Slots from "./Admin Panel/Time Slots/Time_Slots";
-import Store_Settings from "./Admin Panel/Store Settings/Store_Settings";
-import Website_Setup from "./Admin Panel/Website Setup/Website_Setup";
+import Sidebar from "./Admin Panel/components/Sidebar/Sidebar";
+import Navbar from "./Admin Panel/components/Navbar/Navbar";
+import Dashboard from "./Admin Panel/components/Dashboard/Dashboard";
+import Footer from "./Admin Panel/components/Footer/Footer";
+import All_Media from "./Admin Panel/components/All Media/All_Media";
+import MainCategories from "./Admin Panel/components/Categories/Main Categories/MainCategories";
+import SubCategories from "./Admin Panel/components/Categories/Sub Categories/SubCategories";
+import Orders from "./Admin Panel/components/Orders/Orders";
+import Customers from "./Admin Panel/components/Customers/Customers";
+import Coupon_Codes from "./Admin Panel/components/Coupon Codes/Coupon_Codes";
+import Shipping from "./Admin Panel/components/Shipping/Shipping";
+import Time_Slots from "./Admin Panel/components/Time Slots/Time_Slots";
+import Store_Settings from "./Admin Panel/components/Store Settings/Store_Settings";
+import Website_Setup from "./Admin Panel/components/Website Setup/Website_Setup";
 
 export default function Admin_Panel_App() {
   return (

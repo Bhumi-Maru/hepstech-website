@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Sidebar() {
+  const { isActive, handleActive, isDropdownOpen, setIsDropdownOpen } =
+    useAdminGlobalContext();
   return (
     <>
       {/* <!-- START SIDEBAR (FOR DESKTOP) --> */}
@@ -32,7 +35,15 @@ export default function Sidebar() {
             <div className="flex flex-col justify-between min-h-full">
               <div className="flex flex-col flex-grow pr-4 mt-4">
                 <div className="flex-1 space-y-1">
-                  <Link to="/dashboard" title="Dashboard" className="nav-link">
+                  {/* Dashboard */}
+                  <Link
+                    to="/dashboard"
+                    title="Dashboard"
+                    className={`nav-link ${
+                      isActive === "Dashboard" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Dashboard")}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -50,10 +61,14 @@ export default function Sidebar() {
                     Dashboard
                   </Link>
 
+                  {/* All Media */}
                   <Link
                     to="/all-media"
                     title="All Media"
-                    className="nav-link active"
+                    className={`nav-link ${
+                      isActive === "All Media" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("All Media")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +91,15 @@ export default function Sidebar() {
                   <Link
                     to="/categories"
                     title="Categories"
-                    className="nav-link"
                     data-toggle="collapse"
                     data-target="#categoryLinks"
+                    className={`nav-link ${
+                      isActive === "Categories" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      handleActive("Categories");
+                      setIsDropdownOpen((prev) => !prev);
+                    }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +117,9 @@ export default function Sidebar() {
                     </svg>
                     Categories
                     <svg
-                      className="w-5 h-5 ml-auto"
+                      className={`w-5 h-5 ml-auto transform transition-transform ${
+                        isDropdownOpen ? "rotate-180" : "rotate-0"
+                      }`}
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
@@ -117,7 +140,10 @@ export default function Sidebar() {
                     <Link
                       to="/categories/main-categories"
                       title="Main Categories"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Main Categories" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Main Categories")}
                     >
                       Main Categories
                     </Link>
@@ -126,7 +152,10 @@ export default function Sidebar() {
                     <Link
                       to="/categories/sub-categories"
                       title="Sub Categories"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Sub Categories" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Sub Categories")}
                     >
                       Sub Categories
                     </Link>
@@ -136,7 +165,10 @@ export default function Sidebar() {
                   <a
                     href="#"
                     title="Products"
-                    className="nav-link"
+                    className={`nav-link ${
+                      isActive === "Products" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Products")}
                     data-toggle="collapse"
                     data-target="#productsLinks"
                   >
@@ -174,19 +206,25 @@ export default function Sidebar() {
                     id="productsLinks"
                   >
                     {/* ALL PRODDUCTS */}
-                    <a
-                      href="products.html"
+                    <Link
+                      to="/products/all-products"
                       title="All Products"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "All Products" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("All Products")}
                     >
                       All Products
-                    </a>
+                    </Link>
 
                     {/* CREATE PRODUCTS */}
                     <a
                       href="create-product.html"
                       title="Create Product"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Create Products" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Create products")}
                     >
                       Create Product
                     </a>
@@ -195,14 +233,24 @@ export default function Sidebar() {
                     <a
                       href="product-reviews.html"
                       title="Product Reviews"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Products Reviews" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Products Reviews")}
                     >
                       Product Reviews
                     </a>
                   </div>
 
                   {/* ORDERS */}
-                  <Link to="/orders" title="Orders" className="nav-link">
+                  <Link
+                    to="/orders"
+                    title="Orders"
+                    className={`nav-link ${
+                      isActive === "Orders" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Orders")}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -224,7 +272,14 @@ export default function Sidebar() {
                   </Link>
 
                   {/* CUSTOMERS */}
-                  <Link to="/customers" title="Customers" className="nav-link">
+                  <Link
+                    to="/customers"
+                    title="Customers"
+                    className={`nav-link ${
+                      isActive === "Customers" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Customers")}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -246,7 +301,10 @@ export default function Sidebar() {
                   <Link
                     to="/coupon-codes"
                     title="Coupon Codes"
-                    className="nav-link"
+                    className={`nav-link ${
+                      isActive === "Coupon Codes" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Coupon Codes")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +324,14 @@ export default function Sidebar() {
                   </Link>
 
                   {/* SHIPPING PAGE */}
-                  <Link to="/shipping" title="Shipping" className="nav-link">
+                  <Link
+                    to="/shipping"
+                    title="Shipping"
+                    className={`nav-link ${
+                      isActive === "Shipping" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Shipping")}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -294,7 +359,10 @@ export default function Sidebar() {
                   <Link
                     to="/time-slots"
                     title="Time Slots"
-                    className="nav-link"
+                    className={`nav-link ${
+                      isActive === "Time Slots" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Time Slots")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +385,10 @@ export default function Sidebar() {
                   <Link
                     href="/website-setup"
                     title="Website Setup"
-                    className="nav-link"
+                    className={`nav-link ${
+                      isActive === "Website Setup" ? "active" : ""
+                    }`}
+                    onClick={() => handleActive("Website Setup")}
                     data-toggle="collapse"
                     data-target="#websiteSetupLinks"
                   >
@@ -358,28 +429,40 @@ export default function Sidebar() {
                     <Link
                       to="/website-setup/header-section"
                       title="Header Section"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Header Section" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Header Section")}
                     >
                       Header Section
                     </Link>
                     <Link
                       to="/website-setup/header-menu"
                       title="Header Menu"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Header Menu" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Header Menu")}
                     >
                       Header Menu
                     </Link>
                     <Link
                       to="/website-setup/home-page"
                       title="Home Page"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Home Page" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Home Page")}
                     >
                       Home Page
                     </Link>
                     <a
                       href="footer-section.html"
                       title="Footer Section"
-                      className="!pl-12 nav-link"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Footer Section" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Footer Section")}
                     >
                       Footer Section
                     </a>
@@ -395,7 +478,10 @@ export default function Sidebar() {
               <Link
                 to="/store-setting"
                 title="Store Settings"
-                className="nav-link"
+                className={`nav-link ${
+                  isActive === "Store Setting" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Store Setting")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
