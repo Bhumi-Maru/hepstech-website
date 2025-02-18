@@ -97,13 +97,13 @@ export default function Dashboard_2() {
                             </a>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium truncate customer-name">
-                                <a
-                                  href="customer-details.html"
-                                  title=""
+                                <Link
+                                  to="/customer-details"
+                                  title="customer details"
                                   className="hover:text-skin-primary"
                                 >
                                   Ricardo Cooper
-                                </a>
+                                </Link>
                               </p>
                               <p className="text-sm text-gray-500 truncate phone-number">
                                 (885) 242-9095
@@ -115,8 +115,8 @@ export default function Dashboard_2() {
                         <td>₹1,000</td>
                         <td className="nowrap">
                           <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="order-details.html"
+                            <Link
+                              to="/order-details"
                               title="View Order Details"
                               className="btn-circle"
                               aria-label="View"
@@ -143,7 +143,7 @@ export default function Dashboard_2() {
                                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                 />
                               </svg>
-                            </a>
+                            </Link>
 
                             <a
                               href="#"

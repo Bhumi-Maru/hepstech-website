@@ -7,6 +7,7 @@ export default function Coupons_Menu({
   return (
     <>
       {/* <!-- START COUPONS MENU --> */}
+      <div className="drawer-overlay show" tabindex="-1"></div>
       <aside
         className={`max-w-md drawer drawer-right ${
           isCouponMenuOpen ? "active" : ""
@@ -114,7 +115,6 @@ export default function Coupons_Menu({
         </div>
       </aside>
       {/* <!-- END COUPONS MENU --> */}
-      <div className="drawer-overlay show" tabindex="-1"></div>
     </>
   );
 }

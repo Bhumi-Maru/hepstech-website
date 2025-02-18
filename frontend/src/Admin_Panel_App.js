@@ -14,8 +14,14 @@ import Shipping from "./Admin Panel/components/Shipping/Shipping";
 import Time_Slots from "./Admin Panel/components/Time Slots/Time_Slots";
 import Store_Settings from "./Admin Panel/components/Store Settings/Store_Settings";
 import Website_Setup from "./Admin Panel/components/Website Setup/Website_Setup";
+import Customer_Details from "./Admin Panel/components/Customers/Customer_Details";
+import Orders_Details from "./Admin Panel/components/Orders/Orders_Details";
+import Main_Category_Add_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Add_Modal";
+import { useAdminGlobalContext } from "./Admin Panel/context/Admin_Global_Context";
+import Sub_Category_Add_Modal from "./Admin Panel/components/Categories/Sub Categories/Sub_Category_Add_Modal";
 
 export default function Admin_Panel_App() {
+  const { isOpenPopupModal } = useAdminGlobalContext();
   return (
     <div className="min-h-screen overflow-x-hidden font-sans antialiased text-gray-900 bg-gray-50 selection:bg-skin-primary selection:text-white">
       {/* <!-- START WRAPPER --> */}
@@ -41,6 +47,7 @@ export default function Admin_Panel_App() {
                       path="/categories/main-categories"
                       element={<MainCategories />}
                     />
+
                     {/* SUB CATEGORIES */}
                     <Route
                       path="/categories/sub-categories"
@@ -48,8 +55,15 @@ export default function Admin_Panel_App() {
                     />
                     {/* ORDERS */}
                     <Route path="/orders" element={<Orders />} />
+                    {/* ORDERS */}
+                    <Route path="/order-details" element={<Orders_Details />} />
                     {/* CUSTOMERS */}
                     <Route path="/customers" element={<Customers />} />
+                    {/* CUSTOMER DETAILS */}
+                    <Route
+                      path="/customer-details"
+                      element={<Customer_Details />}
+                    />
                     {/* COUPON CODES */}
                     <Route path="/coupon-codes" element={<Coupon_Codes />} />
                     {/* SHIPPING */}
@@ -72,6 +86,18 @@ export default function Admin_Panel_App() {
           </main>
         </Router>
       </div>
+      {/* MAIN CATEGORY ADD POPUP MODAL */}
+      {isOpenPopupModal.addMainCategoryPopupModal && (
+        <>
+          <Main_Category_Add_Modal />
+        </>
+      )}
+      {/* SUB CATEGORY ADD POPUP MODAL */}
+      {isOpenPopupModal.addSubCategoryPopupModal && (
+        <>
+          <Sub_Category_Add_Modal />
+        </>
+      )}
       {/* <!-- END WRAPPER --> */}
     </div>
   );

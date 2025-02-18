@@ -1,6 +1,8 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function SubCategories() {
+  const { toggleModal } = useAdminGlobalContext();
   return (
     <>
       {/* START SUB CATEGORIES */}
@@ -11,12 +13,12 @@ export default function SubCategories() {
 
           <div className="hidden mt-4 sm:mt-0 sm:block">
             <a
-              href="#"
               title="Create Sub Category"
               className="btn btn-primary"
               role="button"
               data-toggle="modal"
               data-target="#createSubCategoryModal"
+              onClick={() => toggleModal("addSubCategoryPopupModal")}
             >
               <svg
                 className="w-5 h-5 mr-2 -ml-1"
