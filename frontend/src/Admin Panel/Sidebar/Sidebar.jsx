@@ -393,7 +393,7 @@ export default function Sidebar() {
             <div className="flex-shrink-0 block w-full pr-4 mt-2">
               {/* STORE SETTING  */}
               <Link
-                to="/admin/store-setting"
+                to="/store-setting"
                 title="Store Settings"
                 className="nav-link"
               >
