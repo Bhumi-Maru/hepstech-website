@@ -1,19 +1,94 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+// Import jQuery and Select2
+import $ from "jquery";
+import "select2/dist/js/select2.min.js"; // Import Select2 JS
+import "select2/dist/css/select2.min.css"; // Import Select2 CSS
+import List from "list.js";
 
 export default function Sub_Category_Add_Modal() {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
+
+  useEffect(() => {
+    // Initialize select2
+    $("#mainCategory").select2();
+
+    // Your other jQuery code and List.js initialization
+    $(function () {
+      var subCategoryListOptions = {
+        valueNames: ["main-category", "sub-category"],
+        page: 10,
+        pagination: {
+          outerWindow: 2,
+          innerWindow: 1,
+        },
+      };
+
+      var subCategoryList = new List(
+        "subCategoriesView",
+        subCategoryListOptions
+      );
+
+      $("#searchSubCategory").on("keyup", function () {
+        subCategoryList.search($("#searchSubCategory").val());
+        if ($(".list").children().length === 0) {
+          $(".not-found").removeClass("hidden");
+        } else {
+          $(".not-found").addClass("hidden");
+        }
+        checkPagerPosition();
+      });
+
+      var subCategoryListSize = subCategoryList.size();
+      $("#totalSubCategories").html(subCategoryListSize);
+
+      subCategoryList.on("searchComplete", function () {
+        var updateNumber = subCategoryList.update().matchingItems.length;
+        $("#totalSubCategories").html(updateNumber);
+        console.log(subCategoryList.update().matchingItems.length);
+      });
+
+      $(document).on("click", ".page", function () {
+        checkPagerPosition();
+      });
+
+      checkPagerPosition();
+
+      function checkPagerPosition() {
+        updateRecordTracker();
+      }
+
+      function updateRecordTracker() {
+        var pageNumber = $(".pagination li.active .page").text();
+        var pageRecordCount = 0;
+        var missingPageItems =
+          pageRecordCount - subCategoryList.visibleItems.length;
+        var firstPageItemNumber =
+          pageRecordCount * pageNumber - (pageRecordCount - 1);
+        var lastPageItemNumber =
+          pageRecordCount * pageNumber - missingPageItems;
+        $("#page-first-item-number").text(firstPageItemNumber);
+        $("#page-last-item-number").text(lastPageItemNumber);
+        if ($(".list").children().length === 0) {
+          $("#page-first-item-number").text(firstPageItemNumber - 1);
+        }
+      }
+
+      $("#mainCategory").select2({});
+    });
+  }, []);
+
   return (
     <>
       {/* START ADD SUB CATEGORY POPUP MODAL */}
       <div
         className="modal active"
         id="createSubCategoryModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-hidden="false"
       >
-        <div className="modal-overlay" tabindex="-1"></div>
+        <div className="modal-overlay" tabIndex="-1"></div>
         <div className="modal-dialog modal-dialog-centered sm:max-w-lg">
           <div className="modal-content" role="document">
             <div className="modal-header">
@@ -23,7 +98,6 @@ export default function Sub_Category_Add_Modal() {
               >
                 Edit Sub Category
               </h5>
-
               {/* <!-- close button --> */}
               <button
                 type="button"
@@ -42,20 +116,19 @@ export default function Sub_Category_Add_Modal() {
                   aria-hidden="true"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M6 18L18 6M6 6l12 12"
                   ></path>
                 </svg>
               </button>
             </div>
-
             <div className="modal-body">
               <form>
                 <div className="space-y-4">
                   <div>
-                    <label for=""> Sub Category Title </label>
+                    <label>Sub Category Title</label>
                     <div className="mt-1">
                       <input
                         type="text"
@@ -66,7 +139,6 @@ export default function Sub_Category_Add_Modal() {
                       />
                     </div>
                   </div>
-
                   <div>
                     <label htmlFor="mainCategory">Main Category</label>
                     <div className="relative mt-1">
@@ -81,84 +153,21 @@ export default function Sub_Category_Add_Modal() {
                         <option value="" data-select2-id="select2-data-2-0lfm">
                           Select Main Category
                         </option>
-                        <option
-                          value="category1"
-                          data-select2-id="select2-data-5-91ve"
-                        >
+                        <option value="" data-select2-id="select2-data-5-91ve">
                           Main Category 1
                         </option>
-                        <option
-                          value="category2"
-                          data-select2-id="select2-data-6-xpcr"
-                        >
+                        <option value="" data-select2-id="select2-data-6-xpcr">
                           Main Category 2
                         </option>
-                        <option
-                          value="category3"
-                          data-select2-id="select2-data-7-ugr1"
-                        >
+                        <option value="" data-select2-id="select2-data-7-ugr1">
                           Main Category 3
                         </option>
                       </select>
-                      <span
-                        className="select2 select2-container select2-container--default select2-container--below"
-                        dir="ltr"
-                        data-select2-id="select2-data-1-1j5p"
-                        style={{ width: "438px" }}
-                      >
-                        <span className="selection">
-                          <span
-                            className="select2-selection select2-selection--single"
-                            role="combobox"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            tabIndex="0"
-                            aria-disabled="false"
-                            aria-labelledby="select2-mainCategory-container"
-                          >
-                            <span
-                              className="select2-selection__rendered"
-                              id="select2-mainCategory-container"
-                              role="textbox"
-                              aria-readonly="true"
-                              title="Select Main Category"
-                            >
-                              Select Main Category
-                            </span>
-                            <span
-                              className="select2-selection__arrow"
-                              role="presentation"
-                            >
-                              <b role="presentation"></b>
-                            </span>
-                          </span>
-                        </span>
-                        <span
-                          className="dropdown-wrapper"
-                          aria-hidden="true"
-                        ></span>
-                      </span>
-
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg
-                          className="w-5 h-5 text-gray-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
                     </div>
                   </div>
-
                   <div>
-                    <label for=""> Image </label>
+                    <label>Image</label>
                     <div className="mt-1">
-                      {/* <!-- <input type="file" id="formFile" name="" className="" /> --> */}
                       <button
                         type="button"
                         className="btn btn-white"
@@ -169,23 +178,21 @@ export default function Sub_Category_Add_Modal() {
                       </button>
                     </div>
                   </div>
-
                   <div>
-                    <label for=""> Status </label>
+                    <label>Status</label>
                     <div className="mt-1 toggle-switch">
                       <input
                         type="checkbox"
                         id="toggleSwitch"
                         role="checkbox"
-                        tabindex="0"
+                        tabIndex="0"
                       />
-                      <label for="toggleSwitch"></label>
+                      <label htmlFor="toggleSwitch"></label>
                     </div>
                   </div>
                 </div>
               </form>
             </div>
-
             <div className="modal-footer">
               <div className="flex items-center justify-end space-x-4">
                 <button

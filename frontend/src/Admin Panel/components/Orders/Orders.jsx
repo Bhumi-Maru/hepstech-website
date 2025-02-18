@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Orders() {
+  const { toggleModal } = useAdminGlobalContext();
   return (
     <>
       {/* START ORDERS */}
@@ -10,13 +13,13 @@ export default function Orders() {
           <h1 className="heading-1">Orders</h1>
 
           <div className="mt-4 sm:mt-0 sm:flex sm:items-center sm:space-x-4">
-            <a
-              href="#"
+            <Link
               title="Export"
               className="btn btn-white"
               role="button"
               data-toggle="modal"
               data-target="#exportOrdersModal"
+              onClick={() => toggleModal("exportDetails")}
             >
               <svg
                 className="w-5 h-5 mr-2 -ml-1"
@@ -33,10 +36,10 @@ export default function Orders() {
                 />
               </svg>
               Export
-            </a>
+            </Link>
 
-            <a
-              href="create-order.html"
+            <Link
+              to="/create-order"
               title="Create Order"
               className="hidden btn btn-primary sm:inline-flex"
               role="button"
@@ -56,7 +59,7 @@ export default function Orders() {
                 />
               </svg>
               Create Order
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -189,8 +192,8 @@ export default function Orders() {
                         <td>₹1,000</td>
                         <td className="nowrap">
                           <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="order-details.html"
+                            <Link
+                              to="/order-details"
                               title="View Order Details"
                               className="btn-circle"
                               aria-label="View"
@@ -217,7 +220,7 @@ export default function Orders() {
                                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                 />
                               </svg>
-                            </a>
+                            </Link>
 
                             <a
                               href="#"

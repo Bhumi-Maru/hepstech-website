@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Orders_Details() {
   return (
@@ -299,14 +300,14 @@ export default function Orders_Details() {
                     </p>
                   </div>
                   <div className="ml-auto">
-                    <a
-                      href="customer-details.html"
+                    <Link
+                      to="/customer-details"
                       title="View Customer Details"
                       className="btn btn-white"
                       role="button"
                     >
                       View
-                    </a>
+                    </Link>
                   </div>
                 </div>
 

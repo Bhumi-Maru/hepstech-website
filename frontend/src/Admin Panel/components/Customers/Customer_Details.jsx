@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Customer_Details() {
+  const { toggleModal } = useAdminGlobalContext();
   return (
     <>
       {/*START CUSTOMER DETAILS  */}
@@ -8,8 +11,8 @@ export default function Customer_Details() {
         <div className="sm:flex sm:items-baseline sm:justify-between">
           <div className="sm:flex sm:items-center sm:space-x-3">
             <nav aria-label="Back">
-              <a
-                href="customers.html"
+              <Link
+                to="/customers"
                 title="Back to Customers"
                 className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
               >
@@ -29,7 +32,7 @@ export default function Customer_Details() {
                   />
                 </svg>
                 <span className="block sm:hidden">Back</span>
-              </a>
+              </Link>
             </nav>
 
             {/* <!-- PAGE TITLE --> */}
@@ -135,8 +138,8 @@ export default function Customer_Details() {
                             <td>₹1,000</td>
                             <td>
                               <div className="-ml-2">
-                                <a
-                                  href="order-details.html"
+                                <Link
+                                  to="/order-details"
                                   title="View Order Details"
                                   className="btn-circle"
                                   aria-label="View"
@@ -163,7 +166,7 @@ export default function Customer_Details() {
                                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                     ></path>
                                   </svg>
-                                </a>
+                                </Link>
                               </div>
                             </td>
                           </tr>
@@ -184,11 +187,11 @@ export default function Customer_Details() {
 
                   <p>
                     <a
-                      href="#"
                       title=""
                       className="text-link primary"
                       data-toggle="modal"
                       data-target="#editWalletModal"
+                      onClick={() => toggleModal("editWalletAmount")}
                     >
                       Edit Wallet
                     </a>

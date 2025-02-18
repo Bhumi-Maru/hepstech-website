@@ -19,6 +19,10 @@ import Orders_Details from "./Admin Panel/components/Orders/Orders_Details";
 import Main_Category_Add_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Add_Modal";
 import { useAdminGlobalContext } from "./Admin Panel/context/Admin_Global_Context";
 import Sub_Category_Add_Modal from "./Admin Panel/components/Categories/Sub Categories/Sub_Category_Add_Modal";
+import Wallet_Popup_Modal from "./Admin Panel/components/Customers/Wallet_Popup_Modal";
+import Export_Details from "./Admin Panel/components/Orders/Export_Details";
+import Create_Order from "./Admin Panel/components/Orders/Create_Order";
+import Add_Custom_Items from "./Admin Panel/components/Orders/Add_Custom_Items";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -55,8 +59,10 @@ export default function Admin_Panel_App() {
                     />
                     {/* ORDERS */}
                     <Route path="/orders" element={<Orders />} />
-                    {/* ORDERS */}
+                    {/* ORDERS DETAILS */}
                     <Route path="/order-details" element={<Orders_Details />} />
+                    {/* CREATE ORDERS */}
+                    <Route path="/create-order" element={<Create_Order />} />
                     {/* CUSTOMERS */}
                     <Route path="/customers" element={<Customers />} />
                     {/* CUSTOMER DETAILS */}
@@ -96,6 +102,24 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addSubCategoryPopupModal && (
         <>
           <Sub_Category_Add_Modal />
+        </>
+      )}
+      {/* EDIT WALLET AMOUNT POPUP MODAL */}
+      {isOpenPopupModal.editWalletAmount && (
+        <>
+          <Wallet_Popup_Modal />
+        </>
+      )}
+      {/* EXPORT DETAILS POPUP MODAL */}
+      {isOpenPopupModal.exportDetails && (
+        <>
+          <Export_Details />
+        </>
+      )}
+      {/* ADD CUSTOM ITEM IN CREATE ORDER PAGE */}
+      {isOpenPopupModal.addCustomItems && (
+        <>
+          <Add_Custom_Items />
         </>
       )}
       {/* <!-- END WRAPPER --> */}

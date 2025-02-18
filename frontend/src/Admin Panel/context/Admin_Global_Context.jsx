@@ -6,10 +6,14 @@ const AdminGlobalProvider = ({ children }) => {
   //
   const [isActive, setIsActive] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [count, setCount] = useState(1);
   // Popup modals state
   const [isOpenPopupModal, setIsOpenPopupModal] = useState({
     addMainCategoryPopupModal: false,
     addSubCategoryPopupModal: false,
+    editWalletAmount: false,
+    exportDetails: false,
+    addCustomItems: false,
   });
 
   const handleActive = (page) => {
@@ -24,6 +28,16 @@ const AdminGlobalProvider = ({ children }) => {
     }));
   };
 
+  // Increment function
+  const increment = () => {
+    setCount((prev) => prev + 1);
+  };
+
+  // Decrement function
+  const decrement = () => {
+    setCount((prev) => (prev > 1 ? prev - 1 : 1)); // Prevent negative values
+  };
+
   return (
     <AdminGlobalContext.Provider
       value={{
@@ -34,6 +48,9 @@ const AdminGlobalProvider = ({ children }) => {
         isOpenPopupModal,
         setIsOpenPopupModal,
         toggleModal,
+        count,
+        increment,
+        decrement,
       }}
     >
       {children}

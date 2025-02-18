@@ -4813,6 +4813,9 @@ p.me-character-counter_invalid {
 .group:hover .group-hover\:opacity-75 {
   opacity: 0.75;
 }
+.select2-container .select2-selection--single {
+  height: 40px !important;
+}
 @media (min-width: 640px) {
   .sm\:order-3 {
     order: 3;
