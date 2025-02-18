@@ -2,7 +2,8 @@ import React from "react";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Add_Custom_Items() {
-  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { setIsOpenPopupModal, count, increment, decrement } =
+    useAdminGlobalContext();
   return (
     <>
       {/* START ADD CUSTOM ITEM */}
@@ -86,6 +87,7 @@ export default function Add_Custom_Items() {
                       <button
                         type="button"
                         className="absolute top-0 right-0 px-1 py-px border-l border-gray-300 rounded-none hover:bg-gray-100 focus:outline-none addQty"
+                        onClick={() => increment()}
                       >
                         <svg
                           className="w-3.5 h-3.5"
@@ -107,7 +109,7 @@ export default function Add_Custom_Items() {
                         type="text"
                         name=""
                         id="productQty2"
-                        value="1"
+                        value={count}
                         min="1"
                         max="100"
                         className="!w-24 !border-none font-semibold rounded-none"
@@ -116,6 +118,7 @@ export default function Add_Custom_Items() {
                       <button
                         type="button"
                         className="absolute bottom-0 right-0 px-1 py-px border-t border-l border-gray-300 rounded-none hover:bg-gray-100 focus:outline-none subQty"
+                        onClick={() => decrement()}
                       >
                         <svg
                           className="w-3.5 h-3.5"

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Customers() {
   return (
@@ -106,8 +107,8 @@ export default function Customers() {
                         <td>₹5,000</td>
                         <td>
                           <div className="flex items-center -ml-2 space-x-4">
-                            <a
-                              href="customer-details.html"
+                            <Link
+                              to="/customer-details"
                               title="View Customer Details"
                               className="btn-circle"
                               aria-label="View"
@@ -134,7 +135,7 @@ export default function Customers() {
                                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                 />
                               </svg>
-                            </a>
+                            </Link>
 
                             <div>
                               <label for="" className="sr-only">
