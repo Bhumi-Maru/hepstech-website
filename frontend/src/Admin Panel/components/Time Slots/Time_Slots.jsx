@@ -1,6 +1,8 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Time_Slots() {
+  const { toggleModal } = useAdminGlobalContext();
   return (
     <>
       {/* START TIME SLOTS PAGE */}
@@ -11,12 +13,12 @@ export default function Time_Slots() {
 
           <div className="hidden mt-4 sm:mt-0 sm:block">
             <a
-              href="#"
               title="Import Data"
               className="btn btn-primary"
               role="button"
               data-toggle="modal"
               data-target="#createTimeSlotModal"
+              onClick={() => toggleModal("createTimeSlots")}
             >
               <svg
                 className="w-5 h-5 mr-2 -ml-1"

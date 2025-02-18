@@ -23,6 +23,9 @@ import Wallet_Popup_Modal from "./Admin Panel/components/Customers/Wallet_Popup_
 import Export_Details from "./Admin Panel/components/Orders/Export_Details";
 import Create_Order from "./Admin Panel/components/Orders/Create_Order";
 import Add_Custom_Items from "./Admin Panel/components/Orders/Add_Custom_Items";
+import Create_Coupon_Codes from "./Admin Panel/components/Coupon Codes/Create_Coupon_Codes";
+import Create_Time_Slots from "./Admin Panel/components/Time Slots/Create_Time_Slots";
+import Deactive_Account from "./Admin Panel/components/Website Setup/Header Menu/Deactive_Account";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -72,6 +75,11 @@ export default function Admin_Panel_App() {
                     />
                     {/* COUPON CODES */}
                     <Route path="/coupon-codes" element={<Coupon_Codes />} />
+                    {/* CREATE COUPON CODES */}
+                    <Route
+                      path="/create-coupon-code"
+                      element={<Create_Coupon_Codes />}
+                    />
                     {/* SHIPPING */}
                     <Route path="/shipping" element={<Shipping />} />
                     {/* TIME SLOTS */}
@@ -120,6 +128,18 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addCustomItems && (
         <>
           <Add_Custom_Items />
+        </>
+      )}
+      {/* CREATE TIME SLOTS */}
+      {isOpenPopupModal.createTimeSlots && (
+        <>
+          <Create_Time_Slots />
+        </>
+      )}
+      {/* DEACTIVE ACCOUNT POPUP MODAL IN HEADER MENU PAGE */}
+      {isOpenPopupModal.deactiveAccountHeaderMenu && (
+        <>
+          <Deactive_Account />
         </>
       )}
       {/* <!-- END WRAPPER --> */}

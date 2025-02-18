@@ -1,6 +1,8 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function Header_Section_1() {
+  const { isChecked, handleCheckboxChange } = useAdminGlobalContext();
   return (
     <>
       {/* START HEADER SECTION PART 1 */}
@@ -143,6 +145,8 @@ export default function Header_Section_1() {
                         role="checkbox"
                         value=""
                         tabindex="0"
+                        checked={isChecked.isContact}
+                        onChange={() => handleCheckboxChange("isContact")}
                       />
                       <label for="contactLink"></label>
                     </div>
@@ -150,48 +154,52 @@ export default function Header_Section_1() {
                 </ul>
               </div>
 
-              <div className="hidden mt-4" id="contactLinkContent">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
-                  <div>
-                    <label for=""> Phone Number </label>
-                    <div className="mt-1">
-                      <input
-                        type="tel"
-                        name=""
-                        id=""
-                        placeholder=""
-                        className=""
-                      />
-                    </div>
-                  </div>
+              {isChecked.isContact && (
+                <>
+                  <div className="mt-4" id="contactLinkContent">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
+                      <div>
+                        <label for=""> Phone Number </label>
+                        <div className="mt-1">
+                          <input
+                            type="tel"
+                            name=""
+                            id=""
+                            placeholder=""
+                            className=""
+                          />
+                        </div>
+                      </div>
 
-                  <div>
-                    <label for=""> WhatsApp Number </label>
-                    <div className="mt-1">
-                      <input
-                        type="tel"
-                        name=""
-                        id=""
-                        placeholder=""
-                        className=""
-                      />
-                    </div>
-                  </div>
+                      <div>
+                        <label for=""> WhatsApp Number </label>
+                        <div className="mt-1">
+                          <input
+                            type="tel"
+                            name=""
+                            id=""
+                            placeholder=""
+                            className=""
+                          />
+                        </div>
+                      </div>
 
-                  <div>
-                    <label for=""> Email Address </label>
-                    <div className="mt-1">
-                      <input
-                        type="email"
-                        name=""
-                        id=""
-                        placeholder=""
-                        className=""
-                      />
+                      <div>
+                        <label for=""> Email Address </label>
+                        <div className="mt-1">
+                          <input
+                            type="email"
+                            name=""
+                            id=""
+                            placeholder=""
+                            className=""
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -211,25 +219,31 @@ export default function Header_Section_1() {
                     role="checkbox"
                     value=""
                     tabindex="0"
+                    checked={isChecked.isOfferBanner}
+                    onChange={() => handleCheckboxChange("isOfferBanner")}
                   />
                   <label for="offerBanner"></label>
                 </div>
               </div>
 
-              <div className="hidden mt-4" id="offerBannerContent">
-                <div>
-                  <label for=""> Enter Offer Title </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder=""
-                      className=""
-                    />
+              {isChecked.isOfferBanner && (
+                <>
+                  <div className="mt-4" id="offerBannerContent">
+                    <div>
+                      <label for=""> Enter Offer Title </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name=""
+                          id=""
+                          placeholder=""
+                          className=""
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           </div>
         </div>

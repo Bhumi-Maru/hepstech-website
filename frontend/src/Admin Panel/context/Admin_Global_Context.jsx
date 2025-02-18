@@ -14,10 +14,24 @@ const AdminGlobalProvider = ({ children }) => {
     editWalletAmount: false,
     exportDetails: false,
     addCustomItems: false,
+    createTimeSlots: false,
+    deactiveAccountHeaderMenu: false,
+  });
+  const [isChecked, setIsChecked] = useState({
+    isContact: false,
+    isOfferBanner: false,
   });
 
   const handleActive = (page) => {
     setIsActive(page);
+  };
+
+  // Handle checkbox change for specific checkbox
+  const handleCheckboxChange = (checkboxName) => {
+    setIsChecked((prevChecked) => ({
+      ...prevChecked,
+      [checkboxName]: !prevChecked[checkboxName], // Toggle the specific checkbox by name
+    }));
   };
 
   // Function to toggle a specific modal
@@ -51,6 +65,9 @@ const AdminGlobalProvider = ({ children }) => {
         count,
         increment,
         decrement,
+        isChecked,
+        setIsChecked,
+        handleCheckboxChange,
       }}
     >
       {children}

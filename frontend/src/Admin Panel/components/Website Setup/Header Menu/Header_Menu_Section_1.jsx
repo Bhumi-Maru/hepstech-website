@@ -1,6 +1,8 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function Header_Menu_Section_1() {
+  const { toggleModal } = useAdminGlobalContext();
   return (
     <>
       {/* START HEADER MENU SECTION 1 */}
@@ -432,6 +434,7 @@ export default function Header_Menu_Section_1() {
             className="btn btn-dark-light"
             data-toggle="modal"
             data-target="#confirmationModal"
+            onClick={() => toggleModal("deactiveAccountHeaderMenu")}
           >
             Discard
           </button>

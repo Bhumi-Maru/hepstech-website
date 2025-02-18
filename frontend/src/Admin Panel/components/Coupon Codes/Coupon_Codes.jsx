@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Coupon_Codes() {
   return (
@@ -10,8 +11,8 @@ export default function Coupon_Codes() {
           <h1 className="heading-1">Coupon Codes</h1>
 
           <div className="hidden mt-4 sm:mt-0 sm:block">
-            <a
-              href="create-coupon-code.html"
+            <Link
+              to="/create-coupon-code"
               title="Create Coupon Code"
               className="btn btn-primary"
               role="button"
@@ -31,7 +32,7 @@ export default function Coupon_Codes() {
                 />
               </svg>
               Create Coupon Code
-            </a>
+            </Link>
           </div>
         </div>
 
