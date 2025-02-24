@@ -1,6 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Store_Settings() {
+  const { isActive, handleActive } = useAdminGlobalContext();
   return (
     <>
       {/* START STORE SETTING PAGE */}
@@ -143,10 +146,13 @@ export default function Store_Settings() {
             </div>
           </a>
 
-          <a
-            href="checkout-settings.html"
+          <Link
+            to="/checkout-settings"
             title="Checkout Settings"
-            className="flex items-start group"
+            className={`flex items-start group ${
+              isActive === "Checkout Settings" ? "active" : ""
+            }`}
+            onClick={() => handleActive("Checkout Settings")}
           >
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">
               <svg
@@ -173,7 +179,7 @@ export default function Store_Settings() {
                 Customize your online checkout process
               </p>
             </div>
-          </a>
+          </Link>
 
           <a
             href="website-settings.html"
@@ -207,10 +213,14 @@ export default function Store_Settings() {
             </div>
           </a>
 
-          <a
-            href="application-settings.html"
+          {/* APPLICATION SETTINGS */}
+          <Link
+            to="/application-settings"
             title="Application Settings"
-            className="flex items-start group"
+            className={`flex items-start group ${
+              isActive === "Application Settings" ? "active" : ""
+            }`}
+            onClick={() => handleActive("Application Settings")}
           >
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">
               <svg
@@ -237,7 +247,7 @@ export default function Store_Settings() {
                 Integer nisl ligula accumsan non tincidunt
               </p>
             </div>
-          </a>
+          </Link>
 
           <a href="pages.html" title="Pages" className="flex items-start group">
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">

@@ -26,6 +26,10 @@ import Add_Custom_Items from "./Admin Panel/components/Orders/Add_Custom_Items";
 import Create_Coupon_Codes from "./Admin Panel/components/Coupon Codes/Create_Coupon_Codes";
 import Create_Time_Slots from "./Admin Panel/components/Time Slots/Create_Time_Slots";
 import Deactive_Account from "./Admin Panel/components/Website Setup/Header Menu/Deactive_Account";
+import Application_Setting from "./Admin Panel/components/Store Settings/Application Setting/Application_Setting";
+import Checkout_Settings from "./Admin Panel/components/Store Settings/Checkout Settings/Checkout_Settings";
+import Empty from "./Admin Panel/components/Empty/Empty";
+import Add_Popup_Modal from "./Admin Panel/components/Website Setup/Footer Section/Add_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -47,8 +51,10 @@ export default function Admin_Panel_App() {
                   <Routes>
                     {/* DASHBOARD */}
                     <Route path="/dashboard" element={<Dashboard />} />
+
                     {/* ALL MEDIA */}
                     <Route path="/all-media" element={<All_Media />} />
+
                     {/* MAIN CATEGORIES */}
                     <Route
                       path="/categories/main-categories"
@@ -60,37 +66,61 @@ export default function Admin_Panel_App() {
                       path="/categories/sub-categories"
                       element={<SubCategories />}
                     />
+
                     {/* ORDERS */}
                     <Route path="/orders" element={<Orders />} />
+
                     {/* ORDERS DETAILS */}
                     <Route path="/order-details" element={<Orders_Details />} />
+
                     {/* CREATE ORDERS */}
                     <Route path="/create-order" element={<Create_Order />} />
+
                     {/* CUSTOMERS */}
                     <Route path="/customers" element={<Customers />} />
+
                     {/* CUSTOMER DETAILS */}
                     <Route
                       path="/customer-details"
                       element={<Customer_Details />}
                     />
+
                     {/* COUPON CODES */}
                     <Route path="/coupon-codes" element={<Coupon_Codes />} />
+
                     {/* CREATE COUPON CODES */}
                     <Route
                       path="/create-coupon-code"
                       element={<Create_Coupon_Codes />}
                     />
+
                     {/* SHIPPING */}
                     <Route path="/shipping" element={<Shipping />} />
+
                     {/* TIME SLOTS */}
                     <Route path="/time-slots" element={<Time_Slots />} />
+
                     {/* WEBSITE SETUP */}
                     <Route
                       path="/website-setup/*"
                       element={<Website_Setup />}
                     />
+
                     {/* STORE SETTINGS */}
                     <Route path="/store-setting" element={<Store_Settings />} />
+                    {/* APPLICATION SETTINGS */}
+                    <Route
+                      path="/application-settings"
+                      element={<Application_Setting />}
+                    />
+                    {/* CHECKOUT SETTINGS */}
+                    <Route
+                      path="/checkout-settings"
+                      element={<Checkout_Settings />}
+                    />
+
+                    {/* EMPTY */}
+                    <Route path="/empty" element={<Empty />} />
                   </Routes>
                 </div>
                 {/* FOOTER */}
@@ -140,6 +170,13 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.deactiveAccountHeaderMenu && (
         <>
           <Deactive_Account />
+        </>
+      )}
+
+      {/* ADD PAGES AND ADD CUSTOME LINKS POPUP MODAL IN FOOTER SECTION PAGE */}
+      {isOpenPopupModal.addPagesAndaddCustomLink && (
+        <>
+          <Add_Popup_Modal />
         </>
       )}
       {/* <!-- END WRAPPER --> */}

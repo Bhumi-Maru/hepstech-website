@@ -456,8 +456,8 @@ export default function Sidebar() {
                     >
                       Home Page
                     </Link>
-                    <a
-                      href="footer-section.html"
+                    <Link
+                      to="/website-setup/footer-section"
                       title="Footer Section"
                       className={`!pl-12 nav-link ${
                         isActive === "Footer Section" ? "active" : ""
@@ -465,7 +465,7 @@ export default function Sidebar() {
                       onClick={() => handleActive("Footer Section")}
                     >
                       Footer Section
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
