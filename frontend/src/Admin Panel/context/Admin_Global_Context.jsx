@@ -18,6 +18,7 @@ const AdminGlobalProvider = ({ children }) => {
     deactiveAccountHeaderMenu: false,
     addPagesAndaddCustomLink: false,
     createNewPage: false,
+    startSelectFilesAndMedia: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

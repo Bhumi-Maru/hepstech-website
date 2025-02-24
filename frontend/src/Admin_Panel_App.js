@@ -36,6 +36,8 @@ import Pages from "./Admin Panel/components/Store Settings/Pages/Pages";
 import Create_New_Page_Popup_Modal from "./Admin Panel/components/Store Settings/Pages/Create_New_Page_Popup_Modal";
 import Plans_Subscriptions from "./Admin Panel/components/Store Settings/Plans & Subscriptions/Plans_Subscriptions";
 import Website_Settings from "./Admin Panel/components/Store Settings/Website Settings/Website_Settings";
+import Profile from "./Admin Panel/components/Profile/Profile";
+import Start_Select_Files_And_Media_Modal from "./Admin Panel/components/Profile/Start_Select_Files_And_Media_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -157,6 +159,9 @@ export default function Admin_Panel_App() {
                       element={<Website_Settings />}
                     />
 
+                    {/* Profile */}
+                    <Route path="/profile" element={<Profile />} />
+
                     {/* EMPTY */}
                     <Route path="/empty" element={<Empty />} />
                   </Routes>
@@ -224,6 +229,14 @@ export default function Admin_Panel_App() {
           <Create_New_Page_Popup_Modal />
         </>
       )}
+
+      {/*  START SELECT FILES MODAL IN PROFILE PAGE */}
+      {isOpenPopupModal.startSelectFilesAndMedia && (
+        <>
+          <Start_Select_Files_And_Media_Modal />
+        </>
+      )}
+
       {/* <!-- END WRAPPER --> */}
     </div>
   );

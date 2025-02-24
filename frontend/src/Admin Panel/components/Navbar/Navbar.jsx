@@ -1,5 +1,6 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { isActive } = useAdminGlobalContext();
@@ -160,8 +161,8 @@ export default function Navbar() {
                       </div>
 
                       <div className="py-1" role="none">
-                        <a
-                          href="profile.html"
+                        <Link
+                          to="/profile"
                           title="Profile"
                           className="dropdown-item"
                           role="menuitem"
@@ -182,7 +183,7 @@ export default function Navbar() {
                             />
                           </svg>
                           Profile
-                        </a>
+                        </Link>
                         <a
                           href="#"
                           title=""
