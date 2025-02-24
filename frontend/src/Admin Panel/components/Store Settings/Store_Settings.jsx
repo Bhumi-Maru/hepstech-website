@@ -12,10 +12,14 @@ export default function Store_Settings() {
         <h1 className="heading-1">Store Settings</h1>
 
         <div className="grid grid-cols-1 mt-6 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10">
-          <a
-            href="general-settings.html"
+          {/* GENERAL SETTINGS */}
+          <Link
+            to="/general-settings"
             title="General Settings"
-            className="flex items-start group"
+            className={`flex items-start group ${
+              isActive === "General Settings" ? "active" : ""
+            }`}
+            onClick={() => handleActive("General Settings")}
           >
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">
               <svg
@@ -48,7 +52,7 @@ export default function Store_Settings() {
                 View and update your store information
               </p>
             </div>
-          </a>
+          </Link>
 
           <a
             href="payment-methods.html"
@@ -82,10 +86,14 @@ export default function Store_Settings() {
             </div>
           </a>
 
-          <a
-            href="order-settings.html"
+          {/* ORDER SETTINGS */}
+          <Link
+            to="/order-settings"
             title="Order Settings"
-            className="flex items-start group"
+            className={`flex items-start group ${
+              isActive === "Order Settings" ? "active" : ""
+            }`}
+            onClick={() => handleActive("Order Settings")}
           >
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">
               <svg
@@ -112,10 +120,11 @@ export default function Store_Settings() {
                 Donec efficitur ullamcorper metus
               </p>
             </div>
-          </a>
+          </Link>
 
-          <a
-            href="plans-subscriptions.html"
+          {/* PLANS & SUBSCRIPTIONS */}
+          <Link
+            to="/plans-subscriptions"
             title="Plans & Subscriptions"
             className="flex items-start group"
           >
@@ -144,8 +153,9 @@ export default function Store_Settings() {
                 Manage and view your plans and subscriptions
               </p>
             </div>
-          </a>
+          </Link>
 
+          {/* CHECKOUT SETTINGS */}
           <Link
             to="/checkout-settings"
             title="Checkout Settings"
@@ -181,8 +191,9 @@ export default function Store_Settings() {
             </div>
           </Link>
 
-          <a
-            href="website-settings.html"
+          {/* WEBSITE SETTINGS */}
+          <Link
+            to="/website-settings"
             title="Website Settings"
             className="flex items-start group"
           >
@@ -211,7 +222,7 @@ export default function Store_Settings() {
                 Pellentesque consectetur condimentum nulla
               </p>
             </div>
-          </a>
+          </Link>
 
           {/* APPLICATION SETTINGS */}
           <Link
@@ -249,7 +260,15 @@ export default function Store_Settings() {
             </div>
           </Link>
 
-          <a href="pages.html" title="Pages" className="flex items-start group">
+          {/* PAGES */}
+          <Link
+            to="/pages"
+            title="Pages"
+            className={`flex items-start group ${
+              isActive === "Pages" ? "active" : ""
+            }`}
+            onClick={() => handleActive("Pages")}
+          >
             <div className="flex items-center justify-center flex-none rounded-md w-14 h-14 bg-skin-primary">
               <svg
                 className="w-8 h-8 text-white"
@@ -275,7 +294,7 @@ export default function Store_Settings() {
                 Manage your store's pages such as privacy and terms.
               </p>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
       {/* END STORE SETTING PAGE */}

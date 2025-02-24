@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Application_Setting_1() {
+export default function General_Settings_1() {
   return (
     <>
-      <div className="sm:flex sm:items-center sm:space-x-3">
+      {/* GENERAL SETTING 1 [HEADING] */}
+
+      <div className="sm:flex sm:items-center sm:space-x-4">
         <nav aria-label="Back">
           <Link
             to="/store-settings"
@@ -25,12 +27,12 @@ export default function Application_Setting_1() {
                 d="M11 17l-5-5m0 0l5-5m-5 5h12"
               />
             </svg>
-            <span className="block sm:hidden">Back</span>
+            <span className="block sm:hidden"> Back </span>
           </Link>
         </nav>
 
         {/* <!-- PAGE TITLE --> */}
-        <h1 className="mt-3 heading-1 sm:mt-0">Application Settings</h1>
+        <h1 className="mt-3 heading-1 sm:mt-0">General Settings</h1>
       </div>
     </>
   );

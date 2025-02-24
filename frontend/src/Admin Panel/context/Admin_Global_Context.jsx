@@ -17,6 +17,7 @@ const AdminGlobalProvider = ({ children }) => {
     createTimeSlots: false,
     deactiveAccountHeaderMenu: false,
     addPagesAndaddCustomLink: false,
+    createNewPage: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

@@ -30,6 +30,12 @@ import Application_Setting from "./Admin Panel/components/Store Settings/Applica
 import Checkout_Settings from "./Admin Panel/components/Store Settings/Checkout Settings/Checkout_Settings";
 import Empty from "./Admin Panel/components/Empty/Empty";
 import Add_Popup_Modal from "./Admin Panel/components/Website Setup/Footer Section/Add_Popup_Modal";
+import General_Settings from "./Admin Panel/components/Store Settings/General Settings/General_Settings";
+import Order_Settings from "./Admin Panel/components/Store Settings/Order Settings/Order_Settings";
+import Pages from "./Admin Panel/components/Store Settings/Pages/Pages";
+import Create_New_Page_Popup_Modal from "./Admin Panel/components/Store Settings/Pages/Create_New_Page_Popup_Modal";
+import Plans_Subscriptions from "./Admin Panel/components/Store Settings/Plans & Subscriptions/Plans_Subscriptions";
+import Website_Settings from "./Admin Panel/components/Store Settings/Website Settings/Website_Settings";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -107,16 +113,48 @@ export default function Admin_Panel_App() {
                     />
 
                     {/* STORE SETTINGS */}
-                    <Route path="/store-setting" element={<Store_Settings />} />
+                    <Route
+                      path="/store-settings"
+                      element={<Store_Settings />}
+                    />
+
                     {/* APPLICATION SETTINGS */}
                     <Route
                       path="/application-settings"
                       element={<Application_Setting />}
                     />
+
                     {/* CHECKOUT SETTINGS */}
                     <Route
                       path="/checkout-settings"
                       element={<Checkout_Settings />}
+                    />
+
+                    {/* GENERAL SETTINGS */}
+                    <Route
+                      path="/general-settings"
+                      element={<General_Settings />}
+                    />
+
+                    {/* ORDERS SETTINGS */}
+                    <Route
+                      path="/order-settings"
+                      element={<Order_Settings />}
+                    />
+
+                    {/* PAGES */}
+                    <Route path="/pages" element={<Pages />} />
+
+                    {/* Plans & Subscriptions */}
+                    <Route
+                      path="/plans-subscriptions"
+                      element={<Plans_Subscriptions />}
+                    />
+
+                    {/* WEBSSITE SSETTINGS */}
+                    <Route
+                      path="/website-settings"
+                      element={<Website_Settings />}
                     />
 
                     {/* EMPTY */}
@@ -177,6 +215,13 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addPagesAndaddCustomLink && (
         <>
           <Add_Popup_Modal />
+        </>
+      )}
+
+      {/* CREATE NEW PAGE IN PAGES */}
+      {isOpenPopupModal.createNewPage && (
+        <>
+          <Create_New_Page_Popup_Modal />
         </>
       )}
       {/* <!-- END WRAPPER --> */}

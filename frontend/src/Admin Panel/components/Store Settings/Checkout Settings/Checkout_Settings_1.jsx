@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Checkout_Settings_1() {
   return (
@@ -6,8 +7,8 @@ export default function Checkout_Settings_1() {
       {/* CHECKOUT SETTING HEADING AND BACK BTN  */}
       <div className="sm:flex sm:items-center sm:space-x-4">
         <nav aria-label="Back">
-          <a
-            href="store-settings.html"
+          <Link
+            to="/store-settings"
             title="Back to Store Settings"
             className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
           >
@@ -26,7 +27,7 @@ export default function Checkout_Settings_1() {
               />
             </svg>
             <span className="block sm:hidden"> Back </span>
-          </a>
+          </Link>
         </nav>
 
         {/* <!-- PAGE TITLE --> */}
