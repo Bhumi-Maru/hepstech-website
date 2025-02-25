@@ -4,7 +4,24 @@ const AdminGlobalContext = createContext();
 
 const AdminGlobalProvider = ({ children }) => {
   //
-  const [isActive, setIsActive] = useState("");
+  const [isActive, setIsActive] = useState("All"); // Track Active Page
+  const [activeTab, setActiveTab] = useState("All"); // Track active tab
+  const [toggleStates, setToggleStates] = useState({
+    estimatedShippingTime: false,
+    sizeChartStatus: false,
+    pricingDetails: false,
+    purchaseSelectedLocation: false,
+  }); // Toggle checkbox
+  // State to manage the collapse/expand behavior of the section
+  const [isSectionOpen, setIsSectionOpen] = useState({
+    descriptions_SectionOne: false,
+  });
+
+  // passowrd visible or invisible
+  const [passwordVisible, setPasswordVisible] = useState({
+    loginPassword: false,
+  });
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [count, setCount] = useState(1);
   // Popup modals state
@@ -25,10 +42,36 @@ const AdminGlobalProvider = ({ children }) => {
     isOfferBanner: false,
   });
 
+  //Track Active Page
   const handleActive = (page) => {
     setIsActive(page);
   };
 
+  // Toggle Password Visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  //Track Active TabName
+  const handleActiveTabName = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  //// Toggle the specific checkbox state
+  const handleToggle = (key) => {
+    setToggleStates((prev) => ({
+      ...prev,
+      [key]: !prev[key], // Toggle the specific checkbox state
+    }));
+  };
+
+  // Toggle function to change the state for a specific section
+  const handleToggleSection = (sectionId) => {
+    setIsSectionOpen((prev) => ({
+      ...prev,
+      [sectionId]: !prev[sectionId], // Toggle the specific section based on sectionId
+    }));
+  };
   // Handle checkbox change for specific checkbox
   const handleCheckboxChange = (checkboxName) => {
     setIsChecked((prevChecked) => ({
@@ -58,6 +101,11 @@ const AdminGlobalProvider = ({ children }) => {
   return (
     <AdminGlobalContext.Provider
       value={{
+        activeTab,
+        setActiveTab,
+        handleActiveTabName,
+        handleToggle,
+        toggleStates,
         isActive,
         handleActive,
         isDropdownOpen,
@@ -65,12 +113,17 @@ const AdminGlobalProvider = ({ children }) => {
         isOpenPopupModal,
         setIsOpenPopupModal,
         toggleModal,
+        isSectionOpen,
+        setIsSectionOpen,
+        handleToggleSection,
         count,
         increment,
         decrement,
         isChecked,
         setIsChecked,
         handleCheckboxChange,
+        passwordVisible,
+        togglePasswordVisibility,
       }}
     >
       {children}
