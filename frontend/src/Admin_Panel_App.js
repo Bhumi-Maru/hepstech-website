@@ -53,7 +53,6 @@ export default function Admin_Panel_App() {
 
   return (
     <div className="min-h-screen overflow-x-hidden font-sans antialiased text-gray-900 bg-gray-50 selection:bg-skin-primary selection:text-white">
-
       <Router basename="/admin">
         {/* <!-- START WRAPPER --> */}
         {/* Render login page without Sidebar, Navbar, or Footer */}
@@ -150,7 +149,7 @@ export default function Admin_Panel_App() {
                         />
                         {/* STORE SETTINGS */}
                         <Route
-                          path="/store-setting"
+                          path="/store-settings"
                           element={<Store_Settings />}
                         />
                       </Routes>
@@ -164,7 +163,6 @@ export default function Admin_Panel_App() {
           </>
         )}
       </Router>
-
 
       {/* <!-- START WRAPPER --> */}
       <div className="flex h-screen overflow-hidden">
