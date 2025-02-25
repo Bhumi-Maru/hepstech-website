@@ -33,6 +33,9 @@ const AdminGlobalProvider = ({ children }) => {
     addCustomItems: false,
     createTimeSlots: false,
     deactiveAccountHeaderMenu: false,
+    addPagesAndaddCustomLink: false,
+    createNewPage: false,
+    startSelectFilesAndMedia: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

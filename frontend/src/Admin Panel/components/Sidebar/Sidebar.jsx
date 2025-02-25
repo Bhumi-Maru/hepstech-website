@@ -456,8 +456,8 @@ export default function Sidebar() {
                     >
                       Home Page
                     </Link>
-                    <a
-                      href="footer-section.html"
+                    <Link
+                      to="/website-setup/footer-section"
                       title="Footer Section"
                       className={`!pl-12 nav-link ${
                         isActive === "Footer Section" ? "active" : ""
@@ -465,7 +465,7 @@ export default function Sidebar() {
                       onClick={() => handleActive("Footer Section")}
                     >
                       Footer Section
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -476,12 +476,12 @@ export default function Sidebar() {
             <div className="flex-shrink-0 block w-full pr-4 mt-2">
               {/* STORE SETTING  */}
               <Link
-                to="/store-setting"
+                to="/store-settings"
                 title="Store Settings"
                 className={`nav-link ${
-                  isActive === "Store Setting" ? "active" : ""
+                  isActive === "Store Settings" ? "active" : ""
                 }`}
-                onClick={() => handleActive("Store Setting")}
+                onClick={() => handleActive("Store Settings")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

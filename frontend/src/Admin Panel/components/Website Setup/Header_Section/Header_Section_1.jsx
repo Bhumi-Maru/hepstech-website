@@ -1,3 +1,4 @@
+//Header
 import React from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
@@ -24,7 +25,7 @@ export default function Header_Section_1() {
               <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
                 <img
                   className="w-auto h-16"
-                  src="../admin_assets/images/logo.png"
+                  src="../../admin_assets/images/logo.png"
                   alt=""
                   loading="lazy"
                 />
