@@ -218,8 +218,8 @@ export default function Sidebar() {
                     </Link>
 
                     {/* CREATE PRODUCTS */}
-                    <a
-                      href="create-product.html"
+                    <Link
+                      to="/products/create-product"
                       title="Create Product"
                       className={`!pl-12 nav-link ${
                         isActive === "Create Products" ? "active" : ""
@@ -227,11 +227,11 @@ export default function Sidebar() {
                       onClick={() => handleActive("Create products")}
                     >
                       Create Product
-                    </a>
+                    </Link>
 
                     {/* PRODUCT REVIEWS */}
-                    <a
-                      href="product-reviews.html"
+                    <Link
+                      to="/products/product-reviews"
                       title="Product Reviews"
                       className={`!pl-12 nav-link ${
                         isActive === "Products Reviews" ? "active" : ""
@@ -239,7 +239,7 @@ export default function Sidebar() {
                       onClick={() => handleActive("Products Reviews")}
                     >
                       Product Reviews
-                    </a>
+                    </Link>
                   </div>
 
                   {/* ORDERS */}
