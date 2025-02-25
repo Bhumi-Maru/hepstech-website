@@ -45,6 +45,8 @@ import { useAdminGlobalContext } from "./Admin Panel/context/Admin_Global_Contex
 import Payment_Methods from "./Admin Panel/components/Store Settings/Payment Methods/Payment_Methods";
 import Add_Main_Banner_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Main Banner Slider Section 1/Add_Main_Banner_Popup_Modal";
 import Category_Slider_8_Items_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Category Slider 8 Items Section 01 Section 2/Category_Slider_8_Items_Popup_Modal";
+import Add_Main_Banner_Section_3_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banner - Small - 1 Item section 3/Add_Main_Banner_Section_3_Popup_Modal";
+import Add_Products_Section_4_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Flash Sale Slider section 4/Add_Products_Section_4_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -291,6 +293,20 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.categorySlider8Items && (
         <>
           <Category_Slider_8_Items_Popup_Modal />
+        </>
+      )}
+
+      {/* Horizontal Banner - Small - 1 Item SECTION 3  IN HOME PAGE */}
+      {isOpenPopupModal.horizontal_Banner_Small_1_Item_section_3 && (
+        <>
+          <Add_Main_Banner_Section_3_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 4] Flash Sale Slider IN SECTION 4   */}
+      {isOpenPopupModal.flashSaleSlider && (
+        <>
+          <Add_Products_Section_4_Popup_Modal />
         </>
       )}
 
