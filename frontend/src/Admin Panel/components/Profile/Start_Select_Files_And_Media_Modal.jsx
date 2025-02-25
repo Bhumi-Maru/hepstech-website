@@ -4,13 +4,15 @@ import Upload_New from "./Upload_New";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Start_Select_Files_And_Media_Modal() {
-  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const [selectedTab, setSelectedTab] = useState("select"); // 'select' or 'upload'
   return (
     <>
       {/* START SELECT FILES AND MEDIA MODAL POPUP */}
       <div
-        class="modal active"
+        className={`modal ${
+          isOpenPopupModal.startSelectFilesAndMedia ? "active" : ""
+        }`}
         id="selectFilesModal"
         tabindex="-1"
         role="dialog"
@@ -57,7 +59,7 @@ export default function Start_Select_Files_And_Media_Modal() {
                     aria-controls="profile"
                     aria-selected="false"
                   >
-                    Upload New
+                    Upload
                   </button>
                 </li>
               </ul>
@@ -68,7 +70,12 @@ export default function Start_Select_Files_And_Media_Modal() {
                 class="!-mt-5 btn-close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => setIsOpenPopupModal(false)}
+                onClick={() => {
+                  setIsOpenPopupModal((prev) => ({
+                    ...prev,
+                    startSelectFilesAndMedia: false, // Close only the Select Files modal
+                  }));
+                }}
               >
                 <span class="sr-only">Close</span>
                 <svg
@@ -115,7 +122,12 @@ export default function Start_Select_Files_And_Media_Modal() {
                     class="btn btn-light"
                     data-dismiss="modal"
                     aria-label="Close Modal"
-                    onClick={() => setIsOpenPopupModal(false)}
+                    onClick={() => {
+                      setIsOpenPopupModal((prev) => ({
+                        ...prev,
+                        startSelectFilesAndMedia: false, // Close only the Select Files modal
+                      }));
+                    }}
                   >
                     Cancel
                   </button>
