@@ -42,6 +42,9 @@ import Website_Settings from "./Admin Panel/components/Store Settings/Website Se
 import Profile from "./Admin Panel/components/Profile/Profile";
 import Start_Select_Files_And_Media_Modal from "./Admin Panel/components/Profile/Start_Select_Files_And_Media_Modal";
 import { useAdminGlobalContext } from "./Admin Panel/context/Admin_Global_Context";
+import Payment_Methods from "./Admin Panel/components/Store Settings/Payment Methods/Payment_Methods";
+import Add_Main_Banner_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Main Banner Slider Section 1/Add_Main_Banner_Popup_Modal";
+import Category_Slider_8_Items_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Category Slider 8 Items Section 01 Section 2/Category_Slider_8_Items_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -169,6 +172,12 @@ export default function Admin_Panel_App() {
                           element={<General_Settings />}
                         />
 
+                        {/* GENERAL SETTINGS */}
+                        <Route
+                          path="/payment-methods"
+                          element={<Payment_Methods />}
+                        />
+
                         {/* ORDERS SETTINGS */}
                         <Route
                           path="/order-settings"
@@ -268,6 +277,20 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.startSelectFilesAndMedia && (
         <>
           <Start_Select_Files_And_Media_Modal />
+        </>
+      )}
+
+      {/* ADD MAIN BANNER SECTION 1 IN HOME PAGE */}
+      {isOpenPopupModal.addMainBanner && (
+        <>
+          <Add_Main_Banner_Popup_Modal />
+        </>
+      )}
+
+      {/* CATEGORY SLIDER - 8 ITEMS SECTION 2  IN HOME PAGE */}
+      {isOpenPopupModal.categorySlider8Items && (
+        <>
+          <Category_Slider_8_Items_Popup_Modal />
         </>
       )}
 

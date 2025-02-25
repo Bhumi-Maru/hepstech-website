@@ -54,8 +54,9 @@ export default function Store_Settings() {
             </div>
           </Link>
 
-          <a
-            href="payment-methods.html"
+          {/* PAYMENT METHODS */}
+          <Link
+            to="/payment-methods"
             title="Payment Methods"
             className="flex items-start group"
           >
@@ -84,7 +85,7 @@ export default function Store_Settings() {
                 Enable and manage your store's payment providers
               </p>
             </div>
-          </a>
+          </Link>
 
           {/* ORDER SETTINGS */}
           <Link

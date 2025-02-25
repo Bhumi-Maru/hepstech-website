@@ -11,6 +11,12 @@ const AdminGlobalProvider = ({ children }) => {
     sizeChartStatus: false,
     pricingDetails: false,
     purchaseSelectedLocation: false,
+    RazorPay: false,
+    PayTM: false,
+    Instamojo: false,
+    Stripe: false,
+    PayPal: false,
+    mainBannerSlider: false,
   }); // Toggle checkbox
   // State to manage the collapse/expand behavior of the section
   const [isSectionOpen, setIsSectionOpen] = useState({
@@ -36,6 +42,9 @@ const AdminGlobalProvider = ({ children }) => {
     addPagesAndaddCustomLink: false,
     createNewPage: false,
     startSelectFilesAndMedia: false,
+    // HOME PAGE
+    addMainBanner: false,
+    categorySlider8Items: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,
