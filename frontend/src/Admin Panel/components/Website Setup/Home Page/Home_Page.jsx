@@ -8,6 +8,10 @@ import Home_Page_Section_6 from "./Category Slider 02 Section 6/Home_Page_Sectio
 import Home_Page_Section_7 from "./Popular Products Slider 01 Section 7/Home_Page_Section_7";
 import Home_Page_Section_8 from "./Horizontal Banners - Large - 2 Items Section 8/Home_Page_Section_8";
 import Home_Page_Section_9 from "./Popular Products Slider 02 Section 9/Home_Page_Section_9";
+import Home_Page_Section_10 from "./Horizontal Banners - 2 Items Section 10/Home_Page_Section_10";
+import Home_Page_Section_11 from "./Best Selling Products Slider 01 Section 11/Home_Page_Section_11";
+import Home_Page_Section__12 from "./Vertical Banners - 4 Items Section 11/Home_Page_Section__12";
+import Home_Page_Section__13 from "./Horizontal Banners - Large - 1 Item Section 13/Home_Page_Section__13";
 
 export default function Home_Page() {
   return (
@@ -36,6 +40,14 @@ export default function Home_Page() {
           <Home_Page_Section_8 />
           {/* [HOME PAGE SECTION 9] Popular Products Slider 02  */}
           <Home_Page_Section_9 />
+          {/* [HOME PAGE SECTION 10] Horizontal Banners - 2 Items  */}
+          <Home_Page_Section_10 />
+          {/* [HOME PAGE SECTION 11] Best Selling Products Slider 01  */}
+          <Home_Page_Section_11 />
+          {/* [HOME PAGE SECTION 11]  Selling Products Slider 01  */}
+          <Home_Page_Section__12 />
+          {/* [HOME PAGE SECTION 13] Horizontal Banners - Large - 1 Item  */}
+          <Home_Page_Section__13 />
         </div>
       </div>
     </>
