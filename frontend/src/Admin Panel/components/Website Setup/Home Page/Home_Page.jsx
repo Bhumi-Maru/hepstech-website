@@ -3,6 +3,7 @@ import Home_Page_Section_1 from "./Main Banner Slider Section 1/Home_Page_Sectio
 import Home_Page_Section__2 from "./Category Slider 8 Items Section 01 Section 2/Home_Page_Section__2";
 import Home_Page_Section_3 from "./Horizontal Banner - Small - 1 Item section 3/Home_Page_Section_3";
 import Home_Page_Section_4 from "./Flash Sale Slider section 4/Home_Page_Section_4";
+import Home_Page_Section_5 from "./Horizontal Banners - 3 Items - Section 5/Home_Page_Section_5";
 
 export default function Home_Page() {
   return (
@@ -21,6 +22,8 @@ export default function Home_Page() {
           <Home_Page_Section_3 />
           {/* [HOME PAGE SECTION 4] Flash Sale Slider  */}
           <Home_Page_Section_4 />
+          {/* [HOME PAGE SECTION 5] Horizontal Banners - 3 Items  */}
+          <Home_Page_Section_5 />
         </div>
       </div>
     </>
