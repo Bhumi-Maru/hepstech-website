@@ -1,18 +1,16 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 
-export default function Add_Category_Section_6_Popup_Modal() {
+export default function Add_Main_Banner_Section_8_Popup_Modal() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
-
   return (
     <>
-      {/* [HOME PAGE SECTION 6] Horizontal Banners - 3 Items IN SECTION 6  */}
-
+      {/* [HOME PAGE SECTION 8] Horizontal Banners - Large - 2 Items IN SECTION 8  */}
       <div
         className={`modal ${
-          isOpenPopupModal.category_Slider_02 ? "active" : ""
+          isOpenPopupModal.horizontal_Banners_Large_2_Items ? "active" : ""
         }`}
-        id="addCategoryModal"
+        id="addMainBannerModal"
         tabindex="-1"
         role="dialog"
         aria-hidden="false"
@@ -21,7 +19,9 @@ export default function Add_Category_Section_6_Popup_Modal() {
         <div class="modal-dialog modal-dialog-centered sm:max-w-xl">
           <div class="modal-content" role="document">
             <div class="modal-header">
-              <h5 class="mr-12 text-lg font-medium truncate">Add Category</h5>
+              <h5 class="mr-12 text-lg font-medium truncate">
+                Add Main Banner
+              </h5>
 
               {/* <!-- close button --> */}
               <button
@@ -53,19 +53,6 @@ export default function Add_Category_Section_6_Popup_Modal() {
             <div class="modal-body">
               <form action="">
                 <div class="space-y-4">
-                  <div>
-                    <label for=""> Category Title </label>
-                    <div class="mt-1">
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Enter category title"
-                        class=""
-                      />
-                    </div>
-                  </div>
-
                   <div>
                     <label for=""> Select Main Category </label>
                     <div class="relative mt-1">
@@ -127,11 +114,84 @@ export default function Add_Category_Section_6_Popup_Modal() {
                   </div>
 
                   <div>
+                    <label for=""> Select Product </label>
+                    <div class="relative mt-1">
+                      <select
+                        class="select2-hidden-accessible"
+                        id="selectProduct"
+                        name="selectProduct"
+                        data-select2-id="select2-data-selectProduct"
+                        tabindex="-1"
+                        aria-hidden="true"
+                      >
+                        <option value="" data-select2-id="select2-data-6-zgic">
+                          Select Product
+                        </option>
+                        <option value="">Product 1</option>
+                        <option value="">Product 2</option>
+                        <option value="">Product 3</option>
+                      </select>
+                      <span
+                        class="select2 select2-container select2-container--default"
+                        dir="ltr"
+                        data-select2-id="select2-data-5-2zmi"
+                        style={{ width: "502px" }}
+                      >
+                        <span class="selection">
+                          <span
+                            class="select2-selection select2-selection--single"
+                            role="combobox"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            tabindex="0"
+                            aria-disabled="false"
+                            aria-labelledby="select2-selectProduct-container"
+                          >
+                            <span
+                              class="select2-selection__rendered"
+                              id="select2-selectProduct-container"
+                              role="textbox"
+                              aria-readonly="true"
+                              title="Select Product"
+                            >
+                              Select Product
+                            </span>
+                            <span
+                              class="select2-selection__arrow"
+                              role="presentation"
+                            >
+                              <b role="presentation"></b>
+                            </span>
+                          </span>
+                        </span>
+                        <span
+                          class="dropdown-wrapper"
+                          aria-hidden="true"
+                        ></span>
+                      </span>
+
+                      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg
+                          class="w-5 h-5 text-gray-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
                     <label for="">
                       Select Image
                       <span>
-                        (Image ratio should be 1:1 (Square). PNG, JPG, or JPEG
-                        up to 500kb)
+                        (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                        1MB)
                       </span>
                     </label>
                     <div class="mt-1.5">
@@ -188,7 +248,7 @@ export default function Add_Category_Section_6_Popup_Modal() {
                   Close
                 </button>
                 <button type="button" class="btn btn-primary">
-                  Add Category
+                  Add Banner
                 </button>
               </div>
             </div>

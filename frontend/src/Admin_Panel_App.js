@@ -49,6 +49,9 @@ import Add_Main_Banner_Section_3_Popup_Modal from "./Admin Panel/components/Webs
 import Add_Products_Section_4_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Flash Sale Slider section 4/Add_Products_Section_4_Popup_Modal";
 import Add_Banner_Section_5_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - 3 Items - Section 5/Add_Banner_Section_5_Popup_Modal";
 import Add_Category_Section_6_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Category Slider 02 Section 6/Add_Category_Section_6_Popup_Modal";
+import Add_Products_Section_7_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Popular Products Slider 01 Section 7/Add_Products_Section_7_Popup_Modal";
+import Add_Main_Banner_Section_8_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 2 Items Section 8/Add_Main_Banner_Section_8_Popup_Modal";
+import Add_Products_Section_9_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Popular Products Slider 02 Section 9/Add_Products_Section_9_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -323,6 +326,27 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.category_Slider_02 && (
         <>
           <Add_Category_Section_6_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 7] Popular Products Slider 01 IN SECTION 7  */}
+      {isOpenPopupModal.popular_Products_Slider_01 && (
+        <>
+          <Add_Products_Section_7_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 8] Horizontal Banners - Large - 2 Items IN SECTION 8  */}
+      {isOpenPopupModal.horizontal_Banners_Large_2_Items && (
+        <>
+          <Add_Main_Banner_Section_8_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 9]Popular Products Slider 02 IN SECTION 9  */}
+      {isOpenPopupModal.Popular_Products_Slider_02 && (
+        <>
+          <Add_Products_Section_9_Popup_Modal />
         </>
       )}
 
