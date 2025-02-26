@@ -52,6 +52,10 @@ import Add_Category_Section_6_Popup_Modal from "./Admin Panel/components/Website
 import Add_Products_Section_7_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Popular Products Slider 01 Section 7/Add_Products_Section_7_Popup_Modal";
 import Add_Main_Banner_Section_8_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 2 Items Section 8/Add_Main_Banner_Section_8_Popup_Modal";
 import Add_Products_Section_9_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Popular Products Slider 02 Section 9/Add_Products_Section_9_Popup_Modal";
+import Add_Main_Banner_10_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - 2 Items Section 10/Add_Main_Banner_10_Popup_Modal";
+import Add_Product_Section_11_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 01 Section 11/Add_Product_Section_11_Popup_Modal";
+import Add_Main_Banner_Section_12_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Vertical Banners - 4 Items Section 11/Add_Main_Banner_Section_12_Popup_Modal";
+import Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 1 Item Section 13/Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -343,12 +347,13 @@ export default function Admin_Panel_App() {
         </>
       )}
 
-      {/* [HOME PAGE SECTION 9]Popular Products Slider 02 IN SECTION 9  */}
+      {/* [HOME PAGE SECTION 9] Popular Products Slider 02 IN SECTION 9  */}
       {isOpenPopupModal.Popular_Products_Slider_02 && (
         <>
           <Add_Products_Section_9_Popup_Modal />
         </>
       )}
+
 
       {/* [HOME PAGE SECTION 9]Popular Products Slider 02 IN SECTION 9  */}
       {isOpenPopupModal.Popular_Products_Slider_02 && (
@@ -356,6 +361,39 @@ export default function Admin_Panel_App() {
           <Add_Products_Section_9_Popup_Modal />
         </>
       )}
+
+
+      {/* [HOME PAGE SECTION 10] Horizontal Banners - 2 Items IN SECTION 10  */}
+      {isOpenPopupModal.Horizontal_Banners_2_Items && (
+        <>
+          <Add_Main_Banner_10_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 11] Best Selling Products Slider 01 IN SECTION 11  */}
+      {isOpenPopupModal.best_Selling_Products_Slider_01 && (
+        <>
+          <Add_Product_Section_11_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 12] Vertical Banners - 4 Items IN SECTION 12  */}
+      {isOpenPopupModal.vertical_Banners_4_Items && (
+        <>
+          <Add_Main_Banner_Section_12_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 13] Horizontal Banners - Large - 1 Item IN SECTION 13  */}
+      {isOpenPopupModal.horizontal_Banners_Large_1_Item_Section_13 && (
+        <>
+          <Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal />
+        </>
+      )}
+
+
+      
+
 
       {/* <!-- END WRAPPER --> */}
     </div>
