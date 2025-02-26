@@ -354,6 +354,15 @@ export default function Admin_Panel_App() {
         </>
       )}
 
+
+      {/* [HOME PAGE SECTION 9]Popular Products Slider 02 IN SECTION 9  */}
+      {isOpenPopupModal.Popular_Products_Slider_02 && (
+        <>
+          <Add_Products_Section_9_Popup_Modal />
+        </>
+      )}
+
+
       {/* [HOME PAGE SECTION 10] Horizontal Banners - 2 Items IN SECTION 10  */}
       {isOpenPopupModal.Horizontal_Banners_2_Items && (
         <>
@@ -384,6 +393,7 @@ export default function Admin_Panel_App() {
 
 
       
+
 
       {/* <!-- END WRAPPER --> */}
     </div>
