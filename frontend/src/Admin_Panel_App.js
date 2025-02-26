@@ -66,6 +66,7 @@ import Best_Selling_Products_Slider_04_Section_20_Popup_Modal from "./Admin Pane
 import Add_Main_Banner_Section_21_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Vertical Banners - 4 Items Section 21/Add_Main_Banner_Section_21_Popup_Modal";
 import Add_Main_Banner_Section_22_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Small - 1 Items Section 21/Add_Main_Banner_Section_22_Popup_Modal";
 import Add_Testimonials_Section_23_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Testimonials - Reviews Slider Section 23/Add_Testimonials_Section_23_Popup_Modal";
+import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_SideBar";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -466,6 +467,13 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.testimonials_Reviews_Slider_Section_23 && (
         <>
           <Add_Testimonials_Section_23_Popup_Modal />
+        </>
+      )}
+
+      {/* SMALL SCREEN SIDEBAR WHEN CLICK ON MENU BTN */}
+      {isOpenPopupModal.small_Screen_Sidebar && (
+        <>
+          <Small_Screen_SideBar />
         </>
       )}
 
