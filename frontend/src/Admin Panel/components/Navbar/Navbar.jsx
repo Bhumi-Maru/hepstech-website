@@ -3,7 +3,7 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const { isActive } = useAdminGlobalContext();
+  const { isActive, handleToggle } = useAdminGlobalContext();
   return (
     <>
       {/* <!-- START HEADER --> */}
@@ -14,6 +14,7 @@ export default function Navbar() {
               className="-ml-2 btn-circle lg:hidden"
               data-toggle="drawer"
               data-target="#mobileNavigation"
+              onClick={() => handleToggle("small_Screen_Sidebar")}
             >
               <span className="sr-only"> Open sidebar </span>
               <svg
