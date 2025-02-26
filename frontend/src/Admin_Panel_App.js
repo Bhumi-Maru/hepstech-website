@@ -58,6 +58,14 @@ import Add_Main_Banner_Section_12_Popup_Modal from "./Admin Panel/components/Web
 import Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 1 Item Section 13/Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal";
 import Best_Selling_Products_Slider_02_Section_14_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 02 Section 14/Best_Selling_Products_Slider_02_Section_14_Popup_Modal";
 import Horizontal_Banners_Small_1_Item_Section_15 from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Small - 1 Item Section 15/Horizontal_Banners_Small_1_Item_Section_15";
+import VerticalBanners4Items_Section_16_PopupModal from "./Admin Panel/components/Website Setup/Home Page/Vertical Banners - 4 Items Section 16/VerticalBanners4Items_Section_16_PopupModal";
+import Best_Selling_Products_Slider_03_Section_17_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 03 Section 17/Best_Selling_Products_Slider_03_Section_17_Popup_Modal";
+import Add_Main_Banner_Section_18_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 2 Items Section 18/Add_Main_Banner_Section_18_Popup_Modal";
+import Add_Main_Banner_Section_19_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 1 Item Section 19/Add_Main_Banner_Section_19_Popup_Modal";
+import Best_Selling_Products_Slider_04_Section_20_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 04 Section 20/Best_Selling_Products_Slider_04_Section_20_Popup_Modal";
+import Add_Main_Banner_Section_21_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Vertical Banners - 4 Items Section 21/Add_Main_Banner_Section_21_Popup_Modal";
+import Add_Main_Banner_Section_22_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Small - 1 Items Section 21/Add_Main_Banner_Section_22_Popup_Modal";
+import Add_Testimonials_Section_23_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Testimonials - Reviews Slider Section 23/Add_Testimonials_Section_23_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -406,11 +414,60 @@ export default function Admin_Panel_App() {
       )}
 
       {/* [HOME PAGE SECTION 16] Vertical Banners - 4 Items IN SECTION 16  */}
-      {/* {isOpenPopupModal.vertical_Banners_4_Items_Section_16 && (
+      {isOpenPopupModal.vertical_Banners_4_Items_Section_16 && (
         <>
-          <Vertical_Banners_4_Items_Section_16_Popup_Modal />
+          <VerticalBanners4Items_Section_16_PopupModal />
         </>
-      )} */}
+      )}
+
+      {/* [HOME PAGE SECTION 17] Best Selling Products Slider 03 IN SECTION 17  */}
+      {isOpenPopupModal.best_Selling_Products_Slider_03_Section_17 && (
+        <>
+          <Best_Selling_Products_Slider_03_Section_17_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 18] Horizontal Banners - Large - 2 Items IN SECTION 18  */}
+      {isOpenPopupModal.horizontal_Banners_Large_2_Items_Section_18 && (
+        <>
+          <Add_Main_Banner_Section_18_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 19] Horizontal Banners - Large - 1 Items IN SECTION 19  */}
+      {isOpenPopupModal.horizontal_Banners_Large_1_Items_Section_19 && (
+        <>
+          <Add_Main_Banner_Section_19_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 20] Best Selling Products Slider 04 IN SECTION 20  */}
+      {isOpenPopupModal.best_Selling_Products_Slider_04_Section_20 && (
+        <>
+          <Best_Selling_Products_Slider_04_Section_20_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 21] Vertical Banners - 4 Items IN SECTION 21  */}
+      {isOpenPopupModal.vertical_Banners_4_Items_Section_21 && (
+        <>
+          <Add_Main_Banner_Section_21_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 22] Vertical Banners - 4 Items IN SECTION 22  */}
+      {isOpenPopupModal.horizontal_Banners_Small_1_Items_Section_22 && (
+        <>
+          <Add_Main_Banner_Section_22_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 23] Testimonials / Reviews Slider IN SECTION 23  */}
+      {isOpenPopupModal.testimonials_Reviews_Slider_Section_23 && (
+        <>
+          <Add_Testimonials_Section_23_Popup_Modal />
+        </>
+      )}
 
       {/* <!-- END WRAPPER --> */}
     </div>
