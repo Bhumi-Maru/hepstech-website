@@ -56,6 +56,8 @@ import Add_Main_Banner_10_Popup_Modal from "./Admin Panel/components/Website Set
 import Add_Product_Section_11_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 01 Section 11/Add_Product_Section_11_Popup_Modal";
 import Add_Main_Banner_Section_12_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Vertical Banners - 4 Items Section 11/Add_Main_Banner_Section_12_Popup_Modal";
 import Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Large - 1 Item Section 13/Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal";
+import Best_Selling_Products_Slider_02_Section_14_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Best Selling Products Slider 02 Section 14/Best_Selling_Products_Slider_02_Section_14_Popup_Modal";
+import Horizontal_Banners_Small_1_Item_Section_15 from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Small - 1 Item Section 15/Horizontal_Banners_Small_1_Item_Section_15";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -354,14 +356,12 @@ export default function Admin_Panel_App() {
         </>
       )}
 
-
       {/* [HOME PAGE SECTION 9]Popular Products Slider 02 IN SECTION 9  */}
       {isOpenPopupModal.Popular_Products_Slider_02 && (
         <>
           <Add_Products_Section_9_Popup_Modal />
         </>
       )}
-
 
       {/* [HOME PAGE SECTION 10] Horizontal Banners - 2 Items IN SECTION 10  */}
       {isOpenPopupModal.Horizontal_Banners_2_Items && (
@@ -391,9 +391,26 @@ export default function Admin_Panel_App() {
         </>
       )}
 
+      {/* [HOME PAGE SECTION 14] Best Selling Products Slider 02 IN SECTION 14  */}
+      {isOpenPopupModal.best_Selling_Products_Slider_02_Section_14 && (
+        <>
+          <Best_Selling_Products_Slider_02_Section_14_Popup_Modal />
+        </>
+      )}
 
-      
+      {/* [HOME PAGE SECTION 15] Horizontal Banners - Small - 1 Item IN SECTION 15  */}
+      {isOpenPopupModal.horizontal_Banners_Small_1_Item_Section_15 && (
+        <>
+          <Horizontal_Banners_Small_1_Item_Section_15 />
+        </>
+      )}
 
+      {/* [HOME PAGE SECTION 16] Vertical Banners - 4 Items IN SECTION 16  */}
+      {/* {isOpenPopupModal.vertical_Banners_4_Items_Section_16 && (
+        <>
+          <Vertical_Banners_4_Items_Section_16_Popup_Modal />
+        </>
+      )} */}
 
       {/* <!-- END WRAPPER --> */}
     </div>

@@ -56,6 +56,9 @@ const AdminGlobalProvider = ({ children }) => {
     best_Selling_Products_Slider_01: false,
     vertical_Banners_4_Items: false,
     horizontal_Banners_Large_1_Item_Section_13: false,
+    best_Selling_Products_Slider_02_Section_14: false,
+    horizontal_Banners_Small_1_Item_Section_15: false,
+    // vertical_Banners_4_Items_Section_16: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

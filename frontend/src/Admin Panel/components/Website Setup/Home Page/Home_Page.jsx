@@ -12,6 +12,9 @@ import Home_Page_Section_10 from "./Horizontal Banners - 2 Items Section 10/Home
 import Home_Page_Section_11 from "./Best Selling Products Slider 01 Section 11/Home_Page_Section_11";
 import Home_Page_Section__12 from "./Vertical Banners - 4 Items Section 11/Home_Page_Section__12";
 import Home_Page_Section__13 from "./Horizontal Banners - Large - 1 Item Section 13/Home_Page_Section__13";
+import Home_Page_Section__14 from "./Best Selling Products Slider 02 Section 14/Home_Page_Section__14";
+import Home_Page_Section__15 from "./Horizontal Banners - Small - 1 Item Section 15/Home_Page_Section__15";
+import Home_Page_Section__16 from "./Vertical Banners - 4 Items Section 16/Home_Page_Section__16";
 
 export default function Home_Page() {
   return (
@@ -48,6 +51,12 @@ export default function Home_Page() {
           <Home_Page_Section__12 />
           {/* [HOME PAGE SECTION 13] Horizontal Banners - Large - 1 Item  */}
           <Home_Page_Section__13 />
+          {/* [HOME PAGE SECTION 14] Best Selling Products Slider 02   */}
+          <Home_Page_Section__14 />
+          {/* [HOME PAGE SECTION 15] Horizontal Banners - Small - 1 Item  */}
+          <Home_Page_Section__15 />
+          {/* [HOME PAGE SECTION 16] Vertical Banners - 4 Items  */}
+          <Home_Page_Section__16 />
         </div>
       </div>
     </>
