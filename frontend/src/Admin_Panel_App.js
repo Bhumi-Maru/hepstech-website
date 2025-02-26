@@ -47,6 +47,8 @@ import Add_Main_Banner_Popup_Modal from "./Admin Panel/components/Website Setup/
 import Category_Slider_8_Items_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Category Slider 8 Items Section 01 Section 2/Category_Slider_8_Items_Popup_Modal";
 import Add_Main_Banner_Section_3_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banner - Small - 1 Item section 3/Add_Main_Banner_Section_3_Popup_Modal";
 import Add_Products_Section_4_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Flash Sale Slider section 4/Add_Products_Section_4_Popup_Modal";
+import Add_Banner_Section_5_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - 3 Items - Section 5/Add_Banner_Section_5_Popup_Modal";
+import Add_Category_Section_6_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Category Slider 02 Section 6/Add_Category_Section_6_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -307,6 +309,20 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.flashSaleSlider && (
         <>
           <Add_Products_Section_4_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 5] Horizontal Banners - 3 Items IN SECTION 5   */}
+      {isOpenPopupModal.horizontal_Banners_3_Items && (
+        <>
+          <Add_Banner_Section_5_Popup_Modal />
+        </>
+      )}
+
+      {/* [HOME PAGE SECTION 6] Horizontal Banners - 3 Items IN SECTION 6  */}
+      {isOpenPopupModal.category_Slider_02 && (
+        <>
+          <Add_Category_Section_6_Popup_Modal />
         </>
       )}
 
