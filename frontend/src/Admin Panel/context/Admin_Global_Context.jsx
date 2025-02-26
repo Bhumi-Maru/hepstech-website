@@ -58,7 +58,13 @@ const AdminGlobalProvider = ({ children }) => {
     horizontal_Banners_Large_1_Item_Section_13: false,
     best_Selling_Products_Slider_02_Section_14: false,
     horizontal_Banners_Small_1_Item_Section_15: false,
-    // vertical_Banners_4_Items_Section_16: false,
+    vertical_Banners_4_Items_Section_16: false,
+    best_Selling_Products_Slider_03_Section_17: false,
+    horizontal_Banners_Large_2_Items_Section_18: false,
+    best_Selling_Products_Slider_04_Section_20: false,
+    vertical_Banners_4_Items_Section_21: false,
+    horizontal_Banners_Small_1_Items_Section_22: false,
+    testimonials_Reviews_Slider_Section_23: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

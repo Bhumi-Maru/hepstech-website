@@ -15,6 +15,13 @@ import Home_Page_Section__13 from "./Horizontal Banners - Large - 1 Item Section
 import Home_Page_Section__14 from "./Best Selling Products Slider 02 Section 14/Home_Page_Section__14";
 import Home_Page_Section__15 from "./Horizontal Banners - Small - 1 Item Section 15/Home_Page_Section__15";
 import Home_Page_Section__16 from "./Vertical Banners - 4 Items Section 16/Home_Page_Section__16";
+import Home_Page_Section__17 from "./Best Selling Products Slider 03 Section 17/Home_Page_Section__17";
+import Home_Page_Section__18 from "./Horizontal Banners - Large - 2 Items Section 18/Home_Page_Section__18";
+import Home_Page_Section__19 from "./Horizontal Banners - Large - 1 Item Section 19/Home_Page_Section__19";
+import Home_Page_Section__20 from "./Best Selling Products Slider 04 Section 20/Home_Page_Section__20";
+import Home_Page_Section__21 from "./Vertical Banners - 4 Items Section 21/Home_Page_Section__21";
+import Home_Page_Section__22 from "./Horizontal Banners - Small - 1 Items Section 21/Home_Page_Section__22";
+import Home_Page_Section__23 from "./Testimonials - Reviews Slider Section 23/Home_Page_Section__23";
 
 export default function Home_Page() {
   return (
@@ -57,6 +64,20 @@ export default function Home_Page() {
           <Home_Page_Section__15 />
           {/* [HOME PAGE SECTION 16] Vertical Banners - 4 Items  */}
           <Home_Page_Section__16 />
+          {/* [HOME PAGE SECTION 17] Best Selling Products Slider 03  */}
+          <Home_Page_Section__17 />
+          {/* [HOME PAGE SECTION 18] Horizontal Banners - Large - 2 Items  */}
+          <Home_Page_Section__18 />
+          {/* [HOME PAGE SECTION 19] Horizontal Banners - Large - 1 Item  */}
+          <Home_Page_Section__19 />
+          {/* [HOME PAGE SECTION 20] Best Selling Products Slider 04  */}
+          <Home_Page_Section__20 />
+          {/* [HOME PAGE SECTION 21] Vertical Banners - 4 Items  */}
+          <Home_Page_Section__21 />
+          {/* [HOME PAGE SECTION 22] Horizontal Banners - Small - 1 Items  */}
+          <Home_Page_Section__22 />
+          {/* [HOME PAGE SECTION 23] Testimonials / Reviews Slider  */}
+          <Home_Page_Section__23 />
         </div>
       </div>
     </>
