@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./Admin Panel/components/Sidebar/Sidebar";
 import Navbar from "./Admin Panel/components/Navbar/Navbar";
@@ -70,6 +70,13 @@ import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_S
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
+
+  useEffect(() => {
+    const overlay = document.querySelector(".overlay");
+    if (overlay) {
+      overlay.remove();
+    }
+  }, []);
 
   // Check if the current route is for login
   const isLoginPage = window.location.pathname === "/admin";
@@ -242,6 +249,13 @@ export default function Admin_Panel_App() {
             <Small_Screen_SideBar />
           </>
         )}
+
+        {/* DEACTIVE ACCOUNT POPUP MODAL IN HEADER MENU PAGE */}
+        {isOpenPopupModal.deactiveAccountHeaderMenu && (
+          <>
+            <Deactive_Account />
+          </>
+        )}
       </Router>
 
       {/* MAIN CATEGORY ADD POPUP MODAL */}
@@ -278,12 +292,6 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.createTimeSlots && (
         <>
           <Create_Time_Slots />
-        </>
-      )}
-      {/* DEACTIVE ACCOUNT POPUP MODAL IN HEADER MENU PAGE */}
-      {isOpenPopupModal.deactiveAccountHeaderMenu && (
-        <>
-          <Deactive_Account />
         </>
       )}
 

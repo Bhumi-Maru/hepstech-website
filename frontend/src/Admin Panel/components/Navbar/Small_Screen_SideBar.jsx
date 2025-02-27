@@ -20,8 +20,10 @@ export default function Small_Screen_SideBar() {
         }`}
         id="mobileNavigation"
         tabindex="-1"
+        role="dialog"
+        aria-hidden="false"
       >
-        <div class="modal-overlay" tabindex="-1"></div>
+        <div className="modal-overlay" tabindex="-1"></div>
         <div className="h-16 drawer-header">
           <div className="flex items-center flex-shrink-0">
             <svg
