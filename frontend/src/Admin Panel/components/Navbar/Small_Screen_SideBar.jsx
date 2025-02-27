@@ -1,17 +1,27 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
+import { Link } from "react-router-dom";
 
 export default function Small_Screen_SideBar() {
-  const { isOpenPopupModal } = useAdminGlobalContext();
+  const {
+    isActive,
+    handleActive,
+    setIsDropdownOpen,
+    isDropdownOpen,
+    isOpenPopupModal,
+    setIsOpenPopupModal,
+    toggleDropdown,
+  } = useAdminGlobalContext();
   return (
     <>
       <aside
         className={`max-w-xs sm:max-w-sm drawer drawer-left ${
-          isOpenPopupModal.Small_Screen_SideBar ? "active" : ""
+          isOpenPopupModal?.small_Screen_Sidebar ? "active" : "hidden"
         }`}
         id="mobileNavigation"
         tabindex="-1"
       >
+        <div class="modal-overlay" tabindex="-1"></div>
         <div className="h-16 drawer-header">
           <div className="flex items-center flex-shrink-0">
             <svg
@@ -34,6 +44,7 @@ export default function Small_Screen_SideBar() {
             className="btn-close"
             data-dismiss="drawer"
             aria-label="Close"
+            onClick={() => setIsOpenPopupModal(false)}
           >
             <svg
               className="w-6 h-6"
@@ -54,7 +65,14 @@ export default function Small_Screen_SideBar() {
         <div className="drawer-body">
           <nav className="flex flex-col flex-grow h-full overflow-y-auto">
             <div className="flex-1 pr-4 mt-4 space-y-1">
-              <a href="dashboard.html" title="Dashboard" className="nav-link">
+              <Link
+                to="/dashboard"
+                title="Dashboard"
+                className={`nav-link ${
+                  isActive === "Dashboard" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Dashboard")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -70,9 +88,16 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 Dashboard
-              </a>
+              </Link>
 
-              <a href="all-media.html" title="All Media" className="nav-link">
+              <Link
+                to="/all-media"
+                title="All Media"
+                className={`nav-link ${
+                  isActive === "All Media" ? "active" : ""
+                }`}
+                onClick={() => handleActive("All Media")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -88,14 +113,20 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 All Media
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                to="/categories"
                 title="Categories"
-                className="nav-link"
                 data-toggle="collapse"
                 data-target="#categoryLinks"
+                className={`nav-link ${
+                  isActive === "Categories" ? "active" : ""
+                }`}
+                onClick={() => {
+                  handleActive("Categories");
+                  toggleDropdown("categories");
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +144,9 @@ export default function Small_Screen_SideBar() {
                 </svg>
                 Categories
                 <svg
-                  className="w-5 h-5 ml-auto"
+                  className={`w-5 h-5 ml-auto transform transition-transform ${
+                    isDropdownOpen ? "rotate-180" : "rotate-0"
+                  }`}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -124,33 +157,46 @@ export default function Small_Screen_SideBar() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-              </a>
+              </Link>
 
-              <div
-                className="hidden mt-2 space-y-1 collapse"
-                id="categoryLinks"
-              >
-                <a
-                  href="main-categories.html"
-                  title="Main Categories"
-                  className="!pl-12 nav-link"
-                >
-                  Main Categories
-                </a>
+              {isDropdownOpen.categories && (
+                <>
+                  <div className="mt-2 space-y-1 collapse" id="categoryLinks">
+                    <Link
+                      to="/categories/main-categories"
+                      title="Main Categories"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Main Categories" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Main Categories")}
+                    >
+                      Main Categories
+                    </Link>
 
-                <a
-                  href="sub-categories.html"
-                  title="Sub Categories"
-                  className="!pl-12 nav-link"
-                >
-                  Sub Categories
-                </a>
-              </div>
+                    <Link
+                      to="/categories/sub-categories"
+                      title="Sub Categories"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Sub Categories" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Sub Categories")}
+                    >
+                      Sub Categories
+                    </Link>
+                  </div>
+                </>
+              )}
 
-              <a
-                href="#"
+              <Link
+                to="/products"
                 title="Products"
-                className="nav-link"
+                className={`nav-link ${
+                  isActive === "Products" ? "active" : ""
+                }`}
+                onClick={() => {
+                  handleActive("Products");
+                  toggleDropdown("products");
+                }}
                 data-toggle="collapse"
                 data-target="#productsLinks"
               >
@@ -181,38 +227,53 @@ export default function Small_Screen_SideBar() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-              </a>
+              </Link>
 
-              <div
-                className="hidden mt-2 space-y-1 collapse"
-                id="productsLinks"
+              {isDropdownOpen.products && (
+                <>
+                  <div className="mt-2 space-y-1 collapse" id="productsLinks">
+                    <Link
+                      to="/products/all-products"
+                      title="All Products"
+                      className={`!pl-12 nav-link ${
+                        isActive === "All Products" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("All Products")}
+                    >
+                      All Products
+                    </Link>
+
+                    <Link
+                      to="/products/create-product"
+                      title="Create Product"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Create Products" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Create products")}
+                    >
+                      Create Product
+                    </Link>
+
+                    <Link
+                      to="/products/product-reviews"
+                      title="Product Reviews"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Products Reviews" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Products Reviews")}
+                    >
+                      Product Reviews
+                    </Link>
+                  </div>
+                </>
+              )}
+
+              <Link
+                to="/orders"
+                title="Orders"
+                className={`nav-link ${isActive === "Orders" ? "active" : ""}`}
+                onClick={() => handleActive("Orders")}
               >
-                <a
-                  href="products.html"
-                  title="All Products"
-                  className="!pl-12 nav-link"
-                >
-                  All Products
-                </a>
-
-                <a
-                  href="create-product.html"
-                  title="Create Product"
-                  className="!pl-12 nav-link"
-                >
-                  Create Product
-                </a>
-
-                <a
-                  href="product-reviews.html"
-                  title="Product Reviews"
-                  className="!pl-12 nav-link"
-                >
-                  Product Reviews
-                </a>
-              </div>
-
-              <a href="orders.html" title="Orders" className="nav-link">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -231,9 +292,16 @@ export default function Small_Screen_SideBar() {
                 <span className="px-3 py-1 ml-auto text-sm bg-gray-200 rounded-full">
                   11
                 </span>
-              </a>
+              </Link>
 
-              <a href="customers.html" title="Customers" className="nav-link">
+              <Link
+                to="/customers"
+                title="Customers"
+                className={`nav-link ${
+                  isActive === "Customers" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Customers")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -249,12 +317,15 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 Customers
-              </a>
+              </Link>
 
-              <a
-                href="coupon-codes.html"
+              <Link
+                to="/coupon-codes"
                 title=" Coupon Codes"
-                className="nav-link"
+                className={`nav-link ${
+                  isActive === "Coupon Codes" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Coupon Codes")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -271,9 +342,16 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 Coupon Codes
-              </a>
+              </Link>
 
-              <a href="shipping.html" title="Shipping" className="nav-link">
+              <Link
+                to="/shipping"
+                title="Shipping"
+                className={`nav-link ${
+                  isActive === "Shipping" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Shipping")}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -295,12 +373,18 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 Shipping
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                to="/website-setup"
                 title="Website Setup"
-                className="nav-link active"
+                className={`nav-link ${
+                  isActive === "Website Setup" ? "active" : ""
+                }`}
+                onClick={() => {
+                  handleActive("Website Setup");
+                  toggleDropdown("website_Setup");
+                }}
                 data-toggle="collapse"
                 data-target="#websiteSetupLinks"
                 aria-current="page"
@@ -332,50 +416,69 @@ export default function Small_Screen_SideBar() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-              </a>
+              </Link>
 
-              <div
-                className="hidden mt-2 space-y-1 collapse"
-                id="websiteSetupLinks"
-                style="display: block;"
-              >
-                <a
-                  href="header-section.html"
-                  title="Header Section"
-                  className="!pl-12 nav-link"
-                >
-                  Header Section
-                </a>
-                <a
-                  href="header-menu.html"
-                  title="Header Menu"
-                  className="!pl-12 nav-link"
-                >
-                  Header Menu
-                </a>
-                <a
-                  href="home-page.html"
-                  title="Home Page"
-                  className="!pl-12 nav-link active"
-                  aria-current="page"
-                >
-                  Home Page
-                </a>
-                <a
-                  href="footer-section.html"
-                  title="Footer Section"
-                  className="!pl-12 nav-link"
-                >
-                  Footer Section
-                </a>
-              </div>
+              {isDropdownOpen.website_Setup && (
+                <>
+                  <div
+                    className="mt-2 space-y-1 collapse"
+                    id="websiteSetupLinks"
+                    style={{ display: "block" }}
+                  >
+                    <Link
+                      to="/website-setup/header-section"
+                      title="Header Section"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Header Section" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Header Section")}
+                    >
+                      Header Section
+                    </Link>
+                    <Link
+                      to="/website-setup/header-menu"
+                      title="Header Menu"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Header Menu" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Header Menu")}
+                    >
+                      Header Menu
+                    </Link>
+                    <Link
+                      to="/website-setup/home-page"
+                      title="Home Page"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Home Page" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Home Page")}
+                      aria-current="page"
+                    >
+                      Home Page
+                    </Link>
+                    <Link
+                      to="/website-setup/footer-section"
+                      title="Footer Section"
+                      className={`!pl-12 nav-link ${
+                        isActive === "Footer Section" ? "active" : ""
+                      }`}
+                      onClick={() => handleActive("Footer Section")}
+                    >
+                      Footer Section
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex-shrink-0 block w-full pb-4 pr-4 mt-5 space-y-1">
-              <a
-                href="store-settings.html"
+              <Link
+                to="/store-settings"
                 title="Store Settings"
-                className="nav-link"
+                className={`nav-link ${
+                  isActive === "Store Settings" ? "active" : ""
+                }`}
+                onClick={() => handleActive("Store Settings")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -398,7 +501,7 @@ export default function Small_Screen_SideBar() {
                   ></path>
                 </svg>
                 Store Settings
-              </a>
+              </Link>
             </div>
           </nav>
         </div>

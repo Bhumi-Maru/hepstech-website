@@ -11,10 +11,13 @@ export default function Sidebar() {
       <nav className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col flex-1 w-56 border-r border-gray-200 2xl:w-64">
           <div className="relative flex-shrink-0 px-4 bg-white border-b border-gray-200">
-            <a
-              href="dashboard.html"
+            <Link
+              to="/dashboard"
               title="Hepstech"
-              className="flex items-center h-14"
+              className={`flex items-center h-14 ${
+                isActive === "Dashboard" ? "active" : ""
+              }`}
+              onClick={() => handleActive("Dashboard")}
             >
               <svg
                 className="w-8 h-8 text-skin-primary"
@@ -28,7 +31,7 @@ export default function Sidebar() {
               <p className="ml-3 text-2xl font-extrabold leading-none tracking-tight truncate">
                 Hepstech
               </p>
-            </a>
+            </Link>
           </div>
 
           <div className="relative z-0 flex-1 overflow-x-hidden overflow-y-auto focus:outline-none">
@@ -383,7 +386,7 @@ export default function Sidebar() {
 
                   {/* WEBSITE SETUP */}
                   <Link
-                    href="/website-setup"
+                    to="/website-setup"
                     title="Website Setup"
                     className={`nav-link ${
                       isActive === "Website Setup" ? "active" : ""
