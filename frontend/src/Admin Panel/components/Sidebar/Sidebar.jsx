@@ -386,7 +386,7 @@ export default function Sidebar() {
 
                   {/* WEBSITE SETUP */}
                   <Link
-                    to="/website-setup"
+                    to="#"
                     title="Website Setup"
                     className={`nav-link ${
                       isActive === "Website Setup" ? "active" : ""

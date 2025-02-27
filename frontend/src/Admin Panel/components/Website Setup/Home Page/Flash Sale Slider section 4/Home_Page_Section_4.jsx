@@ -1,8 +1,10 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import useSelect2AndList from "../../../../hooks/useSelect2AndList";
 
 export default function Home_Page_Section_4() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  useSelect2AndList();
   return (
     <>
       {/* [HOME PAGE SECTION 4] Flash Sale Slider  */}
@@ -75,7 +77,7 @@ export default function Home_Page_Section_4() {
                   <div className="relative mt-1">
                     <select
                       className="select2-hidden-accessible"
-                      id="selectMainCategory"
+                      id="selectMainCategory_Flash_Sale_Slider"
                       name="selectMainCategory"
                       data-select2-id="select2-data-selectMainCategory"
                       tabindex="-1"
@@ -88,44 +90,6 @@ export default function Home_Page_Section_4() {
                       <option value="">Main Category 2</option>
                       <option value="">Main Category 3</option>
                     </select>
-                    <span
-                      className="select2 select2-container select2-container--default"
-                      dir="ltr"
-                      data-select2-id="select2-data-1-ymhq"
-                      style={{ width: "auto" }}
-                    >
-                      <span className="selection">
-                        <span
-                          className="select2-selection select2-selection--single"
-                          role="combobox"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                          tabindex="0"
-                          aria-disabled="false"
-                          aria-labelledby="select2-selectMainCategory-container"
-                        >
-                          <span
-                            className="select2-selection__rendered"
-                            id="select2-selectMainCategory-container"
-                            role="textbox"
-                            aria-readonly="true"
-                            title="Select Main Category"
-                          >
-                            Select Main Category
-                          </span>
-                          <span
-                            className="select2-selection__arrow"
-                            role="presentation"
-                          >
-                            <b role="presentation"></b>
-                          </span>
-                        </span>
-                      </span>
-                      <span
-                        className="dropdown-wrapper"
-                        aria-hidden="true"
-                      ></span>
-                    </span>
 
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                       <svg
@@ -148,7 +112,7 @@ export default function Home_Page_Section_4() {
                   <div className="relative mt-1">
                     <select
                       className="select2-hidden-accessible"
-                      id="selectSubCategory"
+                      id="selectSubCategory_Flash_Sale_Slider"
                       name="selectSubCategory"
                       data-select2-id="select2-data-selectSubCategory"
                       tabindex="-1"
@@ -161,44 +125,6 @@ export default function Home_Page_Section_4() {
                       <option value="">Sub Category 2</option>
                       <option value="">Sub Category 3</option>
                     </select>
-                    <span
-                      className="select2 select2-container select2-container--default"
-                      dir="ltr"
-                      data-select2-id="select2-data-3-6ayh"
-                      style={{ width: "auto" }}
-                    >
-                      <span className="selection">
-                        <span
-                          className="select2-selection select2-selection--single"
-                          role="combobox"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                          tabindex="0"
-                          aria-disabled="false"
-                          aria-labelledby="select2-selectSubCategory-container"
-                        >
-                          <span
-                            className="select2-selection__rendered"
-                            id="select2-selectSubCategory-container"
-                            role="textbox"
-                            aria-readonly="true"
-                            title="Select Sub Category"
-                          >
-                            Select Sub Category
-                          </span>
-                          <span
-                            className="select2-selection__arrow"
-                            role="presentation"
-                          >
-                            <b role="presentation"></b>
-                          </span>
-                        </span>
-                      </span>
-                      <span
-                        className="dropdown-wrapper"
-                        aria-hidden="true"
-                      ></span>
-                    </span>
 
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                       <svg
