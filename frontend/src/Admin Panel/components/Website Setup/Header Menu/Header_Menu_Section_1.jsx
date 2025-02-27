@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Sortable from "sortablejs"; // Import Sortable library
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 const Header_Menu_Section_1 = () => {
+  const { toggleModal } = useAdminGlobalContext();
   // State for menu titles
   const [menuTitle, setMenuTitle] = useState("");
   const [menuTitle2, setMenuTitle2] = useState("");
@@ -257,6 +259,23 @@ const Header_Menu_Section_1 = () => {
                   </form>
                 </div>
               </div>
+            </div>
+
+            <hr className="mt-6 mb-5 border-gray-200" />
+            <div className="flex items-center justify-end space-x-4">
+              <button
+                type="button"
+                className="btn btn-dark-light"
+                data-toggle="modal"
+                data-target="#confirmationModal"
+                onClick={() => toggleModal("deactiveAccountHeaderMenu")}
+              >
+                Discard
+              </button>
+
+              <button type="submit" className="btn btn-primary">
+                Save
+              </button>
             </div>
           </div>
         </div>

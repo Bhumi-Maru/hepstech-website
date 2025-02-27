@@ -2,18 +2,20 @@ import React from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function Deactive_Account() {
-  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
   return (
     <>
       {/* START DEACTIVE ACCOUNT MODAL */}
       <div
-        className="modal active"
+        className={`modal ${
+          isOpenPopupModal.deactiveAccountHeaderMenu ? "active" : ""
+        }`}
         id="confirmationModal"
         tabindex="-1"
         role="dialog"
         aria-hidden="false"
       >
-        <div className="modal-overlay" tabindex="-1"></div>
+        <div className="overlay show" tabindex="-1"></div>
         <div className="modal-dialog modal-dialog-centered sm:max-w-md">
           <div className="modal-content" role="document">
             {/* <!-- close button --> */}
@@ -22,7 +24,12 @@ export default function Deactive_Account() {
               className="absolute btn-close top-4 right-4"
               data-dismiss="modal"
               aria-label="Close"
-              onClick={() => setIsOpenPopupModal(false)}
+              onClick={() =>
+                setIsOpenPopupModal((prev) => ({
+                  ...prev,
+                  deactiveAccountHeaderMenu: false,
+                }))
+              }
             >
               <span className="sr-only">Close</span>
               <svg
