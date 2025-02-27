@@ -1,8 +1,10 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import useSelect2AndList from "../../../../hooks/useSelect2AndList";
 
 export default function Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
+  useSelect2AndList();
   return (
     <>
       {/* [HOME PAGE SECTION 13] Horizontal Banners - Large - 1 Item IN SECTION 13  */}
@@ -120,7 +122,7 @@ export default function Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal()
                     <div className="relative mt-1">
                       <select
                         className="select2-hidden-accessible"
-                        id="selectProduct"
+                        id="selectProduct_Section_13"
                         name="selectProduct"
                         data-select2-id="select2-data-selectProduct"
                         tabindex="-1"
@@ -133,44 +135,6 @@ export default function Horizontal_Banners_Large_1_Item_Section_13_Popup_Modal()
                         <option value="">Product 2</option>
                         <option value="">Product 3</option>
                       </select>
-                      <span
-                        className="select2 select2-container select2-container--default"
-                        dir="ltr"
-                        data-select2-id="select2-data-5-mkq7"
-                        style={{ width: "502px" }}
-                      >
-                        <span className="selection">
-                          <span
-                            className="select2-selection select2-selection--single"
-                            role="combobox"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            tabindex="0"
-                            aria-disabled="false"
-                            aria-labelledby="select2-selectProduct-container"
-                          >
-                            <span
-                              className="select2-selection__rendered"
-                              id="select2-selectProduct-container"
-                              role="textbox"
-                              aria-readonly="true"
-                              title="Select Product"
-                            >
-                              Select Product
-                            </span>
-                            <span
-                              className="select2-selection__arrow"
-                              role="presentation"
-                            >
-                              <b role="presentation"></b>
-                            </span>
-                          </span>
-                        </span>
-                        <span
-                          className="dropdown-wrapper"
-                          aria-hidden="true"
-                        ></span>
-                      </span>
 
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <svg

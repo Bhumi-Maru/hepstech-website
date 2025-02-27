@@ -1,6 +1,8 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function All_Media() {
+  const { isDropdownOpen, toggleDropdown } = useAdminGlobalContext();
   return (
     <>
       {/* START ALL_MEDIA */}
@@ -117,6 +119,7 @@ export default function All_Media() {
                   class="text-white dropdown-toggle"
                   data-toggle="dropdown"
                   aria-haspopup="true"
+                  onClick={() => toggleDropdown("all_Media_Image")}
                 >
                   <svg
                     class="w-7 h-7"
@@ -132,62 +135,66 @@ export default function All_Media() {
                   </svg>
                 </button>
 
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="menu-button"
-                  tabindex="-1"
-                >
-                  <div class="divide-y divide-gray-100">
-                    <div class="py-1" role="none">
-                      <a
-                        href="#"
-                        title=""
-                        class="dropdown-item"
-                        role="menuitem"
-                        tabindex="-1"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                          />
-                        </svg>
-                        Download
-                      </a>
-                      <a
-                        href="#"
-                        title=""
-                        class="dropdown-item"
-                        role="menuitem"
-                        tabindex="-1"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                        Delete
-                      </a>
+                {isDropdownOpen.all_Media_Image && (
+                  <>
+                    <div
+                      class="dropdown-menu"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="menu-button"
+                      tabindex="-1"
+                    >
+                      <div class="divide-y divide-gray-100">
+                        <div class="py-1" role="none">
+                          <a
+                            href="#"
+                            title=""
+                            class="dropdown-item"
+                            role="menuitem"
+                            tabindex="-1"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                              />
+                            </svg>
+                            Download
+                          </a>
+                          <a
+                            href="#"
+                            title=""
+                            class="dropdown-item"
+                            role="menuitem"
+                            tabindex="-1"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              />
+                            </svg>
+                            Delete
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
             </div>
             <div class="block w-full overflow-hidden bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">

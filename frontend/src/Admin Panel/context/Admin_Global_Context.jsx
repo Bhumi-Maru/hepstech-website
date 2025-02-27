@@ -33,6 +33,7 @@ const AdminGlobalProvider = ({ children }) => {
     categories: false,
     products: false,
     website_Setup: false,
+    all_Media_Image: false,
   });
   const [count, setCount] = useState(1);
   // Popup modals state
