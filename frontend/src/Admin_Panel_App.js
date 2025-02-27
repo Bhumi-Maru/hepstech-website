@@ -236,6 +236,12 @@ export default function Admin_Panel_App() {
             </div>
           </>
         )}
+        {/* SMALL SCREEN SIDEBAR WHEN CLICK ON MENU BTN */}
+        {isOpenPopupModal.small_Screen_Sidebar && (
+          <>
+            <Small_Screen_SideBar />
+          </>
+        )}
       </Router>
 
       {/* MAIN CATEGORY ADD POPUP MODAL */}
@@ -467,13 +473,6 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.testimonials_Reviews_Slider_Section_23 && (
         <>
           <Add_Testimonials_Section_23_Popup_Modal />
-        </>
-      )}
-
-      {/* SMALL SCREEN SIDEBAR WHEN CLICK ON MENU BTN */}
-      {isOpenPopupModal.small_Screen_Sidebar && (
-        <>
-          <Small_Screen_SideBar />
         </>
       )}
 

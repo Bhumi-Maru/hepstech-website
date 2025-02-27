@@ -28,7 +28,12 @@ const AdminGlobalProvider = ({ children }) => {
     loginPassword: false,
   });
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // Function to toggle dropdown dynamically
+  const [isDropdownOpen, setIsDropdownOpen] = useState({
+    categories: false,
+    products: false,
+    website_Setup: false,
+  });
   const [count, setCount] = useState(1);
   // Popup modals state
   const [isOpenPopupModal, setIsOpenPopupModal] = useState({
@@ -71,6 +76,14 @@ const AdminGlobalProvider = ({ children }) => {
     isContact: false,
     isOfferBanner: false,
   });
+
+  // Function to toggle dropdown dynamically
+  const toggleDropdown = (dropdown) => {
+    setIsDropdownOpen((prevState) => ({
+      ...prevState,
+      [dropdown]: !prevState[dropdown], // Toggle the specific dropdown
+    }));
+  };
 
   //Track Active Page
   const handleActive = (page) => {
@@ -138,6 +151,7 @@ const AdminGlobalProvider = ({ children }) => {
         toggleStates,
         isActive,
         handleActive,
+        toggleDropdown,
         isDropdownOpen,
         setIsDropdownOpen,
         isOpenPopupModal,

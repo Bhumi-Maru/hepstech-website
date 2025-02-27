@@ -3,7 +3,8 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const { isActive, handleToggle } = useAdminGlobalContext();
+  const { isActive, toggleModal } = useAdminGlobalContext();
+
   return (
     <>
       {/* <!-- START HEADER --> */}
@@ -14,7 +15,7 @@ export default function Navbar() {
               className="-ml-2 btn-circle lg:hidden"
               data-toggle="drawer"
               data-target="#mobileNavigation"
-              onClick={() => handleToggle("small_Screen_Sidebar")}
+              onClick={() => toggleModal("small_Screen_Sidebar")}
             >
               <span className="sr-only"> Open sidebar </span>
               <svg
@@ -35,8 +36,8 @@ export default function Navbar() {
             </button>
 
             <div className="flex items-center justify-between flex-1 ml-4 lg:ml-0">
-              <a
-                href="dashboard.html"
+              <Link
+                to="/dashboard"
                 title="Dashboard"
                 className="flex items-center lg:hidden"
               >
@@ -52,13 +53,13 @@ export default function Navbar() {
                 <p className="ml-3 text-2xl font-extrabold leading-none tracking-tight truncate">
                   Hepstech
                 </p>
-              </a>
+              </Link>
 
               <ol className="items-center hidden space-x-2 lg:flex">
                 <li>
                   <div>
-                    <a
-                      href="dashboard.html"
+                    <Link
+                      to="/dashboard"
                       title="Dashboard"
                       className="text-gray-400 hover:text-gray-500"
                     >
@@ -72,7 +73,7 @@ export default function Navbar() {
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                       </svg>
                       <span className="sr-only"> Dashboard </span>
-                    </a>
+                    </Link>
                   </div>
                 </li>
 
