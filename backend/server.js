@@ -1,20 +1,32 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const db = require("./config/db");
+const path = require("path");
+const uploadRouter = require("./routes/uploadRoutes");
 
 dotenv.config();
 
+// Initialize Express app
 const app = express();
 
 // Middleware
-app.use(express.json());
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON
 
+// Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Use API routes
+app.use("/api", uploadRouter);
+
+// Home route
 app.get("/", (req, res) => {
-  return res.send("hello");
+  return res.send("Hello, server is running!");
 });
 
+// Start Server
 const PORT = process.env.PORT || 6000;
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
