@@ -15,21 +15,18 @@ export default function Navbar({
 
   // Function to toggle the dropdown menu
   const toggleDropdown = (dropdown) => {
-    setIsOpen((prevState) => {
-      // Close the other dropdown while keeping the one clicked open
-      return {
-        contact: dropdown === "contact" ? !prevState.contact : false,
-        profile: dropdown === "profile" ? !prevState.profile : false,
-      };
-    });
+    setIsOpen((prevState) => ({
+      ...prevState,
+      [dropdown]: !prevState[dropdown],
+    }));
   };
 
-  // Function to handle mouse enter
+  // Function to handle mouse enter this is for profile
   const handleMouseEnter = (menu) => {
     setHoveredMenu(menu);
   };
 
-  // Function to handle mouse leave
+  // Function to handle mouse leave this is for profile
   const handleMouseLeave = () => {
     setHoveredMenu(null);
   };
@@ -361,9 +358,7 @@ export default function Navbar({
                 </button>
 
                 <div
-                  className={`dropdown-menu ${
-                    isOpen.profile ? "block" : "hidden"
-                  }`}
+                  className={`dropdown-menu ${isOpen.profile ? "active" : ""}`}
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="menu-button"
