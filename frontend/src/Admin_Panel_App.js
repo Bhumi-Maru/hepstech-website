@@ -67,6 +67,7 @@ import Add_Main_Banner_Section_21_Popup_Modal from "./Admin Panel/components/Web
 import Add_Main_Banner_Section_22_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Horizontal Banners - Small - 1 Items Section 21/Add_Main_Banner_Section_22_Popup_Modal";
 import Add_Testimonials_Section_23_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Testimonials - Reviews Slider Section 23/Add_Testimonials_Section_23_Popup_Modal";
 import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_SideBar";
+import UploadImage from "./Admin Panel/components/All Media/UploadImage";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -241,6 +242,12 @@ export default function Admin_Panel_App() {
                 </section>
               </main>
             </div>
+          </>
+        )}
+        {/* UPLOAD IMAGE POPUP MODAL IN ALL MEDIA PAGE */}
+        {isOpenPopupModal.uploadFiles && (
+          <>
+            <UploadImage />
           </>
         )}
         {/* SMALL SCREEN SIDEBAR WHEN CLICK ON MENU BTN */}

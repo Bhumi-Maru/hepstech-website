@@ -48,6 +48,8 @@ const AdminGlobalProvider = ({ children }) => {
     addPagesAndaddCustomLink: false,
     createNewPage: false,
     startSelectFilesAndMedia: false,
+    //upload image in all-media
+    uploadFiles: false,
     // HOME PAGE
     addMainBanner: false,
     categorySlider8Items: false,

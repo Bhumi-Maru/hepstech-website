@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@tailwindcss/vite": "^4.0.5",
+    "axios": "^1.8.1",
     "cra-template": "1.2.0",
     "jquery": "^3.7.1",
     "list.js": "^2.3.1",
