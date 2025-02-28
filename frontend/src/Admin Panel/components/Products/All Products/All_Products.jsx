@@ -10,7 +10,7 @@ export default function All_Products() {
     {
       id: 1,
       name: "Animal Print Boys Track Suit",
-      price: "₹1,000",
+      price: "1,000",
       inventory: 20,
       type: "Simple",
       status: "Active",
@@ -19,7 +19,7 @@ export default function All_Products() {
     {
       id: 2,
       name: "Sassie Basic 31 LTR Navy Backpack Waterproof School Bag",
-      price: "₹1,000",
+      price: "1,000",
       inventory: 20,
       type: "Simple",
       status: "Active",
@@ -29,7 +29,7 @@ export default function All_Products() {
     {
       id: 3,
       name: "Analog Black Dial Men's Watch-32-BK-CK",
-      price: "₹500",
+      price: "500",
       inventory: 0,
       type: "Variant",
       status: "Draft",
