@@ -4,7 +4,6 @@ import { useAllMediaContext } from "../../context/All_Media_Context";
 
 export default function Images_All_Media() {
   const { mediaItems, setMediaItems } = useAllMediaContext();
-
   // Fetch media from the API
   useEffect(() => {
     const fetchMedia = async () => {
@@ -25,11 +24,11 @@ export default function Images_All_Media() {
     };
 
     fetchMedia();
-  }, [mediaItems]); // Empty dependency array ensures this runs only once on component mount.
-
+  }, [mediaItems]);
   return (
     <>
       {/* Display uploaded image */}
+
       <ul
         role="list"
         className="grid grid-cols-2 mt-6 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4 xl:grid-cols-6 list"
@@ -95,7 +94,7 @@ export default function Images_All_Media() {
             </div>
             <div className="block w-full overflow-hidden bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">
               <img
-                className="object-cover pointer-events-none group-hover:opacity-75"
+                className="pointer-events-none group-hover:opacity-75"
                 src={
                   item.imageUrl
                     ? item.imageUrl
