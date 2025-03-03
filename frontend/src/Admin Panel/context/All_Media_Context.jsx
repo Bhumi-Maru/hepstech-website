@@ -12,6 +12,14 @@ export const AllMediaProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+
+  // Filtered media items based on search term
+  const filteredMediaItems = mediaItems.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.imageUrl.toLowerCase().includes(searchTerm.toLowerCase()) // You can extend this to search by other attributes
+  );
 
   const handleImageChange = (e) => {
     if (e.target.files.length > 0) {
@@ -54,7 +62,7 @@ export const AllMediaProvider = ({ children }) => {
   return (
     <AllMediaContext.Provider
       value={{
-        mediaItems,
+        mediaItems: filteredMediaItems, // Provide filtered media items
         setMediaItems,
         image,
         handleImageChange,
@@ -64,6 +72,8 @@ export const AllMediaProvider = ({ children }) => {
         showDatePicker,
         setShowDatePicker,
         handleDateSelect,
+        searchTerm, // Add searchTerm to the context
+        setSearchTerm, // Provide setSearchTerm to update the search term
       }}
     >
       {children}
