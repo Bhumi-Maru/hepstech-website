@@ -8,6 +8,7 @@ export default function UploadImage() {
   const { mediaItems, setMediaItems } = useAllMediaContext();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [fileType, setFileType] = useState(null); // Track the file type
 
   // Handle file selection
   const handleImageChange = (e) => {
@@ -15,7 +16,10 @@ export default function UploadImage() {
       const file = e.target.files[0];
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
-      console.log(URL.createObjectURL(file));
+
+      // Set the file type based on the file extension
+      const type = file.type.split("/")[0]; // e.g., 'image', 'video', 'application'
+      setFileType(type);
     }
   };
 
@@ -89,7 +93,7 @@ export default function UploadImage() {
                   <span>Upload Files</span>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">
-                  JPG, JPEG or PNG up to 3MB
+                  JPG, JPEG, PNG, GIF, MP4, WebM, etc.
                 </p>
                 <button
                   type="button"
@@ -100,7 +104,7 @@ export default function UploadImage() {
                     id="fileUpload"
                     className="absolute opacity-0 w-0 h-0"
                     onChange={handleImageChange}
-                    accept="image/*"
+                    accept="image/*,video/*,application/pdf" // Added PDF support
                   />
                   Browse Files
                 </button>
@@ -108,16 +112,55 @@ export default function UploadImage() {
             </div>
 
             {/* Preview section */}
+            {/* Preview section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1 flex justify-center items-center">
               {previewUrl ? (
-                <a href={previewUrl} target="_blank" rel="noopener noreferrer">
-                  <img
-                    src={previewUrl}
-                    alt="Preview"
-                    className="max-h-48 object-contain"
-                    style={{ height: "119px" }}
-                  />
-                </a>
+                fileType === "image" || fileType === "gif" ? (
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="max-h-48 object-contain"
+                      style={{ height: "119px" }}
+                    />
+                  </a>
+                ) : fileType === "video" ? (
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <video
+                      src={previewUrl}
+                      controls
+                      className="max-h-48 object-contain"
+                      style={{ height: "119px", width: "300px" }}
+                    />
+                  </a>
+                ) : fileType === "application" &&
+                  selectedFile.type === "application/pdf" ? (
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <embed
+                      src={previewUrl}
+                      type="application/pdf"
+                      width="100%"
+                      height="300px"
+                      alt="PDF Preview"
+                    />
+                  </a>
+                ) : (
+                  <p className="text-gray-500">
+                    Unsupported file type for preview
+                  </p>
+                )
               ) : (
                 <p className="text-gray-500">No file selected</p>
               )}
