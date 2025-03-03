@@ -8,6 +8,8 @@ export default function All_Media_2() {
     setShowDatePicker,
     showDatePicker,
     handleDateSelect,
+    searchTerm,
+    setSearchTerm,
   } = useAllMediaContext();
 
   return (
@@ -38,7 +40,9 @@ export default function All_Media_2() {
             name="searchFile"
             id="searchFile"
             className="!pl-10"
+            value={searchTerm} // Set the value to searchTerm
             placeholder="Search by file name..."
+            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on change
           />
         </div>
       </div>

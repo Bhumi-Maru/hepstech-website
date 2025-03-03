@@ -7,32 +7,32 @@ export default function Date_Range_Model({ onDateSelect }) {
 
     switch (rangeKey) {
       case "Today":
-        startDate = endDate = moment().format("MM/DD/YYYY");
+        startDate = endDate = moment().format("DD/MM/YYYY");
         break;
       case "Yesterday":
-        startDate = endDate = moment().subtract(1, "days").format("MM/DD/YYYY");
+        startDate = endDate = moment().subtract(1, "days").format("DD/MM/YYYY");
         break;
       case "Last 7 Days":
-        startDate = moment().subtract(6, "days").format("MM/DD/YYYY");
-        endDate = moment().format("MM/DD/YYYY");
+        startDate = moment().subtract(6, "days").format("DD/MM/YYYY");
+        endDate = moment().format("DD/MM/YYYY");
         break;
       case "Last 30 Days":
-        startDate = moment().subtract(29, "days").format("MM/DD/YYYY");
-        endDate = moment().format("MM/DD/YYYY");
+        startDate = moment().subtract(29, "days").format("DD/MM/YYYY");
+        endDate = moment().format("DD/MM/YYYY");
         break;
       case "This Month":
-        startDate = moment().startOf("month").format("MM/DD/YYYY");
-        endDate = moment().format("MM/DD/YYYY");
+        startDate = moment().startOf("month").format("DD/MM/YYYY");
+        endDate = moment().format("DD/MM/YYYY");
         break;
       case "Last Month":
         startDate = moment()
           .subtract(1, "months")
           .startOf("month")
-          .format("MM/DD/YYYY");
+          .format("DD/MM/YYYY");
         endDate = moment()
           .subtract(1, "months")
           .endOf("month")
-          .format("MM/DD/YYYY");
+          .format("DD/MM/YYYY");
         break;
       case "Custom Range":
         return; // Handle custom range separately
