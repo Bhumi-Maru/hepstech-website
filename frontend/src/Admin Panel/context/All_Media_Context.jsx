@@ -54,6 +54,22 @@ export const AllMediaProvider = ({ children }) => {
     }
   });
 
+  // Sorting logic based on selectedSortOrder
+  const sortedMedia = filteredMedia.sort((a, b) => {
+    switch (selectedSortOrder) {
+      case "newest":
+        return new Date(b.createdAt) - new Date(a.createdAt); // Sort by newest
+      case "oldest":
+        return new Date(a.createdAt) - new Date(b.createdAt); // Sort by oldest
+      case "smallest":
+        return a.fileSize - b.fileSize; // Sort by smallest
+      case "largest":
+        return b.fileSize - a.fileSize; // Sort by largest
+      default:
+        return 0;
+    }
+  });
+
   // Handle date selection
   const handleDateSelect = (range) => {
     setSelectedDateRange(range);
@@ -63,7 +79,7 @@ export const AllMediaProvider = ({ children }) => {
   return (
     <AllMediaContext.Provider
       value={{
-        mediaItems: filteredMedia, // Provide filtered media
+        mediaItems: sortedMedia, // Provide filtered media
         setMediaItems,
         selectedDateRange,
         setSelectedDateRange,
