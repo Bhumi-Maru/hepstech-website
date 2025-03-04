@@ -5,8 +5,7 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function UploadImage() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
-  const { mediaItems, setMediaItems, previewUrl, setPreviewUrl } =
-    useAllMediaContext();
+  const { setMediaItems, previewUrl, setPreviewUrl } = useAllMediaContext();
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileType, setFileType] = useState(null); // Track the file type
 
@@ -73,7 +72,7 @@ export default function UploadImage() {
               className="btn-close"
               onClick={() => setIsOpenPopupModal(false)}
             >
-              ×
+              X
             </button>
           </div>
           <div className="modal-body flex flex-col sm:flex-row gap-4">

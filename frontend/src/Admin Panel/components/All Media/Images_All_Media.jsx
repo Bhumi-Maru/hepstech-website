@@ -4,8 +4,7 @@ import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Images_All_Media() {
-  const { mediaItems, setMediaItems, previewUrl, setPreviewUrl } =
-    useAllMediaContext();
+  const { mediaItems, setMediaItems, setPreviewUrl } = useAllMediaContext();
   const { isDropdownOpen, toggleDropdown } = useAdminGlobalContext();
 
   // Fetch media from the API
