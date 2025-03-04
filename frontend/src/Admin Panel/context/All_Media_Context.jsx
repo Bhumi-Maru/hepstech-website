@@ -13,6 +13,7 @@ export const AllMediaProvider = ({ children }) => {
   const [selectedDateRange, setSelectedDateRange] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   // Filtered media items based on search term
   const filteredMediaItems = mediaItems.filter(
@@ -74,6 +75,8 @@ export const AllMediaProvider = ({ children }) => {
         handleDateSelect,
         searchTerm, // Add searchTerm to the context
         setSearchTerm, // Provide setSearchTerm to update the search term
+        previewUrl, //track image , video , document and gif
+        setPreviewUrl,
       }}
     >
       {children}

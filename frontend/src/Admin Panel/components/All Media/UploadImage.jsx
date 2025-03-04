@@ -5,9 +5,9 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function UploadImage() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
-  const { mediaItems, setMediaItems } = useAllMediaContext();
+  const { mediaItems, setMediaItems, previewUrl, setPreviewUrl } =
+    useAllMediaContext();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
   const [fileType, setFileType] = useState(null); // Track the file type
 
   // Handle file selection
@@ -20,6 +20,11 @@ export default function UploadImage() {
       // Set the file type based on the file extension
       const type = file.type.split("/")[0]; // e.g., 'image', 'video', 'application'
       setFileType(type);
+
+      // Treat GIFs as images for preview
+      if (file.type === "image/gif") {
+        setFileType("image");
+      }
     }
   };
 
@@ -104,14 +109,13 @@ export default function UploadImage() {
                     id="fileUpload"
                     className="absolute opacity-0 w-0 h-0"
                     onChange={handleImageChange}
-                    accept="image/*,video/*,application/pdf" // Added PDF support
+                    accept="image/*,video/*,application/pdf"
                   />
                   Browse Files
                 </button>
               </div>
             </div>
 
-            {/* Preview section */}
             {/* Preview section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1 flex justify-center items-center">
               {previewUrl ? (
