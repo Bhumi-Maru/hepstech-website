@@ -145,8 +145,7 @@ export default function UploadImage() {
                       style={{ height: "119px", width: "300px" }}
                     />
                   </a>
-                ) : fileType === "application" &&
-                  selectedFile.type === "application/pdf" ? (
+                ) : fileType === "application/pdf" ? (
                   <a
                     href={previewUrl}
                     target="_blank"
