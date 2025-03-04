@@ -7,7 +7,7 @@ export default function UploadImage() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
   const { setMediaItems, previewUrl, setPreviewUrl } = useAllMediaContext();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileType, setFileType] = useState(null); // Track the file type
+  const [fileType, setFileType] = useState(null);
 
   // Handle file selection
   const handleImageChange = (e) => {
@@ -15,15 +15,7 @@ export default function UploadImage() {
       const file = e.target.files[0];
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
-
-      // Set the file type based on the file extension
-      const type = file.type.split("/")[0]; // e.g., 'image', 'video', 'application'
-      setFileType(type);
-
-      // Treat GIFs as images for preview
-      if (file.type === "image/gif") {
-        setFileType("image");
-      }
+      setFileType(file.type); // Store full MIME type
     }
   };
 
@@ -54,7 +46,9 @@ export default function UploadImage() {
       setIsOpenPopupModal(false);
     } catch (error) {
       console.error("Failed to upload file", error);
-      alert("File upload failed. Please try again.");
+      alert(
+        error.response?.data?.message || "File upload failed. Please try again."
+      );
     }
   };
 
@@ -76,7 +70,6 @@ export default function UploadImage() {
             </button>
           </div>
           <div className="modal-body flex flex-col sm:flex-row gap-4">
-            {/* File selection section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1">
               <div className="text-center">
                 <svg
@@ -84,7 +77,6 @@ export default function UploadImage() {
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 48 48"
-                  aria-hidden="true"
                 >
                   <path
                     d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
@@ -97,11 +89,11 @@ export default function UploadImage() {
                   <span>Upload Files</span>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">
-                  JPG, JPEG, PNG, GIF, MP4, WebM, etc.
+                  JPG, JPEG, PNG, GIF, MP4, WebM, PDF
                 </p>
                 <button
                   type="button"
-                  className="mt-2 btn btn-primary w-full sm:w-auto sm:text-xs px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                  className="mt-2 btn btn-primary w-full sm:w-auto px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
                 >
                   <input
                     type="file"
@@ -115,10 +107,10 @@ export default function UploadImage() {
               </div>
             </div>
 
-            {/* Preview section */}
+            {/* Preview Section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1 flex justify-center items-center">
               {previewUrl ? (
-                fileType === "image" || fileType === "gif" ? (
+                fileType === "image" ? (
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -168,7 +160,6 @@ export default function UploadImage() {
               )}
             </div>
           </div>
-
           <div className="modal-footer flex justify-between">
             <button
               className="btn btn-light"

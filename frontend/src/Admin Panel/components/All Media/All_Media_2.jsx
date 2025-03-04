@@ -10,6 +10,10 @@ export default function All_Media_2() {
     handleDateSelect,
     searchTerm,
     setSearchTerm,
+    selectedMediaType,
+    setSelectedMediaType,
+    selectedSortOrder,
+    setSelectedSortOrder,
   } = useAllMediaContext();
 
   return (
@@ -40,12 +44,13 @@ export default function All_Media_2() {
             name="searchFile"
             id="searchFile"
             className="!pl-10"
-            value={searchTerm} // Set the value to searchTerm
+            value={searchTerm}
             placeholder="Search by file name..."
-            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on change
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
+
       <div className="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3 lg:mt-0 lg:flex-shrink lg:grid-cols-none lg:flex lg:space-x-4 lg:gap-0">
         <div className="relative">
           <div className="flex-1 flex-shrink w-full col-span-2 sm:col-span-1">
@@ -64,21 +69,37 @@ export default function All_Media_2() {
             <Date_Range_Model onDateSelect={handleDateSelect} />
           )}
         </div>
+
+        {/* Media Type Filter */}
         <div>
-          <select name="" id="" className="">
-            <option value="">All Media</option>
-            <option value="">Images</option>
-            <option value="">Videos</option>
-            <option value="">GIFs</option>
-            <option value="">Documents</option>
+          <select
+            name="mediaType"
+            id="mediaType"
+            className="form-select"
+            value={selectedMediaType}
+            onChange={(e) => setSelectedMediaType(e.target.value)}
+          >
+            <option value="all">All Media</option>
+            <option value="image">Images</option>
+            <option value="video">Videos</option>
+            <option value="gif">GIFs</option>
+            <option value="document">Documents</option>
           </select>
         </div>
+
+        {/* Sorting Dropdown */}
         <div>
-          <select name="" id="" className="">
-            <option value="">Sort by Newest</option>
-            <option value="">Sort by Oldest</option>
-            <option value="">Sort by Smallest</option>
-            <option value="">Sort by Largest</option>
+          <select
+            name="sortOrder"
+            id="sortOrder"
+            className="form-select"
+            value={selectedSortOrder}
+            onChange={(e) => setSelectedSortOrder(e.target.value)}
+          >
+            <option value="newest">Sort by Newest</option>
+            <option value="oldest">Sort by Oldest</option>
+            <option value="smallest">Sort by Smallest</option>
+            <option value="largest">Sort by Largest</option>
           </select>
         </div>
       </div>
