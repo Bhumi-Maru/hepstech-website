@@ -10,17 +10,51 @@ export const useAllMediaContext = () => {
 export const AllMediaProvider = ({ children }) => {
   const [mediaItems, setMediaItems] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState("");
+  const [selectedMediaType, setSelectedMediaType] = useState("all"); // Default value
+  const [selectedSortOrder, setSelectedSortOrder] = useState("newest"); // Added sorting state
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [searchTerm, setSearchTerm] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
 
-  // Filtered media items based on search term
-  const filteredMediaItems = mediaItems.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.imageUrl.toLowerCase().includes(searchTerm.toLowerCase()) // You can extend this to search by other attributes
+  // Filter media items based on search term
+  const filteredMediaItems = mediaItems.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Filter media based on type
+  const filteredMedia = filteredMediaItems.filter((item) => {
+    if (selectedMediaType === "all") return true;
+
+    const imageTypes = ["image/jpeg", "image/png", "image/webp"];
+    const videoTypes = [
+      "video/mp4",
+      "video/mov",
+      "video/avi",
+      "video/mkv",
+      "video/webm",
+    ];
+    const gifTypes = ["image/gif"];
+    const documentTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    switch (selectedMediaType) {
+      case "image":
+        return imageTypes.includes(item.mimeType);
+      case "video":
+        return videoTypes.includes(item.mimeType);
+      case "gif":
+        return gifTypes.includes(item.mimeType);
+      case "document":
+        return documentTypes.includes(item.mimeType);
+      default:
+        return false;
+    }
+  });
+
+  // Handle date selection
   const handleDateSelect = (range) => {
     setSelectedDateRange(range);
     setShowDatePicker(false);
@@ -29,17 +63,21 @@ export const AllMediaProvider = ({ children }) => {
   return (
     <AllMediaContext.Provider
       value={{
-        mediaItems: filteredMediaItems, // Provide filtered media items
+        mediaItems: filteredMedia, // Provide filtered media
         setMediaItems,
         selectedDateRange,
         setSelectedDateRange,
         showDatePicker,
         setShowDatePicker,
         handleDateSelect,
-        searchTerm, // Add searchTerm to the context
-        setSearchTerm, // Provide setSearchTerm to update the search term
-        previewUrl, //track image , video , document and gif
+        searchTerm,
+        setSearchTerm,
+        previewUrl,
         setPreviewUrl,
+        selectedMediaType,
+        setSelectedMediaType,
+        selectedSortOrder, // Provide sorting state
+        setSelectedSortOrder,
       }}
     >
       {children}

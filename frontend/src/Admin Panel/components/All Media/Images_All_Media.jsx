@@ -28,7 +28,7 @@ export default function Images_All_Media() {
       }
     };
     fetchMedia();
-  }, [mediaItems]); // Run only once to avoid infinite API calls
+  }, []); // Empty dependency array to fetch once when component mounts
 
   return (
     <ul
