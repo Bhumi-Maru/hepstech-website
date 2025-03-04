@@ -49,6 +49,8 @@ const AdminGlobalProvider = ({ children }) => {
     startSelectFilesAndMedia: false,
     //upload image in all-media
     uploadFiles: false,
+    //upload folder in all-media
+    uploadFolder: false,
     // HOME PAGE
     addMainBanner: false,
     categorySlider8Items: false,

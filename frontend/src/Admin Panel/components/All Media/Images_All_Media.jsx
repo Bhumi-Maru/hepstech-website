@@ -95,9 +95,9 @@ export default function Images_All_Media() {
                   className="absolute inset-0 flex items-center justify-center bg-transparent"
                   style={{ zIndex: 10 }}
                 >
-                  <p className="text-blue-600 underline bg-gray-200 bg-opacity-30 px-2 py-1 rounded w-full flex items-center justify-center">
+                  {/* <p className="text-blue-600 underline bg-gray-200 bg-opacity-30 px-2 py-1 rounded w-full flex items-center justify-center">
                     Open Document
-                  </p>
+                  </p> */}
                 </a>
 
                 {/* Embedded PDF Preview */}
