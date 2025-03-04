@@ -12,13 +12,13 @@ export default function Images_All_Media() {
     const fetchMedia = async () => {
       try {
         const response = await axios.get("http://localhost:7000/api/files");
+        console.log(response.data); // Log the response to check the structure
+
         const mediaData = response.data.files.map((item) => {
-          const fileType = item.fileType.split("/")[0]; // Extract file type
           return {
             name: item.filename,
             size: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
-            fileType: fileType,
-            mimeType: item.fileType, // Full MIME type for better handling
+            mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
             fileUrl: `http://localhost:7000${item.filePath}`,
           };
         });
@@ -28,7 +28,7 @@ export default function Images_All_Media() {
       }
     };
     fetchMedia();
-  }, []); // Empty dependency array to fetch once when component mounts
+  }, [mediaItems]); // Empty dependency array to fetch only once when the component mounts
 
   return (
     <ul
@@ -61,7 +61,7 @@ export default function Images_All_Media() {
           </div>
 
           <div className="block w-full bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1">
-            {item.fileType === "image" ? (
+            {item.mimeType && item.mimeType.startsWith("image/") ? (
               <a
                 href={item.fileUrl}
                 target="_blank"
@@ -74,7 +74,7 @@ export default function Images_All_Media() {
                   className="object-contain w-full h-full"
                 />
               </a>
-            ) : item.fileType === "video" ? (
+            ) : item.mimeType && item.mimeType.startsWith("video/") ? (
               <a
                 href={item.fileUrl}
                 target="_blank"
@@ -86,31 +86,14 @@ export default function Images_All_Media() {
                 </video>
               </a>
             ) : item.mimeType === "application/pdf" ? (
-              <div>
-                {/* Clickable Transparent Overlay */}
-                <a
-                  href={item.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute inset-0 flex items-center justify-center bg-transparent"
-                  style={{ zIndex: 10 }}
-                >
-                  {/* <p className="text-blue-600 underline bg-gray-200 bg-opacity-30 px-2 py-1 rounded w-full flex items-center justify-center">
-                    Open Document
-                  </p> */}
-                </a>
-
-                {/* Embedded PDF Preview */}
-                <embed
-                  src={item.fileUrl}
-                  type="application/pdf"
-                  className="w-full h-48 overflow-y-hidden no-scrollbar"
-                />
-              </div>
+              <embed
+                src={item.fileUrl}
+                type="application/pdf"
+                className="w-full h-48 overflow-y-hidden no-scrollbar"
+              />
             ) : (
               <p className="text-gray-500">
-                {" "}
-                Unsupported file type: {item.mimeType}{" "}
+                Unsupported file type: {item.mimeType}
               </p>
             )}
           </div>

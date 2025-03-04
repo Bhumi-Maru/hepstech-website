@@ -108,9 +108,10 @@ export default function UploadImage() {
             </div>
 
             {/* Preview Section */}
+            {/* Preview Section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1 flex justify-center items-center">
               {previewUrl ? (
-                fileType === "image" ? (
+                fileType && fileType.startsWith("image/") ? ( // Check if fileType is not null and starts with "image/"
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -123,7 +124,7 @@ export default function UploadImage() {
                       style={{ height: "119px" }}
                     />
                   </a>
-                ) : fileType === "video" ? (
+                ) : fileType && fileType.startsWith("video/") ? ( // Check if fileType is not null and starts with "video/"
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -136,7 +137,7 @@ export default function UploadImage() {
                       style={{ height: "119px", width: "300px" }}
                     />
                   </a>
-                ) : fileType === "application/pdf" ? (
+                ) : fileType === "application/pdf" ? ( // For PDF files
                   <a
                     href={previewUrl}
                     target="_blank"
