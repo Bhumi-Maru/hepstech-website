@@ -71,11 +71,57 @@ export default function Main_Category_Add_Modal() {
                   {/* Main Image Upload */}
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    <div className="mt-1">
+                    {/* <div className="mt-1">
                       <div className="file-input">
                         <input type="file" id="categoryMainImage" />
                         <label className="label">No file selected</label>
                         <span className="button">Choose</span>
+                      </div>
+                    </div> */}
+                    <div>
+                      <label for="">
+                        Select Image
+                        <span>
+                          (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                          1MB)
+                        </span>
+                      </label>
+                      <div className="mt-1.5">
+                        <button
+                          type="button"
+                          className="btn btn-white"
+                          data-toggle="modal"
+                          data-target="#selectFilesModal"
+                          onClick={() => {
+                            setIsOpenPopupModal((prev) => ({
+                              ...prev,
+                              startSelectFilesAndMedia: true, // Open Select Files Modal
+                            }));
+
+                            // Ensure Select Files modal is above Add Main Banner
+                            setTimeout(() => {
+                              document.getElementById(
+                                "selectFilesModal"
+                              ).style.zIndex = "1060";
+                            }, 100);
+                          }}
+                        >
+                          <svg
+                            className="w-5 h-5 mr-2 -ml-1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            ></path>
+                          </svg>
+                          Select Files
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -103,13 +149,59 @@ export default function Main_Category_Add_Modal() {
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      <div className="mt-1">
+                      <div>
+                        <label for="">
+                          Select Image
+                          <span>
+                            (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                            1MB)
+                          </span>
+                        </label>
+                        <div className="mt-1.5">
+                          <button
+                            type="button"
+                            className="btn btn-white"
+                            data-toggle="modal"
+                            data-target="#selectFilesModal"
+                            onClick={() => {
+                              setIsOpenPopupModal((prev) => ({
+                                ...prev,
+                                startSelectFilesAndMedia: true, // Open Select Files Modal
+                              }));
+
+                              // Ensure Select Files modal is above Add Main Banner
+                              setTimeout(() => {
+                                document.getElementById(
+                                  "selectFilesModal"
+                                ).style.zIndex = "1060";
+                              }, 100);
+                            }}
+                          >
+                            <svg
+                              className="w-5 h-5 mr-2 -ml-1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              ></path>
+                            </svg>
+                            Select Files
+                          </button>
+                        </div>
+                      </div>
+                      {/* <div className="mt-1">
                         <div className="file-input">
                           <input type="file" id="categoryBannerImage" />
                           <label className="label">No file selected</label>
                           <span className="button">Choose</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   )}
 

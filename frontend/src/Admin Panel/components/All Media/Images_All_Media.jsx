@@ -12,7 +12,7 @@ export default function Images_All_Media() {
     const fetchMedia = async () => {
       try {
         const response = await axios.get("http://localhost:7000/api/files");
-        console.log(response.data); // Log the response to check the structure
+        // console.log(response.data); // Log the response to check the structure
 
         const mediaData = response.data.files.map((item) => {
           return {

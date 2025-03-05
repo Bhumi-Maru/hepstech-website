@@ -1,5 +1,6 @@
 const File = require("../models/fileModel");
 const path = require("path");
+const fs = require("fs");
 
 const uploadFile = async (req, res) => {
   try {
@@ -44,4 +45,34 @@ const getFile = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, getFile };
+// Bulk delete all media files
+const deleteAllFiles = async (req, res) => {
+  try {
+    // Find all files in the database
+    const files = await File.find({});
+
+    if (files.length === 0) {
+      return res.status(404).json({ message: "No files to delete" });
+    }
+
+    // Delete files from the server
+    files.forEach((file) => {
+      const filePath = path.join(__dirname, "..", file.filePath);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Failed to delete file: ${filePath}`, err);
+        }
+      });
+    });
+
+    // Delete all files from the database
+    await File.deleteMany({});
+
+    res.status(200).json({ message: "All files deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting files:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { uploadFile, getFile, deleteAllFiles };
