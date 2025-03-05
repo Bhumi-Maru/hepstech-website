@@ -6,9 +6,8 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, "../uploads");
 
-    // Ensure the folder exists before storing files
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true }); // Fixed issue
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
 
     cb(null, uploadDir);
@@ -18,6 +17,10 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage }).single("file");
+// Expecting two images with specific field names
+const upload = multer({ storage }).fields([
+  { name: "main_image", maxCount: 1 },
+  { name: "add_banner_image", maxCount: 1 },
+]);
 
 module.exports = upload;
