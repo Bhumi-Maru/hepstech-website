@@ -38,13 +38,12 @@ export default function Select_Files() {
       >
         <ul
           role="list"
-          className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-6 xl:grid-cols-8"
+          className="flex flex-wrap gap-x-4 gap-y-6 xs:grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10"
         >
           {mediaItems.map((item, index) => (
             <li
               key={index}
-              className="relative"
-              style={{ height: "100px", width: "100px" }}
+              className="relative h-[100px] w-[100px] sm:w-[150px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
             >
               <div className="absolute z-5 left-2 top-1.5">
                 <input
@@ -54,7 +53,7 @@ export default function Select_Files() {
                 />
               </div>
 
-              <div className="block w-full overflow-hidden bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">
+              <div className="block w-full overflow-hidden bg-gray-100 rounded-lg focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">
                 {item.mimeType && item.mimeType.startsWith("image/") ? (
                   <a
                     href={item.fileUrl}
@@ -65,7 +64,8 @@ export default function Select_Files() {
                     <img
                       src={item.fileUrl}
                       alt={item.name}
-                      className="object-contain w-full h-full"
+                      className="object-contain"
+                      style={{ height: "100px", width: "100px" }}
                     />
                   </a>
                 ) : item.mimeType && item.mimeType.startsWith("video/") ? (
@@ -75,7 +75,12 @@ export default function Select_Files() {
                     rel="noopener noreferrer"
                     onClick={() => setPreviewUrl(item.fileUrl)}
                   >
-                    <video controls className="object-contain w-full h-full">
+                    <video
+                      controls
+                      className="object-contain w-[100px] h-[100px]"
+                    >
+                      {" "}
+                      {/* Set fixed 100px width and height */}
                       <source src={item.fileUrl} type={item.mimeType} />
                     </video>
                   </a>
@@ -83,7 +88,7 @@ export default function Select_Files() {
                   <embed
                     src={item.fileUrl}
                     type="application/pdf"
-                    className="w-full h-48 overflow-y-hidden no-scrollbar"
+                    className="w-[100px] h-[100px] overflow-y-hidden no-scrollbar" // Set fixed 100px width and height
                   />
                 ) : (
                   <p className="text-gray-500">
