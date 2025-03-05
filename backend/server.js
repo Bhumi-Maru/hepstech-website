@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./config/db");
 const path = require("path");
 const uploadRouter = require("./routes/uploadRoutes");
+const mainCategoryRouter = require("./routes/mainCategoryRoutes");
 
 dotenv.config();
 
@@ -19,6 +20,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Use API routes
 app.use("/api", uploadRouter);
+
+//main category routes
+app.use("/api/main-category", mainCategoryRouter);
 
 // Home route
 app.get("/", (req, res) => {

@@ -41,10 +41,7 @@ export default function Select_Files() {
           className="flex flex-wrap gap-x-4 gap-y-6 xs:grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10"
         >
           {mediaItems.map((item, index) => (
-            <li
-              key={index}
-              className="relative h-[100px] w-[100px] sm:w-[150px] md:w-[200px] lg:w-[250px] xl:w-[300px]"
-            >
+            <li key={index} className="relative h-100 w-100">
               <div className="absolute z-5 left-2 top-1.5">
                 <input
                   type="checkbox"

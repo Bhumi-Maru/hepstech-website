@@ -1,8 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function MainCategories() {
   const { toggleModal } = useAdminGlobalContext();
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+
+  // Fetch all main categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:7000/api/main-category"
+        );
+        setCategories(response.data.categories); // Adjust based on actual response structure
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchCategories();
+  }, [categories]);
+
+  // Delete category function
+  const deleteCategory = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7000/api/main-category/delete/${id}`
+      );
+      if (response.data.message === "Main category deleted successfully") {
+        setCategories(categories.filter((category) => category._id !== id)); // Update state to remove deleted category
+        // alert("Main category deleted successfully");
+      }
+    } catch (err) {
+      alert("Error deleting category");
+      console.error(err);
+    }
+  };
+
   return (
     <>
       {/* START MAIN CATEGORIES */}
@@ -91,388 +127,90 @@ export default function MainCategories() {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200 list">
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="" name="" />
-                        </td>
-                        <td>
-                          <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
-                            <svg
-                              className="w-6 h-6 text-gray-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      {categories.map((category) => (
+                        <tr key={category._id}>
+                          <td>
+                            <input type="checkbox" id={category._id} name="" />
+                          </td>
+                          <td>
+                            <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
+                              <img
+                                src={`http://localhost:7000${category.main_image.filePath}`}
+                                alt={category.main_category_title}
+                                className="w-full h-full object-cover"
                               />
-                            </svg>
-                          </div>
-                        </td>
-                        <td className="category-name nowrap">
-                          Women Clothing & Fashion
-                        </td>
-                        <td>
-                          <span className="badge badge-danger">Draft</span>
-                        </td>
-                        <td>
-                          <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Edit"
-                              data-microtip-position="top"
-                              role="tooltip"
-                              data-toggle="modal"
-                              data-target="#editMainCategoryModal"
+                            </div>
+                          </td>
+                          <td className="category-name nowrap">
+                            {category.main_category_title}
+                          </td>
+                          <td>
+                            <span
+                              className={`badge ${
+                                category.main_category_status === "published"
+                                  ? "badge-success"
+                                  : "badge-danger"
+                              }`}
                             >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                              {category.main_category_status}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="flex items-center -ml-2 space-x-3">
+                              <a
+                                href="#"
+                                title="Edit"
+                                className="btn-circle"
+                                aria-label="Edit"
+                                data-microtip-position="top"
+                                role="tooltip"
+                                data-toggle="modal"
+                                data-target="#editMainCategoryModal"
                               >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </a>
+                                <svg
+                                  className="w-5 h-5"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                  />
+                                </svg>
+                              </a>
 
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Delete"
-                              data-microtip-position="top"
-                              role="tooltip"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                              <a
+                                href="#"
+                                onClick={() => deleteCategory(category._id)}
+                                title="Delete"
+                                className="btn-circle"
+                                aria-label="Delete"
+                                data-microtip-position="top"
+                                role="tooltip"
                               >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="" name="" />
-                        </td>
-                        <td>
-                          <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
-                            <img
-                              className="object-cover w-full h-full"
-                              src="https://images.unsplash.com/photo-1550246140-29f40b909e5a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80"
-                              alt=""
-                              loading="lazy"
-                            />
-                          </div>
-                        </td>
-                        <td className="category-name nowrap">
-                          Men Clothing & Fashion
-                        </td>
-                        <td>
-                          <span className="badge badge-success">Published</span>
-                        </td>
-                        <td>
-                          <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Edit"
-                              data-microtip-position="top"
-                              role="tooltip"
-                              data-toggle="modal"
-                              data-target="#editMainCategoryModal"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </a>
-
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Delete"
-                              data-microtip-position="top"
-                              role="tooltip"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="" name="" />
-                        </td>
-                        <td>
-                          <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
-                            <img
-                              className="object-cover w-full h-full"
-                              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1652&q=80"
-                              alt=""
-                              loading="lazy"
-                            />
-                          </div>
-                        </td>
-                        <td className="category-name nowrap">
-                          Computer & Accessories
-                        </td>
-                        <td>
-                          <span className="badge badge-success">Published</span>
-                        </td>
-                        <td>
-                          <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Edit"
-                              data-microtip-position="top"
-                              role="tooltip"
-                              data-toggle="modal"
-                              data-target="#editMainCategoryModal"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </a>
-
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Delete"
-                              data-microtip-position="top"
-                              role="tooltip"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="" name="" />
-                        </td>
-                        <td>
-                          <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
-                            <img
-                              className="object-cover w-full h-full"
-                              src="https://images.unsplash.com/photo-1552519507-ac11af17dcc8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80"
-                              alt=""
-                              loading="lazy"
-                            />
-                          </div>
-                        </td>
-                        <td className="category-name nowrap">
-                          Automobile & Motorcycle
-                        </td>
-                        <td>
-                          <span className="badge badge-success">Published</span>
-                        </td>
-                        <td>
-                          <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Edit"
-                              data-microtip-position="top"
-                              role="tooltip"
-                              data-toggle="modal"
-                              data-target="#editMainCategoryModal"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </a>
-
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Delete"
-                              data-microtip-position="top"
-                              role="tooltip"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="" name="" />
-                        </td>
-                        <td>
-                          <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
-                            <img
-                              className="object-cover w-full h-full"
-                              src="https://images.unsplash.com/photo-1505250469679-203ad9ced0cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=80&q=80"
-                              alt=""
-                              loading="lazy"
-                            />
-                          </div>
-                        </td>
-                        <td className="category-name nowrap">
-                          Sports & Outdoor
-                        </td>
-                        <td>
-                          <span className="badge badge-success">Published</span>
-                        </td>
-                        <td>
-                          <div className="flex items-center -ml-2 space-x-3">
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Edit"
-                              data-microtip-position="top"
-                              role="tooltip"
-                              data-toggle="modal"
-                              data-target="#editMainCategoryModal"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </a>
-
-                            <a
-                              href="#"
-                              title=""
-                              className="btn-circle"
-                              aria-label="Delete"
-                              data-microtip-position="top"
-                              role="tooltip"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
+                                <svg
+                                  className="w-5 h-5"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
 
                     <tfoot className="hidden not-found">

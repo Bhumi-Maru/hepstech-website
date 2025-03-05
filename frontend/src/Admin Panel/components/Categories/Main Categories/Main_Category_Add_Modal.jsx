@@ -1,9 +1,70 @@
 import React, { useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import axios from "axios"; // Make sure to install axios
 
 export default function Main_Category_Add_Modal() {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const [mainCategoryTitle, setMainCategoryTitle] = useState("");
+  const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  const [mainImage, setMainImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
+
+  const handleMainImageChange = (e) => {
+    setMainImage(e.target.files[0]);
+  };
+
+  const handleBannerImageChange = (e) => {
+    setBannerImage(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Prepare form data to send
+    const formData = new FormData();
+    formData.append("main_category_title", mainCategoryTitle);
+    formData.append(
+      "main_category_status",
+      mainCategoryStatus ? "published" : "draft"
+    );
+
+    if (mainImage) {
+      formData.append("main_image", mainImage);
+    }
+
+    if (isBannerImageVisible && bannerImage) {
+      formData.append("add_banner_image", bannerImage);
+    }
+
+    // Add the status for banner image (either active or inactive)
+    formData.append(
+      "add_banner_image_status",
+      isBannerImageVisible ? "active" : "deactive"
+    );
+
+    try {
+      // Send POST request to your backend
+      const response = await axios.post(
+        "http://localhost:7000/api/main-category/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.message === "Main category added successfully") {
+        // Handle success (e.g., close the modal, show success message)
+        setIsOpenPopupModal(false);
+        // alert("Main category added successfully");
+      }
+    } catch (error) {
+      console.error("Error adding main category:", error);
+      alert("Error adding main category. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -51,7 +112,7 @@ export default function Main_Category_Add_Modal() {
             </div>
 
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   {/* Main Category Title */}
                   <div>
@@ -64,6 +125,8 @@ export default function Main_Category_Add_Modal() {
                         id="mainCategoryTitle"
                         placeholder="Enter main category title"
                         className="input-field"
+                        value={mainCategoryTitle}
+                        onChange={(e) => setMainCategoryTitle(e.target.value)}
                       />
                     </div>
                   </div>
@@ -71,14 +134,12 @@ export default function Main_Category_Add_Modal() {
                   {/* Main Image Upload */}
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    {/* <div className="mt-1">
-                      <div className="file-input">
-                        <input type="file" id="categoryMainImage" />
-                        <label className="label">No file selected</label>
-                        <span className="button">Choose</span>
-                      </div>
-                    </div> */}
-                    <div>
+                    <input
+                      type="file"
+                      id="categoryMainImage"
+                      onChange={handleMainImageChange}
+                    />
+                    {/* <div>
                       <label for="">
                         Select Image
                         <span>
@@ -123,7 +184,7 @@ export default function Main_Category_Add_Modal() {
                           Select Files
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Add Banner Image Checkbox */}
@@ -149,57 +210,60 @@ export default function Main_Category_Add_Modal() {
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      <div>
-                        <label for="">
-                          Select Image
-                          <span>
-                            (Image ratio should be 16:6. PNG, JPG, or JPEG up to
-                            1MB)
-                          </span>
+                      <input
+                        type="file"
+                        id="categoryBannerImage"
+                        onChange={handleBannerImageChange}
+                      />
+                      {/* <div className="mt-4">
+                        <label htmlFor="categoryBannerImage">
+                          Banner Image
                         </label>
-                        <div className="mt-1.5">
-                          <button
-                            type="button"
-                            className="btn btn-white"
-                            data-toggle="modal"
-                            data-target="#selectFilesModal"
-                            onClick={() => {
-                              setIsOpenPopupModal((prev) => ({
-                                ...prev,
-                                startSelectFilesAndMedia: true, // Open Select Files Modal
-                              }));
+                        <div>
+                          <label for="">
+                            Select Image
+                            <span>
+                              (Image ratio should be 16:6. PNG, JPG, or JPEG up
+                              to 1MB)
+                            </span>
+                          </label>
+                          <div className="mt-1.5">
+                            <button
+                              type="button"
+                              className="btn btn-white"
+                              data-toggle="modal"
+                              data-target="#selectFilesModal"
+                              onClick={() => {
+                                setIsOpenPopupModal((prev) => ({
+                                  ...prev,
+                                  startSelectFilesAndMedia: true, // Open Select Files Modal
+                                }));
 
-                              // Ensure Select Files modal is above Add Main Banner
-                              setTimeout(() => {
-                                document.getElementById(
-                                  "selectFilesModal"
-                                ).style.zIndex = "1060";
-                              }, 100);
-                            }}
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2 -ml-1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
+                                // Ensure Select Files modal is above Add Main Banner
+                                setTimeout(() => {
+                                  document.getElementById(
+                                    "selectFilesModal"
+                                  ).style.zIndex = "1060";
+                                }, 100);
+                              }}
                             >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              ></path>
-                            </svg>
-                            Select Files
-                          </button>
-                        </div>
-                      </div>
-                      {/* <div className="mt-1">
-                        <div className="file-input">
-                          <input type="file" id="categoryBannerImage" />
-                          <label className="label">No file selected</label>
-                          <span className="button">Choose</span>
+                              <svg
+                                className="w-5 h-5 mr-2 -ml-1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                              </svg>
+                              Select Files
+                            </button>
+                          </div>
                         </div>
                       </div> */}
                     </div>
@@ -214,34 +278,37 @@ export default function Main_Category_Add_Modal() {
                         id="toggleSwitch"
                         role="checkbox"
                         tabIndex="0"
+                        checked={mainCategoryStatus}
+                        onChange={(e) =>
+                          setMainCategoryStatus(e.target.checked)
+                        }
                       />
                       <label htmlFor="toggleSwitch"></label>
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
 
-            <div className="modal-footer">
-              <div className="flex items-center justify-end space-x-4">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  data-dismiss="modal"
-                  aria-label="Close Modal"
-                  onClick={() => setIsOpenPopupModal(false)}
-                >
-                  Discard
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
+                <div className="modal-footer">
+                  <div className="flex items-center justify-end space-x-4">
+                    <button
+                      type="button"
+                      className="btn btn-light"
+                      data-dismiss="modal"
+                      aria-label="Close Modal"
+                      onClick={() => setIsOpenPopupModal(false)}
+                    >
+                      Discard
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
-
       {/* END ADD MAIN CATEGORY POPUP MODAL */}
     </>
   );
