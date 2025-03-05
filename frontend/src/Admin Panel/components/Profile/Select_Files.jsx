@@ -38,10 +38,14 @@ export default function Select_Files() {
       >
         <ul
           role="list"
-          className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4 xl:grid-cols-6"
+          className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-6 xl:grid-cols-8"
         >
           {mediaItems.map((item, index) => (
-            <li key={index} className="relative">
+            <li
+              key={index}
+              className="relative"
+              style={{ height: "100px", width: "100px" }}
+            >
               <div className="absolute z-5 left-2 top-1.5">
                 <input
                   type="checkbox"
