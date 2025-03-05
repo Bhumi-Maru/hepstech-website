@@ -1,56 +1,22 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
+import {
+  handleImageChange,
+  handleFileUpload,
+} from "../../utils/fileUploadUtils";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function UploadImage() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
-  const { setMediaItems, previewUrl, setPreviewUrl } = useAllMediaContext();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [fileType, setFileType] = useState(null);
-
-  // Handle file selection
-  const handleImageChange = (e) => {
-    if (e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      setFileType(file.type); // Store full MIME type
-    }
-  };
-
-  // Handle file upload
-  const handleFileUpload = async () => {
-    if (!selectedFile) {
-      alert("Please select a file to upload.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:7000/api/upload",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      const newFile = {
-        name: selectedFile.name,
-        size: (selectedFile.size / 1024 / 1024).toFixed(2) + " MB",
-        imageUrl: `http://localhost:7000${response.data.filePath}`,
-      };
-
-      setMediaItems((prevItems) => [...prevItems, newFile]);
-      setIsOpenPopupModal(false);
-    } catch (error) {
-      console.error("Failed to upload file", error);
-      alert(
-        error.response?.data?.message || "File upload failed. Please try again."
-      );
-    }
-  };
+  const {
+    setMediaItems,
+    previewUrl,
+    setPreviewUrl,
+    selectedFile,
+    fileType,
+    setSelectedFile,
+    setFileType,
+  } = useAllMediaContext();
 
   return (
     <div
@@ -99,7 +65,14 @@ export default function UploadImage() {
                     type="file"
                     id="fileUpload"
                     className="absolute opacity-0 w-0 h-0"
-                    onChange={handleImageChange}
+                    onChange={(e) =>
+                      handleImageChange(
+                        e,
+                        setSelectedFile,
+                        setPreviewUrl,
+                        setFileType
+                      )
+                    }
                     accept="image/*,video/*,application/pdf"
                   />
                   Browse Files
@@ -108,10 +81,9 @@ export default function UploadImage() {
             </div>
 
             {/* Preview Section */}
-            {/* Preview Section */}
             <div className="border-2 border-dashed rounded-md p-4 flex-1 flex justify-center items-center">
               {previewUrl ? (
-                fileType && fileType.startsWith("image/") ? ( // Check if fileType is not null and starts with "image/"
+                fileType?.startsWith("image/") ? (
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -124,7 +96,7 @@ export default function UploadImage() {
                       style={{ height: "119px" }}
                     />
                   </a>
-                ) : fileType && fileType.startsWith("video/") ? ( // Check if fileType is not null and starts with "video/"
+                ) : fileType?.startsWith("video/") ? (
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -137,7 +109,7 @@ export default function UploadImage() {
                       style={{ height: "119px", width: "300px" }}
                     />
                   </a>
-                ) : fileType === "application/pdf" ? ( // For PDF files
+                ) : fileType === "application/pdf" ? (
                   <a
                     href={previewUrl}
                     target="_blank"
@@ -170,7 +142,14 @@ export default function UploadImage() {
             </button>
             <button
               className="btn btn-primary"
-              onClick={handleFileUpload}
+              onClick={() =>
+                handleFileUpload(
+                  selectedFile,
+                  setMediaItems,
+                  setIsOpenPopupModal,
+                  setPreviewUrl
+                )
+              }
               disabled={!selectedFile}
             >
               Upload

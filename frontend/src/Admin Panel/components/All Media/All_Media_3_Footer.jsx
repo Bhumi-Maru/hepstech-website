@@ -1,11 +1,32 @@
+import axios from "axios";
 import React from "react";
 
 export default function All_Media_3_Footer() {
+  // Function to handle bulk delete
+  const handleBulkDelete = async () => {
+    try {
+      // Make a DELETE request to the backend to delete all files
+      const response = await axios.delete("http://localhost:7000/api/files");
+
+      // Handle the successful response
+      alert(response.data.message);
+      // Optionally, you can trigger a refresh or update of your media list here
+      // For example, you can fetch the updated list of files.
+    } catch (error) {
+      console.error("Error deleting files:", error);
+      alert("Failed to delete files");
+    }
+  };
+
   return (
     <>
       {/* ALL MEDIA FOOTER */}
       <hr className="mt-6 mb-5 border-gray-200" />
-      <button type="button" className="btn btn-error">
+      <button
+        type="button"
+        className="btn btn-error"
+        onClick={handleBulkDelete}
+      >
         <svg
           className="w-5 h-5 mr-2 -ml-1"
           xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import Select_Files from "./Select_Files";
 import Upload_New from "./Upload_New";
+import { handleFileUpload } from "../../utils/fileUploadUtils";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
+import { useAllMediaContext } from "../../context/All_Media_Context";
 
 export default function Start_Select_Files_And_Media_Modal() {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
-  const [selectedTab, setSelectedTab] = useState("select"); // 'select' or 'upload'
+  const {
+    selectedFile,
+    setMediaItems,
+    setPreviewUrl,
+    selectedTab,
+    setSelectedTab,
+  } = useAllMediaContext();
+
   return (
     <>
       {/* START SELECT FILES AND MEDIA MODAL POPUP */}
@@ -131,7 +140,21 @@ export default function Start_Select_Files_And_Media_Modal() {
                   >
                     Cancel
                   </button>
-                  <button type="button" class="btn btn-primary">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onClick={() =>
+                      handleFileUpload(
+                        selectedFile,
+                        setMediaItems,
+                        setIsOpenPopupModal, // Pass this function properly
+                        setPreviewUrl,
+                        setSelectedTab,
+                        isOpenPopupModal
+                      )
+                    }
+                    disabled={!selectedFile}
+                  >
                     Add Files
                   </button>
                 </div>
