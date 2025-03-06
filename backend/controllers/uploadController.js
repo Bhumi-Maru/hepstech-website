@@ -4,23 +4,32 @@ const fs = require("fs");
 
 const uploadFile = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+    // Check if the required fields are available
+    if (!req.files) {
+      return res.status(400).json({ message: "No files uploaded" });
     }
 
-    // Save file details in the database
-    const newFile = new File({
-      filename: req.file.originalname,
-      filePath: `/uploads/${req.file.filename}`, // Corrected path
-      fileType: req.file.mimetype,
-      fileSize: req.file.size, // File size in bytes
-    });
+    const uploadedFiles = [];
 
-    await newFile.save();
+    // Loop through all the uploaded files and save their information
+    for (const field in req.files) {
+      const file = req.files[field][0]; // Multer stores each field's files in an array
+
+      const newFile = new File({
+        filename: file.originalname,
+        filePath: `/uploads/${file.filename}`,
+        fileType: file.mimetype,
+        fileSize: file.size, // File size in bytes
+      });
+
+      // Save the file details in the database
+      await newFile.save();
+      uploadedFiles.push(newFile);
+    }
 
     res.status(200).json({
-      message: "File uploaded successfully",
-      file: newFile,
+      message: "Files uploaded successfully",
+      files: uploadedFiles, // Return the details of the uploaded files
     });
   } catch (error) {
     console.error("Error uploading file:", error);

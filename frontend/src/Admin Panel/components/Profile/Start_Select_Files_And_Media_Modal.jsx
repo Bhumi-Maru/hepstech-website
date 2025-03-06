@@ -140,29 +140,44 @@ export default function Start_Select_Files_And_Media_Modal() {
                   >
                     Cancel
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    onClick={() =>
-                      handleFileUpload(
-                        selectedFile,
-                        setMediaItems,
-                        setIsOpenPopupModal, // Pass this function properly
-                        setPreviewUrl,
-                        setSelectedTab,
-                        isOpenPopupModal
-                      )
-                    }
-                    disabled={!selectedFile}
-                  >
-                    Add Files
-                  </button>
+
+                  {/* Conditional button based on selectedTab */}
+                  {selectedTab === "upload" ? (
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() =>
+                        handleFileUpload(
+                          selectedFile,
+                          setMediaItems,
+                          setIsOpenPopupModal,
+                          setPreviewUrl,
+                          setSelectedTab,
+                          isOpenPopupModal
+                        )
+                      }
+                      disabled={!selectedFile}
+                    >
+                      Add Files
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() => {
+                        // Call a function to handle file selection for 'select' tab
+                      }}
+                    >
+                      Select Files
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/* END SELECT FILES AND MEDIA MODAL POPUP */}
     </>
   );
 }

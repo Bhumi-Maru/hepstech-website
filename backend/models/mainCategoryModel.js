@@ -33,7 +33,7 @@ const mainCategorySchema = new mongoose.Schema({
     enum: ["active", "deactive"],
     required: true,
   },
-});
+} , {timestamps:true});
 
 const MainCategoryModel = mongoose.model("MainCategory", mainCategorySchema);
 
