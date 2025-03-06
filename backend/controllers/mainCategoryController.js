@@ -1,7 +1,8 @@
 const File = require("../models/fileModel");
 const MainCategoryModel = require("../models/mainCategoryModel");
+const fs = require("fs");
+const path = require("path");
 
-// ✅ Add a new main category
 // ✅ Add a new main category
 const addMainCategory = async (req, res) => {
   try {
@@ -117,10 +118,40 @@ const deleteMainCategory = async (req, res) => {
   }
 };
 
-// ✅ Delete all main categories
+// ✅ Delete all main categories along with uploaded files
 const deleteAllMainCategories = async (req, res) => {
   try {
+    // Fetch all categories before deletion
+    const categories = await MainCategoryModel.find();
+
+    // Delete associated images from the uploads folder
+    for (const category of categories) {
+      if (category.main_image) {
+        const mainImage = await File.findById(category.main_image);
+        if (mainImage) {
+          const mainImagePath = path.join(__dirname, "..", mainImage.filePath);
+          if (fs.existsSync(mainImagePath)) fs.unlinkSync(mainImagePath);
+          await File.findByIdAndDelete(category.main_image);
+        }
+      }
+
+      if (category.add_banner_image) {
+        const bannerImage = await File.findById(category.add_banner_image);
+        if (bannerImage) {
+          const bannerImagePath = path.join(
+            __dirname,
+            "..",
+            bannerImage.filePath
+          );
+          if (fs.existsSync(bannerImagePath)) fs.unlinkSync(bannerImagePath);
+          await File.findByIdAndDelete(category.add_banner_image);
+        }
+      }
+    }
+
+    // Delete all categories from the database
     await MainCategoryModel.deleteMany({});
+
     res
       .status(200)
       .json({ message: "All main categories deleted successfully" });
