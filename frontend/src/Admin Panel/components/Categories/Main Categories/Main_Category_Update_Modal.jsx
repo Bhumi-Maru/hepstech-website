@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useAllMediaContext } from "../../../context/All_Media_Context";
 
 export default function Main_Category_Update_Modal({ categoryId }) {
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
-  const [existingCategory, setExistingCategory] = useState(null);
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
+  const { onUpdateCategory } = useAllMediaContext();
 
   // Fetch the existing category data when the component mounts or when categoryId changes
   useEffect(() => {
     if (categoryId) {
+      console.log("Fetching category data for ID:", categoryId); // Log categoryId being used
       axios
         .get(`http://localhost:7000/api/main-category/${categoryId}`)
         .then((response) => {
           const category = response.data.category;
-          setExistingCategory(category);
+          console.log("Fetched category:", category); // Log the fetched category data
           setMainCategoryTitle(category.main_category_title);
-          setMainCategoryStatus(category.main_category_status);
-          setIsBannerImageVisible(category.add_banner_image_status);
+          setMainCategoryStatus(category.main_category_status === "published");
+          setIsBannerImageVisible(
+            category.add_banner_image_status === "active"
+          );
         })
         .catch((error) => {
           console.error("Error fetching category", error);
@@ -27,25 +31,18 @@ export default function Main_Category_Update_Modal({ categoryId }) {
     }
   }, [categoryId]);
 
-  const handleMainImageChange = (e) => {
-    // handle main image change logic
-  };
-
-  const handleBannerImageChange = (e) => {
-    // handle banner image change logic
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const updatedCategoryData = {
       main_category_title: mainCategoryTitle,
-      main_category_status: mainCategoryStatus,
-      add_banner_image_status: isBannerImageVisible,
+      main_category_status: mainCategoryStatus ? "published" : "draft",
+      add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
     };
 
-    if (existingCategory) {
-      // Send the updated data to the backend API
+    console.log("Updated category data:", updatedCategoryData); // Log the data before sending it to the server
+
+    if (categoryId) {
       axios
         .put(
           `http://localhost:7000/api/main-category/update/${categoryId}`,
@@ -53,6 +50,13 @@ export default function Main_Category_Update_Modal({ categoryId }) {
         )
         .then((response) => {
           alert("Category updated successfully!");
+          setIsOpenPopupModal(false); // Close the modal
+
+          // Make sure that the updated category data is passed back to the parent
+          const updatedCategory = response.data.category;
+          onUpdateCategory(updatedCategory); // Update the parent component with the updated category
+          console.log("Updated category response:", updatedCategory); // Log the updated category data
+
           setIsOpenPopupModal(false);
         })
         .catch((error) => {
@@ -61,17 +65,11 @@ export default function Main_Category_Update_Modal({ categoryId }) {
     }
   };
 
-  if (!existingCategory) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <div
-        className={`modal ${
-          isOpenPopupModal.editMainCategoryPopupModal ? "active" : ""
-        }`}
-        id="createMainCategoryModal"
+        className="modal active"
+        id="editMainCategoryModal"
         tabIndex="-1"
         role="dialog"
         aria-hidden="false"
@@ -108,7 +106,6 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                 </svg>
               </button>
             </div>
-
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
@@ -123,29 +120,33 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                         placeholder="Enter main category title"
                         className="input-field"
                         value={mainCategoryTitle}
-                        onChange={(e) => setMainCategoryTitle(e.target.value)}
+                        onChange={(e) => {
+                          setMainCategoryTitle(e.target.value);
+                          console.log(
+                            "Category title changed:",
+                            e.target.value
+                          ); // Log input change
+                        }}
                       />
                     </div>
                   </div>
-
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    <input
-                      type="file"
-                      id="categoryMainImage"
-                      onChange={handleMainImageChange}
-                    />
+                    <input type="file" id="categoryMainImage" />
                   </div>
-
                   <div className="relative flex items-start">
                     <div className="flex items-center h-5">
                       <input
                         type="checkbox"
                         id="bannerImageStatus"
                         checked={isBannerImageVisible}
-                        onChange={(e) =>
-                          setIsBannerImageVisible(e.target.checked)
-                        }
+                        onChange={(e) => {
+                          setIsBannerImageVisible(e.target.checked);
+                          console.log(
+                            "Banner image visibility changed:",
+                            e.target.checked
+                          ); // Log checkbox change
+                        }}
                       />
                     </div>
                     <div className="ml-3 text-sm">
@@ -154,18 +155,12 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                       </label>
                     </div>
                   </div>
-
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      <input
-                        type="file"
-                        id="categoryBannerImage"
-                        onChange={handleBannerImageChange}
-                      />
+                      <input type="file" id="categoryBannerImage" />
                     </div>
                   )}
-
                   <div>
                     <label htmlFor="toggleSwitch">Status</label>
                     <div className="mt-1 toggle-switch">
@@ -173,15 +168,15 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                         type="checkbox"
                         id="toggleSwitch"
                         checked={mainCategoryStatus}
-                        onChange={(e) =>
-                          setMainCategoryStatus(e.target.checked)
-                        }
+                        onChange={(e) => {
+                          setMainCategoryStatus(e.target.checked);
+                          console.log("Status changed:", e.target.checked); // Log status checkbox change
+                        }}
                       />
                       <label htmlFor="toggleSwitch"></label>
                     </div>
                   </div>
                 </div>
-
                 <div className="modal-footer">
                   <div className="flex items-center justify-end space-x-4">
                     <button

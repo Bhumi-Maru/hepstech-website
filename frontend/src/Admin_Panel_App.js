@@ -71,7 +71,7 @@ import UploadImage from "./Admin Panel/components/All Media/UploadImage";
 import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Update_Modal";
 
 export default function Admin_Panel_App() {
-  const { isOpenPopupModal } = useAdminGlobalContext();
+  const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
 
   useEffect(() => {
     const overlay = document.querySelector(".overlay");
@@ -275,7 +275,7 @@ export default function Admin_Panel_App() {
       {/* MAIN CATEGORY UPDATE POPUP MODAL */}
       {isOpenPopupModal.editMainCategoryPopupModal && (
         <>
-          <Main_Category_Update_Modal />
+          <Main_Category_Update_Modal categoryId={selectedCategoryId} />
         </>
       )}
       {/* SUB CATEGORY ADD POPUP MODAL */}

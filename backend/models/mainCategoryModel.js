@@ -1,40 +1,43 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import UUID
 
-const mainCategorySchema = new mongoose.Schema({
-  main_category_id: {
-    type: String,
-    default: uuidv4, // Auto-generate UUID
-    unique: true,
+const mainCategorySchema = new mongoose.Schema(
+  {
+    main_category_id: {
+      type: String,
+      default: uuidv4, // Auto-generate UUID
+      unique: true,
+    },
+    main_category_title: { type: String, required: true },
+
+    // Reference to the File model for main image and banner image
+    main_image: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File", // Reference to File model
+      required: true,
+    },
+
+    main_category_status: {
+      type: String,
+      enum: ["published", "draft"],
+      required: true,
+    },
+
+    add_banner_image: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File", // Reference to File model
+      required: true,
+    },
+
+    add_banner_image_status: {
+      type: String,
+      enum: ["active", "deactive"],
+      required: true,
+    },
   },
-  main_category_title: { type: String, required: true },
+  { timestamps: true }
+);
 
-  // Reference to the File model for main image and banner image
-  main_image: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "File", // Reference to File model
-    required: true,
-  },
+const MainCategory = mongoose.model("MainCategory", mainCategorySchema);
 
-  main_category_status: {
-    type: String,
-    enum: ["published", "draft"],
-    required: true,
-  },
-
-  add_banner_image: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "File", // Reference to File model
-    required: true,
-  },
-
-  add_banner_image_status: {
-    type: String,
-    enum: ["active", "deactive"],
-    required: true,
-  },
-} , {timestamps:true});
-
-const MainCategoryModel = mongoose.model("MainCategory", mainCategorySchema);
-
-module.exports = MainCategoryModel;
+module.exports = MainCategory;

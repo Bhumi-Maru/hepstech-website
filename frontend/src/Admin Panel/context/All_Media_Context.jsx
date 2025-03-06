@@ -21,6 +21,18 @@ export const AllMediaProvider = ({ children }) => {
   // select the tab like select files or upload
   const [selectedTab, setSelectedTab] = useState("select"); // 'select' or 'upload'
 
+  //main categories
+  const [categories, setCategories] = useState([]);
+
+  const onUpdateCategory = (updatedCategory) => {
+    // Update the categories state with the updated category
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category._id === updatedCategory._id ? updatedCategory : category
+      )
+    );
+  };
+
   // Filter media items based on search term
   const filteredMediaItems = mediaItems.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -106,6 +118,9 @@ export const AllMediaProvider = ({ children }) => {
         setFileType,
         selectedTab,
         setSelectedTab,
+        onUpdateCategory,
+        categories,
+        setCategories,
       }}
     >
       {children}
