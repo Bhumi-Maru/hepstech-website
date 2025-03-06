@@ -161,6 +161,29 @@ const updateMainCategory = async (req, res) => {
 //   }
 // };
 
+// ✅ Get a main category by ID
+const getMainCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params; // Get category ID from URL
+
+    // Fetch the category by its ID and populate its file references
+    const category = await MainCategoryModel.findById(id)
+      .populate("main_image") // Populate the main_image field
+      .populate("add_banner_image"); // Populate the add_banner_image field
+
+    if (!category) {
+      return res.status(404).json({ message: "Main category not found" });
+    }
+
+    res.status(200).json({
+      message: "Main category fetched successfully",
+      category: category,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // ✅ Delete all main categories
 const deleteAllMainCategories = async (req, res) => {
   try {
@@ -256,6 +279,7 @@ module.exports = {
   addMainCategory,
   updateMainCategory,
   // deleteMainCategory,
+  getMainCategoryById,
   deleteAllMainCategories,
   getAllMainCategories,
   deleteMainCategories,
