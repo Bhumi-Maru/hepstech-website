@@ -37,6 +37,7 @@ const AdminGlobalProvider = ({ children }) => {
   const [count, setCount] = useState(1);
   // Popup modals state
   const [isOpenPopupModal, setIsOpenPopupModal] = useState({
+    editMainCategoryPopupModal: false,
     addMainCategoryPopupModal: false,
     addSubCategoryPopupModal: false,
     editWalletAmount: false,

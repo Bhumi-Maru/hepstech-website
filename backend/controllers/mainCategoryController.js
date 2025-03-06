@@ -55,34 +55,77 @@ const addMainCategory = async (req, res) => {
 };
 
 // ✅ Update an existing main category
+// ✅ Update an existing main category
 const updateMainCategory = async (req, res) => {
   try {
     const { id } = req.params; // Get category ID from URL
     const updatedFields = req.body;
 
+    // Fetch the existing category to retrieve its image file paths before deleting them
+    const existingCategory = await MainCategoryModel.findById(id).populate(
+      "main_image add_banner_image"
+    );
+
+    if (!existingCategory) {
+      return res.status(404).json({ message: "Main category not found" });
+    }
+
     // If new files are provided, save them and update the file references
     if (req.files) {
+      // If a new main image is provided, delete the old one
       if (req.files.main_image) {
+        // Delete the old main image file if it exists
+        if (
+          existingCategory.main_image &&
+          existingCategory.main_image.filePath
+        ) {
+          const mainImagePath = path.join(
+            __dirname,
+            `../public${existingCategory.main_image.filePath}`
+          );
+          if (fs.existsSync(mainImagePath)) {
+            fs.unlinkSync(mainImagePath); // Delete the old file
+          }
+        }
+
+        // Save the new main image file to the File collection
         const mainImageFile = await File.create({
           filename: req.files.main_image[0].originalname,
           filePath: `/uploads/${req.files.main_image[0].filename}`,
           fileType: req.files.main_image[0].mimetype,
           fileSize: req.files.main_image[0].size,
         });
-        updatedFields.main_image = mainImageFile._id;
+        updatedFields.main_image = mainImageFile._id; // Update reference to the new file
       }
 
+      // If a new banner image is provided, delete the old one
       if (req.files.add_banner_image) {
+        // Delete the old banner image file if it exists
+        if (
+          existingCategory.add_banner_image &&
+          existingCategory.add_banner_image.filePath
+        ) {
+          const bannerImagePath = path.join(
+            __dirname,
+            `../public${existingCategory.add_banner_image.filePath}`
+          );
+          if (fs.existsSync(bannerImagePath)) {
+            fs.unlinkSync(bannerImagePath); // Delete the old file
+          }
+        }
+
+        // Save the new banner image file to the File collection
         const bannerImageFile = await File.create({
           filename: req.files.add_banner_image[0].originalname,
           filePath: `/uploads/${req.files.add_banner_image[0].filename}`,
           fileType: req.files.add_banner_image[0].mimetype,
           fileSize: req.files.add_banner_image[0].size,
         });
-        updatedFields.add_banner_image = bannerImageFile._id;
+        updatedFields.add_banner_image = bannerImageFile._id; // Update reference to the new file
       }
     }
 
+    // Update the category with the new fields (including the updated file references)
     const updatedCategory = await MainCategoryModel.findByIdAndUpdate(
       id,
       updatedFields,

@@ -189,120 +189,145 @@ export default function MainCategories() {
                     </thead>
 
                     <tbody>
-                      {searchMainCategory.length > 0 ? (
-                        searchMainCategory.map((category) => (
-                          <tr key={category._id}>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked={selectedCategories.includes(
-                                  category._id
-                                )} // Check if this category is selected
-                                onChange={() =>
-                                  handleCheckboxChange(category._id)
-                                } // Toggle selection
-                              />
-                            </td>
+                      {searchMainCategory.length > 0
+                        ? searchMainCategory.map((category) => (
+                            <tr key={category._id}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedCategories.includes(
+                                    category._id
+                                  )} // Check if this category is selected
+                                  onChange={() =>
+                                    handleCheckboxChange(category._id)
+                                  } // Toggle selection
+                                />
+                              </td>
 
-                            <td>
-                              <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
-                                {category.main_image ? (
-                                  category.main_image.filePath.endsWith(
-                                    ".pdf"
-                                  ) ? (
-                                    <iframe
-                                      src={`http://localhost:7000${category.main_image.filePath}`}
-                                      className="w-full h-full"
-                                      title={category.main_category_title}
-                                      style={{
-                                        overflow: "hidden", // Hide overflow
-                                        scrollbarWidth: "none", // For Firefox
-                                        WebkitScrollbar: "none", // For webkit-based browsers like Chrome/Safari
-                                      }}
-                                    ></iframe>
+                              <td>
+                                <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
+                                  {category.main_image ? (
+                                    category.main_image.filePath.endsWith(
+                                      ".pdf"
+                                    ) ? (
+                                      <iframe
+                                        src={`http://localhost:7000${category.main_image.filePath}`}
+                                        className="w-full h-full"
+                                        title={category.main_category_title}
+                                        style={{
+                                          overflow: "hidden", // Hide overflow
+                                          scrollbarWidth: "none", // For Firefox
+                                          WebkitScrollbar: "none", // For webkit-based browsers like Chrome/Safari
+                                        }}
+                                      ></iframe>
+                                    ) : (
+                                      <img
+                                        src={`http://localhost:7000${category.main_image.filePath}`}
+                                        alt={category.main_category_title}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    )
                                   ) : (
-                                    <img
-                                      src={`http://localhost:7000${category.main_image.filePath}`}
-                                      alt={category.main_category_title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  )
-                                ) : (
-                                  <span>No Image</span>
-                                )}
-                              </div>
-                            </td>
+                                    <span>No Image</span>
+                                  )}
+                                </div>
+                              </td>
 
-                            <td>{category.main_category_title}</td>
-                            <td>
-                              <span
-                                className={`badge ${
-                                  category.main_category_status === "published"
-                                    ? "badge-success"
-                                    : "badge-danger"
-                                }`}
-                              >
-                                {category.main_category_status}
-                              </span>
-                            </td>
-                            <td>
-                              <div className="flex items-center -ml-2 space-x-3">
-                                <a
-                                  href="#"
-                                  className="btn-circle"
-                                  title="Edit"
-                                  data-toggle="modal"
-                                  data-target="#editMainCategoryModal"
+                              <td>{category.main_category_title}</td>
+                              <td>
+                                <span
+                                  className={`badge ${
+                                    category.main_category_status ===
+                                    "published"
+                                      ? "badge-success"
+                                      : "badge-danger"
+                                  }`}
                                 >
-                                  <svg
-                                    className="w-5 h-5"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                                  {category.main_category_status}
+                                </span>
+                              </td>
+                              <td>
+                                <div className="flex items-center -ml-2 space-x-3">
+                                  <a
+                                    href="#"
+                                    className="btn-circle"
+                                    title="Edit"
+                                    data-toggle="modal"
+                                    data-target="#editMainCategoryModal"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                    />
-                                  </svg>
-                                </a>
+                                    <svg
+                                      className="w-5 h-5"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                      />
+                                    </svg>
+                                  </a>
 
-                                <a
-                                  href="#"
-                                  onClick={() => deleteCategory(category._id)}
-                                  title="Delete"
-                                  className="btn-circle"
-                                >
-                                  <svg
-                                    className="w-5 h-5"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                                  <a
+                                    href="#"
+                                    onClick={() => deleteCategory(category._id)}
+                                    title="Delete"
+                                    className="btn-circle"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </a>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
+                                    <svg
+                                      className="w-5 h-5"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        : null}
+                    </tbody>
+
+                    {/* Move No Data Found message outside of tbody */}
+                    {searchMainCategory.length === 0 && (
+                      <tfoot className="not-found">
                         <tr>
-                          <td colSpan="5" className="text-center py-4">
-                            No data found.
+                          <td
+                            colSpan="7"
+                            className="px-4 py-6 text-center bg-white rounded-b-lg"
+                          >
+                            <div className="flex flex-row items-center justify-center text-sm font-medium text-gray-500 space-x-2">
+                              <svg
+                                className="w-6 h-6"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                                />
+                              </svg>
+                              <span>No Data Found</span>
+                            </div>
                           </td>
                         </tr>
-                      )}
-                    </tbody>
+                      </tfoot>
+                    )}
                   </table>
                 </div>
               </div>
