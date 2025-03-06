@@ -249,11 +249,16 @@ export default function MainCategories() {
                               <td>
                                 <div className="flex items-center -ml-2 space-x-3">
                                   <a
-                                    href="#"
                                     className="btn-circle"
                                     title="Edit"
                                     data-toggle="modal"
                                     data-target="#editMainCategoryModal"
+                                    onClick={() =>
+                                      toggleModal(
+                                        "editMainCategoryPopupModal",
+                                        category._id
+                                      )
+                                    }
                                   >
                                     <svg
                                       className="w-5 h-5"

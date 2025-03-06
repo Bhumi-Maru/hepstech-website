@@ -6,6 +6,7 @@ const {
   deleteMainCategories,
   deleteAllMainCategories,
   getAllMainCategories,
+  getMainCategoryById,
 } = require("../controllers/mainCategoryController");
 const upload = require("../Middleware/UploadMiddleware");
 
@@ -13,6 +14,8 @@ const mainCategoryRouter = express.Router();
 
 // ✅ Add a new category (with file upload)
 mainCategoryRouter.post("/add", upload, addMainCategory);
+// ✅ Get a category by ID
+mainCategoryRouter.get("/:id", getMainCategoryById);
 
 // ✅ Update a category by ID
 mainCategoryRouter.put("/update/:id", updateMainCategory);

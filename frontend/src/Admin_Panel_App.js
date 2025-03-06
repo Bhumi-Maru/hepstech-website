@@ -68,6 +68,7 @@ import Add_Main_Banner_Section_22_Popup_Modal from "./Admin Panel/components/Web
 import Add_Testimonials_Section_23_Popup_Modal from "./Admin Panel/components/Website Setup/Home Page/Testimonials - Reviews Slider Section 23/Add_Testimonials_Section_23_Popup_Modal";
 import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_SideBar";
 import UploadImage from "./Admin Panel/components/All Media/UploadImage";
+import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Update_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal } = useAdminGlobalContext();
@@ -269,6 +270,12 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addMainCategoryPopupModal && (
         <>
           <Main_Category_Add_Modal />
+        </>
+      )}
+      {/* MAIN CATEGORY UPDATE POPUP MODAL */}
+      {isOpenPopupModal.editMainCategoryPopupModal && (
+        <>
+          <Main_Category_Update_Modal />
         </>
       )}
       {/* SUB CATEGORY ADD POPUP MODAL */}
