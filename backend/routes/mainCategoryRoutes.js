@@ -2,7 +2,8 @@ const express = require("express");
 const {
   addMainCategory,
   updateMainCategory,
-  deleteMainCategory,
+  // deleteMainCategory,
+  deleteMainCategories,
   deleteAllMainCategories,
   getAllMainCategories,
 } = require("../controllers/mainCategoryController");
@@ -17,7 +18,10 @@ mainCategoryRouter.post("/add", upload, addMainCategory);
 mainCategoryRouter.put("/update/:id", updateMainCategory);
 
 // ✅ Delete a category by ID
-mainCategoryRouter.delete("/delete/:id", deleteMainCategory);
+// mainCategoryRouter.delete("/delete/:id", deleteMainCategory);
+
+// ✅ Bulk Delete categories
+mainCategoryRouter.delete("/delete-selected", deleteMainCategories);
 
 // ✅ Delete all categories
 mainCategoryRouter.delete("/delete-all", deleteAllMainCategories);

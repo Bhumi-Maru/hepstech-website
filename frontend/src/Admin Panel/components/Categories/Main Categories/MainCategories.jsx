@@ -79,14 +79,19 @@ export default function MainCategories() {
     }
 
     try {
-      await axios.delete("http://localhost:7000/api/main-category/delete-all", {
-        data: { id: selectedCategories }, // Send selected categories' IDs for deletion
-      });
+      // Send selected category IDs for deletion
+      const response = await axios.delete(
+        "http://localhost:7000/api/main-category/delete-selected",
+        { data: { ids: selectedCategories } }
+      );
+      alert(response.data.message);
+
+      // Update the state to remove deleted categories
       setCategories(
         categories.filter(
           (category) => !selectedCategories.includes(category._id)
         )
-      ); // Remove selected categories from state
+      );
       setSelectedCategories([]); // Clear selected categories
       setSelectAll(false); // Reset select all checkbox
     } catch (err) {
@@ -192,25 +197,42 @@ export default function MainCategories() {
                                 type="checkbox"
                                 checked={selectedCategories.includes(
                                   category._id
-                                )}
+                                )} // Check if this category is selected
                                 onChange={() =>
                                   handleCheckboxChange(category._id)
-                                }
+                                } // Toggle selection
                               />
                             </td>
+
                             <td>
                               <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
                                 {category.main_image ? (
-                                  <img
-                                    src={`http://localhost:7000${category.main_image.filePath}`}
-                                    alt={category.main_category_title}
-                                    className="w-full h-full object-cover"
-                                  />
+                                  category.main_image.filePath.endsWith(
+                                    ".pdf"
+                                  ) ? (
+                                    <iframe
+                                      src={`http://localhost:7000${category.main_image.filePath}`}
+                                      className="w-full h-full"
+                                      title={category.main_category_title}
+                                      style={{
+                                        overflow: "hidden", // Hide overflow
+                                        scrollbarWidth: "none", // For Firefox
+                                        WebkitScrollbar: "none", // For webkit-based browsers like Chrome/Safari
+                                      }}
+                                    ></iframe>
+                                  ) : (
+                                    <img
+                                      src={`http://localhost:7000${category.main_image.filePath}`}
+                                      alt={category.main_category_title}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  )
                                 ) : (
                                   <span>No Image</span>
                                 )}
                               </div>
                             </td>
+
                             <td>{category.main_category_title}</td>
                             <td>
                               <span

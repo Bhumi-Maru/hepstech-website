@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
 
 // Expecting two images with specific field names
 const upload = multer({ storage }).fields([
+  { name: "filename", maxCount: 10 },
   { name: "main_image", maxCount: 1 },
   { name: "add_banner_image", maxCount: 1 },
 ]);

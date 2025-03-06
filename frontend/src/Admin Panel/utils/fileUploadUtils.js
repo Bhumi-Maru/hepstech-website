@@ -28,7 +28,7 @@ export const handleFileUpload = async (
   }
 
   const formData = new FormData();
-  formData.append("file", selectedFile);
+  formData.append("filename", selectedFile);
 
   try {
     const response = await axios.post(

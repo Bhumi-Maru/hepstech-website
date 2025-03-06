@@ -103,58 +103,90 @@ const updateMainCategory = async (req, res) => {
 };
 
 // ✅ Delete a single main category by ID
-const deleteMainCategory = async (req, res) => {
+// const deleteMainCategory = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const deletedCategory = await MainCategoryModel.findByIdAndDelete(id);
+
+//     if (!deletedCategory) {
+//       return res.status(404).json({ message: "Main category not found" });
+//     }
+
+//     res.status(200).json({ message: "Main category deleted successfully" });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+// ✅ Delete all main categories
+const deleteAllMainCategories = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedCategory = await MainCategoryModel.findByIdAndDelete(id);
-
-    if (!deletedCategory) {
-      return res.status(404).json({ message: "Main category not found" });
-    }
-
-    res.status(200).json({ message: "Main category deleted successfully" });
+    await MainCategoryModel.deleteMany({});
+    res
+      .status(200)
+      .json({ message: "All main categories deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// ✅ Delete all main categories along with uploaded files
-const deleteAllMainCategories = async (req, res) => {
+// ✅ Delete selected main categories (bulk delete)
+const deleteMainCategories = async (req, res) => {
   try {
-    // Fetch all categories before deletion
-    const categories = await MainCategoryModel.find();
+    const { ids } = req.body; // Get the array of category IDs from the request body
 
-    // Delete associated images from the uploads folder
-    for (const category of categories) {
-      if (category.main_image) {
-        const mainImage = await File.findById(category.main_image);
-        if (mainImage) {
-          const mainImagePath = path.join(__dirname, "..", mainImage.filePath);
-          if (fs.existsSync(mainImagePath)) fs.unlinkSync(mainImagePath);
-          await File.findByIdAndDelete(category.main_image);
-        }
-      }
-
-      if (category.add_banner_image) {
-        const bannerImage = await File.findById(category.add_banner_image);
-        if (bannerImage) {
-          const bannerImagePath = path.join(
-            __dirname,
-            "..",
-            bannerImage.filePath
-          );
-          if (fs.existsSync(bannerImagePath)) fs.unlinkSync(bannerImagePath);
-          await File.findByIdAndDelete(category.add_banner_image);
-        }
-      }
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No categories selected for deletion" });
     }
 
-    // Delete all categories from the database
-    await MainCategoryModel.deleteMany({});
+    // Fetch categories to get the file paths for deletion
+    const categoriesToDelete = await MainCategoryModel.find({
+      _id: { $in: ids },
+    }).populate("main_image add_banner_image");
 
-    res
-      .status(200)
-      .json({ message: "All main categories deleted successfully" });
+    if (!categoriesToDelete || categoriesToDelete.length === 0) {
+      return res.status(404).json({ message: "No categories found to delete" });
+    }
+
+    // Delete categories and their corresponding files
+    const deletedCategories = await MainCategoryModel.deleteMany({
+      _id: { $in: ids },
+    });
+
+    if (deletedCategories.deletedCount === 0) {
+      return res.status(404).json({ message: "No categories found to delete" });
+    }
+
+    // Delete files from the uploads folder
+    categoriesToDelete.forEach((category) => {
+      // Delete main image file
+      if (category.main_image && category.main_image.filePath) {
+        const mainImagePath = path.join(
+          __dirname,
+          `../public${category.main_image.filePath}`
+        );
+        if (fs.existsSync(mainImagePath)) {
+          fs.unlinkSync(mainImagePath); // Delete the file
+        }
+      }
+
+      // Delete banner image file
+      if (category.add_banner_image && category.add_banner_image.filePath) {
+        const bannerImagePath = path.join(
+          __dirname,
+          `../public${category.add_banner_image.filePath}`
+        );
+        if (fs.existsSync(bannerImagePath)) {
+          fs.unlinkSync(bannerImagePath); // Delete the file
+        }
+      }
+    });
+
+    res.status(200).json({
+      message: `${deletedCategories.deletedCount} category(s) and their associated files deleted successfully`,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -180,7 +212,8 @@ const getAllMainCategories = async (req, res) => {
 module.exports = {
   addMainCategory,
   updateMainCategory,
-  deleteMainCategory,
+  // deleteMainCategory,
   deleteAllMainCategories,
   getAllMainCategories,
+  deleteMainCategories,
 };
