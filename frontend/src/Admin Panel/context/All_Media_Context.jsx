@@ -21,30 +21,6 @@ export const AllMediaProvider = ({ children }) => {
   // select the tab like select files or upload
   const [selectedTab, setSelectedTab] = useState("select"); // 'select' or 'upload'
 
-  // Fetch media from the API
-  // const fetchMedia = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:7000/api/files");
-  //     console.log(response.data); // Log the response to check the structure
-
-  //     const mediaData = response.data.files.map((item) => {
-  //       return {
-  //         name: item.filename,
-  //         size: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
-  //         mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
-  //         fileUrl: `http://localhost:7000${item.filePath}`,
-  //       };
-  //     });
-  //     setMediaItems(mediaData);
-  //   } catch (error) {
-  //     console.error("Failed to fetch media", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchMedia();
-  // }, [mediaItems]); // Empty dependency array to fetch only once when the component mounts
-
   // Filter media items based on search term
   const filteredMediaItems = mediaItems.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
