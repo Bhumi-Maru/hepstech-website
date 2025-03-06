@@ -4,6 +4,7 @@ const AdminGlobalContext = createContext();
 
 const AdminGlobalProvider = ({ children }) => {
   //
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [isActive, setIsActive] = useState("All"); // Track Active Page
   const [activeTab, setActiveTab] = useState("All"); // Track active tab
   const [toggleStates, setToggleStates] = useState({
@@ -130,11 +131,14 @@ const AdminGlobalProvider = ({ children }) => {
   };
 
   // Function to toggle a specific modal
-  const toggleModal = (modalName) => {
+  const toggleModal = (modalName, categoryId = null) => {
     setIsOpenPopupModal((prevState) => ({
       ...prevState,
-      [modalName]: !prevState[modalName], // Toggle the specific modal's state
+      [modalName]: !prevState[modalName],
     }));
+    if (categoryId) {
+      setSelectedCategoryId(categoryId);
+    }
   };
 
   // Increment function

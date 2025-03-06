@@ -1,5 +1,5 @@
 const File = require("../models/fileModel");
-const MainCategoryModel = require("../models/mainCategoryModel");
+const MainCategory = require("../models/mainCategoryModel");
 const fs = require("fs");
 const path = require("path");
 
@@ -35,7 +35,7 @@ const addMainCategory = async (req, res) => {
     });
 
     // Create new category with file references
-    const newCategory = new MainCategoryModel({
+    const newCategory = new MainCategory({
       main_category_title,
       main_image: mainImageFile._id, // Store ObjectId reference to the File
       main_category_status,
@@ -62,7 +62,7 @@ const updateMainCategory = async (req, res) => {
     const updatedFields = req.body;
 
     // Fetch the existing category to retrieve its image file paths before deleting them
-    const existingCategory = await MainCategoryModel.findById(id).populate(
+    const existingCategory = await MainCategory.findById(id).populate(
       "main_image add_banner_image"
     );
 
@@ -126,7 +126,7 @@ const updateMainCategory = async (req, res) => {
     }
 
     // Update the category with the new fields (including the updated file references)
-    const updatedCategory = await MainCategoryModel.findByIdAndUpdate(
+    const updatedCategory = await MainCategory.findByIdAndUpdate(
       id,
       updatedFields,
       { new: true }
@@ -149,7 +149,7 @@ const updateMainCategory = async (req, res) => {
 // const deleteMainCategory = async (req, res) => {
 //   try {
 //     const { id } = req.params;
-//     const deletedCategory = await MainCategoryModel.findByIdAndDelete(id);
+//     const deletedCategory = await MainCategory.findByIdAndDelete(id);
 
 //     if (!deletedCategory) {
 //       return res.status(404).json({ message: "Main category not found" });
@@ -167,7 +167,7 @@ const getMainCategoryById = async (req, res) => {
     const { id } = req.params; // Get category ID from URL
 
     // Fetch the category by its ID and populate its file references
-    const category = await MainCategoryModel.findById(id)
+    const category = await MainCategory.findById(id)
       .populate("main_image") // Populate the main_image field
       .populate("add_banner_image"); // Populate the add_banner_image field
 
@@ -187,7 +187,7 @@ const getMainCategoryById = async (req, res) => {
 // ✅ Delete all main categories
 const deleteAllMainCategories = async (req, res) => {
   try {
-    await MainCategoryModel.deleteMany({});
+    await MainCategory.deleteMany({});
     res
       .status(200)
       .json({ message: "All main categories deleted successfully" });
@@ -208,7 +208,7 @@ const deleteMainCategories = async (req, res) => {
     }
 
     // Fetch categories to get the file paths for deletion
-    const categoriesToDelete = await MainCategoryModel.find({
+    const categoriesToDelete = await MainCategory.find({
       _id: { $in: ids },
     }).populate("main_image add_banner_image");
 
@@ -217,7 +217,7 @@ const deleteMainCategories = async (req, res) => {
     }
 
     // Delete categories and their corresponding files
-    const deletedCategories = await MainCategoryModel.deleteMany({
+    const deletedCategories = await MainCategory.deleteMany({
       _id: { $in: ids },
     });
 
@@ -262,7 +262,7 @@ const deleteMainCategories = async (req, res) => {
 const getAllMainCategories = async (req, res) => {
   try {
     // Fetch all main categories with populated image data
-    const categories = await MainCategoryModel.find()
+    const categories = await MainCategory.find()
       .populate("main_image") // Populate the main_image field
       .populate("add_banner_image"); // Populate the add_banner_image field
 
