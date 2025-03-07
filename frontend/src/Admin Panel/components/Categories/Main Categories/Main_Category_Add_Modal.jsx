@@ -9,17 +9,21 @@ export default function Main_Category_Add_Modal() {
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const [mainImage, setMainImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
-
-  const handleMainImageChange = (e) => {
-    setMainImage(e.target.files[0]);
-  };
-
-  const handleBannerImageChange = (e) => {
-    setBannerImage(e.target.files[0]);
-  };
+  const [selectedFile, setSelectedFile] = useState(null); // Track selected file
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Main Image State:", mainImage); // Log mainImage to debug
+    // Validate that both images are provided
+    if (!mainImage) {
+      alert("Main image is required.");
+      return;
+    }
+
+    if (isBannerImageVisible && !bannerImage) {
+      alert("Banner image is required.");
+      return;
+    }
 
     // Prepare form data to send
     const formData = new FormData();
@@ -29,9 +33,7 @@ export default function Main_Category_Add_Modal() {
       mainCategoryStatus ? "published" : "draft"
     );
 
-    if (mainImage) {
-      formData.append("main_image", mainImage);
-    }
+    formData.append("main_image", mainImage); // Main image is always required
 
     if (isBannerImageVisible && bannerImage) {
       formData.append("add_banner_image", bannerImage);
@@ -42,6 +44,10 @@ export default function Main_Category_Add_Modal() {
       "add_banner_image_status",
       isBannerImageVisible ? "active" : "deactive"
     );
+
+    if (selectedFile) {
+      formData.append("selected_file", selectedFile); // Include selected file
+    }
 
     try {
       // Send POST request to your backend
@@ -59,10 +65,23 @@ export default function Main_Category_Add_Modal() {
         // Handle success (e.g., close the modal, show success message)
         setIsOpenPopupModal(false);
         // alert("Main category added successfully");
+      } else {
+        // Handle any other response message
+        alert(`Error: ${response.data.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error adding main category:", error);
-      alert("Error adding main category. Please try again.");
+      if (error.response) {
+        // If the error is from the backend, log the response details
+        console.error("Backend Response:", error.response);
+        alert(`Error: ${error.response.data.message || "Unknown error"}`);
+      } else if (error.request) {
+        // If no response from backend
+        alert("No response from backend. Please check your network.");
+      } else {
+        // General error
+        alert("Error adding main category. Please try again.");
+      }
     }
   };
 
@@ -134,12 +153,7 @@ export default function Main_Category_Add_Modal() {
                   {/* Main Image Upload */}
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    <input
-                      type="file"
-                      id="categoryMainImage"
-                      onChange={handleMainImageChange}
-                    />
-                    {/* <div>
+                    <div>
                       <label for="">
                         Select Image
                         <span>
@@ -158,13 +172,6 @@ export default function Main_Category_Add_Modal() {
                               ...prev,
                               startSelectFilesAndMedia: true, // Open Select Files Modal
                             }));
-
-                            // Ensure Select Files modal is above Add Main Banner
-                            setTimeout(() => {
-                              document.getElementById(
-                                "selectFilesModal"
-                              ).style.zIndex = "1060";
-                            }, 100);
                           }}
                         >
                           <svg
@@ -184,7 +191,7 @@ export default function Main_Category_Add_Modal() {
                           Select Files
                         </button>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
 
                   {/* Add Banner Image Checkbox */}
@@ -210,62 +217,45 @@ export default function Main_Category_Add_Modal() {
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      <input
-                        type="file"
-                        id="categoryBannerImage"
-                        onChange={handleBannerImageChange}
-                      />
-                      {/* <div className="mt-4">
-                        <label htmlFor="categoryBannerImage">
-                          Banner Image
+                      <div>
+                        <label for="">
+                          Select Image
+                          <span>
+                            (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                            1MB)
+                          </span>
                         </label>
-                        <div>
-                          <label for="">
-                            Select Image
-                            <span>
-                              (Image ratio should be 16:6. PNG, JPG, or JPEG up
-                              to 1MB)
-                            </span>
-                          </label>
-                          <div className="mt-1.5">
-                            <button
-                              type="button"
-                              className="btn btn-white"
-                              data-toggle="modal"
-                              data-target="#selectFilesModal"
-                              onClick={() => {
-                                setIsOpenPopupModal((prev) => ({
-                                  ...prev,
-                                  startSelectFilesAndMedia: true, // Open Select Files Modal
-                                }));
-
-                                // Ensure Select Files modal is above Add Main Banner
-                                setTimeout(() => {
-                                  document.getElementById(
-                                    "selectFilesModal"
-                                  ).style.zIndex = "1060";
-                                }, 100);
-                              }}
+                        <div className="mt-1.5">
+                          <button
+                            type="button"
+                            className="btn btn-white"
+                            data-toggle="modal"
+                            data-target="#selectFilesModal"
+                            onClick={() => {
+                              setIsOpenPopupModal((prev) => ({
+                                ...prev,
+                                startSelectFilesAndMedia: true, // Open Select Files Modal
+                              }));
+                            }}
+                          >
+                            <svg
+                              className="w-5 h-5 mr-2 -ml-1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
                             >
-                              <svg
-                                className="w-5 h-5 mr-2 -ml-1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                ></path>
-                              </svg>
-                              Select Files
-                            </button>
-                          </div>
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              ></path>
+                            </svg>
+                            Select Files
+                          </button>
                         </div>
-                      </div> */}
+                      </div>
                     </div>
                   )}
 

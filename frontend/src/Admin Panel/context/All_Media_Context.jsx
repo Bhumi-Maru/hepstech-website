@@ -24,6 +24,7 @@ export const AllMediaProvider = ({ children }) => {
   //main categories
   const [categories, setCategories] = useState([]);
 
+  // update main category
   const onUpdateCategory = (updatedCategory) => {
     // Update the categories state with the updated category
     setCategories((prevCategories) =>

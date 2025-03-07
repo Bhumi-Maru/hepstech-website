@@ -145,21 +145,53 @@ const updateMainCategory = async (req, res) => {
   }
 };
 
-// ✅ Delete a single main category by ID
-// const deleteMainCategory = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const deletedCategory = await MainCategory.findByIdAndDelete(id);
+// ✅ Delete a single main category by ID, including file from uploads folder
+const deleteMainCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     if (!deletedCategory) {
-//       return res.status(404).json({ message: "Main category not found" });
-//     }
+    // Fetch the category to get the image file paths before deletion
+    const category = await MainCategory.findById(id).populate(
+      "main_image add_banner_image"
+    );
 
-//     res.status(200).json({ message: "Main category deleted successfully" });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+    if (!category) {
+      return res.status(404).json({ message: "Main category not found" });
+    }
+
+    // Delete associated images from file system
+    const deleteFile = (file) => {
+      if (file && file.filePath) {
+        const filePath = path.join(__dirname, `../public${file.filePath}`);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath); // Delete the file
+        }
+      }
+    };
+
+    deleteFile(category.main_image);
+    deleteFile(category.add_banner_image);
+
+    // Delete associated image documents from the File collection
+    if (category.main_image) {
+      await File.findByIdAndDelete(category.main_image._id);
+    }
+    if (category.add_banner_image) {
+      await File.findByIdAndDelete(category.add_banner_image._id);
+    }
+
+    // Delete the main category
+    await MainCategory.findByIdAndDelete(id);
+
+    res
+      .status(200)
+      .json({
+        message: "Main category and associated files deleted successfully",
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // ✅ Get a main category by ID
 const getMainCategoryById = async (req, res) => {
@@ -278,7 +310,7 @@ const getAllMainCategories = async (req, res) => {
 module.exports = {
   addMainCategory,
   updateMainCategory,
-  // deleteMainCategory,
+  deleteMainCategory,
   getMainCategoryById,
   deleteAllMainCategories,
   getAllMainCategories,
