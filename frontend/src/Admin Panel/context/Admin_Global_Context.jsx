@@ -178,6 +178,7 @@ const AdminGlobalProvider = ({ children }) => {
         handleCheckboxChange,
         passwordVisible,
         togglePasswordVisibility,
+        selectedCategoryId,
       }}
     >
       {children}

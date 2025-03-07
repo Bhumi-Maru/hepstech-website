@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import axios from "axios";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Select_Files() {
-  const { setMediaItems, mediaItems, setPreviewUrl } = useAllMediaContext();
+  const { setMediaItems, mediaItems, setPreviewUrl, setSelectedFile } =
+    useAllMediaContext();
+  const { setIsOpenPopupModal } = useAdminGlobalContext();
 
   // Fetch media from the API
   useEffect(() => {
@@ -27,6 +30,15 @@ export default function Select_Files() {
     fetchMedia();
   }, [mediaItems]); // Empty dependency array to fetch only once
 
+  const handleFileSelect = (file, index) => {
+    setSelectedFile(file); // Set the file when checkbox is checked
+    setPreviewUrl(file.fileUrl); // Set the preview URL to the selected file
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      startSelectFilesAndMedia: false, // Close the Start and Select modal
+    }));
+  };
+
   return (
     <>
       {/* Selected files for popup in profile */}
@@ -47,6 +59,7 @@ export default function Select_Files() {
                   type="checkbox"
                   name="selectedFiles"
                   id={`file-${index}`}
+                  onChange={() => handleFileSelect(item, index)} // Handle file selection on checkbox change
                 />
               </div>
 

@@ -17,26 +17,25 @@ export default function Start_Select_Files_And_Media_Modal() {
 
   return (
     <>
-      {/* START SELECT FILES AND MEDIA MODAL POPUP */}
       <div
         className={`modal ${
           isOpenPopupModal.startSelectFilesAndMedia ? "active" : ""
         }`}
         id="selectFilesModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-hidden="false"
       >
-        <div class="modal-overlay" tabindex="-1"></div>
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered sm:max-w-6xl">
-          <div class="modal-content" role="document">
-            <div class="modal-header !pb-0">
+        <div className="modal-overlay" tabIndex="-1"></div>
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered sm:max-w-6xl">
+          <div className="modal-content" role="document">
+            <div className="modal-header !pb-0">
               <ul
-                class="flex items-center space-x-6 tabs"
+                className="flex items-center space-x-6 tabs"
                 id="myTab"
                 role="tablist"
               >
-                <li class="tab-item" role="presentation">
+                <li className="tab-item" role="presentation">
                   <button
                     type="button"
                     id="home-tab"
@@ -44,8 +43,6 @@ export default function Start_Select_Files_And_Media_Modal() {
                       selectedTab === "select" ? "active" : ""
                     }`}
                     onClick={() => setSelectedTab("select")}
-                    data-toggle="tab"
-                    data-target="#home"
                     role="tab"
                     aria-controls="home"
                     aria-selected="true"
@@ -53,8 +50,7 @@ export default function Start_Select_Files_And_Media_Modal() {
                     Select Files
                   </button>
                 </li>
-
-                <li class="tab-item" role="presentation">
+                <li className="tab-item" role="presentation">
                   <button
                     type="button"
                     id="profile-tab"
@@ -62,8 +58,6 @@ export default function Start_Select_Files_And_Media_Modal() {
                       selectedTab === "upload" ? "active" : ""
                     }`}
                     onClick={() => setSelectedTab("upload")}
-                    data-toggle="tab"
-                    data-target="#profile"
                     role="tab"
                     aria-controls="profile"
                     aria-selected="false"
@@ -72,23 +66,21 @@ export default function Start_Select_Files_And_Media_Modal() {
                   </button>
                 </li>
               </ul>
-
-              {/* <!-- close button --> */}
               <button
                 type="button"
-                class="!-mt-5 btn-close"
+                className="!-mt-5 btn-close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={() => {
+                onClick={() =>
                   setIsOpenPopupModal((prev) => ({
                     ...prev,
-                    startSelectFilesAndMedia: false, // Close only the Select Files modal
-                  }));
-                }}
+                    startSelectFilesAndMedia: false,
+                  }))
+                }
               >
-                <span class="sr-only">Close</span>
+                <span className="sr-only">Close</span>
                 <svg
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -96,56 +88,51 @@ export default function Start_Select_Files_And_Media_Modal() {
                   aria-hidden="true"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M6 18L18 6M6 6l12 12"
                   ></path>
                 </svg>
               </button>
             </div>
-
-            <div class="modal-body">
-              <div class="tab-content" id="myTabContent">
+            <div className="modal-body">
+              <div className="tab-content" id="myTabContent">
                 {selectedTab === "select" ? <Select_Files /> : <Upload_New />}
               </div>
             </div>
-
-            <div class="modal-footer">
-              <div class="sm:flex sm:items-center sm:justify-between sm:space-x-4">
-                <div class="flex items-center space-x-3">
-                  <p class="mr-3 font-medium">3 files selected</p>
-
+            <div className="modal-footer">
+              <div className="sm:flex sm:items-center sm:justify-between sm:space-x-4">
+                <div className="flex items-center space-x-3">
+                  <p className="mr-3 font-medium">
+                    {selectedFile ? `${selectedFile.name}` : "0 files selected"}
+                  </p>
                   <a
                     href="#"
-                    title=""
-                    class="text-sm font-semibold text-skin-primary hover:underline"
+                    className="text-sm font-semibold text-skin-primary hover:underline"
                   >
                     Clear Selection
                   </a>
                 </div>
-
-                <div class="flex items-center justify-end mt-5 space-x-4">
+                <div className="flex items-center justify-end mt-5 space-x-4">
                   <button
                     type="button"
-                    class="btn btn-light"
+                    className="btn btn-light"
                     data-dismiss="modal"
                     aria-label="Close Modal"
-                    onClick={() => {
+                    onClick={() =>
                       setIsOpenPopupModal((prev) => ({
                         ...prev,
-                        startSelectFilesAndMedia: false, // Close only the Select Files modal
-                      }));
-                    }}
+                        startSelectFilesAndMedia: false,
+                      }))
+                    }
                   >
                     Cancel
                   </button>
-
-                  {/* Conditional button based on selectedTab */}
                   {selectedTab === "upload" ? (
                     <button
                       type="button"
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                       onClick={() =>
                         handleFileUpload(
                           selectedFile,
@@ -163,10 +150,9 @@ export default function Start_Select_Files_And_Media_Modal() {
                   ) : (
                     <button
                       type="button"
-                      class="btn btn-primary"
-                      onClick={() => {
-                        // Call a function to handle file selection for 'select' tab
-                      }}
+                      className="btn btn-primary"
+                      onClick={handleFileUpload}
+                      disabled={!selectedFile}
                     >
                       Select Files
                     </button>
@@ -177,7 +163,6 @@ export default function Start_Select_Files_And_Media_Modal() {
           </div>
         </div>
       </div>
-      {/* END SELECT FILES AND MEDIA MODAL POPUP */}
     </>
   );
 }

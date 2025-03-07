@@ -193,10 +193,10 @@ export default function MainCategories() {
                                 type="checkbox"
                                 checked={selectedCategories.includes(
                                   category._id
-                                )} // Check if this category is selected
+                                )}
                                 onChange={() =>
                                   handleCheckboxChange(category._id)
-                                } // Toggle selection
+                                }
                               />
                             </td>
                             <td>
@@ -240,12 +240,16 @@ export default function MainCategories() {
                                 <button
                                   className="btn-circle"
                                   title="Edit"
-                                  onClick={() =>
+                                  onClick={() => {
+                                    console.log(
+                                      "Editing Category ID:",
+                                      category._id
+                                    ); // Log the category ID
                                     toggleModal(
                                       "editMainCategoryPopupModal",
-                                      category
-                                    )
-                                  }
+                                      category._id
+                                    );
+                                  }}
                                 >
                                   <svg
                                     className="w-5 h-5"
@@ -263,10 +267,12 @@ export default function MainCategories() {
                                   </svg>
                                 </button>
                                 <a
-                                  href="#"
-                                  onClick={() => deleteCategory(category._id)}
                                   title="Delete"
+                                  onClick={() => deleteCategory(category._id)}
                                   className="btn-circle"
+                                  aria-label="Delete"
+                                  data-microtip-position="top"
+                                  role="tooltip"
                                 >
                                   <svg
                                     className="w-5 h-5"
@@ -279,8 +285,8 @@ export default function MainCategories() {
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
                                       strokeWidth="2"
-                                      d="M6 18L18 6M6 6l12 12"
-                                    />
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    ></path>
                                   </svg>
                                 </a>
                               </div>
@@ -289,8 +295,24 @@ export default function MainCategories() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="5" className="text-center">
-                            No categories found.
+                          <td colSpan="7" className="text-center align-middle">
+                            <div className="flex flex-row items-center justify-center text-sm font-medium text-gray-500">
+                              <svg
+                                class="w-6 h-6 mr-2"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                                ></path>
+                              </svg>
+                              No Data Found
+                            </div>
                           </td>
                         </tr>
                       )}
@@ -301,17 +323,46 @@ export default function MainCategories() {
             </div>
           </div>
         </div>
-      </div>
+        <div class="flex flex-col items-center mt-8 sm:mt-4 sm:flex-row sm:justify-between">
+          <p class="text-gray-700 showing">
+            Showing <span id="page-first-item-number">1</span> -
+            <span id="page-last-item-number"> 5 </span> of
+            <span id="totalMainCategories"> 5 </span> main categories
+          </p>
 
-      <div className="mt-4">
+          <ul class="mt-5 pagination sm:mt-0">
+            <li class="active">
+              <a class="page" href="#" data-i="1" data-page="10">
+                1
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <hr class="mt-6 mb-5 border-gray-200" />
         <button
+          type="button"
+          class="btn btn-error"
           onClick={bulkDeleteCategories}
-          className="btn btn-danger"
-          disabled={selectedCategories.length === 0}
         >
-          Delete Selected Categories
+          <svg
+            class="w-5 h-5 mr-2 -ml-1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+          Bulk Delete
         </button>
       </div>
+
       {/* END MAIN CATEGORIES */}
     </>
   );
