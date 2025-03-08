@@ -25,10 +25,10 @@ export default function Main_Category_Add_Modal({
   useEffect(() => {
     if (selectedFile) {
       if (!isBannerImageVisible) {
-        setSelectedMainImage(selectedFile);
+        setSelectedMainImage(selectedMainImage);
         // setMainImage(selectedFile);
       } else {
-        setSelectedBannerImage(selectedFile);
+        setSelectedBannerImage(selectedBannerImage);
         // setBannerImage(selectedFile);
       }
     }
@@ -37,54 +37,28 @@ export default function Main_Category_Add_Modal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate that both images are provided
-    if (!selectedMainImage) {
-      alert("Main image is required.");
-      return;
-    }
-    if (isBannerImageVisible && !selectedBannerImage) {
-      alert("Banner image is required.");
-      return;
-    }
+    // Validate that the main image is selected
+    // if (!selectedMainImage) {
+    //   alert("Main image is required.");
+    //   return;
+    // }
 
-    // Prepare form data to send
-    const formData = new FormData();
-    formData.append("main_category_title", mainCategoryTitle);
-    formData.append(
-      "main_category_status",
-      mainCategoryStatus ? "published" : "draft"
-    );
-    formData.append(
-      "add_banner_image_status",
-      isBannerImageVisible ? "active" : "deactive"
-    );
+    // Prepare the data to send
+    const data = {
+      main_category_title: mainCategoryTitle,
+      main_category_status: mainCategoryStatus ? "published" : "draft",
+      add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
+      main_image: selectedMainImage, // ID of the selected main image
+      add_banner_image: selectedBannerImage || null, // ID of the selected banner image (if applicable)
+    };
 
-    // Append the main image file
-    if (selectedMainImage) {
-      const mainImageFile = await fetch(selectedMainImage).then((res) =>
-        res.blob()
-      );
-      formData.append("main_image", mainImageFile, "main_image.jpg");
-    }
-
-    // Append the banner image file (if applicable)
-    if (isBannerImageVisible && selectedBannerImage) {
-      const bannerImageFile = await fetch(selectedBannerImage).then((res) =>
-        res.blob()
-      );
-      formData.append("add_banner_image", bannerImageFile, "banner_image.jpg");
-    }
+    console.log("data", data);
 
     try {
       // Send POST request to your backend
       const response = await axios.post(
         "http://localhost:7000/api/main-category/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        data
       );
 
       if (response.data.message === "Main category added successfully") {
