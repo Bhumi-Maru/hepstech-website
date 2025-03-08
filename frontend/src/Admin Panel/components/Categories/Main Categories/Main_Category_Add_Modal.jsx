@@ -4,11 +4,7 @@ import axios from "axios"; // Make sure to install axios
 import { useAllMediaContext } from "../../../context/All_Media_Context";
 
 export default function Main_Category_Add_Modal({
-  setMainImage,
   isBannerImageVisible,
-  setBannerImage,
-  mainImage,
-  bannerImage,
   setIsBannerImageVisible,
 }) {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
@@ -30,24 +26,23 @@ export default function Main_Category_Add_Modal({
     if (selectedFile) {
       if (!isBannerImageVisible) {
         setSelectedMainImage(selectedFile);
-        setMainImage(selectedFile);
+        // setMainImage(selectedFile);
       } else {
         setSelectedBannerImage(selectedFile);
-        setBannerImage(selectedFile);
+        // setBannerImage(selectedFile);
       }
     }
   }, [selectedFile, isBannerImageVisible]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Main Image State:", mainImage); // Log mainImage to debug
+
     // Validate that both images are provided
-    if (!mainImage) {
+    if (!selectedMainImage) {
       alert("Main image is required.");
       return;
     }
-
-    if (isBannerImageVisible && !bannerImage) {
+    if (isBannerImageVisible && !selectedBannerImage) {
       alert("Banner image is required.");
       return;
     }
@@ -59,22 +54,25 @@ export default function Main_Category_Add_Modal({
       "main_category_status",
       mainCategoryStatus ? "published" : "draft"
     );
-
-    formData.append("main_image", selectedMainImage); // Main image is always required
-    console.log("selected main image", selectedMainImage);
-
-    if (isBannerImageVisible && bannerImage) {
-      formData.append("add_banner_image", selectedBannerImage);
-    }
-
-    // Add the status for banner image (either active or inactive)
     formData.append(
       "add_banner_image_status",
       isBannerImageVisible ? "active" : "deactive"
     );
 
-    if (selectedFile) {
-      formData.append("selected_file", selectedFile); // Include selected file
+    // Append the main image file
+    if (selectedMainImage) {
+      const mainImageFile = await fetch(selectedMainImage).then((res) =>
+        res.blob()
+      );
+      formData.append("main_image", mainImageFile, "main_image.jpg");
+    }
+
+    // Append the banner image file (if applicable)
+    if (isBannerImageVisible && selectedBannerImage) {
+      const bannerImageFile = await fetch(selectedBannerImage).then((res) =>
+        res.blob()
+      );
+      formData.append("add_banner_image", bannerImageFile, "banner_image.jpg");
     }
 
     try {
@@ -92,7 +90,6 @@ export default function Main_Category_Add_Modal({
       if (response.data.message === "Main category added successfully") {
         // Handle success (e.g., close the modal, show success message)
         setIsOpenPopupModal(false);
-        // alert("Main category added successfully");
       } else {
         // Handle any other response message
         alert(`Error: ${response.data.message || "Unknown error"}`);
@@ -100,14 +97,10 @@ export default function Main_Category_Add_Modal({
     } catch (error) {
       console.error("Error adding main category:", error);
       if (error.response) {
-        // If the error is from the backend, log the response details
-        console.error("Backend Response:", error.response);
         alert(`Error: ${error.response.data.message || "Unknown error"}`);
       } else if (error.request) {
-        // If no response from backend
         alert("No response from backend. Please check your network.");
       } else {
-        // General error
         alert("Error adding main category. Please try again.");
       }
     }
@@ -201,7 +194,7 @@ export default function Main_Category_Add_Modal({
                               ...prev,
                               startSelectFilesAndMedia: true,
                             }));
-                            setMainImage(null); // Ensure previous selection is cleared
+                            setSelectedMainImage(null); // Ensure previous selection is cleared
                           }}
                         >
                           <svg
@@ -267,7 +260,7 @@ export default function Main_Category_Add_Modal({
                                 ...prev,
                                 startSelectFilesAndMedia: true,
                               }));
-                              setBannerImage(null); // Ensure previous selection is cleared
+                              setSelectedBannerImage(null); // Ensure previous selection is cleared
                             }}
                           >
                             <svg
