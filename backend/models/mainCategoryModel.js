@@ -32,7 +32,6 @@ const mainCategorySchema = new mongoose.Schema(
     add_banner_image_status: {
       type: String,
       enum: ["active", "deactive"],
-      required: true,
     },
   },
   { timestamps: true }

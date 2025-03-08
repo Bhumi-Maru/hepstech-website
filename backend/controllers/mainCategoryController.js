@@ -13,11 +13,11 @@ const addMainCategory = async (req, res) => {
     } = req.body;
 
     // Ensure files were uploaded
-    if (!req.files || !req.files.main_image || !req.files.add_banner_image) {
-      return res
-        .status(400)
-        .json({ message: "Both main image and banner image are required." });
-    }
+    // if (!req.files || !req.files.main_image || !req.files.add_banner_image) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Both main image and banner image are required." });
+    // }
 
     // Save the uploaded files to the File collection
     const mainImageFile = await File.create({
@@ -183,11 +183,9 @@ const deleteMainCategory = async (req, res) => {
     // Delete the main category
     await MainCategory.findByIdAndDelete(id);
 
-    res
-      .status(200)
-      .json({
-        message: "Main category and associated files deleted successfully",
-      });
+    res.status(200).json({
+      message: "Main category and associated files deleted successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

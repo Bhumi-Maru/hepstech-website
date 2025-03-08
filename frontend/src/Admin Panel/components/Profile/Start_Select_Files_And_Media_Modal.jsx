@@ -6,17 +6,18 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 
 export default function Start_Select_Files_And_Media_Modal({
-  setMainImage,
   isBannerImageVisible,
-  setBannerImage,
 }) {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const {
-    selectedFile,
-    setMediaItems,
-    setPreviewUrl,
     selectedTab,
     setSelectedTab,
+    setMediaItems,
+    setPreviewUrl,
+    selectedMainImage,
+    setSelectedMainImage,
+    setSelectedBannerImage,
+    selectedBannerImage,
   } = useAllMediaContext();
 
   // console.log("selected file", selectedFile);
@@ -104,14 +105,18 @@ export default function Start_Select_Files_And_Media_Modal({
             </div>
             <div className="modal-body">
               <div className="tab-content" id="myTabContent">
-                {selectedTab === "select" ? <Select_Files /> : <Upload_New />}
+                {selectedTab === "select" ? (
+                  <Select_Files isBannerImageVisible={isBannerImageVisible} />
+                ) : (
+                  <Upload_New />
+                )}
               </div>
             </div>
             <div className="modal-footer">
               <div className="sm:flex sm:items-center sm:justify-between sm:space-x-4">
                 <div className="flex items-center space-x-3">
                   <p className="mr-3 font-medium">
-                    {selectedFile ? `${selectedFile}` : "0 files selected"}
+                    {/* {selectedFile ? `${selectedFile}` : "0 files selected"} */}
                   </p>
                   <a
                     href="#"
@@ -141,7 +146,6 @@ export default function Start_Select_Files_And_Media_Modal({
                       className="btn btn-primary"
                       onClick={() =>
                         handleFileUpload(
-                          selectedFile,
                           setMediaItems,
                           setIsOpenPopupModal,
                           setPreviewUrl,
@@ -149,7 +153,7 @@ export default function Start_Select_Files_And_Media_Modal({
                           isOpenPopupModal
                         )
                       }
-                      disabled={!selectedFile}
+                      // disabled={!selectedFile}
                     >
                       Add Files
                     </button>
@@ -158,10 +162,10 @@ export default function Start_Select_Files_And_Media_Modal({
                       type="button"
                       className="btn btn-primary"
                       onClick={() => {
-                        if (selectedFile) {
-                          setMainImage(selectedFile); // Assign to main image
+                        if (selectedMainImage) {
+                          setSelectedMainImage(selectedMainImage); // Assign to main image
                           if (isBannerImageVisible) {
-                            setBannerImage(selectedFile); // Assign to banner if visible
+                            setSelectedBannerImage(selectedBannerImage); // Assign to banner if visible
                           }
                         }
                         setIsOpenPopupModal((prev) => ({
@@ -169,7 +173,7 @@ export default function Start_Select_Files_And_Media_Modal({
                           startSelectFilesAndMedia: false,
                         }));
                       }}
-                      disabled={!selectedFile}
+                      // disabled={!selectedFile}
                     >
                       Select Files
                     </button>
