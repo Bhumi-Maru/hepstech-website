@@ -31,12 +31,13 @@ export default function Select_Files() {
   }, [mediaItems]); // Empty dependency array to fetch only once
 
   const handleFileSelect = (file, index) => {
-    setSelectedFile(file); // Set the file when checkbox is checked
+    setSelectedFile(file.name); // Set the file when checkbox is checked
+    console.log("file", file.name);
     setPreviewUrl(file.fileUrl); // Set the preview URL to the selected file
-    setIsOpenPopupModal((prev) => ({
-      ...prev,
-      startSelectFilesAndMedia: false, // Close the Start and Select modal
-    }));
+    // setIsOpenPopupModal((prev) => ({
+    //   ...prev,
+    //   startSelectFilesAndMedia: false, // Close the Start and Select modal
+    // }));
   };
 
   return (

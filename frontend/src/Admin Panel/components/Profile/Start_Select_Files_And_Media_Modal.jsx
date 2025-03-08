@@ -5,7 +5,11 @@ import { handleFileUpload } from "../../utils/fileUploadUtils";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 
-export default function Start_Select_Files_And_Media_Modal() {
+export default function Start_Select_Files_And_Media_Modal({
+  setMainImage,
+  isBannerImageVisible,
+  setBannerImage,
+}) {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const {
     selectedFile,
@@ -14,6 +18,8 @@ export default function Start_Select_Files_And_Media_Modal() {
     selectedTab,
     setSelectedTab,
   } = useAllMediaContext();
+
+  // console.log("selected file", selectedFile);
 
   return (
     <>
@@ -105,7 +111,7 @@ export default function Start_Select_Files_And_Media_Modal() {
               <div className="sm:flex sm:items-center sm:justify-between sm:space-x-4">
                 <div className="flex items-center space-x-3">
                   <p className="mr-3 font-medium">
-                    {selectedFile ? `${selectedFile.name}` : "0 files selected"}
+                    {selectedFile ? `${selectedFile}` : "0 files selected"}
                   </p>
                   <a
                     href="#"
@@ -151,7 +157,18 @@ export default function Start_Select_Files_And_Media_Modal() {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      onClick={handleFileUpload}
+                      onClick={() => {
+                        if (selectedFile) {
+                          setMainImage(selectedFile); // Assign to main image
+                          if (isBannerImageVisible) {
+                            setBannerImage(selectedFile); // Assign to banner if visible
+                          }
+                        }
+                        setIsOpenPopupModal((prev) => ({
+                          ...prev,
+                          startSelectFilesAndMedia: false,
+                        }));
+                      }}
                       disabled={!selectedFile}
                     >
                       Select Files

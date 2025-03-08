@@ -1,15 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import axios from "axios"; // Make sure to install axios
+import { useAllMediaContext } from "../../../context/All_Media_Context";
 
-export default function Main_Category_Add_Modal() {
+export default function Main_Category_Add_Modal({
+  setMainImage,
+  isBannerImageVisible,
+  setBannerImage,
+  mainImage,
+  bannerImage,
+  setIsBannerImageVisible,
+}) {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
-  const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
-  const [mainImage, setMainImage] = useState(null);
-  const [bannerImage, setBannerImage] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null); // Track selected file
+  const {
+    setSelectedMainImage,
+    setSelectedBannerImage,
+    selectedBannerImage,
+    selectedMainImage,
+    selectedFile,
+  } = useAllMediaContext();
+  // const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  // const [mainImage, setMainImage] = useState(null);
+  // const [bannerImage, setBannerImage] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null); // Track selected file
+
+  useEffect(() => {
+    if (selectedFile) {
+      if (!isBannerImageVisible) {
+        setSelectedMainImage(selectedFile);
+        setMainImage(selectedFile);
+      } else {
+        setSelectedBannerImage(selectedFile);
+        setBannerImage(selectedFile);
+      }
+    }
+  }, [selectedFile, isBannerImageVisible]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,10 +60,11 @@ export default function Main_Category_Add_Modal() {
       mainCategoryStatus ? "published" : "draft"
     );
 
-    formData.append("main_image", mainImage); // Main image is always required
+    formData.append("main_image", selectedMainImage); // Main image is always required
+    console.log("selected main image", selectedMainImage);
 
     if (isBannerImageVisible && bannerImage) {
-      formData.append("add_banner_image", bannerImage);
+      formData.append("add_banner_image", selectedBannerImage);
     }
 
     // Add the status for banner image (either active or inactive)
@@ -160,6 +188,7 @@ export default function Main_Category_Add_Modal() {
                           (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                           1MB)
                         </span>
+                        <p>Selected File : {selectedMainImage || "None"}</p>
                       </label>
                       <div className="mt-1.5">
                         <button
@@ -170,8 +199,9 @@ export default function Main_Category_Add_Modal() {
                           onClick={() => {
                             setIsOpenPopupModal((prev) => ({
                               ...prev,
-                              startSelectFilesAndMedia: true, // Open Select Files Modal
+                              startSelectFilesAndMedia: true,
                             }));
+                            setMainImage(null); // Ensure previous selection is cleared
                           }}
                         >
                           <svg
@@ -224,6 +254,7 @@ export default function Main_Category_Add_Modal() {
                             (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                             1MB)
                           </span>
+                          <p>Selected File : {selectedBannerImage || "None"}</p>
                         </label>
                         <div className="mt-1.5">
                           <button
@@ -234,8 +265,9 @@ export default function Main_Category_Add_Modal() {
                             onClick={() => {
                               setIsOpenPopupModal((prev) => ({
                                 ...prev,
-                                startSelectFilesAndMedia: true, // Open Select Files Modal
+                                startSelectFilesAndMedia: true,
                               }));
+                              setBannerImage(null); // Ensure previous selection is cleared
                             }}
                           >
                             <svg

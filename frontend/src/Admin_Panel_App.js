@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./Admin Panel/components/Sidebar/Sidebar";
 import Navbar from "./Admin Panel/components/Navbar/Navbar";
@@ -72,6 +72,9 @@ import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
+  const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  const [mainImage, setMainImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
 
   useEffect(() => {
     const overlay = document.querySelector(".overlay");
@@ -269,7 +272,14 @@ export default function Admin_Panel_App() {
       {/* MAIN CATEGORY ADD POPUP MODAL */}
       {isOpenPopupModal.addMainCategoryPopupModal && (
         <>
-          <Main_Category_Add_Modal />
+          <Main_Category_Add_Modal
+            setMainImage={setMainImage}
+            isBannerImageVisible={isBannerImageVisible}
+            setBannerImage={setBannerImage}
+            mainImage={mainImage}
+            bannerImage={bannerImage}
+            setIsBannerImageVisible={setIsBannerImageVisible}
+          />
         </>
       )}
       {/* MAIN CATEGORY UPDATE POPUP MODAL */}
@@ -326,7 +336,11 @@ export default function Admin_Panel_App() {
       {/* START SELECT FILES MODAL IN PROFILE PAGE */}
       {isOpenPopupModal.startSelectFilesAndMedia && (
         <>
-          <Start_Select_Files_And_Media_Modal />
+          <Start_Select_Files_And_Media_Modal
+            setMainImage={setMainImage}
+            isBannerImageVisible={isBannerImageVisible}
+            setBannerImage={setBannerImage}
+          />
         </>
       )}
 
