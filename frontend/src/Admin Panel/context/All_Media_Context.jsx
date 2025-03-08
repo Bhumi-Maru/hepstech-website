@@ -16,7 +16,11 @@ export const AllMediaProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
   //select files or file type
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); // Fix for undefined error
+
+  const [selectedMainImage, setSelectedMainImage] = useState(null);
+  const [selectedBannerImage, setSelectedBannerImage] = useState(null);
+
   const [fileType, setFileType] = useState(null);
   // select the tab like select files or upload
   const [selectedTab, setSelectedTab] = useState("select"); // 'select' or 'upload'
@@ -115,6 +119,10 @@ export const AllMediaProvider = ({ children }) => {
         // fetchMedia, // fetch all images
         selectedFile,
         setSelectedFile,
+        selectedMainImage,
+        setSelectedMainImage,
+        selectedBannerImage,
+        setSelectedBannerImage,
         fileType,
         setFileType,
         selectedTab,
