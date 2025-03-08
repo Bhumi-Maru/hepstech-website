@@ -18,6 +18,7 @@ export default function Start_Select_Files_And_Media_Modal({
     setSelectedMainImage,
     setSelectedBannerImage,
     selectedBannerImage,
+    selectedFile,
   } = useAllMediaContext();
 
   // console.log("selected file", selectedFile);
@@ -146,6 +147,7 @@ export default function Start_Select_Files_And_Media_Modal({
                       className="btn btn-primary"
                       onClick={() =>
                         handleFileUpload(
+                          selectedFile,
                           setMediaItems,
                           setIsOpenPopupModal,
                           setPreviewUrl,
@@ -153,7 +155,6 @@ export default function Start_Select_Files_And_Media_Modal({
                           isOpenPopupModal
                         )
                       }
-                      // disabled={!selectedFile}
                     >
                       Add Files
                     </button>

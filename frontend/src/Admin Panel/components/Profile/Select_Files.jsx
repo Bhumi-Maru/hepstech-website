@@ -8,9 +8,10 @@ export default function Select_Files({ isBannerImageVisible }) {
     setMediaItems,
     mediaItems,
     setPreviewUrl,
-    setSelectedFile,
     setSelectedMainImage,
     setSelectedBannerImage,
+    selectedMainImage,
+    selectedBannerImage,
   } = useAllMediaContext();
 
   // const { setIsOpenPopupModal } = useAdminGlobalContext();
@@ -21,6 +22,7 @@ export default function Select_Files({ isBannerImageVisible }) {
       try {
         const response = await axios.get("http://localhost:7000/api/files");
         const mediaData = response.data.files.map((item) => ({
+          _id: item._id,
           name: item.filename,
           size: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
           mimeType: item.fileType || "unknown",
@@ -37,9 +39,11 @@ export default function Select_Files({ isBannerImageVisible }) {
   // Handle file selection
   const handleFileSelect = (file, index) => {
     if (isBannerImageVisible) {
-      setSelectedBannerImage(file.name); // Set the banner image
+      setSelectedBannerImage(file._id); // Store the ID of the banner image
+      console.log("Selected Banner Image ID:", file._id);
     } else {
-      setSelectedMainImage(file.name); // Set the main image
+      setSelectedMainImage(file._id); // Store the ID of the main image
+      console.log("Selected Main Image ID:", file._id);
     }
     setPreviewUrl(file.fileUrl); // Set the preview URL
   };

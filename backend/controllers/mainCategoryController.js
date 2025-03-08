@@ -10,36 +10,36 @@ const addMainCategory = async (req, res) => {
       main_category_title,
       main_category_status,
       add_banner_image_status,
+      main_image, // Expecting the ID of the main image
+      add_banner_image, // Expecting the ID of the banner image
     } = req.body;
 
-    // Ensure files were uploaded
-    // if (!req.files || !req.files.main_image || !req.files.add_banner_image) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Both main image and banner image are required." });
-    // }
+    // Validate required fields
+    if (!main_category_title || !main_category_status || !main_image) {
+      return res.status(400).json({ message: "Required fields are missing." });
+    }
 
-    // Save the uploaded files to the File collection
-    const mainImageFile = await File.create({
-      filename: req.files.main_image[0].originalname,
-      filePath: `/uploads/${req.files.main_image[0].filename}`,
-      fileType: req.files.main_image[0].mimetype,
-      fileSize: req.files.main_image[0].size,
-    });
+    // Check if the main image exists in the File collection
+    const mainImageFile = await File.findById(main_image);
+    if (!mainImageFile) {
+      return res.status(404).json({ message: "Main image not found." });
+    }
 
-    const bannerImageFile = await File.create({
-      filename: req.files.add_banner_image[0].originalname,
-      filePath: `/uploads/${req.files.add_banner_image[0].filename}`,
-      fileType: req.files.add_banner_image[0].mimetype,
-      fileSize: req.files.add_banner_image[0].size,
-    });
+    // Check if the banner image exists in the File collection (if provided)
+    let bannerImageFile = null;
+    if (add_banner_image) {
+      bannerImageFile = await File.findById(add_banner_image);
+      if (!bannerImageFile) {
+        return res.status(404).json({ message: "Banner image not found." });
+      }
+    }
 
     // Create new category with file references
     const newCategory = new MainCategory({
       main_category_title,
-      main_image: mainImageFile._id, // Store ObjectId reference to the File
+      main_image: main_image, // Store the ID of the main image
       main_category_status,
-      add_banner_image: bannerImageFile._id, // Store ObjectId reference to the File
+      add_banner_image: add_banner_image || null, // Store the ID of the banner image (if provided)
       add_banner_image_status,
     });
 

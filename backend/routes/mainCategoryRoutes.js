@@ -13,7 +13,7 @@ const upload = require("../Middleware/UploadMiddleware");
 const mainCategoryRouter = express.Router();
 
 // ✅ Add a new category (with file upload)
-mainCategoryRouter.post("/add", upload, addMainCategory);
+mainCategoryRouter.post("/add", addMainCategory);
 // ✅ Get a category by ID
 mainCategoryRouter.get("/:id", getMainCategoryById);
 
