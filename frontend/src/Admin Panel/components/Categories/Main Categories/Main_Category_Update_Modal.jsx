@@ -10,7 +10,13 @@ export default function Main_Category_Update_Modal({ categoryId }) {
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
-  const { onUpdateCategory } = useAllMediaContext();
+  const {
+    onUpdateCategory,
+    selectedMainImage,
+    selectedBannerImage,
+    setSelectedMainImage,
+    setSelectedBannerImage,
+  } = useAllMediaContext();
 
   // Fetch the existing category data when the component mounts or when categoryId changes
   useEffect(() => {
@@ -28,8 +34,13 @@ export default function Main_Category_Update_Modal({ categoryId }) {
           );
 
           // Store filenames
-          setMainImageName(category.main_image?.filename || "No image");
-          setBannerImageName(category.add_banner_image?.filename || "No image");
+          setSelectedMainImage(category.main_image._id || "No image");
+          console.log("selected image", category.main_image._id);
+          console.log(
+            "selected selectedBannerImage",
+            category.add_banner_image
+          );
+          setSelectedBannerImage(category.add_banner_image._id || "No image");
         })
         .catch((error) => {
           console.error("Error fetching category", error);
@@ -45,9 +56,11 @@ export default function Main_Category_Update_Modal({ categoryId }) {
 
       main_category_status: mainCategoryStatus ? "published" : "draft",
       add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
+      main_image: selectedMainImage,
+      add_banner_image: selectedBannerImage,
     };
 
-    console.log("Updated category data:", updatedCategoryData); // Log the data before sending it to the server
+    console.log("Updated category data:", updatedCategoryData.main_image); // Log the data before sending it to the server
 
     if (categoryId) {
       axios
