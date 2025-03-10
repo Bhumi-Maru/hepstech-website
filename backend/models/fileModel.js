@@ -3,6 +3,11 @@ const { v4: uuidv4 } = require("uuid"); // Import UUID v4
 
 const fileSchema = new mongoose.Schema(
   {
+    fileId: {
+      type: String,
+      default: uuidv4, // Automatically generate a unique ID using uuidv4
+      unique: true, // Ensure it's unique across the database
+    },
     filename: {
       type: String,
       required: true,

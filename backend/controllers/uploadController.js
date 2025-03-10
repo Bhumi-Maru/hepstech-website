@@ -84,4 +84,37 @@ const deleteAllFiles = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, getFile, deleteAllFiles };
+// delete single file
+const deleteFile = async (req, res) => {
+  try {
+    const { fileId } = req.params; // Get the fileId from the URL params
+
+    // Find the file in the database by its ID
+    const file = await File.findById(fileId);
+
+    if (!file) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    // Delete the file from the server
+    const filePath = path.join(__dirname, "..", file.filePath);
+    fs.unlink(filePath, async (err) => {
+      if (err) {
+        console.error(`Failed to delete file: ${filePath}`, err);
+        return res
+          .status(500)
+          .json({ message: "Failed to delete file from server" });
+      }
+
+      // Delete the file entry from the database
+      await File.findByIdAndDelete(fileId);
+
+      res.status(200).json({ message: "File deleted successfully" });
+    });
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { uploadFile, getFile, deleteAllFiles, deleteFile };

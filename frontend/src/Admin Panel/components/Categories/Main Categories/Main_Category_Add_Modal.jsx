@@ -17,10 +17,6 @@ export default function Main_Category_Add_Modal({
     selectedMainImage,
     selectedFile,
   } = useAllMediaContext();
-  // const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
-  // const [mainImage, setMainImage] = useState(null);
-  // const [bannerImage, setBannerImage] = useState(null);
-  // const [selectedFile, setSelectedFile] = useState(null); // Track selected file
 
   useEffect(() => {
     if (selectedFile) {
@@ -36,12 +32,6 @@ export default function Main_Category_Add_Modal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate that the main image is selected
-    // if (!selectedMainImage) {
-    //   alert("Main image is required.");
-    //   return;
-    // }
 
     // Prepare the data to send
     const data = {
@@ -63,6 +53,7 @@ export default function Main_Category_Add_Modal({
 
       if (response.data.message === "Main category added successfully") {
         // Handle success (e.g., close the modal, show success message)
+
         setIsOpenPopupModal(false);
       } else {
         // Handle any other response message
