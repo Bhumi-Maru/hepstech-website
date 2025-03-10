@@ -3,8 +3,14 @@ import axios from "axios";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
-export default function Images_All_Media() {
-  const { mediaItems, setMediaItems, setPreviewUrl } = useAllMediaContext();
+export default function Images_All_Media({ deleteSelectedFiles }) {
+  const {
+    mediaItems,
+    setMediaItems,
+    setPreviewUrl,
+    selectedFiles,
+    setSelectedFiles,
+  } = useAllMediaContext();
   const { isDropdownOpen, toggleDropdown } = useAdminGlobalContext();
 
   // Fetch media from the API
@@ -30,6 +36,17 @@ export default function Images_All_Media() {
     fetchMedia();
   }, [mediaItems]);
 
+  // Handle checkbox click to select files
+  const handleCheckboxChange = (e, _id) => {
+    if (e.target.checked) {
+      setSelectedFiles((prevSelected) => [...prevSelected, _id]);
+    } else {
+      setSelectedFiles((prevSelected) =>
+        prevSelected.filter((id) => id !== _id)
+      );
+    }
+  };
+
   // Delete file function
   const deleteFile = async (_id) => {
     try {
@@ -45,134 +62,173 @@ export default function Images_All_Media() {
     }
   };
 
+  // Bulk delete selected files or all files
+  // const deleteSelectedFiles = async () => {
+  //   try {
+  //     const filesToDelete =
+  //       selectedFiles.length > 0
+  //         ? selectedFiles
+  //         : mediaItems.map((item) => item._id);
+
+  //     // Make DELETE request to delete selected files from the server
+  //     await axios.delete("http://localhost:7000/api/SelectedFiles", {
+  //       data: { fileIds: filesToDelete },
+  //     });
+
+  //     // Remove the deleted files from the mediaItems list
+  //     setMediaItems((prevItems) =>
+  //       prevItems.filter((item) => !filesToDelete.includes(item._id))
+  //     );
+
+  //     // Reset the selected files state
+  //     setSelectedFiles([]);
+  //   } catch (error) {
+  //     console.error("Failed to delete selected files", error);
+  //   }
+  // };
+
   return (
-    <ul
-      role="list"
-      className="grid grid-cols-2 mt-6 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4 xl:grid-cols-6 list"
-    >
-      {mediaItems.map((item, index) => (
-        <li key={index} className="relative">
-          <div className="absolute left-2 top-1.5" style={{ zIndex: "1" }}>
-            <input type="checkbox" />
-          </div>
-          <div className="absolute top-2 right-2" style={{ zIndex: "1" }}>
-            <button
-              type="button"
-              className="text-white"
-              onClick={() => toggleDropdown(`media_${index}`)}
-            >
-              <svg
-                className="w-7 h-7"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </button>
-            {isDropdownOpen[`media_${index}`] && (
-              <div
-                className="absolute top-8 right-2 bg-white shadow-lg border rounded-md p-2"
-                style={{ zIndex: "10" }}
-              >
-                <button
-                  className="dropdown-item"
-                  onClick={async (e) => {
-                    e.stopPropagation(); // Prevent dropdown from closing
+    <div>
+      <button
+        onClick={deleteSelectedFiles}
+        disabled={selectedFiles.length === 0 && mediaItems.length === 0} // Disable if no files are available to delete
+        className="mb-4 p-2 bg-red-500 text-white"
+      >
+        Delete Selected
+      </button>
 
-                    try {
-                      // Fetch the file data
-                      const response = await fetch(item.fileUrl);
-                      if (!response.ok) {
-                        throw new Error("Failed to fetch the file");
+      <ul
+        role="list"
+        className="grid grid-cols-2 mt-6 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4 xl:grid-cols-6 list"
+      >
+        {mediaItems.map((item, index) => (
+          <li key={index} className="relative">
+            <div className="absolute left-2 top-1.5" style={{ zIndex: "1" }}>
+              <input
+                type="checkbox"
+                checked={selectedFiles.includes(item._id)} // Keep track of selected files
+                onChange={(e) => handleCheckboxChange(e, item._id)} // Handle checkbox change
+              />
+            </div>
+            <div className="absolute top-2 right-2" style={{ zIndex: "1" }}>
+              <button
+                type="button"
+                className="text-white"
+                onClick={() => toggleDropdown(`media_${index}`)}
+              >
+                <svg
+                  className="w-7 h-7"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+              {isDropdownOpen[`media_${index}`] && (
+                <div
+                  className="absolute top-8 right-2 bg-white shadow-lg border rounded-md p-2"
+                  style={{ zIndex: "10" }}
+                >
+                  <button
+                    className="dropdown-item"
+                    onClick={async (e) => {
+                      e.stopPropagation(); // Prevent dropdown from closing
+
+                      try {
+                        // Fetch the file data
+                        const response = await fetch(item.fileUrl);
+                        if (!response.ok) {
+                          throw new Error("Failed to fetch the file");
+                        }
+                        // Get the file data as a Blob
+                        const blob = await response.blob();
+                        const downloadUrl = URL.createObjectURL(blob);
+
+                        // Create an anchor element to trigger the download
+                        const link = document.createElement("a");
+                        link.href = downloadUrl;
+                        link.download = item.name; // Set the download file name
+                        document.body.appendChild(link);
+                        link.click(); // Trigger the download
+                        document.body.removeChild(link); // Remove the link element after clicking
+
+                        // Release the object URL
+                        URL.revokeObjectURL(downloadUrl);
+                      } catch (error) {
+                        console.error("Error downloading file:", error);
                       }
-                      // Get the file data as a Blob
-                      const blob = await response.blob();
-                      const downloadUrl = URL.createObjectURL(blob);
+                    }}
+                  >
+                    Download
+                  </button>
 
-                      // Create an anchor element to trigger the download
-                      const link = document.createElement("a");
-                      link.href = downloadUrl;
-                      link.download = item.name; // Set the download file name
-                      document.body.appendChild(link);
-                      link.click(); // Trigger the download
-                      document.body.removeChild(link); // Remove the link element after clicking
+                  <button
+                    className="dropdown-item"
+                    onClick={() => {
+                      deleteFile(item._id); // Use _id for deletion
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
 
-                      // Release the object URL
-                      URL.revokeObjectURL(downloadUrl);
-                    } catch (error) {
-                      console.error("Error downloading file:", error);
-                    }
-                  }}
+            <div className="block w-full bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1">
+              {item.mimeType && item.mimeType.startsWith("image/") ? (
+                <a
+                  href={item.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setPreviewUrl(item.fileUrl)} // Ensure the preview URL updates
                 >
-                  Download
-                </button>
-
-                <button
-                  className="dropdown-item"
-                  onClick={() => {
-                    deleteFile(item._id); // Use _id for deletion
-                  }}
+                  <img
+                    src={item.fileUrl}
+                    alt={item.name}
+                    className="object-contain w-full h-full"
+                  />
+                </a>
+              ) : item.mimeType && item.mimeType.startsWith("video/") ? (
+                <a
+                  href={item.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setPreviewUrl(item.fileUrl)}
                 >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="block w-full bg-gray-100 rounded-lg group aspect-w-1 aspect-h-1">
-            {item.mimeType && item.mimeType.startsWith("image/") ? (
-              <a
-                href={item.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setPreviewUrl(item.fileUrl)} // Ensure the preview URL updates
-              >
+                  <video controls className="object-contain w-full h-full">
+                    <source src={item.fileUrl} type={item.mimeType} />
+                  </video>
+                </a>
+              ) : item.mimeType === "application/pdf" ? (
+                <embed
+                  src={item.fileUrl}
+                  type="application/pdf"
+                  className="w-full h-48 overflow-y-hidden no-scrollbar"
+                />
+              ) : item.mimeType === "image/gif" ? (
                 <img
                   src={item.fileUrl}
                   alt={item.name}
                   className="object-contain w-full h-full"
                 />
-              </a>
-            ) : item.mimeType && item.mimeType.startsWith("video/") ? (
-              <a
-                href={item.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setPreviewUrl(item.fileUrl)}
-              >
-                <video controls className="object-contain w-full h-full">
-                  <source src={item.fileUrl} type={item.mimeType} />
-                </video>
-              </a>
-            ) : item.mimeType === "application/pdf" ? (
-              <embed
-                src={item.fileUrl}
-                type="application/pdf"
-                className="w-full h-48 overflow-y-hidden no-scrollbar"
-              />
-            ) : item.mimeType === "image/gif" ? (
-              <img
-                src={item.fileUrl}
-                alt={item.name}
-                className="object-contain w-full h-full"
-              />
-            ) : (
-              <p className="text-gray-500">
-                Unsupported file type: {item.mimeType}
-              </p>
-            )}
-          </div>
-          <p className="mt-2 text-sm font-medium text-gray-900 truncate">
-            {item.name}
-          </p>
-          <p className="text-sm text-gray-500">{item.size}</p>
-        </li>
-      ))}
-    </ul>
+              ) : (
+                <p className="text-gray-500">
+                  Unsupported file type: {item.mimeType}
+                </p>
+              )}
+            </div>
+            <p className="mt-2 text-sm font-medium text-gray-900 truncate">
+              {item.name}
+            </p>
+            <p className="text-sm text-gray-500">{item.size}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

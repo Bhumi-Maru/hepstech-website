@@ -117,4 +117,47 @@ const deleteFile = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, getFile, deleteAllFiles, deleteFile };
+//delete selected files
+//delete selected files
+const deleteSelectedFiles = async (req, res) => {
+  try {
+    const { fileIds } = req.body; // Get the fileIds from the request body
+
+    if (!fileIds || fileIds.length === 0) {
+      return res.status(400).json({ message: "No files selected" });
+    }
+
+    // Find files by their IDs
+    const files = await File.find({ _id: { $in: fileIds } });
+
+    if (files.length === 0) {
+      return res.status(404).json({ message: "Files not found" });
+    }
+
+    // Delete files from the server
+    files.forEach((file) => {
+      const filePath = path.join(__dirname, "..", file.filePath);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Failed to delete file: ${filePath}`, err);
+        }
+      });
+    });
+
+    // Delete selected files from the database
+    await File.deleteMany({ _id: { $in: fileIds } });
+
+    res.status(200).json({ message: "Selected files deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting files:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  uploadFile,
+  getFile,
+  deleteAllFiles,
+  deleteFile,
+  deleteSelectedFiles,
+};
