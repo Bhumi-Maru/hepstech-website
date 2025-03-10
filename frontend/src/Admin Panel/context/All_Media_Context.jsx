@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 
 const AllMediaContext = createContext();
 
@@ -78,21 +77,7 @@ export const AllMediaProvider = ({ children }) => {
     }
   });
 
-  // Sorting logic based on selectedSortOrder
-  const sortedMedia = filteredMedia.sort((a, b) => {
-    switch (selectedSortOrder) {
-      case "newest":
-        return new Date(b.createdAt) - new Date(a.createdAt); // Sort by newest
-      case "oldest":
-        return new Date(a.createdAt) - new Date(b.createdAt); // Sort by oldest
-      case "smallest":
-        return a.fileSize - b.fileSize; // Sort by smallest
-      case "largest":
-        return b.fileSize - a.fileSize; // Sort by largest
-      default:
-        return 0; // Default no sorting
-    }
-  });
+  
 
   // Handle date selection
   const handleDateSelect = (range) => {
@@ -103,7 +88,7 @@ export const AllMediaProvider = ({ children }) => {
   return (
     <AllMediaContext.Provider
       value={{
-        mediaItems: sortedMedia, // Provide filtered media
+        mediaItems: filteredMedia, // Provide filtered media
         setMediaItems,
         selectedDateRange,
         setSelectedDateRange,
