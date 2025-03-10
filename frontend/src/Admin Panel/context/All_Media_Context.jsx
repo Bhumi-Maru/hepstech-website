@@ -90,7 +90,7 @@ export const AllMediaProvider = ({ children }) => {
       case "largest":
         return b.fileSize - a.fileSize; // Sort by largest
       default:
-        return 0;
+        return 0; // Default no sorting
     }
   });
 
