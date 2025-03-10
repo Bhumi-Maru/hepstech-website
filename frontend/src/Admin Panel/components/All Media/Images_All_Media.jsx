@@ -12,7 +12,6 @@ export default function Images_All_Media() {
     const fetchMedia = async () => {
       try {
         const response = await axios.get("http://localhost:7000/api/files");
-        // console.log(response.data); // Log the response to check the structure
 
         const mediaData = response.data.files.map((item) => {
           return {
@@ -20,6 +19,7 @@ export default function Images_All_Media() {
             size: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
             mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
             fileUrl: `http://localhost:7000${item.filePath}`,
+            _id: item._id, // Ensure _id is included
           };
         });
         setMediaItems(mediaData);
@@ -28,7 +28,22 @@ export default function Images_All_Media() {
       }
     };
     fetchMedia();
-  }, [mediaItems]); // Empty dependency array to fetch only once when the component mounts
+  }, [mediaItems]);
+
+  // Delete file function
+  const deleteFile = async (_id) => {
+    try {
+      // Make DELETE request to delete the file from the server using _id
+      await axios.delete(`http://localhost:7000/api/files/${_id}`);
+
+      // Remove the deleted file from the mediaItems list
+      setMediaItems((prevItems) =>
+        prevItems.filter((item) => item._id !== _id)
+      );
+    } catch (error) {
+      console.error("Failed to delete file", error);
+    }
+  };
 
   return (
     <ul
@@ -37,25 +52,74 @@ export default function Images_All_Media() {
     >
       {mediaItems.map((item, index) => (
         <li key={index} className="relative">
-          <div className="absolute left-2 top-1.5">
+          <div className="absolute left-2 top-1.5" style={{ zIndex: "1" }}>
             <input type="checkbox" />
           </div>
-          <div className="absolute top-2 right-2">
+          <div className="absolute top-2 right-2" style={{ zIndex: "1" }}>
             <button
               type="button"
               className="text-white"
               onClick={() => toggleDropdown(`media_${index}`)}
             >
-              <svg className="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" />
+              <svg
+                className="w-7 h-7"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                  clipRule="evenodd"
+                ></path>
               </svg>
             </button>
             {isDropdownOpen[`media_${index}`] && (
-              <div className="dropdown-menu active">
-                <a href={item.fileUrl} download className="dropdown-item">
+              <div
+                className="absolute top-8 right-2 bg-white shadow-lg border rounded-md p-2"
+                style={{ zIndex: "10" }}
+              >
+                <button
+                  className="dropdown-item"
+                  onClick={async (e) => {
+                    e.stopPropagation(); // Prevent dropdown from closing
+
+                    try {
+                      // Fetch the file data
+                      const response = await fetch(item.fileUrl);
+                      if (!response.ok) {
+                        throw new Error("Failed to fetch the file");
+                      }
+                      // Get the file data as a Blob
+                      const blob = await response.blob();
+                      const downloadUrl = URL.createObjectURL(blob);
+
+                      // Create an anchor element to trigger the download
+                      const link = document.createElement("a");
+                      link.href = downloadUrl;
+                      link.download = item.name; // Set the download file name
+                      document.body.appendChild(link);
+                      link.click(); // Trigger the download
+                      document.body.removeChild(link); // Remove the link element after clicking
+
+                      // Release the object URL
+                      URL.revokeObjectURL(downloadUrl);
+                    } catch (error) {
+                      console.error("Error downloading file:", error);
+                    }
+                  }}
+                >
                   Download
-                </a>
-                <button className="dropdown-item">Delete</button>
+                </button>
+
+                <button
+                  className="dropdown-item"
+                  onClick={() => {
+                    deleteFile(item._id); // Use _id for deletion
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             )}
           </div>
@@ -91,13 +155,18 @@ export default function Images_All_Media() {
                 type="application/pdf"
                 className="w-full h-48 overflow-y-hidden no-scrollbar"
               />
+            ) : item.mimeType === "image/gif" ? (
+              <img
+                src={item.fileUrl}
+                alt={item.name}
+                className="object-contain w-full h-full"
+              />
             ) : (
               <p className="text-gray-500">
                 Unsupported file type: {item.mimeType}
               </p>
             )}
           </div>
-
           <p className="mt-2 text-sm font-medium text-gray-900 truncate">
             {item.name}
           </p>

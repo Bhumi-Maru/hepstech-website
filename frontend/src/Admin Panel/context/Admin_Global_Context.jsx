@@ -31,6 +31,8 @@ const AdminGlobalProvider = ({ children }) => {
 
   // Function to toggle dropdown dynamically
   const [isDropdownOpen, setIsDropdownOpen] = useState({
+     // delete and download dropdown in all media page (images all media)
+     deleteAndDownloadDropdown: false,
     categories: false,
     products: false,
     website_Setup: false,
