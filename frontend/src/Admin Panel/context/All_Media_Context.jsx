@@ -27,6 +27,8 @@ export const AllMediaProvider = ({ children }) => {
 
   //main categories
   const [categories, setCategories] = useState([]);
+  // select files in all media page
+  const [selectedFiles, setSelectedFiles] = useState([]); // Track selected files
 
   // update main category
   const onUpdateCategory = (updatedCategory) => {
@@ -130,6 +132,9 @@ export const AllMediaProvider = ({ children }) => {
         onUpdateCategory,
         categories,
         setCategories,
+        //select files in all media page
+        selectedFiles,
+        setSelectedFiles,
       }}
     >
       {children}
