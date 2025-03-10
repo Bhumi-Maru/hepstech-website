@@ -10,6 +10,7 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
     setPreviewUrl,
     selectedFiles,
     setSelectedFiles,
+    selectedSortOrder,
   } = useAllMediaContext();
   const { isDropdownOpen, toggleDropdown } = useAdminGlobalContext();
 
@@ -22,19 +23,38 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
         const mediaData = response.data.files.map((item) => {
           return {
             name: item.filename,
-            size: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
+            size: item.fileSize, // Keep the size in bytes for sorting
+            sizeFormatted: (item.fileSize / 1024 / 1024).toFixed(2) + " MB", // Formatted size for display
             mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
             fileUrl: `http://localhost:7000${item.filePath}`,
             _id: item._id, // Ensure _id is included
+            createdAt: item.createdAt, // Ensure createdAt is included for sorting
           };
         });
-        setMediaItems(mediaData);
+
+        // Apply sorting based on selectedSortOrder
+        const sortedMedia = mediaData.sort((a, b) => {
+          switch (selectedSortOrder) {
+            case "newest":
+              return new Date(b.createdAt) - new Date(a.createdAt); // Sort by newest
+            case "oldest":
+              return new Date(a.createdAt) - new Date(b.createdAt); // Sort by oldest
+            case "smallest":
+              return a.size - b.size; // Sort by smallest (in bytes)
+            case "largest":
+              return b.size - a.size; // Sort by largest (in bytes)
+            default:
+              return 0; // Default no sorting
+          }
+        });
+
+        setMediaItems(sortedMedia); // Set sorted media
       } catch (error) {
         console.error("Failed to fetch media", error);
       }
     };
     fetchMedia();
-  }, [mediaItems]);
+  }, [selectedSortOrder, mediaItems]); // Dependency array updated to trigger sorting when selectedSortOrder changes
 
   // Handle checkbox click to select files
   const handleCheckboxChange = (e, _id) => {
@@ -61,31 +81,6 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
       console.error("Failed to delete file", error);
     }
   };
-
-  // Bulk delete selected files or all files
-  // const deleteSelectedFiles = async () => {
-  //   try {
-  //     const filesToDelete =
-  //       selectedFiles.length > 0
-  //         ? selectedFiles
-  //         : mediaItems.map((item) => item._id);
-
-  //     // Make DELETE request to delete selected files from the server
-  //     await axios.delete("http://localhost:7000/api/SelectedFiles", {
-  //       data: { fileIds: filesToDelete },
-  //     });
-
-  //     // Remove the deleted files from the mediaItems list
-  //     setMediaItems((prevItems) =>
-  //       prevItems.filter((item) => !filesToDelete.includes(item._id))
-  //     );
-
-  //     // Reset the selected files state
-  //     setSelectedFiles([]);
-  //   } catch (error) {
-  //     console.error("Failed to delete selected files", error);
-  //   }
-  // };
 
   return (
     <div>
@@ -225,7 +220,7 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
             <p className="mt-2 text-sm font-medium text-gray-900 truncate">
               {item.name}
             </p>
-            <p className="text-sm text-gray-500">{item.size}</p>
+            <p className="text-sm text-gray-500">{item.sizeFormatted}</p>
           </li>
         ))}
       </ul>
