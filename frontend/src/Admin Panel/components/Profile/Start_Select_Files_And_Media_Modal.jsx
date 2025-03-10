@@ -113,20 +113,20 @@ export default function Start_Select_Files_And_Media_Modal({
                 )}
               </div>
             </div>
-            <div className="modal-footer">
-              <div className="sm:flex sm:items-center sm:justify-between sm:space-x-4">
+            <div className="modal-footer" style={{ padding: "0rem" }}>
+              <div className="sm:flex sm:items-center sm:justify-between sm:space-x-4 items-center">
                 <div className="flex items-center space-x-3">
                   <p className="mr-3 font-medium">
                     {/* {selectedFile ? `${selectedFile}` : "0 files selected"} */}
                   </p>
-                  <a
+                  {/* <a
                     href="#"
                     className="text-sm font-semibold text-skin-primary hover:underline"
                   >
                     Clear Selection
-                  </a>
+                  </a> */}
                 </div>
-                <div className="flex items-center justify-end mt-5 space-x-4">
+                <div className="flex items-center justify-end mt-2 space-x-4 mb-2">
                   <button
                     type="button"
                     className="btn btn-light"
