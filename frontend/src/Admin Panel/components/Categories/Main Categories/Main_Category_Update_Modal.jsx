@@ -57,7 +57,7 @@ export default function Main_Category_Update_Modal({ categoryId }) {
       main_category_status: mainCategoryStatus ? "published" : "draft",
       add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
       main_image: selectedMainImage,
-      add_banner_image: selectedBannerImage,
+      add_banner_image: isBannerImageVisible ? selectedBannerImage : null,
     };
 
     console.log("Updated category data:", updatedCategoryData.main_image); // Log the data before sending it to the server
