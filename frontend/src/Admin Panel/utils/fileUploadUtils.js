@@ -52,7 +52,7 @@ export const handleFileUpload = async (
 
     // Add file to media list BEFORE clearing the preview
     setMediaItems((prevItems) => [...prevItems, newFile]);
-
+    setSelectedTab("select");
     // Close modal after upload
     setIsOpenPopupModal((prev) => {
       const newState = { ...prev, uploadFiles: false };
@@ -68,19 +68,19 @@ export const handleFileUpload = async (
     });
 
     // Only reset the tab if the modal is open
-    if (isOpenPopupModal?.startSelectFilesAndMedia) {
-      setSelectedTab("select");
-      setPreviewUrl(null);
-    }
+    // if (isOpenPopupModal?.startSelectFilesAndMedia) {
+    //   setSelectedTab("select");
+    //   setPreviewUrl(null);
+    // }
 
-    // Clear preview AFTER the file is added to the media list if necessary
-    setTimeout(() => {
-      // Clear only if the modal is closed
-      if (!isOpenPopupModal.startSelectFilesAndMedia) {
-        setSelectedFile(null);
-        setPreviewUrl(null);
-      }
-    }, 1000); // Small delay to prevent instant clearing
+    // // Clear preview AFTER the file is added to the media list if necessary
+    // setTimeout(() => {
+    //   // Clear only if the modal is closed
+    //   if (!isOpenPopupModal.startSelectFilesAndMedia) {
+    //     setSelectedFile(null);
+    //     setPreviewUrl(null);
+    //   }
+    // }, 1000); // Small delay to prevent instant clearing
   } catch (error) {
     console.error("Failed to upload file", error);
     alert(
@@ -96,41 +96,17 @@ export const getFilePreview = (file) => {
   const fileUrl = file.fileUrl;
   const fileType = file.fileType || fileUrl.split(".").pop().toLowerCase();
 
+  // Only show image previews for jpg, jpeg, png file types
   if (fileType === "jpg" || fileType === "jpeg" || fileType === "png") {
     return (
       <img
         src={fileUrl}
         alt="Preview"
-        className="w-100 h-100 object-cover  mt-2"
+        className="w-12 object-contain rounded-md"
+        style={{ height: "2.2rem" }}
       />
-    );
-  } else if (fileType === "mp4" || fileType === "avi" || fileType === "mov") {
-    return (
-      <video controls className="w-100 h-100  mt-2">
-        <source src={fileUrl} type={`video/${fileType}`} />
-        Your browser does not support the video tag.
-      </video>
-    );
-  } else if (fileType === "gif") {
-    return (
-      <img
-        src={fileUrl}
-        alt="GIF Preview"
-        className="w-100 h-100 object-cover  mt-2"
-      />
-    );
-  } else if (fileType === "pdf" || fileType === "docx" || fileType === "txt") {
-    return (
-      <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-        <embed
-          src={fileUrl}
-          type="application/pdf"
-          className="w-100 h-100 object-cover mt-2"
-          alt="PDF Preview"
-        />
-      </a>
     );
   }
 
-  return null;
+  return null; // Return null for all non-image file types
 };
