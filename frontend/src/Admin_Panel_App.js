@@ -72,7 +72,7 @@ import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
-  const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  // const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
 
   useEffect(() => {
     const overlay = document.querySelector(".overlay");
@@ -271,8 +271,8 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addMainCategoryPopupModal && (
         <>
           <Main_Category_Add_Modal
-            isBannerImageVisible={isBannerImageVisible}
-            setIsBannerImageVisible={setIsBannerImageVisible}
+          // isBannerImageVisible={isBannerImageVisible}
+          // setIsBannerImageVisible={setIsBannerImageVisible}
           />
         </>
       )}
@@ -331,7 +331,7 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.startSelectFilesAndMedia && (
         <>
           <Start_Select_Files_And_Media_Modal
-            isBannerImageVisible={isBannerImageVisible}
+          // isBannerImageVisible={isBannerImageVisible}
           />
         </>
       )}

@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import axios from "axios";
-import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
-export default function Select_Files({ isBannerImageVisible }) {
+export default function Select_Files() {
   const {
     setMediaItems,
     mediaItems,
     setPreviewUrl,
     setSelectedMainImage,
     setSelectedBannerImage,
+    isBannerImageVisible,
   } = useAllMediaContext();
-
-  // const { setIsOpenPopupModal } = useAdminGlobalContext();
 
   // Fetch media from the API
   useEffect(() => {
@@ -34,16 +32,18 @@ export default function Select_Files({ isBannerImageVisible }) {
     fetchMedia();
   }, []);
 
-  // Handle file selection
-  const handleFileSelect = (file, index) => {
-    if (isBannerImageVisible) {
-      setSelectedBannerImage(file._id); // Store the ID of the banner image
-      console.log("Selected Banner Image ID:", file._id);
-    } else {
-      setSelectedMainImage(file._id); // Store the ID of the main image
-      console.log("Selected Main Image ID:", file._id);
-    }
-    setPreviewUrl(file.fileUrl); // Set the preview URL
+  // Handle Main Image selection
+  const handleMainImageSelect = (file) => {
+    setSelectedMainImage(file._id);
+    console.log("Main Image ID:", file._id);
+    setPreviewUrl(file.fileUrl);
+  };
+
+  // Handle Banner Image selection
+  const handleBannerImageSelect = (file) => {
+    setSelectedBannerImage(file._id);
+    console.log("Banner Image ID:", file._id);
+    setPreviewUrl(file.fileUrl);
   };
 
   return (
@@ -65,7 +65,12 @@ export default function Select_Files({ isBannerImageVisible }) {
                   type="checkbox"
                   name="selectedFiles"
                   id={`file-${index}`}
-                  onChange={() => handleFileSelect(item, index)} // Handle file selection
+                  onChange={
+                    () =>
+                      isBannerImageVisible
+                        ? handleBannerImageSelect(item) // Select banner image if the banner is visible
+                        : handleMainImageSelect(item) // Select main image otherwise
+                  }
                 />
               </div>
               <div className="block w-full overflow-hidden bg-gray-100 rounded-lg focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">

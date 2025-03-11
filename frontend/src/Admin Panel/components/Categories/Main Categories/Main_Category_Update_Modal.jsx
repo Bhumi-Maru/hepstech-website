@@ -5,10 +5,8 @@ import { useAllMediaContext } from "../../../context/All_Media_Context";
 
 export default function Main_Category_Update_Modal({ categoryId }) {
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
-  const [mainImageName, setMainImageName] = useState(""); // Store main image name
-  const [bannerImageName, setBannerImageName] = useState(""); // Store banner image name
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
-  const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  // const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const {
     onUpdateCategory,
@@ -16,31 +14,28 @@ export default function Main_Category_Update_Modal({ categoryId }) {
     selectedBannerImage,
     setSelectedMainImage,
     setSelectedBannerImage,
+    isBannerImageVisible,
+    setIsBannerImageVisible,
   } = useAllMediaContext();
 
-  // Fetch the existing category data when the component mounts or when categoryId changes
   useEffect(() => {
     if (categoryId) {
-      console.log("Fetching category data for ID:", categoryId);
       axios
         .get(`http://localhost:7000/api/main-category/${categoryId}`)
         .then((response) => {
           const category = response.data.category;
-          console.log("Fetched category:", category); // Log the fetched category data
+          console.log("update fetch category", category);
           setMainCategoryTitle(category.main_category_title);
           setMainCategoryStatus(category.main_category_status === "published");
           setIsBannerImageVisible(
             category.add_banner_image_status === "active"
           );
-
-          // Store filenames
-          setSelectedMainImage(category.main_image._id || "No image");
-          console.log("selected image", category.main_image._id);
-          console.log(
-            "selected selectedBannerImage",
-            category.add_banner_image
+          setSelectedMainImage(
+            category.main_image ? category.main_image._id : null
           );
-          setSelectedBannerImage(category.add_banner_image._id || "No image");
+          setSelectedBannerImage(
+            category.add_banner_image ? category.add_banner_image._id : null
+          );
         })
         .catch((error) => {
           console.error("Error fetching category", error);
@@ -53,14 +48,14 @@ export default function Main_Category_Update_Modal({ categoryId }) {
 
     const updatedCategoryData = {
       main_category_title: mainCategoryTitle,
-
       main_category_status: mainCategoryStatus ? "published" : "draft",
       add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
       main_image: selectedMainImage,
-      add_banner_image: isBannerImageVisible ? selectedBannerImage : null,
+      add_banner_image: isBannerImageVisible
+        ? selectedBannerImage || null
+        : null,
     };
-
-    console.log("Updated category data:", updatedCategoryData.main_image); // Log the data before sending it to the server
+    console.log("updated category data", updatedCategoryData);
 
     if (categoryId) {
       axios
@@ -70,14 +65,8 @@ export default function Main_Category_Update_Modal({ categoryId }) {
         )
         .then((response) => {
           alert("Category updated successfully!");
-          setIsOpenPopupModal(false); // Close the modal
-
-          // Make sure that the updated category data is passed back to the parent
-          const updatedCategory = response.data.category;
-          onUpdateCategory(updatedCategory); // Update the parent component with the updated category
-          console.log("Updated category response:", updatedCategory); // Log the updated category data
-
           setIsOpenPopupModal(false);
+          onUpdateCategory(response.data.category);
         })
         .catch((error) => {
           console.error("Error updating category", error);
@@ -142,65 +131,30 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                         value={mainCategoryTitle}
                         onChange={(e) => {
                           setMainCategoryTitle(e.target.value);
-                          console.log(
-                            "Category title changed:",
-                            e.target.value
-                          ); // Log input change
                         }}
                       />
                     </div>
                   </div>
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    {/* <input type="file" id="categoryMainImage" /> */}
-                    <div>
-                      <label for="">
-                        Select Image
-                        <span>
-                          (Image ratio should be 16:6. PNG, JPG, or JPEG up to
-                          1MB)
-                        </span>
-                      </label>
-                      <div className="mt-1.5">
-                        <button
-                          type="button"
-                          className="btn btn-white"
-                          data-toggle="modal"
-                          data-target="#selectFilesModal"
-                          onClick={() => {
-                            setIsOpenPopupModal((prev) => ({
-                              ...prev,
-                              startSelectFilesAndMedia: true, // Open Select Files Modal
-                            }));
-
-                            // Ensure Select Files modal is above Add Main Banner
-                            setTimeout(() => {
-                              document.getElementById(
-                                "selectFilesModal"
-                              ).style.zIndex = "1060";
-                            }, 100);
-                          }}
-                        >
-                          <svg
-                            className="w-5 h-5 mr-2 -ml-1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            ></path>
-                          </svg>
-                          Select Files
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-500">{mainImageName}</p>
+                    <button
+                      type="button"
+                      className="btn btn-white"
+                      onClick={() => {
+                        setIsBannerImageVisible(false);
+                        setIsOpenPopupModal((prev) => ({
+                          ...prev,
+                          startSelectFilesAndMedia: true,
+                        }));
+                      }}
+                    >
+                      Select Files
+                    </button>
+                    <p className="text-sm text-gray-500">
+                      Selected Image: {selectedMainImage}
+                    </p>
                   </div>
+
                   <div className="relative flex items-start">
                     <div className="flex items-center h-5">
                       <input
@@ -209,10 +163,6 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                         checked={isBannerImageVisible}
                         onChange={(e) => {
                           setIsBannerImageVisible(e.target.checked);
-                          console.log(
-                            "Banner image visibility changed:",
-                            e.target.checked
-                          ); // Log checkbox change
                         }}
                       />
                     </div>
@@ -222,61 +172,28 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                       </label>
                     </div>
                   </div>
+
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      {/* <input type="file" id="categoryBannerImage" /> */}
-                      {/* <div className="mt-4"> */}
-                      <div>
-                        <label for="">
-                          Select Image
-                          <span>
-                            (Image ratio should be 16:6. PNG, JPG, or JPEG up to
-                            1MB)
-                          </span>
-                        </label>
-                        <div className="mt-1.5">
-                          <button
-                            type="button"
-                            className="btn btn-white"
-                            data-toggle="modal"
-                            data-target="#selectFilesModal"
-                            onClick={() => {
-                              setIsOpenPopupModal((prev) => ({
-                                ...prev,
-                                startSelectFilesAndMedia: true, // Open Select Files Modal
-                              }));
-
-                              // Ensure Select Files modal is above Add Main Banner
-                              setTimeout(() => {
-                                document.getElementById(
-                                  "selectFilesModal"
-                                ).style.zIndex = "1060";
-                              }, 100);
-                            }}
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2 -ml-1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              ></path>
-                            </svg>
-                            Select Files
-                          </button>
-                        </div>
-                      </div>
-                      {/* </div> */}
-                      <p className="text-sm text-gray-500">{bannerImageName}</p>
+                      <button
+                        type="button"
+                        className="btn btn-white"
+                        onClick={() => {
+                          setIsOpenPopupModal((prev) => ({
+                            ...prev,
+                            startSelectFilesAndMedia: true,
+                          }));
+                        }}
+                      >
+                        Select Files
+                      </button>
+                      <p className="text-sm text-gray-500">
+                        Selected Banner Image: {selectedBannerImage}
+                      </p>
                     </div>
                   )}
+
                   <div>
                     <label htmlFor="toggleSwitch">Status</label>
                     <div className="mt-1 toggle-switch">
@@ -286,20 +203,18 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                         checked={mainCategoryStatus}
                         onChange={(e) => {
                           setMainCategoryStatus(e.target.checked);
-                          console.log("Status changed:", e.target.checked); // Log status checkbox change
                         }}
                       />
                       <label htmlFor="toggleSwitch"></label>
                     </div>
                   </div>
                 </div>
+
                 <div className="modal-footer">
                   <div className="flex items-center justify-end space-x-4">
                     <button
                       type="button"
                       className="btn btn-light"
-                      data-dismiss="modal"
-                      aria-label="Close Modal"
                       onClick={() => setIsOpenPopupModal(false)}
                     >
                       Discard
