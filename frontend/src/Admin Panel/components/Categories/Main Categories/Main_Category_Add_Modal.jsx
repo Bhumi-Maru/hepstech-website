@@ -27,6 +27,8 @@ export default function Main_Category_Add_Modal() {
     (item) => item._id === selectedBannerImage
   );
 
+  // Function to check the file type and return the appropriate preview
+
   useEffect(() => {
     if (selectedFile) {
       if (!isBannerImageVisible) {
@@ -157,38 +159,43 @@ export default function Main_Category_Add_Modal() {
                           1MB)
                         </span> */}
                       </label>
-                      <div className="mt-1.5">
-                        <button
-                          type="button"
-                          className="btn btn-white"
-                          data-toggle="modal"
-                          data-target="#selectFilesModal"
-                          onClick={() => {
-                            setIsOpenPopupModal((prev) => ({
-                              ...prev,
-                              startSelectFilesAndMedia: true,
-                            }));
-                            setSelectedMainImage(null); // Ensure previous selection is cleared
-                          }}
-                        >
-                          <svg
-                            className="w-5 h-5 mr-2 -ml-1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                      <div className="flex" style={{ gap: "10px" }}>
+                        <div className="mt-1.5">
+                          <button
+                            type="button"
+                            className="btn btn-white"
+                            data-toggle="modal"
+                            data-target="#selectFilesModal"
+                            onClick={() => {
+                              setIsOpenPopupModal((prev) => ({
+                                ...prev,
+                                startSelectFilesAndMedia: true,
+                              }));
+                              setSelectedMainImage(null); // Ensure previous selection is cleared
+                            }}
                           >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            ></path>
-                          </svg>
-                          Select Files
-                        </button>
-                        {/* Show main image Preview */}
-                        {getFilePreview(mainImageFile)}
+                            <svg
+                              className="w-5 h-5 mr-2 -ml-1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              ></path>
+                            </svg>
+                            Select Files
+                          </button>
+                        </div>
+
+                        <div className="mt-1">
+                          {/* Show main image Preview */}
+                          {getFilePreview(mainImageFile)}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -225,38 +232,43 @@ export default function Main_Category_Add_Modal() {
                           </span> */}
                           {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
                         </label>
-                        <div className="mt-1.5">
-                          <button
-                            type="button"
-                            className="btn btn-white"
-                            data-toggle="modal"
-                            data-target="#selectFilesModal"
-                            onClick={() => {
-                              setIsOpenPopupModal((prev) => ({
-                                ...prev,
-                                startSelectFilesAndMedia: true,
-                              }));
-                              setSelectedBannerImage(null); // Ensure previous selection is cleared
-                            }}
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2 -ml-1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
+                        <div className="flex" style={{ gap: "10px" }}>
+                          <div className="mt-1.5">
+                            <button
+                              type="button"
+                              className="btn btn-white"
+                              data-toggle="modal"
+                              data-target="#selectFilesModal"
+                              onClick={() => {
+                                setIsOpenPopupModal((prev) => ({
+                                  ...prev,
+                                  startSelectFilesAndMedia: true,
+                                }));
+                                setSelectedBannerImage(null); // Ensure previous selection is cleared
+                              }}
                             >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              ></path>
-                            </svg>
-                            Select Files
-                          </button>
-                          {/* Show Preview for Banner Image */}
-                          {getFilePreview(bannerImageFile)}
+                              <svg
+                                className="w-5 h-5 mr-2 -ml-1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                              </svg>
+                              Select Files
+                            </button>
+                          </div>
+
+                          <div className="mt-1">
+                            {/* Show Preview for Banner Image */}
+                            {getFilePreview(bannerImageFile)}
+                          </div>
                         </div>
                       </div>
                     </div>

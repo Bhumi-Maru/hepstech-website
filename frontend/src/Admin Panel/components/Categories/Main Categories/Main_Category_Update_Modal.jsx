@@ -145,23 +145,26 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                   </div>
                   <div>
                     <label htmlFor="categoryMainImage">Main Image</label>
-                    <button
-                      type="button"
-                      className="btn btn-white"
-                      onClick={() => {
-                        setIsBannerImageVisible(false);
-                        setIsOpenPopupModal((prev) => ({
-                          ...prev,
-                          startSelectFilesAndMedia: true,
-                        }));
-                      }}
-                    >
-                      Select Files
-                    </button>
-                    {getFilePreview(updateMainImageFile)}
-                    {/* <p className="text-sm text-gray-500">
-                      Selected Image: {selectedMainImage}
-                    </p> */}
+                    <div className="flex" style={{ gap: "10px" }}>
+                      <div className="mt-1">
+                        <button
+                          type="button"
+                          className="btn btn-white"
+                          onClick={() => {
+                            setIsBannerImageVisible(false);
+                            setIsOpenPopupModal((prev) => ({
+                              ...prev,
+                              startSelectFilesAndMedia: true,
+                            }));
+                          }}
+                        >
+                          Select Files
+                        </button>
+                      </div>
+                      <div className="mt-1">
+                        {getFilePreview(updateMainImageFile)}
+                      </div>
+                    </div>
                   </div>
 
                   <div className="relative flex items-start">
@@ -185,22 +188,25 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                   {isBannerImageVisible && (
                     <div className="mt-4">
                       <label htmlFor="categoryBannerImage">Banner Image</label>
-                      <button
-                        type="button"
-                        className="btn btn-white"
-                        onClick={() => {
-                          setIsOpenPopupModal((prev) => ({
-                            ...prev,
-                            startSelectFilesAndMedia: true,
-                          }));
-                        }}
-                      >
-                        Select Files
-                      </button>
-                      {getFilePreview(updateBannerImageFile)}
-                      {/* <p className="text-sm text-gray-500">
-                        Selected Banner Image: {selectedBannerImage}
-                      </p> */}
+                      <div className="flex" style={{ gap: "10px" }}>
+                        <div className="mt-1">
+                          <button
+                            type="button"
+                            className="btn btn-white"
+                            onClick={() => {
+                              setIsOpenPopupModal((prev) => ({
+                                ...prev,
+                                startSelectFilesAndMedia: true,
+                              }));
+                            }}
+                          >
+                            Select Files
+                          </button>
+                        </div>
+                        <div className="mt-1">
+                          {getFilePreview(updateBannerImageFile)}
+                        </div>
+                      </div>
                     </div>
                   )}
 

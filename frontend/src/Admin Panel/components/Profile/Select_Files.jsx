@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import axios from "axios";
+import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 
 export default function Select_Files() {
   const {
@@ -11,6 +12,8 @@ export default function Select_Files() {
     setSelectedBannerImage,
     isBannerImageVisible,
   } = useAllMediaContext();
+
+  const { isOpenPopupModal } = useAdminGlobalContext();
 
   // Fetch media from the API
   useEffect(() => {
@@ -58,72 +61,84 @@ export default function Select_Files() {
           role="list"
           className="flex flex-wrap gap-x-4 gap-y-6 xs:grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10"
         >
-          {mediaItems.map((item, index) => (
-            <li key={index} className="relative h-100 w-100">
-              <div className="absolute z-5 left-2 top-1.5">
-                <input
-                  type="checkbox"
-                  name="selectedFiles"
-                  id={`file-${index}`}
-                  onChange={
-                    () =>
-                      isBannerImageVisible
-                        ? handleBannerImageSelect(item) // Select banner image if the banner is visible
-                        : handleMainImageSelect(item) // Select main image otherwise
-                  }
-                />
-              </div>
-              <div className="block w-full overflow-hidden bg-gray-100 rounded-lg focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">
-                {item.mimeType && item.mimeType.startsWith("image/") ? (
-                  <a
-                    href={item.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setPreviewUrl(item.fileUrl)}
-                  >
-                    <img
+          {mediaItems
+            .filter((item) =>
+              // Only show images when the addMainCategoryPopupModal is open
+              isOpenPopupModal.addMainCategoryPopupModal ||
+              isOpenPopupModal.editMainCategoryPopupModal
+                ? item.mimeType &&
+                  item.mimeType.startsWith("image/") &&
+                  !item.mimeType.includes("gif")
+                : true
+            )
+            .map((item, index) => (
+              <li key={index} className="relative h-100 w-100">
+                <div className="absolute z-5 left-2 top-1.5">
+                  <input
+                    type="checkbox"
+                    name="selectedFiles"
+                    id={`file-${index}`}
+                    onChange={
+                      () =>
+                        isBannerImageVisible
+                          ? handleBannerImageSelect(item) // Select banner image if the banner is visible
+                          : handleMainImageSelect(item) // Select main image otherwise
+                    }
+                  />
+                </div>
+                <div className="block w-full overflow-hidden bg-gray-100 rounded-lg focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">
+                  {item.mimeType &&
+                  item.mimeType.startsWith("image/") &&
+                  !item.mimeType.includes("gif") ? (
+                    <a
+                      href={item.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setPreviewUrl(item.fileUrl)}
+                    >
+                      <img
+                        src={item.fileUrl}
+                        alt={item.name}
+                        className="object-contain"
+                        style={{ height: "100px", width: "100px" }}
+                      />
+                    </a>
+                  ) : item.mimeType && item.mimeType.startsWith("video/") ? (
+                    <a
+                      href={item.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setPreviewUrl(item.fileUrl)}
+                    >
+                      <video
+                        controls
+                        className="object-contain w-100 h-100"
+                        style={{ height: "100px", width: "100px" }}
+                      >
+                        <source src={item.fileUrl} type={item.mimeType} />
+                      </video>
+                    </a>
+                  ) : item.mimeType === "application/pdf" ? (
+                    <embed
                       src={item.fileUrl}
-                      alt={item.name}
-                      className="object-contain"
+                      type="application/pdf"
+                      className="w-100 h-100 overflow-y-hidden no-scrollbar"
                       style={{ height: "100px", width: "100px" }}
                     />
-                  </a>
-                ) : item.mimeType && item.mimeType.startsWith("video/") ? (
-                  <a
-                    href={item.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setPreviewUrl(item.fileUrl)}
-                  >
-                    <video
-                      controls
-                      className="object-contain w-100 h-100"
-                      style={{ height: "100px", width: "100px" }}
-                    >
-                      <source src={item.fileUrl} type={item.mimeType} />
-                    </video>
-                  </a>
-                ) : item.mimeType === "application/pdf" ? (
-                  <embed
-                    src={item.fileUrl}
-                    type="application/pdf"
-                    className="w-100 h-100 overflow-y-hidden no-scrollbar"
-                    style={{ height: "100px", width: "100px" }}
-                  />
-                ) : (
-                  <p className="text-gray-500">
-                    Unsupported file type: {item.mimeType}
-                  </p>
-                )}
-              </div>
-              <p className="block mt-2 text-sm font-medium text-gray-900 truncate pointer-events-none">
-                {item.name}
-              </p>
-              <p className="block text-sm font-medium text-gray-500 pointer-events-none">
-                {item.size}
-              </p>
-            </li>
-          ))}
+                  ) : (
+                    <p className="text-gray-500">
+                      Unsupported file type: {item.mimeType}
+                    </p>
+                  )}
+                </div>
+                <p className="block mt-2 text-sm font-medium text-gray-900 truncate pointer-events-none">
+                  {item.name}
+                </p>
+                <p className="block text-sm font-medium text-gray-500 pointer-events-none">
+                  {item.size}
+                </p>
+              </li>
+            ))}
         </ul>
       </div>
     </>
