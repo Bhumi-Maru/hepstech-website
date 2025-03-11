@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Main_Category_Update_Modal({ categoryId }) {
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
-  // const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const {
     onUpdateCategory,
@@ -16,7 +16,15 @@ export default function Main_Category_Update_Modal({ categoryId }) {
     setSelectedBannerImage,
     isBannerImageVisible,
     setIsBannerImageVisible,
+    mediaItems,
   } = useAllMediaContext();
+
+  const updateMainImageFile = mediaItems.find(
+    (item) => item._id === selectedMainImage
+  );
+  const updateBannerImageFile = mediaItems.find(
+    (item) => item._id === selectedBannerImage
+  );
 
   useEffect(() => {
     if (categoryId) {
@@ -150,9 +158,10 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                     >
                       Select Files
                     </button>
-                    <p className="text-sm text-gray-500">
+                    {getFilePreview(updateMainImageFile)}
+                    {/* <p className="text-sm text-gray-500">
                       Selected Image: {selectedMainImage}
-                    </p>
+                    </p> */}
                   </div>
 
                   <div className="relative flex items-start">
@@ -188,9 +197,10 @@ export default function Main_Category_Update_Modal({ categoryId }) {
                       >
                         Select Files
                       </button>
-                      <p className="text-sm text-gray-500">
+                      {getFilePreview(updateBannerImageFile)}
+                      {/* <p className="text-sm text-gray-500">
                         Selected Banner Image: {selectedBannerImage}
-                      </p>
+                      </p> */}
                     </div>
                   )}
 
