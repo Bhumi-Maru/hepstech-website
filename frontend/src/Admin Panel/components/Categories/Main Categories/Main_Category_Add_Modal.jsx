@@ -39,7 +39,7 @@ export default function Main_Category_Add_Modal({
       main_category_status: mainCategoryStatus ? "published" : "draft",
       add_banner_image_status: isBannerImageVisible ? "active" : "deactive",
       main_image: selectedMainImage, // ID of the selected main image
-      add_banner_image: selectedBannerImage || null, // ID of the selected banner image (if applicable)
+      add_banner_image: selectedBannerImage || null, // If no banner image selected, pass null
     };
 
     console.log("data", data);
@@ -53,10 +53,13 @@ export default function Main_Category_Add_Modal({
 
       if (response.data.message === "Main category added successfully") {
         // Handle success (e.g., close the modal, show success message)
-
+        setMainCategoryTitle("");
+        setMainCategoryStatus(false);
+        setSelectedMainImage(null);
+        setSelectedBannerImage(null);
+        setIsBannerImageVisible(false);
         setIsOpenPopupModal(false);
       } else {
-        // Handle any other response message
         alert(`Error: ${response.data.message || "Unknown error"}`);
       }
     } catch (error) {
@@ -146,7 +149,7 @@ export default function Main_Category_Add_Modal({
                           (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                           1MB)
                         </span>
-                        <p>Selected File : {selectedMainImage || "None"}</p>
+                        {/* <p>Selected File : {selectedMainImage || "None"}</p> */}
                       </label>
                       <div className="mt-1.5">
                         <button
@@ -212,7 +215,7 @@ export default function Main_Category_Add_Modal({
                             (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                             1MB)
                           </span>
-                          <p>Selected File : {selectedBannerImage || "None"}</p>
+                          {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
                         </label>
                         <div className="mt-1.5">
                           <button

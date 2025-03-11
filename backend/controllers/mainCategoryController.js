@@ -10,8 +10,8 @@ const addMainCategory = async (req, res) => {
       main_category_title,
       main_category_status,
       add_banner_image_status,
-      main_image, // Expecting the ID of the main image
-      add_banner_image, // Expecting the ID of the banner image
+      main_image,
+      add_banner_image,
     } = req.body;
 
     // Validate required fields
@@ -44,7 +44,6 @@ const addMainCategory = async (req, res) => {
     });
 
     await newCategory.save();
-
     res.status(201).json({
       message: "Main category added successfully",
       category: newCategory,
@@ -138,25 +137,25 @@ const deleteMainCategory = async (req, res) => {
     }
 
     // Delete associated images from file system
-    const deleteFile = (file) => {
-      if (file && file.filePath) {
-        const filePath = path.join(__dirname, `../public${file.filePath}`);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath); // Delete the file
-        }
-      }
-    };
+    // const deleteFile = (file) => {
+    //   if (file && file.filePath) {
+    //     const filePath = path.join(__dirname, `../public${file.filePath}`);
+    //     if (fs.existsSync(filePath)) {
+    //       fs.unlinkSync(filePath); // Delete the file
+    //     }
+    //   }
+    // };
 
-    deleteFile(category.main_image);
-    deleteFile(category.add_banner_image);
+    // deleteFile(category.main_image);
+    // deleteFile(category.add_banner_image);
 
     // Delete associated image documents from the File collection
-    if (category.main_image) {
-      await File.findByIdAndDelete(category.main_image._id);
-    }
-    if (category.add_banner_image) {
-      await File.findByIdAndDelete(category.add_banner_image._id);
-    }
+    // if (category.main_image) {
+    //   await File.findByIdAndDelete(category.main_image._id);
+    // }
+    // if (category.add_banner_image) {
+    //   await File.findByIdAndDelete(category.add_banner_image._id);
+    // }
 
     // Delete the main category
     await MainCategory.findByIdAndDelete(id);
@@ -234,29 +233,29 @@ const deleteMainCategories = async (req, res) => {
     }
 
     // Delete files from the uploads folder
-    categoriesToDelete.forEach((category) => {
-      // Delete main image file
-      if (category.main_image && category.main_image.filePath) {
-        const mainImagePath = path.join(
-          __dirname,
-          `../public${category.main_image.filePath}`
-        );
-        if (fs.existsSync(mainImagePath)) {
-          fs.unlinkSync(mainImagePath); // Delete the file
-        }
-      }
+    // categoriesToDelete.forEach((category) => {
+    //   // Delete main image file
+    //   if (category.main_image && category.main_image.filePath) {
+    //     const mainImagePath = path.join(
+    //       __dirname,
+    //       `../public${category.main_image.filePath}`
+    //     );
+    //     if (fs.existsSync(mainImagePath)) {
+    //       fs.unlinkSync(mainImagePath); // Delete the file
+    //     }
+    //   }
 
-      // Delete banner image file
-      if (category.add_banner_image && category.add_banner_image.filePath) {
-        const bannerImagePath = path.join(
-          __dirname,
-          `../public${category.add_banner_image.filePath}`
-        );
-        if (fs.existsSync(bannerImagePath)) {
-          fs.unlinkSync(bannerImagePath); // Delete the file
-        }
-      }
-    });
+    //   // Delete banner image file
+    //   if (category.add_banner_image && category.add_banner_image.filePath) {
+    //     const bannerImagePath = path.join(
+    //       __dirname,
+    //       `../public${category.add_banner_image.filePath}`
+    //     );
+    //     if (fs.existsSync(bannerImagePath)) {
+    //       fs.unlinkSync(bannerImagePath); // Delete the file
+    //     }
+    //   }
+    // });
 
     res.status(200).json({
       message: `${deletedCategories.deletedCount} category(s) and their associated files deleted successfully`,

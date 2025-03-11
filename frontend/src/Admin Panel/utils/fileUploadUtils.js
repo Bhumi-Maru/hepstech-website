@@ -17,10 +17,11 @@ export const handleImageChange = (
 export const handleFileUpload = async (
   selectedFile,
   setMediaItems,
-  setIsOpenPopupModal, // Ensure this is passed properly
+  setIsOpenPopupModal,
   setPreviewUrl,
   setSelectedTab,
-  isOpenPopupModal
+  isOpenPopupModal,
+  setSelectedFile
 ) => {
   if (!selectedFile) {
     alert("Please select a file to upload.");
@@ -30,12 +31,16 @@ export const handleFileUpload = async (
   const formData = new FormData();
   formData.append("filename", selectedFile);
 
+  setPreviewUrl(null);
+
   try {
     const response = await axios.post(
       "http://localhost:7000/api/upload",
       formData,
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
 
@@ -44,19 +49,38 @@ export const handleFileUpload = async (
       size: (selectedFile.size / 1024 / 1024).toFixed(2) + " MB",
       imageUrl: `http://localhost:7000${response.data.filePath}`,
     };
-    setPreviewUrl(null);
-    // Only reset the tab if startSelectFilesAndMedia modal is open
-    if (isOpenPopupModal?.startSelectFilesAndMedia) {
-      setSelectedTab("select");
-    }
+
+    // Add file to media list BEFORE clearing the preview
+    setMediaItems((prevItems) => [...prevItems, newFile]);
 
     // Close modal after upload
-    setIsOpenPopupModal((prev) => ({
-      ...prev,
-      uploadFiles: false, // Close only the Upload modal
-    }));
+    setIsOpenPopupModal((prev) => {
+      const newState = { ...prev, uploadFiles: false };
+      // Reset preview only if the modal is closed or the selected tab changes
+      if (
+        !newState.startSelectFilesAndMedia ||
+        newState.selectedTab !== "upload" ||
+        newState.selectedTab === "upload"
+      ) {
+        setPreviewUrl(null); // Clear only if necessary
+      }
+      return newState;
+    });
 
-    setMediaItems((prevItems) => [...prevItems, newFile]);
+    // Only reset the tab if the modal is open
+    if (isOpenPopupModal?.startSelectFilesAndMedia) {
+      setSelectedTab("select");
+      setPreviewUrl(null);
+    }
+
+    // Clear preview AFTER the file is added to the media list if necessary
+    setTimeout(() => {
+      // Clear only if the modal is closed
+      if (!isOpenPopupModal.startSelectFilesAndMedia) {
+        setSelectedFile(null);
+        setPreviewUrl(null);
+      }
+    }, 1000); // Small delay to prevent instant clearing
   } catch (error) {
     console.error("Failed to upload file", error);
     alert(

@@ -26,7 +26,6 @@ const mainCategorySchema = new mongoose.Schema(
     add_banner_image: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "File", // Reference to File model
-      required: true,
     },
 
     add_banner_image_status: {

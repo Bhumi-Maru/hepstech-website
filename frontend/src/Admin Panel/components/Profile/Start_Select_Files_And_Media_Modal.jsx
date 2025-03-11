@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Select_Files from "./Select_Files";
 import Upload_New from "./Upload_New";
 import { handleFileUpload } from "../../utils/fileUploadUtils";
@@ -19,7 +19,15 @@ export default function Start_Select_Files_And_Media_Modal({
     setSelectedBannerImage,
     selectedBannerImage,
     selectedFile,
+    setSelectedFile,
   } = useAllMediaContext();
+
+  useEffect(() => {
+    // Reset the preview URL when the modal is opened
+    if (isOpenPopupModal.startSelectFilesAndMedia) {
+      setPreviewUrl(null); // Clear preview when modal is opened
+    }
+  }, [isOpenPopupModal.startSelectFilesAndMedia, setPreviewUrl]);
 
   // console.log("selected file", selectedFile);
 
@@ -152,7 +160,8 @@ export default function Start_Select_Files_And_Media_Modal({
                           setIsOpenPopupModal,
                           setPreviewUrl,
                           setSelectedTab,
-                          isOpenPopupModal
+                          isOpenPopupModal,
+                          setSelectedFile
                         )
                       }
                     >
