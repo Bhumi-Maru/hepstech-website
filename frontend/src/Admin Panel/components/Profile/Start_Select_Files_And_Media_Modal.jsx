@@ -172,18 +172,26 @@ export default function Start_Select_Files_And_Media_Modal({
                       type="button"
                       className="btn btn-primary"
                       onClick={() => {
+                        // Check if Main Image should be updated
                         if (selectedMainImage) {
                           setSelectedMainImage(selectedMainImage); // Assign to main image
-                          if (isBannerImageVisible) {
+                        }
+
+                        // Check if Banner Image is visible, then update it
+                        if (isBannerImageVisible) {
+                          if (selectedBannerImage) {
                             setSelectedBannerImage(selectedBannerImage); // Assign to banner if visible
                           }
                         }
+
+                        // Close the modal after selection
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
                           startSelectFilesAndMedia: false,
                         }));
                       }}
-                      // disabled={!selectedFile}
+                      // Disabled if no file is selected
+                      disabled={!selectedBannerImage && !selectedMainImage}
                     >
                       Select Files
                     </button>

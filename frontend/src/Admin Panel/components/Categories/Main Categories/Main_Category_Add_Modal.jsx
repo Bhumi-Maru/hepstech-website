@@ -3,10 +3,7 @@ import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import axios from "axios"; // Make sure to install axios
 import { useAllMediaContext } from "../../../context/All_Media_Context";
 
-export default function Main_Category_Add_Modal({
-  isBannerImageVisible,
-  setIsBannerImageVisible,
-}) {
+export default function Main_Category_Add_Modal() {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
@@ -16,6 +13,8 @@ export default function Main_Category_Add_Modal({
     selectedBannerImage,
     selectedMainImage,
     selectedFile,
+    isBannerImageVisible,
+    setIsBannerImageVisible,
   } = useAllMediaContext();
 
   useEffect(() => {

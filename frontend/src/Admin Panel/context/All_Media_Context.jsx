@@ -7,6 +7,7 @@ export const useAllMediaContext = () => {
 };
 
 export const AllMediaProvider = ({ children }) => {
+  const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const [mediaItems, setMediaItems] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState("");
   const [selectedMediaType, setSelectedMediaType] = useState("all"); // Default value
@@ -118,6 +119,8 @@ export const AllMediaProvider = ({ children }) => {
         //select files in all media page
         selectedFiles,
         setSelectedFiles,
+        isBannerImageVisible,
+        setIsBannerImageVisible,
       }}
     >
       {children}

@@ -9,7 +9,9 @@ export default function MainCategories() {
   const [search, setSearch] = useState("");
   const [error, setError] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectAll, setSelectAll] = useState(false); // Track if all checkboxes are selected
+  const [selectAll, setSelectAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Fetch all main categories from API
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function MainCategories() {
     fetchCategories();
   }, [categories]);
 
-  // Searching categories
+  // Filter categories based on search term
   const searchMainCategory = categories.filter((item) =>
     item.main_category_title.toLowerCase().includes(search.toLowerCase())
   );
@@ -51,19 +53,15 @@ export default function MainCategories() {
   };
 
   // Delete category function
-  // Delete category function with confirmation
   const deleteCategory = async (id) => {
     const userConfirmed = window.confirm(
       "This image will also be deleted from all media. Are you sure?"
     );
-
     if (!userConfirmed) return; // Stop if the user cancels
-
     try {
       const response = await axios.delete(
         `http://localhost:7000/api/main-category/delete/${id}`
       );
-
       if (response.data.message === "Main category deleted successfully") {
         alert("Category deleted successfully.");
         setCategories(categories.filter((category) => category._id !== id)); // Update state
@@ -107,6 +105,20 @@ export default function MainCategories() {
     }
   };
 
+  // Pagination logic
+  const indexOfLastCategory = currentPage * itemsPerPage;
+  const indexOfFirstCategory = indexOfLastCategory - itemsPerPage;
+  const currentCategories = searchMainCategory.slice(
+    indexOfFirstCategory,
+    indexOfLastCategory
+  );
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Total pages calculation
+  const totalPages = Math.ceil(searchMainCategory.length / itemsPerPage);
+
   return (
     <>
       {/* START MAIN CATEGORIES */}
@@ -139,6 +151,7 @@ export default function MainCategories() {
           </div>
         </div>
 
+        {/* Search Input */}
         <div className="max-w-sm mt-4">
           <label htmlFor="searchMainCategory" className="sr-only">
             Search
@@ -172,6 +185,7 @@ export default function MainCategories() {
           </div>
         </div>
 
+        {/* Table of Categories */}
         <div className="mt-4" id="mainCategoriesView">
           <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -194,8 +208,8 @@ export default function MainCategories() {
                       </tr>
                     </thead>
                     <tbody>
-                      {searchMainCategory.length > 0 ? (
-                        searchMainCategory.map((category) => (
+                      {currentCategories.length > 0 ? (
+                        currentCategories.map((category) => (
                           <tr key={category._id}>
                             <td>
                               <input
@@ -215,9 +229,7 @@ export default function MainCategories() {
                                     const filePath = `http://localhost:7000${category.main_image.filePath}`;
                                     const fileType =
                                       category.main_image.fileType;
-
                                     if (fileType.startsWith("image")) {
-                                      // Display Images & GIFs
                                       return (
                                         <img
                                           src={filePath}
@@ -226,7 +238,6 @@ export default function MainCategories() {
                                         />
                                       );
                                     } else if (fileType.startsWith("video")) {
-                                      // Display Video
                                       return (
                                         <video
                                           className="w-full h-full"
@@ -241,17 +252,15 @@ export default function MainCategories() {
                                         </video>
                                       );
                                     } else if (fileType === "application/pdf") {
-                                      // Display PDF
                                       return (
                                         <iframe
                                           src={filePath}
                                           className="w-full h-full"
                                           title={category.main_category_title}
                                           style={{ overflow: "hidden" }}
-                                        ></iframe>
+                                        />
                                       );
                                     } else {
-                                      // Display as a Downloadable Link
                                       return (
                                         <a
                                           href={filePath}
@@ -268,7 +277,6 @@ export default function MainCategories() {
                                 )}
                               </div>
                             </td>
-
                             <td>{category.main_category_title}</td>
                             <td>
                               <span
@@ -344,16 +352,16 @@ export default function MainCategories() {
                           <td colSpan="7" className="text-center align-middle">
                             <div className="flex flex-row items-center justify-center text-sm font-medium text-gray-500">
                               <svg
-                                class="w-6 h-6 mr-2"
+                                className="w-6 h-6 mr-2"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
                                 ></path>
                               </svg>
@@ -369,46 +377,57 @@ export default function MainCategories() {
             </div>
           </div>
         </div>
-        <div class="flex flex-col items-center mt-8 sm:mt-4 sm:flex-row sm:justify-between">
-          <p class="text-gray-700 showing">
-            Showing <span id="page-first-item-number">1</span> -
-            <span id="page-last-item-number"> 5 </span> of
-            <span id="totalMainCategories"> 5 </span> main categories
-          </p>
 
-          <ul class="mt-5 pagination sm:mt-0">
-            <li class="active">
-              <a class="page" href="#" data-i="1" data-page="10">
-                1
-              </a>
-            </li>
+        {/* Pagination */}
+        <div className="flex flex-col items-center mt-8 sm:mt-4 sm:flex-row sm:justify-between">
+          <p className="text-gray-700 showing">
+            Showing{" "}
+            <span id="page-first-item-number">{indexOfFirstCategory + 1}</span>{" "}
+            - <span id="page-last-item-number">{indexOfLastCategory}</span> of{" "}
+            <span id="totalMainCategories">{searchMainCategory.length}</span>{" "}
+            main categories
+          </p>
+          <ul className="mt-5 pagination sm:mt-0">
+            {[...Array(totalPages)].map((_, index) => (
+              <li
+                key={index}
+                className={index + 1 === currentPage ? "active" : ""}
+              >
+                <a
+                  className="page"
+                  href="#"
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
-        <hr class="mt-6 mb-5 border-gray-200" />
+        <hr className="mt-6 mb-5 border-gray-200" />
         <button
           type="button"
-          class="btn btn-error"
+          className="btn btn-error"
           onClick={bulkDeleteCategories}
         >
           <svg
-            class="w-5 h-5 mr-2 -ml-1"
+            className="w-5 h-5 mr-2 -ml-1"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             ></path>
           </svg>
           Bulk Delete
         </button>
       </div>
-
       {/* END MAIN CATEGORIES */}
     </>
   );
