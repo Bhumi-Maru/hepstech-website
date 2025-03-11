@@ -6,7 +6,7 @@ const mainCategorySchema = new mongoose.Schema(
     main_category_id: {
       type: String,
       default: uuidv4, // Auto-generate UUID
-      unique: true,
+      unique: false, // make it true
     },
     main_category_title: { type: String, required: true },
 
