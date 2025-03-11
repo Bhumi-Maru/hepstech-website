@@ -10,8 +10,6 @@ export default function Select_Files({ isBannerImageVisible }) {
     setPreviewUrl,
     setSelectedMainImage,
     setSelectedBannerImage,
-    selectedMainImage,
-    selectedBannerImage,
   } = useAllMediaContext();
 
   // const { setIsOpenPopupModal } = useAdminGlobalContext();
@@ -94,7 +92,8 @@ export default function Select_Files({ isBannerImageVisible }) {
                   >
                     <video
                       controls
-                      className="object-contain w-[100px] h-[100px]"
+                      className="object-contain w-100 h-100"
+                      style={{ height: "100px", width: "100px" }}
                     >
                       <source src={item.fileUrl} type={item.mimeType} />
                     </video>
@@ -103,7 +102,8 @@ export default function Select_Files({ isBannerImageVisible }) {
                   <embed
                     src={item.fileUrl}
                     type="application/pdf"
-                    className="w-[100px] h-[100px] overflow-y-hidden no-scrollbar"
+                    className="w-100 h-100 overflow-y-hidden no-scrollbar"
+                    style={{ height: "100px", width: "100px" }}
                   />
                 ) : (
                   <p className="text-gray-500">

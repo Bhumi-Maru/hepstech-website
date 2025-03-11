@@ -51,13 +51,22 @@ export default function MainCategories() {
   };
 
   // Delete category function
+  // Delete category function with confirmation
   const deleteCategory = async (id) => {
+    const userConfirmed = window.confirm(
+      "This image will also be deleted from all media. Are you sure?"
+    );
+
+    if (!userConfirmed) return; // Stop if the user cancels
+
     try {
       const response = await axios.delete(
         `http://localhost:7000/api/main-category/delete/${id}`
       );
+
       if (response.data.message === "Main category deleted successfully") {
-        setCategories(categories.filter((category) => category._id !== id)); // Update state to remove deleted category
+        alert("Category deleted successfully.");
+        setCategories(categories.filter((category) => category._id !== id)); // Update state
       }
     } catch (err) {
       alert("Error deleting category");
@@ -202,27 +211,64 @@ export default function MainCategories() {
                             <td>
                               <div className="flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
                                 {category.main_image ? (
-                                  category.main_image.filePath.endsWith(
-                                    ".pdf"
-                                  ) ? (
-                                    <iframe
-                                      src={`http://localhost:7000${category.main_image.filePath}`}
-                                      className="w-full h-full"
-                                      title={category.main_category_title}
-                                      style={{ overflow: "hidden" }}
-                                    ></iframe>
-                                  ) : (
-                                    <img
-                                      src={`http://localhost:7000${category.main_image.filePath}`}
-                                      alt={category.main_category_title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  )
+                                  (() => {
+                                    const filePath = `http://localhost:7000${category.main_image.filePath}`;
+                                    const fileType =
+                                      category.main_image.fileType;
+
+                                    if (fileType.startsWith("image")) {
+                                      // Display Images & GIFs
+                                      return (
+                                        <img
+                                          src={filePath}
+                                          alt={category.main_category_title}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      );
+                                    } else if (fileType.startsWith("video")) {
+                                      // Display Video
+                                      return (
+                                        <video
+                                          className="w-full h-full"
+                                          controls
+                                        >
+                                          <source
+                                            src={filePath}
+                                            type={fileType}
+                                          />
+                                          Your browser does not support the
+                                          video tag.
+                                        </video>
+                                      );
+                                    } else if (fileType === "application/pdf") {
+                                      // Display PDF
+                                      return (
+                                        <iframe
+                                          src={filePath}
+                                          className="w-full h-full"
+                                          title={category.main_category_title}
+                                          style={{ overflow: "hidden" }}
+                                        ></iframe>
+                                      );
+                                    } else {
+                                      // Display as a Downloadable Link
+                                      return (
+                                        <a
+                                          href={filePath}
+                                          download
+                                          className="text-blue-500 underline"
+                                        >
+                                          Download File
+                                        </a>
+                                      );
+                                    }
+                                  })()
                                 ) : (
-                                  <span>No Image</span>
+                                  <span>No File</span>
                                 )}
                               </div>
                             </td>
+
                             <td>{category.main_category_title}</td>
                             <td>
                               <span

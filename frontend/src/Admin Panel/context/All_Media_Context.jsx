@@ -77,8 +77,6 @@ export const AllMediaProvider = ({ children }) => {
     }
   });
 
-  
-
   // Handle date selection
   const handleDateSelect = (range) => {
     setSelectedDateRange(range);
@@ -104,8 +102,8 @@ export const AllMediaProvider = ({ children }) => {
         selectedSortOrder, // Provide sorting state
         setSelectedSortOrder,
         // fetchMedia, // fetch all images
-        selectedFile,
-        setSelectedFile,
+        selectedFile, // this is for selected file (start_select_files_And_Media_Modal)
+        setSelectedFile, // this is for selected file (start_select_files_And_Media_Modal)
         selectedMainImage,
         setSelectedMainImage,
         selectedBannerImage,

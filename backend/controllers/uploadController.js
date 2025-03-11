@@ -154,10 +154,34 @@ const deleteSelectedFiles = async (req, res) => {
   }
 };
 
+// Get File by ID
+const getFileById = async (req, res) => {
+  try {
+    const { fileId } = req.params; // Get the fileId from the URL params
+
+    // Find the file in the database by its fileId
+    const file = await File.findOne({ fileId });
+
+    if (!file) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    // Return the file details including the filename
+    res.status(200).json({
+      message: "File fetched successfully",
+      file: file, // Return the full file details
+    });
+  } catch (error) {
+    console.error("Error fetching file:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   uploadFile,
   getFile,
   deleteAllFiles,
   deleteFile,
   deleteSelectedFiles,
+  getFileById,
 };

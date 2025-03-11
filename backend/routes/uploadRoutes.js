@@ -6,6 +6,7 @@ const {
   deleteAllFiles,
   deleteFile,
   deleteSelectedFiles,
+  getFileById,
 } = require("../controllers/uploadController");
 
 const uploadRouter = express.Router();
@@ -23,5 +24,8 @@ uploadRouter.delete("/files/:fileId", deleteFile);
 
 //delete selected files
 uploadRouter.delete("/SelectedFiles", deleteSelectedFiles);
+
+// Get File by ID Route
+uploadRouter.get("/files/:fileId", getFileById);
 
 module.exports = uploadRouter;
