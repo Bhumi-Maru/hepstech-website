@@ -88,3 +88,49 @@ export const handleFileUpload = async (
     );
   }
 };
+
+// Function to check the file type and return the appropriate preview
+export const getFilePreview = (file) => {
+  if (!file) return null;
+
+  const fileUrl = file.fileUrl;
+  const fileType = file.fileType || fileUrl.split(".").pop().toLowerCase();
+
+  if (fileType === "jpg" || fileType === "jpeg" || fileType === "png") {
+    return (
+      <img
+        src={fileUrl}
+        alt="Preview"
+        className="w-100 h-100 object-cover  mt-2"
+      />
+    );
+  } else if (fileType === "mp4" || fileType === "avi" || fileType === "mov") {
+    return (
+      <video controls className="w-100 h-100  mt-2">
+        <source src={fileUrl} type={`video/${fileType}`} />
+        Your browser does not support the video tag.
+      </video>
+    );
+  } else if (fileType === "gif") {
+    return (
+      <img
+        src={fileUrl}
+        alt="GIF Preview"
+        className="w-100 h-100 object-cover  mt-2"
+      />
+    );
+  } else if (fileType === "pdf" || fileType === "docx" || fileType === "txt") {
+    return (
+      <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+        <embed
+          src={fileUrl}
+          type="application/pdf"
+          className="w-100 h-100 object-cover mt-2"
+          alt="PDF Preview"
+        />
+      </a>
+    );
+  }
+
+  return null;
+};

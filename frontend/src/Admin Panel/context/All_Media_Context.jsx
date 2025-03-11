@@ -9,6 +9,7 @@ export const useAllMediaContext = () => {
 export const AllMediaProvider = ({ children }) => {
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
   const [mediaItems, setMediaItems] = useState([]);
+  // console.log("media items", mediaItems);
   const [selectedDateRange, setSelectedDateRange] = useState("");
   const [selectedMediaType, setSelectedMediaType] = useState("all"); // Default value
   const [selectedSortOrder, setSelectedSortOrder] = useState("newest"); // Added sorting state

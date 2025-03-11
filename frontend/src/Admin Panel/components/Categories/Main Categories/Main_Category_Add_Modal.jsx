@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import axios from "axios"; // Make sure to install axios
 import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Main_Category_Add_Modal() {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
@@ -15,16 +16,23 @@ export default function Main_Category_Add_Modal() {
     selectedFile,
     isBannerImageVisible,
     setIsBannerImageVisible,
+    mediaItems,
   } = useAllMediaContext();
+
+  // / Find the file URL for the selected main image
+  const mainImageFile = mediaItems.find(
+    (item) => item._id === selectedMainImage
+  );
+  const bannerImageFile = mediaItems.find(
+    (item) => item._id === selectedBannerImage
+  );
 
   useEffect(() => {
     if (selectedFile) {
       if (!isBannerImageVisible) {
-        setSelectedMainImage(selectedMainImage);
-        // setMainImage(selectedFile);
+        setSelectedMainImage(selectedMainImage); // setMainImage(selectedFile);
       } else {
-        setSelectedBannerImage(selectedBannerImage);
-        // setBannerImage(selectedFile);
+        setSelectedBannerImage(selectedBannerImage); // setBannerImage(selectedFile);
       }
     }
   }, [selectedFile, isBannerImageVisible]);
@@ -143,12 +151,11 @@ export default function Main_Category_Add_Modal() {
                     <label htmlFor="categoryMainImage">Main Image</label>
                     <div>
                       <label for="">
-                        Select Image
-                        <span>
+                        {/* Select Image */}
+                        {/* <span>
                           (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                           1MB)
-                        </span>
-                        {/* <p>Selected File : {selectedMainImage || "None"}</p> */}
+                        </span> */}
                       </label>
                       <div className="mt-1.5">
                         <button
@@ -180,6 +187,8 @@ export default function Main_Category_Add_Modal() {
                           </svg>
                           Select Files
                         </button>
+                        {/* Show main image Preview */}
+                        {getFilePreview(mainImageFile)}
                       </div>
                     </div>
                   </div>
@@ -209,11 +218,11 @@ export default function Main_Category_Add_Modal() {
                       <label htmlFor="categoryBannerImage">Banner Image</label>
                       <div>
                         <label for="">
-                          Select Image
-                          <span>
+                          {/* Select Image */}
+                          {/* <span>
                             (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                             1MB)
-                          </span>
+                          </span> */}
                           {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
                         </label>
                         <div className="mt-1.5">
@@ -246,6 +255,8 @@ export default function Main_Category_Add_Modal() {
                             </svg>
                             Select Files
                           </button>
+                          {/* Show Preview for Banner Image */}
+                          {getFilePreview(bannerImageFile)}
                         </div>
                       </div>
                     </div>
