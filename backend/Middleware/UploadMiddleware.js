@@ -22,6 +22,7 @@ const upload = multer({ storage }).fields([
   { name: "filename", maxCount: 10 },
   { name: "main_image", maxCount: 1 },
   { name: "add_banner_image", maxCount: 1 },
+  { name: "sub_Image", maxCount: 1 },
 ]);
 
 module.exports = upload;
