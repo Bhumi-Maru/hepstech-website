@@ -12,10 +12,10 @@ const createSubCategory = async (req, res) => {
     } = req.body;
 
     // Check if main category exists
-    // const mainCategoryExists = await MainCategory.findById(main_category_id);
-    // if (!mainCategoryExists) {
-    //   return res.status(404).json({ message: "Main category not found." });
-    // }
+    const mainCategoryExists = await MainCategory.findById(main_category_id);
+    if (!mainCategoryExists) {
+      return res.status(404).json({ message: "Main category not found." });
+    }
 
     // Check if sub image exists
     const subImageExists = await File.findById(sub_image);
