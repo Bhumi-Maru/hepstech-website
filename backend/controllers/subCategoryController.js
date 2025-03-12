@@ -106,10 +106,19 @@ const deleteAllSubCategories = async (req, res) => {
 const deleteSelectedSubCategories = async (req, res) => {
   try {
     const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No subcategories selected for deletion" });
+    }
+
+    // Delete the selected subcategories
     await SubCategory.deleteMany({ _id: { $in: ids } });
+
     res
       .status(200)
-      .json({ message: "Selected SubCategories deleted successfully" });
+      .json({ message: `${ids.length} subcategory(ies) deleted successfully` });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
