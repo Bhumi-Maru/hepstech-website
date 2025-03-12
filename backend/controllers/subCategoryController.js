@@ -1,38 +1,51 @@
+const File = require("../models/fileModel");
+const MainCategory = require("../models/mainCategoryModel");
 const SubCategory = require("../models/subCategoryModel");
 
 const createSubCategory = async (req, res) => {
   try {
-    if (!req.body.main_category) {
-      return res.status(400).json({ error: "Main category is required" });
+    const {
+      sub_category_title,
+      main_category_id,
+      sub_image,
+      sub_category_status,
+    } = req.body;
+
+    // Check if main category exists
+    // const mainCategoryExists = await MainCategory.findById(main_category_id);
+    // if (!mainCategoryExists) {
+    //   return res.status(404).json({ message: "Main category not found." });
+    // }
+
+    // Check if sub image exists
+    const subImageExists = await File.findById(sub_image);
+    if (!subImageExists) {
+      return res.status(404).json({ message: "Sub image not found." });
     }
 
-    // Ensure main_category exists
-    const mainCategoryExists = await MainCategory.findById(
-      req.body.main_category
-    );
-    if (!mainCategoryExists) {
-      return res.status(404).json({ error: "Main category not found" });
-    }
+    // Create new subcategory
+    const newSubCategory = new SubCategory({
+      sub_category_title,
+      main_category_id,
+      sub_image,
+      sub_category_status,
+    });
 
-    // Assign unique ID if not provided
-    req.body.sub_category_id = req.body.sub_category_id || uuidv4();
+    await newSubCategory.save();
 
-    const subCategory = new SubCategory(req.body);
-    await subCategory.save();
-    await subCategory.populate("main_category");
-
-    res
-      .status(201)
-      .json({ message: "SubCategory created successfully", subCategory });
+    res.status(201).json({
+      message: "SubCategory created successfully",
+      newSubCategory,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 const getAllSubCategories = async (req, res) => {
   try {
     const subCategories = await SubCategory.find().populate(
-      "main_category sub_Image"
+      "main_category_id sub_image"
     );
     res.status(200).json(subCategories);
   } catch (error) {
@@ -43,7 +56,7 @@ const getAllSubCategories = async (req, res) => {
 const getSubCategoryById = async (req, res) => {
   try {
     const subCategory = await SubCategory.findById(req.params.id).populate(
-      "main_category sub_Image"
+      "main_category_id sub_image"
     );
     if (!subCategory)
       return res.status(404).json({ message: "SubCategory not found" });
