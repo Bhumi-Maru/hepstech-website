@@ -16,6 +16,8 @@ export default function UploadImage() {
     fileType,
     setSelectedFile,
     setFileType,
+    selectedTab,
+    setSelectedTab,
   } = useAllMediaContext();
 
   return (
@@ -147,7 +149,8 @@ export default function UploadImage() {
                   selectedFile,
                   setMediaItems,
                   setIsOpenPopupModal,
-                  setPreviewUrl
+                  setPreviewUrl,
+                  setSelectedTab
                 )
               }
               disabled={!selectedFile}
