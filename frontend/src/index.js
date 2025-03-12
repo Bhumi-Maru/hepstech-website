@@ -7,6 +7,7 @@ import { GlobalProvider } from "./Website/context/GlobalContext";
 import Admin_Panel_App from "./Admin_Panel_App";
 import AdminGlobalProvider from "./Admin Panel/context/Admin_Global_Context";
 import { AllMediaProvider } from "./Admin Panel/context/All_Media_Context";
+import { SubCategoryProvider } from "./Admin Panel/context/SubCategory_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -26,7 +27,9 @@ root.render(
     {currentPath.startsWith("/admin") ? (
       <AdminGlobalProvider>
         <AllMediaProvider>
-          <Admin_Panel_App />
+          <SubCategoryProvider>
+            <Admin_Panel_App />
+          </SubCategoryProvider>
         </AllMediaProvider>
       </AdminGlobalProvider>
     ) : (
