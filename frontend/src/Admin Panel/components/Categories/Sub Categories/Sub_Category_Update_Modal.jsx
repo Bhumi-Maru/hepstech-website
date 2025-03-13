@@ -22,6 +22,8 @@ export default function Sub_Category_Update_Modal({ categoryId }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const { mediaItems } = useAllMediaContext();
 
+  console.log("main id", mainCategoryId._id);
+
   useEffect(() => {
     // Fetch main category titles for the modal
     fetchMainTitleInSubAddModal(setMainCategoryTitle);
@@ -170,7 +172,7 @@ export default function Sub_Category_Update_Modal({ categoryId }) {
                       <select
                         id="mainCategory"
                         className="select2-hidden-accessible"
-                        value={mainCategoryId}
+                        value={mainCategoryId._id}
                         onChange={(e) => setMainCategoryId(e.target.value)}
                       >
                         <option value="" disabled>
