@@ -5,6 +5,7 @@ import { useSubCategoryContext } from "../../../context/SubCategory_Context";
 export default function SubCategoryTable() {
   const {
     setSubCategoryMediaItems,
+    subCategoryMediaItems,
     currentCategories,
     selectedSubCategories,
     setSelectedSubCategories,
@@ -18,14 +19,14 @@ export default function SubCategoryTable() {
         const subCategoryData = await axios.get(
           "http://localhost:7000/api/sub-category/getAll"
         );
-        console.log("sub category", subCategoryData.data);
+        // console.log("sub category", subCategoryData.data);
         setSubCategoryMediaItems(subCategoryData.data);
       } catch (error) {
         console.log("sub category fetch error", error);
       }
     };
     fetchSubCategory();
-  }, []);
+  }, [subCategoryMediaItems]);
 
   //   delete single sub category
   const deleteSubCategory = async (id) => {
@@ -168,8 +169,12 @@ export default function SubCategoryTable() {
                             {subCategory.sub_category_title}
                           </td>
                           <td className="main-category nowrap">
-                            {subCategory.main_category_id.main_category_title}
+                            {subCategory.main_category_id &&
+                            subCategory.main_category_id.main_category_title
+                              ? subCategory.main_category_id.main_category_title
+                              : "No Main Category"}
                           </td>
+
                           <td>
                             <span
                               className={`badge ${

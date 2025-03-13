@@ -69,6 +69,7 @@ import Add_Testimonials_Section_23_Popup_Modal from "./Admin Panel/components/We
 import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_SideBar";
 import UploadImage from "./Admin Panel/components/All Media/UploadImage";
 import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Update_Modal";
+import Sub_Category_Update_Modal from "./Admin Panel/components/Categories/Sub Categories/Sub_Category_Update_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
@@ -286,6 +287,12 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.addSubCategoryPopupModal && (
         <>
           <Sub_Category_Add_Modal />
+        </>
+      )}
+      {/* SUB CATEGORY ADD POPUP MODAL */}
+      {isOpenPopupModal.editSubCategoryPopupModal && (
+        <>
+          <Sub_Category_Update_Modal />
         </>
       )}
       {/* EDIT WALLET AMOUNT POPUP MODAL */}

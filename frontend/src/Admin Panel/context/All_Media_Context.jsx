@@ -8,6 +8,7 @@ export const useAllMediaContext = () => {
 
 export const AllMediaProvider = ({ children }) => {
   const [isBannerImageVisible, setIsBannerImageVisible] = useState(false);
+  // ftech all files
   const [mediaItems, setMediaItems] = useState([]);
   // console.log("media items", mediaItems);
   const [selectedDateRange, setSelectedDateRange] = useState("");
@@ -16,9 +17,10 @@ export const AllMediaProvider = ({ children }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
-  //select files or file type
+  //select files or file type in upload tab
   const [selectedFile, setSelectedFile] = useState(null); // Fix for undefined error
 
+  //select file in select tab
   const [selectedMainImage, setSelectedMainImage] = useState(null);
   const [selectedBannerImage, setSelectedBannerImage] = useState(null);
 

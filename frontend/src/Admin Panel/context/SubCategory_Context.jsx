@@ -14,9 +14,13 @@ export const SubCategoryProvider = ({ children }) => {
   const [searchSubCategory, setSearchSubCategory] = useState("");
   // Pagination in subcategory
   const [currentPage, setCurrentPage] = useState(1);
+  // select sub image
+  const [selectedSubImage, setSelectedSubImage] = useState(null);
   // selecte sub category data
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  // get main category title in sub category add modal
+  const [mainCategoryTitle, setMainCategoryTitle] = useState([]);
   // Items per page
   const itemsPerPage = 10;
   //////////////////////////////////////////////////////////////////////////////////////
@@ -126,6 +130,12 @@ export const SubCategoryProvider = ({ children }) => {
         setSelectedSubCategories,
         selectAll,
         setSelectAll,
+        // get main category title in sub category add modal
+        mainCategoryTitle,
+        setMainCategoryTitle,
+        // select sub image
+        selectedSubImage,
+        setSelectedSubImage,
       }}
     >
       {children}
