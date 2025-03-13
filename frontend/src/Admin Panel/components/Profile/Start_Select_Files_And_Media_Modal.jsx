@@ -34,6 +34,8 @@ export default function Start_Select_Files_And_Media_Modal({
 
   // console.log("selected file", selectedFile);
 
+  console.log("selected sub image", selectedSubImage);
+
   return (
     <>
       <div
@@ -175,35 +177,25 @@ export default function Start_Select_Files_And_Media_Modal({
                       type="button"
                       className="btn btn-primary"
                       onClick={() => {
-                        // Check if Main Image should be updated
                         if (selectedMainImage) {
-                          setSelectedMainImage(selectedMainImage); // Assign to main image
+                          setSelectedMainImage(selectedMainImage);
                         }
-
-                        // Check if Banner Image is visible, then update it
-                        if (isBannerImageVisible) {
-                          if (selectedBannerImage) {
-                            setSelectedBannerImage(selectedBannerImage); // Assign to banner if visible
-                          }
+                        if (isBannerImageVisible && selectedBannerImage) {
+                          setSelectedBannerImage(selectedBannerImage);
                         }
-
-                        //check if sub image should be updated
                         if (selectedSubImage) {
                           setSelectedSubImage(selectedSubImage);
                         }
-
-                        // Close the modal after selection
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
                           startSelectFilesAndMedia: false,
                         }));
                       }}
-                      // Disabled if no file is selected
                       disabled={
                         !selectedBannerImage &&
                         !selectedMainImage &&
                         !selectedSubImage
-                      }
+                      } // Check selectedSubImage properly
                     >
                       Select Files
                     </button>
