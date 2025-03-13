@@ -19,16 +19,20 @@ export default function Main_Category_Add_Modal() {
     mediaItems,
   } = useAllMediaContext();
 
-  // / Find the file URL for the selected main image
-  const mainImageFile = mediaItems.find(
-    (item) => item._id === selectedMainImage
-  );
+  // console.log("media items", mediaItems);
+  // / Find the file URL for the selected main image and banner image
+  const mainImageFile = mediaItems.find((item) => {
+    // console.log("main image ffgkjj id", item._id);
+    // console.log("main selkected image id", selectedMainImage);
+    return item._id === selectedMainImage;
+  });
+  // console.log("main image file", mainImageFile);
   const bannerImageFile = mediaItems.find(
     (item) => item._id === selectedBannerImage
   );
 
   // Function to check the file type and return the appropriate preview
-
+  // console.log("select main file", selectedFile);
   useEffect(() => {
     if (selectedFile) {
       if (!isBannerImageVisible) {

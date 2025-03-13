@@ -4,6 +4,7 @@ import Upload_New from "./Upload_New";
 import { handleFileUpload } from "../../utils/fileUploadUtils";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../context/All_Media_Context";
+import { useSubCategoryContext } from "../../context/SubCategory_Context";
 
 export default function Start_Select_Files_And_Media_Modal({
   isBannerImageVisible,
@@ -21,6 +22,8 @@ export default function Start_Select_Files_And_Media_Modal({
     selectedFile,
     setSelectedFile,
   } = useAllMediaContext();
+
+  const { selectedSubImage, setSelectedSubImage } = useSubCategoryContext();
 
   useEffect(() => {
     // Reset the preview URL when the modal is opened
@@ -184,6 +187,11 @@ export default function Start_Select_Files_And_Media_Modal({
                           }
                         }
 
+                        //check if sub image should be updated
+                        if (selectedSubImage) {
+                          setSelectedSubImage(selectedSubImage);
+                        }
+
                         // Close the modal after selection
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
@@ -191,7 +199,11 @@ export default function Start_Select_Files_And_Media_Modal({
                         }));
                       }}
                       // Disabled if no file is selected
-                      disabled={!selectedBannerImage && !selectedMainImage}
+                      disabled={
+                        !selectedBannerImage &&
+                        !selectedMainImage &&
+                        !selectedSubImage
+                      }
                     >
                       Select Files
                     </button>

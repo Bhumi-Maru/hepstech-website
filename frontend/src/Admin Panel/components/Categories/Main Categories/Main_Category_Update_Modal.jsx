@@ -5,6 +5,7 @@ import { useAllMediaContext } from "../../../context/All_Media_Context";
 import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Main_Category_Update_Modal({ categoryId }) {
+  // console.log("category id", categoryId);
   const [mainCategoryTitle, setMainCategoryTitle] = useState("");
   const [mainCategoryStatus, setMainCategoryStatus] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
