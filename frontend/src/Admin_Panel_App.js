@@ -292,7 +292,7 @@ export default function Admin_Panel_App() {
       {/* SUB CATEGORY ADD POPUP MODAL */}
       {isOpenPopupModal.editSubCategoryPopupModal && (
         <>
-          <Sub_Category_Update_Modal />
+          <Sub_Category_Update_Modal categoryId={selectedCategoryId} />
         </>
       )}
       {/* EDIT WALLET AMOUNT POPUP MODAL */}

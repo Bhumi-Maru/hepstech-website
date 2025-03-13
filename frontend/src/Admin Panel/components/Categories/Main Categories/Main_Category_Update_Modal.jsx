@@ -20,6 +20,8 @@ export default function Main_Category_Update_Modal({ categoryId }) {
     mediaItems,
   } = useAllMediaContext();
 
+  // console.log("select main", selectedMainImage);
+  // preview previous images or file
   const updateMainImageFile = mediaItems.find(
     (item) => item._id === selectedMainImage
   );

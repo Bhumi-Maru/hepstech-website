@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { useSubCategoryContext } from "../../../context/SubCategory_Context";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function SubCategoryTable() {
+  const { toggleModal } = useAdminGlobalContext();
+
   const {
     setSubCategoryMediaItems,
     subCategoryMediaItems,
@@ -197,6 +200,16 @@ export default function SubCategoryTable() {
                                 role="tooltip"
                                 data-toggle="modal"
                                 data-target="#editSubCategoryModal"
+                                onClick={() => {
+                                  console.log(
+                                    "sub id1222222222",
+                                    subCategory._id
+                                  );
+                                  toggleModal(
+                                    "editSubCategoryPopupModal",
+                                    subCategory._id
+                                  );
+                                }}
                               >
                                 <svg
                                   className="w-5 h-5"
