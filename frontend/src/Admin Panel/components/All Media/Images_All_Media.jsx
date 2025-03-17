@@ -84,13 +84,13 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
 
   return (
     <div>
-      <button
+      {/* <button
         onClick={deleteSelectedFiles}
         disabled={selectedFiles.length === 0 && mediaItems.length === 0} // Disable if no files are available to delete
         className="mb-4 p-2 bg-red-500 text-white"
       >
         Delete Selected
-      </button>
+      </button> */}
 
       <ul
         role="list"

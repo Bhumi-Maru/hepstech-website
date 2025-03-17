@@ -128,7 +128,7 @@ export default function SubCategoryTable() {
                                       <img
                                         src={filePath}
                                         alt={subCategory.sub_category_title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full object-contain"
                                       />
                                     );
                                   } else if (fileType.startsWith("video")) {
@@ -172,6 +172,7 @@ export default function SubCategoryTable() {
                             {subCategory.sub_category_title}
                           </td>
                           <td className="main-category nowrap">
+                            {/* {console.log("nanna", subCategory.main_category_id._id)} */}
                             {subCategory.main_category_id &&
                             subCategory.main_category_id.main_category_title
                               ? subCategory.main_category_id.main_category_title
