@@ -6,6 +6,7 @@ const path = require("path");
 const uploadRouter = require("./routes/uploadRoutes");
 const mainCategoryRouter = require("./routes/mainCategoryRoutes");
 const subCategoryRouter = require("./routes/subCategoryRoutes");
+const productRouter = require("./routes/productRoutes");
 
 dotenv.config();
 
@@ -24,9 +25,12 @@ app.use("/api", uploadRouter);
 
 //main category routes
 app.use("/api/main-category", mainCategoryRouter);
-//sub category routes
 
+//sub category routes
 app.use("/api/sub-category", subCategoryRouter);
+
+//products routes
+app.use("/api/products", productRouter);
 
 // Home route
 app.get("/", (req, res) => {
