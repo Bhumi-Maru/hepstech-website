@@ -9,8 +9,9 @@ const {
   deleteSelectedProducts,
   deleteAllProducts,
 } = require("../controllers/productController");
+const upload = require("../Middleware/UploadMiddleware");
 
-productRouter.post("/create", createProduct);
+productRouter.post("/create", upload, createProduct);
 productRouter.put("/update/:id", updateProduct);
 productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getProductById);

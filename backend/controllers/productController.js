@@ -12,26 +12,33 @@ const createProduct = async (req, res) => {
       productTitle,
       productMainCategory,
       productSubCategory,
-      productMainImage,
+      productPurchaseMinQuantity,
+      productPurchaseMaxQuantity,
       pricing,
       tax,
       productStatus,
       productStockVisibility,
       productLabel,
       descriptionSections,
-      galleryImages,
       seoTitle,
       seoDescription,
       seoUrl,
     } = req.body;
 
+    // Handle Uploaded Files
+    const productMainImage = req.files["productMainImage"]
+      ? req.files["productMainImage"][0].path.replace(/\\/g, "/")
+      : null;
+
+    const galleryImages = req.files["galleryImages"]
+      ? req.files["galleryImages"].map((file) => file.path.replace(/\\/g, "/"))
+      : [];
+
     // 🔹 Check if Main & Subcategories exist
-    const mainCategory = await MainCategory.findOne({
-      _id: productMainCategory,
-    });
-    const subCategory = await SubCategory.findOne({
-      _id: productSubCategory,
-    });
+    const mainCategory = await MainCategory.findById(productMainCategory);
+    const subCategory = await SubCategory.findById(productSubCategory);
+
+    console.log("hello", req.body);
 
     if (!mainCategory || !subCategory) {
       return res
@@ -44,7 +51,9 @@ const createProduct = async (req, res) => {
       productTitle,
       productMainCategory,
       productSubCategory,
-      productMainImage,
+      productMainImage, // Store file path in DB
+      productPurchaseMinQuantity,
+      productPurchaseMaxQuantity,
       pricing,
       tax,
       productStatus,
@@ -65,7 +74,7 @@ const createProduct = async (req, res) => {
     // 🔹 Step 3: Create Gallery Images
     const newGallery = new ProductGalleryImage({
       productId: newProduct._id,
-      galleryImages,
+      galleryImages, // Store file paths in DB
     });
 
     await newGallery.save();
@@ -100,6 +109,8 @@ const updateProduct = async (req, res) => {
       productMainCategory,
       productSubCategory,
       productMainImage,
+      productPurchaseMinQuantity,
+      productPurchaseMaxQuantity,
       pricing,
       tax,
       productStatus,
@@ -148,6 +159,12 @@ const updateProduct = async (req, res) => {
             productSubCategory,
           }),
           ...(typeof productMainImage !== "undefined" && { productMainImage }),
+          ...(productPurchaseMinQuantity !== undefined && {
+            productPurchaseMinQuantity,
+          }),
+          ...(productPurchaseMaxQuantity !== undefined && {
+            productPurchaseMaxQuantity,
+          }),
           ...(typeof pricing !== "undefined" && { pricing }),
           ...(typeof tax !== "undefined" && { tax }),
           ...(typeof productStatus !== "undefined" && { productStatus }),
@@ -225,6 +242,8 @@ const getAllProducts = async (req, res) => {
 
         return {
           ...product.toObject(),
+          productPurchaseMinQuantity: product.productPurchaseMinQuantity,
+          productPurchaseMaxQuantity: product.productPurchaseMaxQuantity,
           description: description || {},
           gallery: gallery || {},
           seo: seo || {},
