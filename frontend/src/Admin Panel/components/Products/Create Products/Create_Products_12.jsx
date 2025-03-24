@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_12({ setProductStockVisibility }) {
-  const [stockVisibility, setStockVisibility] = useState("");
+export default function Create_Products_12() {
+  // const [stockVisibility, setStockVisibility] = useState("");
+  const { setProductStockVisibility, productStockVisibility } =
+    useProductContext();
 
-  const handleStockVisibilityChange = (e) => {
-    const selectedValue = e.target.value;
-    setStockVisibility(selectedValue);
-    setProductStockVisibility(selectedValue); // Update parent component's state
-  };
+  // const handleStockVisibilityChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   setStockVisibility(selectedValue);
+  //   setProductStockVisibility(selectedValue); // Update parent component's state
+  // };
 
   return (
     <>
@@ -20,8 +23,8 @@ export default function Create_Products_12({ setProductStockVisibility }) {
           <select
             name="stockVisibility"
             id="stockVisibility"
-            value={stockVisibility}
-            onChange={handleStockVisibilityChange}
+            value={productStockVisibility}
+            onChange={(e) => setProductStockVisibility(e.target.value)}
             className="border rounded p-2 w-full"
           >
             <option value="">Select Option</option>

@@ -1,68 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_9({ setProductStatus, productStatus }) {
-  const [status, setStatus] = useState("-1");
+export default function Create_Products_9() {
+  const { setProductStatus, productStatus } = useProductContext();
 
   const handleStatusChange = (e) => {
     const selectedStatus = e.target.value;
-    let statusValue = "";
+    const statusValue =
+      selectedStatus === "1" ? "Draft" : selectedStatus === "2" ? "Active" : "";
 
-    if (selectedStatus === "1") {
-      statusValue = "Draft"; // ✅ Fixed: Capitalized
-    } else if (selectedStatus === "2") {
-      statusValue = "Active"; // ✅ Fixed: Capitalized
-    }
-
-    setStatus(selectedStatus);
     setProductStatus(statusValue);
-
-    // Show/hide status messages
-    document
-      .getElementById("productHiddenLabel")
-      .classList.toggle("hidden", statusValue !== "Draft");
-    document
-      .getElementById("productActiveLabel")
-      .classList.toggle("hidden", statusValue !== "Active");
   };
 
   return (
-    <>
-      {/* CREATE PRODUCTS SECTION 9 [Product Status] */}
-      <div className="overflow-hidden bg-white rounded-lg shadow">
-        <div className="px-4 py-3 sm:px-5">
-          <h3 className="text-base font-medium">Product Status</h3>
-        </div>
-        <div className="px-4 pb-5 sm:px-5">
-          <div>
-            <label htmlFor="productStatus" className="sr-only">
-              Product Status
-            </label>
-            <select
-              name="productStatus"
-              id="productStatus"
-              value={status}
-              onChange={handleStatusChange}
-              className="border rounded p-2 w-full"
-            >
-              <option value="-1">Select Status</option>
-              <option value="1">Draft</option>
-              <option value="2">Active</option>
-            </select>
-          </div>
-          <p
-            className="hidden mt-2 text-sm font-medium text-red-600"
-            id="productHiddenLabel"
-          >
+    <div className="overflow-hidden bg-white rounded-lg shadow">
+      <div className="px-4 py-3 sm:px-5">
+        <h3 className="text-base font-medium">Product Status</h3>
+      </div>
+      <div className="px-4 pb-5 sm:px-5">
+        <label htmlFor="productStatus" className="sr-only">
+          Product Status
+        </label>
+        <select
+          id="productStatus"
+          value={productStatus ? (productStatus === "Draft" ? "1" : "2") : "-1"}
+          onChange={handleStatusChange}
+          className="border rounded p-2 w-full"
+        >
+          <option value="-1">Select Status</option>
+          <option value="1">Draft</option>
+          <option value="2">Active</option>
+        </select>
+
+        {productStatus === "Draft" && (
+          <p className="mt-2 text-sm font-medium text-red-600">
             This product will be hidden from your store.
           </p>
-          <p
-            className="hidden mt-2 text-sm font-medium text-green-600"
-            id="productActiveLabel"
-          >
+        )}
+        {productStatus === "Active" && (
+          <p className="mt-2 text-sm font-medium text-green-600">
             This product will be live on your store.
           </p>
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

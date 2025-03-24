@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_8({
-  seoTitle,
-  setSeoTitle,
-  seoDescription,
-  setSeoDescription,
-  seoUrl,
-  setSeoUrl,
-}) {
+export default function Create_Products_8() {
   const [isSeoVisible, setIsSeoVisible] = useState(false);
+  const {
+    seoTitle,
+    setSeoTitle,
+    seoDescription,
+    setSeoDescription,
+    seoUrl,
+    setSeoUrl,
+  } = useProductContext();
 
   const toggleSeoTags = () => {
     setIsSeoVisible(!isSeoVisible);

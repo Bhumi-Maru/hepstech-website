@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_6({
-  setDescriptionSections,
-  resetDescriptionSections,
-}) {
+export default function Create_Products_6() {
+  const { setDescriptionSections, descriptionSections } = useProductContext();
   const { isSectionOpen, handleToggleSection } = useAdminGlobalContext();
-  const [sections, setSections] = useState([
-    { id: 1, title: "Untitled Section 01", description: "" },
-  ]);
+
+  const [sections, setSections] = useState(descriptionSections);
   const [editingTitleId, setEditingTitleId] = useState(null); // Track which title is being edited
 
+  // 🔄 Sync local state when descriptionSections changes
+  useEffect(() => {
+    setSections(descriptionSections);
+  }, [descriptionSections]);
   const handleAddSection = () => {
     const newId = sections.length + 1;
-    setSections([
+    const newSections = [
       ...sections,
       { id: newId, title: `Untitled Section 0${newId}`, description: "" },
-    ]);
+    ];
+    setSections(newSections);
+    setDescriptionSections(newSections);
   };
 
   const handleSectionChange = (id, field, value) => {
@@ -32,14 +36,6 @@ export default function Create_Products_6({
     setSections(filteredSections);
     setDescriptionSections(filteredSections);
   };
-
-  // ✅ Reset function
-  resetDescriptionSections(() => {
-    setSections([{ id: 1, title: "Untitled Section 01", description: "" }]);
-    setDescriptionSections([
-      { id: 1, title: "Untitled Section 01", description: "" },
-    ]);
-  });
 
   return (
     <>
@@ -117,11 +113,7 @@ export default function Create_Products_6({
                                   name={`sectionTitle${section.id}`}
                                   id={`sectionTitle${section.id}`}
                                   placeholder="Enter description title"
-                                  value={
-                                    editingTitleId === section.id
-                                      ? section.title
-                                      : section.title
-                                  }
+                                  value={section.title}
                                   onChange={(e) =>
                                     handleSectionChange(
                                       section.id,
@@ -129,8 +121,6 @@ export default function Create_Products_6({
                                       e.target.value
                                     )
                                   }
-                                  onFocus={() => setEditingTitleId(section.id)}
-                                  onBlur={() => setEditingTitleId(null)}
                                 />
                               </div>
                             </div>

@@ -1,7 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_4({ setGalleryImages }) {
-  const [selectedImages, setSelectedImages] = useState([]);
+export default function Create_Products_4() {
+  const { setGalleryImages, galleryImages, selectedImages, setSelectedImages } =
+    useProductContext();
+  // const [selectedImages, setSelectedImages] = useState([]);
+
+  useEffect(() => {
+    if (galleryImages.length === 0) {
+      setSelectedImages([]); // ✅ Clear preview images when galleryImages is reset
+    }
+  }, [galleryImages]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
