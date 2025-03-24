@@ -7,6 +7,11 @@ export default function Create_Products_2({
   setProductSubCategory,
   setProductMaxQuantity,
   setProductMinQuantity,
+  productTitle,
+  productMainCategory,
+  productSubCategory,
+  productMinQuantity,
+  productMaxQuantity,
 }) {
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -60,6 +65,7 @@ export default function Create_Products_2({
                   type="text"
                   name="productTitle"
                   id="productTitle"
+                  value={productTitle}
                   placeholder="Enter product title"
                   className=""
                   onChange={(e) => setProductTitle(e.target.value)}
@@ -74,6 +80,7 @@ export default function Create_Products_2({
                   className=""
                   id="mainCategory"
                   name="mainCategory"
+                  value={productMainCategory}
                   onChange={(e) => setProductMainCategory(e.target.value)}
                 >
                   <option value="">Select Main Category</option>
@@ -107,6 +114,7 @@ export default function Create_Products_2({
                   className=""
                   id="subCategory"
                   name="subCategory"
+                  value={productSubCategory}
                   onChange={(e) => setProductSubCategory(e.target.value)}
                 >
                   <option value="">Select Sub Category</option>
@@ -142,6 +150,7 @@ export default function Create_Products_2({
                   id=""
                   placeholder="0"
                   className=""
+                  value={productMinQuantity}
                   onChange={(e) => setProductMinQuantity(e.target.value)}
                 />
               </div>
@@ -156,6 +165,7 @@ export default function Create_Products_2({
                   id=""
                   placeholder="0"
                   className=""
+                  value={productMaxQuantity}
                   onChange={(e) => setProductMaxQuantity(e.target.value)}
                 />
               </div>

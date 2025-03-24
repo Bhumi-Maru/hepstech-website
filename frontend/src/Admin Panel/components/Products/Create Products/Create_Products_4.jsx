@@ -88,7 +88,7 @@ export default function Create_Products_4({ setGalleryImages }) {
                   <img
                     src={image.previewURL}
                     alt="Preview"
-                    className="w-full h-20 object-cover rounded-md border"
+                    className="w-100 h-100 object-cover rounded-md border mt-2"
                   />
                   <button
                     onClick={() => handleRemoveImage(index)}

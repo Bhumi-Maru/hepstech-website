@@ -14,12 +14,9 @@ const createProduct = async (req, res) => {
       productSubCategory,
       productPurchaseMinQuantity,
       productPurchaseMaxQuantity,
-      pricing,
-      tax,
       productStatus,
       productStockVisibility,
       productLabel,
-      descriptionSections,
       seoTitle,
       seoDescription,
       seoUrl,
@@ -38,12 +35,39 @@ const createProduct = async (req, res) => {
     const mainCategory = await MainCategory.findById(productMainCategory);
     const subCategory = await SubCategory.findById(productSubCategory);
 
-    console.log("hello", req.body);
-
     if (!mainCategory || !subCategory) {
       return res
         .status(400)
         .json({ message: "Invalid Main or Subcategory ID" });
+    }
+
+    // 🔹 Fix: Extract and parse pricing & tax from FormData
+    const pricing = {
+      mrpPrice: Number(req.body["pricing.mrpPrice"]),
+      sellingPrice: Number(req.body["pricing.sellingPrice"]),
+      sku: req.body["pricing.sku"],
+      quantity: Number(req.body["pricing.quantity"]),
+    };
+
+    const tax = {
+      taxType: req.body["tax.taxType"],
+      value: Number(req.body["tax.value"]),
+    };
+
+    // ✅ **Fixing descriptionSections parsing**
+    let descriptionSections = [];
+    if (req.body.descriptionSections) {
+      try {
+        const parsedSections = JSON.parse(req.body.descriptionSections);
+        descriptionSections = parsedSections.map((section) => ({
+          sectionTitle: section.title,
+          description: section.description,
+        }));
+      } catch (error) {
+        return res
+          .status(400)
+          .json({ message: "Invalid descriptionSections format" });
+      }
     }
 
     // 🔹 Step 1: Create Product
@@ -66,7 +90,7 @@ const createProduct = async (req, res) => {
     // 🔹 Step 2: Create Product Description
     const newDescription = new ProductDescription({
       productId: newProduct._id,
-      descriptionSections,
+      descriptionSections, // Now correctly parsed
     });
 
     await newDescription.save();

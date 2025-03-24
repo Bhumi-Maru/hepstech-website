@@ -23,14 +23,15 @@ const seoTagSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      validate: {
-        validator: function (value) {
-          return /^(https?:\/\/)?([\w\d-]+\.)+[\w]{2,}(\/[\w\d-./?%&=]*)?$/.test(
-            value
-          );
-        },
-        message: "Invalid URL format",
-      },
+      default: "https://myshopify.com/products/",
+      // validate: {
+      //   validator: function (value) {
+      //     return /^(https?:\/\/)?([\w\d-]+\.)+[\w]{2,}(\/[\w\d-./?%&=]*)?$/.test(
+      //       value
+      //     );
+      //   },
+      //   message: "Invalid URL format",
+      // // },
     },
   },
   { timestamps: true }
