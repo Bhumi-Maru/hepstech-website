@@ -8,6 +8,7 @@ import Admin_Panel_App from "./Admin_Panel_App";
 import AdminGlobalProvider from "./Admin Panel/context/Admin_Global_Context";
 import { AllMediaProvider } from "./Admin Panel/context/All_Media_Context";
 import { SubCategoryProvider } from "./Admin Panel/context/SubCategory_Context";
+import { ProductPovider } from "./Admin Panel/context/Product_Create_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -28,7 +29,9 @@ root.render(
       <AdminGlobalProvider>
         <AllMediaProvider>
           <SubCategoryProvider>
-            <Admin_Panel_App />
+            <ProductPovider>
+              <Admin_Panel_App />
+            </ProductPovider>
           </SubCategoryProvider>
         </AllMediaProvider>
       </AdminGlobalProvider>

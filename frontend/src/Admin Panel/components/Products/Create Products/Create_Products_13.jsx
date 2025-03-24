@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_13({ setProductLabel }) {
-  const [productLabel, setLocalProductLabel] = useState("");
+export default function Create_Products_13() {
+  // const [productLabel, setLocalProductLabel] = useState("");
+  const { setProductLabel, productLabel } = useProductContext();
 
-  const handleProductLabelChange = (e) => {
-    const selectedLabel = e.target.value;
-    setLocalProductLabel(selectedLabel);
-    setProductLabel(selectedLabel); // Update parent component's state
-  };
+  // const handleProductLabelChange = (e) => {
+  //   const selectedLabel = e.target.value;
+  //   setLocalProductLabel(selectedLabel);
+  //   setProductLabel(selectedLabel); // Update parent component's state
+  // };
 
   return (
     <>
@@ -21,7 +23,7 @@ export default function Create_Products_13({ setProductLabel }) {
             name="productLabel"
             id="productLabel"
             value={productLabel}
-            onChange={handleProductLabelChange}
+            onChange={(e) => setProductLabel(e.target.value)}
             className="border rounded p-2 w-full"
           >
             <option value="">None</option>

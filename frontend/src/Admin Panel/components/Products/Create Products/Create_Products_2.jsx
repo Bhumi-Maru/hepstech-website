@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_2({
-  setProductTitle,
-  setProductMainCategory,
-  setProductSubCategory,
-  setProductMaxQuantity,
-  setProductMinQuantity,
-  productTitle,
-  productMainCategory,
-  productSubCategory,
-  productMinQuantity,
-  productMaxQuantity,
-}) {
+export default function Create_Products_2() {
+  const {
+    setProductTitle,
+    setProductMainCategory,
+    setProductSubCategory,
+    setProductMaxQuantity,
+    setProductMinQuantity,
+    productTitle,
+    productMainCategory,
+    productSubCategory,
+    productMinQuantity,
+    productMaxQuantity,
+  } = useProductContext();
   const [mainCategories, setMainCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 

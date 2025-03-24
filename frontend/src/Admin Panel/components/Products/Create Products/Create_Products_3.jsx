@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_3({ setProductMainImage }) {
-  const [preview, setPreview] = useState(null);
+export default function Create_Products_3() {
+  const fileInputRef = useRef(null); // 🔥 Use ref for file input
+  const { setProductMainImage, mainImagePreview, setMainImagePreview } =
+    useProductContext();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -21,7 +24,7 @@ export default function Create_Products_3({ setProductMainImage }) {
 
       // Create a preview URL
       const imageURL = URL.createObjectURL(file);
-      setPreview(imageURL);
+      setMainImagePreview(imageURL);
       setProductMainImage(file);
     }
   };
@@ -44,15 +47,16 @@ export default function Create_Products_3({ setProductMainImage }) {
               type="file"
               name="files"
               id="productMainImage"
+              ref={fileInputRef} // Use ref to access input
               style={{ display: "none" }}
               onChange={handleImageChange}
             />
 
             <div className="jFiler-input-dragDrop">
               <div className="jFiler-input-inner">
-                {preview ? (
+                {mainImagePreview ? (
                   <img
-                    src={preview}
+                    src={mainImagePreview}
                     alt="Preview"
                     className="w-40 h-40 mx-auto rounded-lg border"
                   />

@@ -1,13 +1,10 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
-export default function Create_Products_5({
-  setPricing,
-  setTax,
-  tax,
-  pricing,
-}) {
+export default function Create_Products_5() {
   const { toggleStates, handleToggle } = useAdminGlobalContext();
+  const { setPricing, setTax, tax, pricing } = useProductContext();
 
   const handlePricingChange = (e) => {
     const { name, value } = e.target;
