@@ -38,6 +38,8 @@ const createProduct = async (req, res) => {
     const mainCategory = await MainCategory.findById(productMainCategory);
     const subCategory = await SubCategory.findById(productSubCategory);
 
+    console.log("hello", req.body);
+
     if (!mainCategory || !subCategory) {
       return res
         .status(400)
