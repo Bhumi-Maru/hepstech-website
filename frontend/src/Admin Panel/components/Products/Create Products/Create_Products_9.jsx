@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function Create_Products_9() {
+export default function Create_Products_9({ setProductStatus, productStatus }) {
+  const [status, setStatus] = useState("-1");
+
+  const handleStatusChange = (e) => {
+    const selectedStatus = e.target.value;
+    let statusValue = "";
+
+    if (selectedStatus === "1") {
+      statusValue = "Draft"; // ✅ Fixed: Capitalized
+    } else if (selectedStatus === "2") {
+      statusValue = "Active"; // ✅ Fixed: Capitalized
+    }
+
+    setStatus(selectedStatus);
+    setProductStatus(statusValue);
+
+    // Show/hide status messages
+    document
+      .getElementById("productHiddenLabel")
+      .classList.toggle("hidden", statusValue !== "Draft");
+    document
+      .getElementById("productActiveLabel")
+      .classList.toggle("hidden", statusValue !== "Active");
+  };
+
   return (
     <>
       {/* CREATE PRODUCTS SECTION 9 [Product Status] */}
@@ -10,10 +34,16 @@ export default function Create_Products_9() {
         </div>
         <div className="px-4 pb-5 sm:px-5">
           <div>
-            <label for="productStatus" className="sr-only">
+            <label htmlFor="productStatus" className="sr-only">
               Product Status
             </label>
-            <select name="productStatus" id="productStatus">
+            <select
+              name="productStatus"
+              id="productStatus"
+              value={status}
+              onChange={handleStatusChange}
+              className="border rounded p-2 w-full"
+            >
               <option value="-1">Select Status</option>
               <option value="1">Draft</option>
               <option value="2">Active</option>

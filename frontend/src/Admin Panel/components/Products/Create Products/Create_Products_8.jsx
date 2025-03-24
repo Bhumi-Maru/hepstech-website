@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 
-export default function Create_Products_8() {
+export default function Create_Products_8({
+  seoTitle,
+  setSeoTitle,
+  seoDescription,
+  setSeoDescription,
+  seoUrl,
+  setSeoUrl,
+}) {
   const [isSeoVisible, setIsSeoVisible] = useState(false);
 
   const toggleSeoTags = () => {
     setIsSeoVisible(!isSeoVisible);
   };
+
   return (
     <>
       {/* CREATE PRODUCTS SECTION 8 [SEO Tags] */}
@@ -40,23 +48,24 @@ export default function Create_Products_8() {
             <p className="text-xs font-medium text-gray-600">
               Search Engine Listing Preview
             </p>
-            <p className="mt-2 text-lg text-blue-600" id="seoTitleValue"></p>
-            <div className="hidden" id="seoURLCombo">
+            <p className="mt-2 text-lg text-blue-600" id="seoTitleValue">
+              {seoTitle}
+            </p>
+            {seoUrl && (
               <div className="flex items-center">
                 <p className="text-sm text-green-600 break-all">
                   https://myshopify.com/products/
                 </p>
-                <p
-                  className="text-sm text-green-600 break-all"
-                  id="seoURLValue"
-                ></p>
+                <p className="text-sm text-green-600 break-all">{seoUrl}</p>
               </div>
-            </div>
+            )}
 
             <p
               className="mt-0.5 text-sm text-gray-600"
               id="seoDescriptionValue"
-            ></p>
+            >
+              {seoDescription}
+            </p>
 
             <hr className="my-6 border-gray-200" />
 
@@ -70,6 +79,8 @@ export default function Create_Products_8() {
                     id="seoTitle"
                     placeholder="Enter meta title"
                     className=""
+                    value={seoTitle}
+                    onChange={(e) => setSeoTitle(e.target.value)}
                   />
                 </div>
                 <div></div>
@@ -90,6 +101,8 @@ export default function Create_Products_8() {
                     placeholder="Enter meta description"
                     rows="3"
                     className=""
+                    value={seoDescription}
+                    onChange={(e) => setSeoDescription(e.target.value)}
                   ></textarea>
                 </div>
                 <div></div>
@@ -115,6 +128,8 @@ export default function Create_Products_8() {
                     id="seoURL"
                     className="!pl-0 border-none focus:ring-0"
                     placeholder=""
+                    value={seoUrl}
+                    onChange={(e) => setSeoUrl(e.target.value)}
                   />
                 </div>
                 <div></div>

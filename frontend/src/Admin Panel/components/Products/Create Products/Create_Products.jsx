@@ -20,8 +20,8 @@ export default function Create_Products() {
   const [productMainCategory, setProductMainCategory] = useState("");
   const [productSubCategory, setProductSubCategory] = useState("");
   const [productMainImage, setProductMainImage] = useState(null);
-  const [productMaxQuantity, setProductMaxQuantity] = useState(1);
-  const [productMinQuantity, setProductMinQuantity] = useState(1);
+  const [productMaxQuantity, setProductMaxQuantity] = useState(0);
+  const [productMinQuantity, setProductMinQuantity] = useState(0);
 
   const [pricing, setPricing] = useState({
     mrpPrice: "",
@@ -29,7 +29,11 @@ export default function Create_Products() {
     sku: "",
     quantity: "",
   });
-  const [tax, setTax] = useState("");
+
+  const [tax, setTax] = useState({
+    taxType: "percentage", // or "flat"
+    value: 0,
+  });
   const [productStatus, setProductStatus] = useState("");
   const [productStockVisibility, setProductStockVisibility] = useState("");
   const [productLabel, setProductLabel] = useState("");
@@ -39,7 +43,19 @@ export default function Create_Products() {
   const [seoDescription, setSeoDescription] = useState("");
   const [seoUrl, setSeoUrl] = useState("");
 
+  // Reset Descriptions
+  const handleResetDescriptionSections = () => {
+    setDescriptionSections([
+      { id: 1, title: "Untitled Section 01", description: "" },
+    ]);
+  };
+
   const handleCreateProduct = async () => {
+    if (!pricing.mrpPrice || !pricing.sellingPrice) {
+      alert("Pricing details are required.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("productTitle", productTitle);
     formData.append("productMainCategory", productMainCategory);
@@ -47,37 +63,80 @@ export default function Create_Products() {
     formData.append("productMainImage", productMainImage);
     formData.append("productPurchaseMinQuantity", productMinQuantity);
     formData.append("productPurchaseMaxQuantity", productMaxQuantity);
-    formData.append("pricing", JSON.stringify(pricing));
-    formData.append("tax", tax);
+
+    formData.append("pricing.mrpPrice", pricing.mrpPrice);
+    formData.append("pricing.sellingPrice", pricing.sellingPrice);
+    formData.append("pricing.sku", pricing.sku);
+    formData.append("pricing.quantity", pricing.quantity);
+
+    formData.append("tax.taxType", tax.taxType);
+    formData.append("tax.value", tax.value);
+
     formData.append("productStatus", productStatus);
     formData.append("productStockVisibility", productStockVisibility);
     formData.append("productLabel", productLabel);
     formData.append("descriptionSections", JSON.stringify(descriptionSections));
-
-    galleryImages.forEach((image) => {
-      formData.append("galleryImages", image); // Ensure field name matches backend
-    });
-
     formData.append("seoTitle", seoTitle);
     formData.append("seoDescription", seoDescription);
     formData.append("seoUrl", seoUrl);
+
+    galleryImages.forEach((image) => {
+      formData.append("galleryImages", image);
+    });
 
     try {
       const response = await axios.post(
         "http://localhost:7000/api/products/create",
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
       if (response.status === 201) {
         alert("Product created successfully!");
+
+        // ✅ Reset all fields properly
+        setProductTitle("");
+        setProductMainCategory("");
+        setProductSubCategory("");
+        setProductMainImage(null); // File input reset
+        setProductMinQuantity(0);
+        setProductMaxQuantity(0);
+
+        setPricing({
+          mrpPrice: "",
+          sellingPrice: "",
+          sku: "",
+          quantity: "",
+        });
+
+        setTax({
+          taxType: "percentage",
+          value: 0,
+        });
+
+        setProductStatus("");
+        setProductStockVisibility("");
+        setProductLabel("");
+        setDescriptionSections([]); // Reset array
+        setGalleryImages([]); // Reset array
+        setSeoTitle("");
+        setSeoDescription("");
+        setSeoUrl("");
+
+        // ✅ Clear file input manually
+        // ✅ Clear file input manually
+        const mainImageInput = document.getElementById("productMainImage");
+        if (mainImageInput) mainImageInput.value = "";
+
+        const galleryImagesInput = document.getElementById(
+          "productGalleryImages"
+        );
+        if (galleryImagesInput) galleryImagesInput.value = "";
       }
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creating product:", error.response?.data || error);
       alert("Failed to create product.");
     }
   };
@@ -92,11 +151,16 @@ export default function Create_Products() {
           <div className="space-y-5 md:col-span-8">
             {/* CREATE PRODUCTS SECTION 2 [Product Information] */}
             <Create_Products_2
+              productTitle={productTitle} // ✅ Pass value to control input
               setProductTitle={setProductTitle}
+              productMainCategory={productMainCategory}
               setProductMainCategory={setProductMainCategory}
+              productSubCategory={productSubCategory}
               setProductSubCategory={setProductSubCategory}
-              setProductMaxQuantity={setProductMaxQuantity}
+              productMinQuantity={productMinQuantity}
               setProductMinQuantity={setProductMinQuantity}
+              productMaxQuantity={productMaxQuantity}
+              setProductMaxQuantity={setProductMaxQuantity}
             />
             <div className="grid grid-cols-1 gap-5 xl:grid-cols-5">
               {/* CREATE PRODUCTS SECTION 3 [Product Main Image] */}
@@ -106,17 +170,26 @@ export default function Create_Products() {
             </div>
 
             {/* CREATE PRODUCTS SECTION 5 [Pricing Details] */}
-            {/* <Create_Products_5 /> */}
+            <Create_Products_5
+              setPricing={setPricing}
+              setTax={setTax}
+              tax={tax}
+              pricing={pricing}
+            />
             {/* CREATE PRODUCTS SECTION 6 [Descriptions] */}
             <Create_Products_6
               setDescriptionSections={setDescriptionSections}
+              resetDescriptionSections={handleResetDescriptionSections} // ✅ Pass the reset function
             />
             {/* CREATE PRODUCTS SECTION 7 [Purchase Selected Location] */}
             {/* <Create_Products_7 /> */}
             {/* CREATE PRODUCTS SECTION 8 [SEO Tags] */}
             <Create_Products_8
+              seoTitle={seoTitle}
               setSeoTitle={setSeoTitle}
+              seoDescription={seoDescription}
               setSeoDescription={setSeoDescription}
+              seoUrl={seoUrl}
               setSeoUrl={setSeoUrl}
             />
           </div>

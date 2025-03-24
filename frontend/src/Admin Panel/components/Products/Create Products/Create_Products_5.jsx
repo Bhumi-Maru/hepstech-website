@@ -1,8 +1,31 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
-export default function Create_Products_5() {
+export default function Create_Products_5({
+  setPricing,
+  setTax,
+  tax,
+  pricing,
+}) {
   const { toggleStates, handleToggle } = useAdminGlobalContext();
+
+  const handlePricingChange = (e) => {
+    const { name, value } = e.target;
+    setPricing((prev) => ({
+      ...prev,
+      [name]: value !== "" ? parseFloat(value) || 0 : "",
+    }));
+  };
+
+  const handleTaxChange = (e) => {
+    const { name, value } = e.target;
+    setTax((prev) => ({
+      ...prev,
+      [name]:
+        name === "value" ? (value !== "" ? parseFloat(value) || 0 : "") : value,
+    }));
+  };
+
   return (
     <>
       {/* CREATE PRODUCTS SECTION 5 [Pricing Details] */}
@@ -37,8 +60,10 @@ export default function Create_Products_5() {
                   type="number"
                   name="mrpPrice"
                   id="mrpPrice"
+                  value={pricing.mrpPrice}
                   className="!pl-7"
                   placeholder="0.00"
+                  onChange={handlePricingChange}
                 />
               </div>
             </div>
@@ -52,9 +77,11 @@ export default function Create_Products_5() {
                 <input
                   type="number"
                   name="sellingPrice"
+                  value={pricing.sellingPrice}
                   id="sellingPrice"
                   className="!pl-7"
                   placeholder="0.00"
+                  onChange={handlePricingChange}
                 />
               </div>
             </div>
@@ -62,7 +89,15 @@ export default function Create_Products_5() {
             <div>
               <label for="">SKU</label>
               <div className="mt-1 form-input">
-                <input type="text" name="" id="" placeholder="0" className="" />
+                <input
+                  type="text"
+                  name="sku"
+                  value={pricing.sku}
+                  id="sku"
+                  placeholder="Enter SKU"
+                  className=""
+                  onChange={handlePricingChange}
+                />
               </div>
             </div>
 
@@ -71,10 +106,12 @@ export default function Create_Products_5() {
               <div className="mt-1 form-input">
                 <input
                   type="number"
-                  name=""
-                  id=""
+                  name="quantity"
+                  id="quantity"
                   placeholder="0"
                   className=""
+                  value={pricing.quantity}
+                  onChange={handlePricingChange}
                 />
               </div>
             </div>
@@ -104,10 +141,12 @@ export default function Create_Products_5() {
                     <div className="relative mt-1 rounded-md">
                       <input
                         type="number"
-                        name="price"
-                        id="price"
+                        name="value"
+                        id="taxValue"
                         className="pr-12"
                         placeholder="0.00"
+                        value={tax.value}
+                        onChange={handleTaxChange}
                       />
 
                       <div className="absolute inset-y-0 right-0 flex items-center">
@@ -115,12 +154,14 @@ export default function Create_Products_5() {
                           Type
                         </label>
                         <select
-                          id="type"
-                          name="type"
+                          id="taxType"
+                          name="taxType"
+                          onChange={handleTaxChange}
+                          value={tax.taxType} // Ensures controlled input
                           className="h-full py-0 pl-2 pr-8 bg-transparent border-transparent shadow-none"
                         >
-                          <option>Flat</option>
-                          <option>Percentage</option>
+                          <option value="flat">Flat</option>
+                          <option value="percentage">Percentage</option>
                         </select>
                       </div>
                     </div>

@@ -1,19 +1,45 @@
 import React, { useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
-export default function Create_Products_6() {
+export default function Create_Products_6({
+  setDescriptionSections,
+  resetDescriptionSections,
+}) {
   const { isSectionOpen, handleToggleSection } = useAdminGlobalContext();
   const [sections, setSections] = useState([
-    { id: 1, title: "Untitled Section 01" },
+    { id: 1, title: "Untitled Section 01", description: "" },
   ]);
+  const [editingTitleId, setEditingTitleId] = useState(null); // Track which title is being edited
 
   const handleAddSection = () => {
     const newId = sections.length + 1;
     setSections([
       ...sections,
-      { id: newId, title: `Untitled Section 0${newId}` },
+      { id: newId, title: `Untitled Section 0${newId}`, description: "" },
     ]);
   };
+
+  const handleSectionChange = (id, field, value) => {
+    const updatedSections = sections.map((section) =>
+      section.id === id ? { ...section, [field]: value } : section
+    );
+    setSections(updatedSections);
+    setDescriptionSections(updatedSections);
+  };
+
+  const handleDeleteSection = (id) => {
+    const filteredSections = sections.filter((section) => section.id !== id);
+    setSections(filteredSections);
+    setDescriptionSections(filteredSections);
+  };
+
+  // ✅ Reset function
+  resetDescriptionSections(() => {
+    setSections([{ id: 1, title: "Untitled Section 01", description: "" }]);
+    setDescriptionSections([
+      { id: 1, title: "Untitled Section 01", description: "" },
+    ]);
+  });
 
   return (
     <>
@@ -46,10 +72,7 @@ export default function Create_Products_6() {
 
         <div className="px-4 pb-5 sm:px-5">
           <div className="flow-root mt-1">
-            <ul
-              className="-my-2 divide-y divide-gray-200 accordion"
-              id="descriptionsAccordion"
-            >
+            <ul className="-my-2 divide-y divide-gray-200 accordion">
               {sections.map((section) => (
                 <li key={section.id} className="accordion-item">
                   <dt className="accordion-header">
@@ -60,8 +83,9 @@ export default function Create_Products_6() {
                         handleToggleSection(`descriptions_Section${section.id}`)
                       }
                     >
+                      {/* Show Static Title (Separate from Input) */}
                       <span className="font-medium text-gray-900">
-                        {section.title}
+                        {`Untitled Section ${section.id}`}
                       </span>
                       <span className="flex items-center ml-6 accordion-control h-7">
                         <svg
@@ -79,10 +103,7 @@ export default function Create_Products_6() {
                     </button>
                   </dt>
                   {isSectionOpen[`descriptions_Section${section.id}`] && (
-                    <dd
-                      id={`descriptions_Section${section.id}`}
-                      data-parent="#descriptionsAccordion"
-                    >
+                    <dd id={`descriptions_Section${section.id}`}>
                       <div className="accordion-content">
                         <form>
                           <div className="space-y-4">
@@ -96,6 +117,20 @@ export default function Create_Products_6() {
                                   name={`sectionTitle${section.id}`}
                                   id={`sectionTitle${section.id}`}
                                   placeholder="Enter description title"
+                                  value={
+                                    editingTitleId === section.id
+                                      ? section.title
+                                      : section.title
+                                  }
+                                  onChange={(e) =>
+                                    handleSectionChange(
+                                      section.id,
+                                      "title",
+                                      e.target.value
+                                    )
+                                  }
+                                  onFocus={() => setEditingTitleId(section.id)}
+                                  onBlur={() => setEditingTitleId(null)}
                                 />
                               </div>
                             </div>
@@ -106,6 +141,14 @@ export default function Create_Products_6() {
                                 <textarea
                                   className="w-full p-2 border rounded"
                                   placeholder="Write description"
+                                  value={section.description}
+                                  onChange={(e) =>
+                                    handleSectionChange(
+                                      section.id,
+                                      "description",
+                                      e.target.value
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -114,17 +157,13 @@ export default function Create_Products_6() {
                               <button
                                 type="button"
                                 className="btn btn-error-light"
-                                onClick={() =>
-                                  setSections(
-                                    sections.filter((s) => s.id !== section.id)
-                                  )
-                                }
+                                onClick={() => handleDeleteSection(section.id)}
                               >
                                 <svg
                                   className="w-4 h-4 mr-2 -ml-1"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
-                                  viewBox="0 0 24 24" 
+                                  viewBox="0 0 24 24"
                                   stroke="currentColor"
                                 >
                                   <path
