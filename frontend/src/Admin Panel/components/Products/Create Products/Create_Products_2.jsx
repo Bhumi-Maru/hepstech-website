@@ -1,6 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function Create_Products_2() {
+export default function Create_Products_2({
+  setProductTitle,
+  setProductMainCategory,
+  setProductSubCategory,
+  setProductMaxQuantity,
+  setProductMinQuantity,
+}) {
+  const [mainCategories, setMainCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+
+  // Fetch main categories
+  const fetchMainCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7000/api/main-category"
+      );
+      setMainCategories(response.data.categories);
+    } catch (error) {
+      console.error("Error fetching main categories:", error);
+    }
+  };
+
+  // Fetch subcategories
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7000/api/sub-category/getAll"
+      );
+      setSubCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchMainCategories();
+    fetchSubCategories();
+  }, []);
+
   return (
     <>
       {/* CREATE PRODUCTS SECTION 2 [Product Information] */}
@@ -22,6 +62,7 @@ export default function Create_Products_2() {
                   id="productTitle"
                   placeholder="Enter product title"
                   className=""
+                  onChange={(e) => setProductTitle(e.target.value)}
                 />
               </div>
             </div>
@@ -29,11 +70,18 @@ export default function Create_Products_2() {
             <div className="col-span-2 sm:col-span-1">
               <label for="mainCategory">Main Category</label>
               <div className="relative mt-1">
-                <select className="" id="mainCategory" name="mainCategory">
+                <select
+                  className=""
+                  id="mainCategory"
+                  name="mainCategory"
+                  onChange={(e) => setProductMainCategory(e.target.value)}
+                >
                   <option value="">Select Main Category</option>
-                  <option value="">Main Category 1</option>
-                  <option value="">Main Category 2</option>
-                  <option value="">Main Category 3</option>
+                  {mainCategories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.main_category_title}
+                    </option>
+                  ))}
                 </select>
 
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -55,11 +103,18 @@ export default function Create_Products_2() {
             <div className="col-span-2 sm:col-span-1">
               <label for="subCategory">Sub Category</label>
               <div className="relative mt-1">
-                <select className="" id="subCategory" name="subCategory">
+                <select
+                  className=""
+                  id="subCategory"
+                  name="subCategory"
+                  onChange={(e) => setProductSubCategory(e.target.value)}
+                >
                   <option value="">Select Sub Category</option>
-                  <option value="">Sub Category 1</option>
-                  <option value="">Sub Category 2</option>
-                  <option value="">Sub Category 3</option>
+                  {subCategories.map((subCategory) => (
+                    <option key={subCategory._id} value={subCategory._id}>
+                      {subCategory.sub_category_title}
+                    </option>
+                  ))}
                 </select>
 
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -87,6 +142,7 @@ export default function Create_Products_2() {
                   id=""
                   placeholder="0"
                   className=""
+                  onChange={(e) => setProductMinQuantity(e.target.value)}
                 />
               </div>
             </div>
@@ -100,6 +156,7 @@ export default function Create_Products_2() {
                   id=""
                   placeholder="0"
                   className=""
+                  onChange={(e) => setProductMaxQuantity(e.target.value)}
                 />
               </div>
             </div>

@@ -8,19 +8,9 @@ const productGalleryImageSchema = new mongoose.Schema(
       required: true,
     },
     galleryImages: {
-      type: [String],
+      type: [String], // Array of image paths
       required: true,
       default: [],
-      validate: {
-        validator: function (images) {
-          return images.every((url) =>
-            /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))|^(https?:\/\/[\w\d-]+(\.[\w\d-]+)+.*)$/.test(
-              url
-            )
-          );
-        },
-        message: "One or more image URLs are invalid.",
-      },
     },
   },
   { timestamps: true }

@@ -1,16 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function Create_Products_1() {
+  const { isActive, handleActive } = useAdminGlobalContext();
   return (
     <>
       {/* CREATE PRODUCTS SECTION 1 [HEADING] */}
       <div className="sm:flex sm:items-center sm:space-x-3">
         <nav aria-label="Back">
           <Link
-            to="/all-   products"
+            to="/products/all-products"
             title="Back to Products"
-            class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
+            className={`flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 ${
+              isActive === "All Products" ? "active" : ""
+            }`}
+            onClick={() => handleActive("All Products")}
           >
             <svg
               className="flex-shrink-0 w-6 h-6 mr-1 -ml-1"

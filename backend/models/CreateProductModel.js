@@ -5,22 +5,34 @@ const CreateProductSchema = new mongoose.Schema(
     productTitle: { type: String, required: true, trim: true },
     productMainCategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MainCategory", // Referencing Category model
+      ref: "MainCategory",
       required: true,
     },
     productSubCategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "SubCategory", // Referencing SubCategory model
+      ref: "SubCategory",
       required: true,
     },
     productMainImage: { type: String, required: true, trim: true },
+    productPurchaseMinQuantity: { type: Number, required: true },
+    productPurchaseMaxQuantity: { type: Number, required: true },
     pricing: {
       mrpPrice: { type: Number, required: true, min: 0 },
       sellingPrice: { type: Number, required: true, min: 0 },
       sku: { type: String, unique: true, trim: true },
       quantity: { type: Number, default: 0, min: 0 },
     },
-    tax: { type: Number, default: 0, min: 0 }, // Tax percentage (0 = No tax)
+    tax: {
+      type: {
+        taxType: {
+          type: String,
+          enum: ["flat", "percentage"],
+          required: true,
+        },
+        value: { type: Number, required: true, min: 0 },
+      },
+      required: true,
+    },
     productStatus: {
       type: String,
       enum: ["Active", "Inactive"],

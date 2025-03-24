@@ -227,7 +227,7 @@ export default function Sidebar() {
                       className={`!pl-12 nav-link ${
                         isActive === "Create Products" ? "active" : ""
                       }`}
-                      onClick={() => handleActive("Create products")}
+                      onClick={() => handleActive("Create Products")}
                     >
                       Create Product
                     </Link>
