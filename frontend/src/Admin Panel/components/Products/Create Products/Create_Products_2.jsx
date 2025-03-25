@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useProductContext } from "../../../context/Product_Create_Context";
+import { useParams } from "react-router-dom";
 
 export default function Create_Products_2() {
   const {
@@ -48,6 +49,8 @@ export default function Create_Products_2() {
     fetchSubCategories();
   }, []);
 
+  const { productId } = useParams();
+
   return (
     <>
       {/* CREATE PRODUCTS SECTION 2 [Product Information] */}
@@ -74,15 +77,14 @@ export default function Create_Products_2() {
                 />
               </div>
             </div>
-
+            {/* // In Create_Products_2.js */}
             <div className="col-span-2 sm:col-span-1">
-              <label for="mainCategory">Main Category</label>
+              <label htmlFor="mainCategory">Main Category</label>
               <div className="relative mt-1">
                 <select
-                  className=""
                   id="mainCategory"
                   name="mainCategory"
-                  value={productMainCategory}
+                  value={productMainCategory?._id || productMainCategory || ""}
                   onChange={(e) => setProductMainCategory(e.target.value)}
                 >
                   <option value="">Select Main Category</option>
@@ -92,23 +94,8 @@ export default function Create_Products_2() {
                     </option>
                   ))}
                 </select>
-
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg
-                    className="w-5 h-5 text-gray-500"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </div>
               </div>
             </div>
-
             <div className="col-span-2 sm:col-span-1">
               <label for="subCategory">Sub Category</label>
               <div className="relative mt-1">
@@ -142,13 +129,12 @@ export default function Create_Products_2() {
                 </div>
               </div>
             </div>
-
             <div>
               <label for="">Minimum Purchase Quantity</label>
               <div className="mt-1 form-input">
                 <input
                   type="number"
-                  name=""
+                  name="productMinQuantity"
                   id=""
                   placeholder="0"
                   className=""
@@ -157,13 +143,12 @@ export default function Create_Products_2() {
                 />
               </div>
             </div>
-
             <div>
               <label for="">Maximum Purchase Quantity</label>
               <div className="mt-1 form-input">
                 <input
                   type="number"
-                  name=""
+                  name="productMaxQuantity"
                   id=""
                   placeholder="0"
                   className=""

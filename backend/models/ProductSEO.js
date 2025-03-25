@@ -4,38 +4,39 @@ const seoTagSchema = new mongoose.Schema(
   {
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product", // Reference to the Product model
+      ref: "Product",
       required: true,
     },
     title: {
       type: String,
       required: true,
-      maxlength: 70, // Enforcing the 70-character limit
+      maxlength: 70,
       trim: true,
     },
     description: {
       type: String,
       required: true,
-      maxlength: 320, // Enforcing the 320-character limit
+      maxlength: 320,
       trim: true,
     },
     url: {
       type: String,
       required: true,
       trim: true,
-      default: "https://myshopify.com/products/",
-      // validate: {
-      //   validator: function (value) {
-      //     return /^(https?:\/\/)?([\w\d-]+\.)+[\w]{2,}(\/[\w\d-./?%&=]*)?$/.test(
-      //       value
-      //     );
-      //   },
-      //   message: "Invalid URL format",
-      // // },
     },
   },
   { timestamps: true }
 );
+
+// Auto-generate SEO URL before saving
+seoTagSchema.pre("save", function (next) {
+  if (!this.url || this.url === "hello") {
+    this.url = `https://myshopify.com/products/${this.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")}`; // Convert title into URL-friendly slug
+  }
+  next();
+});
 
 const SeoTag = mongoose.model("SeoTag", seoTagSchema);
 

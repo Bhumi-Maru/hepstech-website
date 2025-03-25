@@ -70,6 +70,7 @@ import Small_Screen_SideBar from "./Admin Panel/components/Navbar/Small_Screen_S
 import UploadImage from "./Admin Panel/components/All Media/UploadImage";
 import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Update_Modal";
 import Sub_Category_Update_Modal from "./Admin Panel/components/Categories/Sub Categories/Sub_Category_Update_Modal";
+import CreateProduct2 from "./Admin Panel/components/Products/Create Products/Create_Products_2";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
