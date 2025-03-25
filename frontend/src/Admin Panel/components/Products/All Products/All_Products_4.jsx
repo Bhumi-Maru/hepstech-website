@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProductContext } from "../../../context/Product_Create_Context";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
-export default function All_Products_4({ products }) {
-  const { productId } = useParams();
+export default function All_Products_4({ products, itemsPerPage }) {
   const { handleEdit } = useProductContext();
+  const { isActive, handleActive } = useAdminGlobalContext();
 
   console.log(products);
 
-  const itemsPerPage = 10;
+  // const itemsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calculate total pages
@@ -89,10 +90,15 @@ export default function All_Products_4({ products }) {
                           <td>
                             <div className="flex items-center -ml-2 space-x-3">
                               <Link
-                                to={`/products/edit-product/${product._id}`}
-                                className="btn-circle"
+                                to="/products/create-product"
+                                className={`btn-circle ${
+                                  isActive === "Create Products" ? "active" : ""
+                                }`}
                                 aria-label="Edit"
-                                onClick={() => handleEdit(product._id)}
+                                onClick={() => {
+                                  handleEdit(product._id);
+                                  handleActive("Create Products");
+                                }}
                               >
                                 <svg
                                   className="w-5 h-5"
@@ -205,7 +211,7 @@ export default function All_Products_4({ products }) {
 
           <ul className="mt-5 pagination sm:mt-0">
             {Array.from({ length: totalPages }, (_, i) => (
-              <li className="active" key={i}>
+              <li className={i + 1 === currentPage ? "active" : ""} key={i}>
                 <a
                   // className="page"
                   href="#"

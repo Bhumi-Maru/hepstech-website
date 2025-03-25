@@ -1,6 +1,18 @@
 import React from "react";
 
-export default function All_Products_3({ setSearchQuery }) {
+export default function All_Products_3({
+  setSearchQuery,
+  setItemsPerPage,
+  setSortOptions,
+  sortOptions,
+}) {
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+
+  const handleSortChange = (e) => {
+    setSortOptions(e.target.value);
+  };
   return (
     <>
       {/* ALL PRODUCTS SECTION 3 [SEARCH , SORTING ON PRODUCTS] */}
@@ -38,29 +50,60 @@ export default function All_Products_3({ setSearchQuery }) {
         </div>
 
         <div className="mt-4 sm:mt-0">
-          <label for="mrpPrice" className="sr-only">
-            MRP Price
-          </label>
-          <div className="flex items-center py-1 pl-3 bg-white border border-gray-300 rounded-md focus-within:border-skin-primary focus-within:ring-1 focus-within:ring-skin-primary">
-            <div className="flex-none pointer-events-none">
-              <span className="text-gray-500 sm:text-sm">Sort by:</span>
+          <div className="flex">
+            <div class="flex items-center py-1 pl-3 bg-white border border-gray-300 rounded-md focus-within:border-skin-primary focus-within:ring-1 focus-within:ring-skin-primary">
+              <div class="flex-none pointer-events-none">
+                <span class="text-gray-500 sm:text-sm">Show:</span>
+              </div>
+              <select
+                name="showby"
+                id="showby"
+                class="py-0 pl-2 border-none rounded-none pr-auto focus:border-none focus:ring-0 focus:outline-none"
+                onChange={handleItemsPerPageChange}
+                defaultValue="2"
+              >
+                <option value="10" selected="">
+                  10
+                </option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
             </div>
-            <select
-              name=""
-              id=""
-              className="py-0 pl-2 border-none rounded-none pr-auto focus:border-none focus:ring-0 focus:outline-none"
-            >
-              <option value="">Product Title A-Z</option>
-              <option value="">Product title Z–A</option>
-              <option value="">Created (oldest first)</option>
-              <option value="">Created (newest first)</option>
-              <option value="">Updated (oldest first)</option>
-              <option value="">Updated (newest first)</option>
-              <option value="">Low inventory</option>
-              <option value="">High inventory</option>
-              <option value="">Product type A–Z</option>
-              <option value="">Product type Z–A</option>
-            </select>
+            <label for="mrpPrice" className="sr-only">
+              MRP Price
+            </label>
+            <div className="flex items-center py-1 pl-3 bg-white border border-gray-300 rounded-md focus-within:border-skin-primary focus-within:ring-1 focus-within:ring-skin-primary ml-3">
+              <div className="flex-none pointer-events-none">
+                <span className="text-gray-500 sm:text-sm">Sort by:</span>
+              </div>
+              <select
+                name="sortBy"
+                id="sortBy"
+                value={sortOptions}
+                onChange={handleSortChange}
+                className="py-0 pl-2 border-none rounded-none pr-auto focus:border-none focus:ring-0 focus:outline-none"
+              >
+                <option value="Product Title A-Z">Product Title A-Z</option>
+                <option value="Product title Z–A">Product title Z–A</option>
+                <option value="Created (oldest first)">
+                  Created (oldest first)
+                </option>
+                <option value="Created (newest first)">
+                  Created (newest first)
+                </option>
+                <option value="Updated (oldest first)">
+                  Updated (oldest first)
+                </option>
+                <option value="Updated (newest first)">
+                  Updated (newest first)
+                </option>
+                <option value="Low inventory">Low inventory</option>
+                <option value="High inventory">High inventory</option>
+                <option value="Product type A–Z">Product type A–Z</option>
+                <option value="Product type Z–A">Product type Z–A</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

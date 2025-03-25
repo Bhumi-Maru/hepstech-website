@@ -15,9 +15,11 @@ import Create_Products_13 from "./Create_Products_13";
 // import Create_Products_14 from "./Create_Products_14";
 // import axios from "axios";
 import { useProductContext } from "../../../context/Product_Create_Context";
+import { useNavigate } from "react-router-dom";
 
 export default function Create_Products() {
   const { handleCreateProduct, productId } = useProductContext();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -65,7 +67,11 @@ export default function Create_Products() {
         <hr className="mt-6 mb-5 border-gray-200" />
 
         <div className="flex items-center justify-end space-x-4">
-          <button type="button" className="btn btn-dark-light">
+          <button
+            type="button"
+            className="btn btn-dark-light"
+            onClick={() => navigate("/products/all-products")}
+          >
             Discard
           </button>
 
@@ -74,7 +80,15 @@ export default function Create_Products() {
             className="btn btn-primary"
             onClick={handleCreateProduct}
           >
-            {productId ? "Update Product" : "Create Product"}
+            {productId ? (
+              <button onClick={() => navigate("/products/all-products")}>
+                Update
+              </button>
+            ) : (
+              <button onClick={() => navigate("/products/all-products")}>
+                Create
+              </button>
+            )}
           </button>
         </div>
       </div>

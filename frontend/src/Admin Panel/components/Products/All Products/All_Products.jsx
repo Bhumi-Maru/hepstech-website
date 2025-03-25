@@ -7,6 +7,8 @@ import All_Products_4 from "./All_Products_4";
 export default function All_Products() {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Default to 2 items per page
+  const [sortOptions, setSortOptions] = useState("Product Title A-Z");
 
   // Fetch products from API
   useEffect(() => {
@@ -26,11 +28,59 @@ export default function All_Products() {
     fetchProducts();
   }, []);
 
-  // Filter products based on search query
-  const filteredProducts = products.filter((product) =>
-    product.productTitle.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter and sort products
+  const filteredAndSortedProducts = React.useMemo(() => {
+    let result = [...products].filter((product) =>
+      product.productTitle.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
+    // Apply sorting based on the selected option
+    switch (sortOptions) {
+      case "Product Title A-Z":
+        result.sort((a, b) => a.productTitle.localeCompare(b.productTitle));
+        break;
+      case "Product title Z–A":
+        result.sort((a, b) => b.productTitle.localeCompare(a.productTitle));
+        break;
+      case "Created (oldest first)":
+        result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        break;
+      case "Created (newest first)":
+        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      case "Updated (oldest first)":
+        result.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+        break;
+      case "Updated (newest first)":
+        result.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        break;
+      case "Low inventory":
+        result.sort(
+          (a, b) => a.productPurchaseMaxQuantity - b.productPurchaseMaxQuantity
+        );
+        break;
+      case "High inventory":
+        result.sort(
+          (a, b) => b.productPurchaseMaxQuantity - a.productPurchaseMaxQuantity
+        );
+        break;
+      case "Product type A–Z":
+        result.sort((a, b) =>
+          (a.type || "simple").localeCompare(b.type || "simple")
+        );
+        break;
+      case "Product type Z–A":
+        result.sort((a, b) =>
+          (b.type || "simple").localeCompare(a.type || "simple")
+        );
+        break;
+      default:
+        // Default sorting (no change)
+        break;
+    }
+
+    return result;
+  }, [products, searchQuery, sortOptions]);
   return (
     <div className="container">
       {/* ALL PRODUCT SECTION 1 [HEADING] */}
@@ -38,9 +88,17 @@ export default function All_Products() {
       {/* ALL PRODUCTS SECTION 2 [ALL , ACTIVE , DRAFT] */}
       <All_Products_2 />
       {/* ALL PRODUCTS SECTION 3 [SEARCH , SORTING ON PRODUCTS] */}
-      <All_Products_3 setSearchQuery={setSearchQuery} />
+      <All_Products_3
+        setSearchQuery={setSearchQuery}
+        setItemsPerPage={setItemsPerPage}
+        setSortOptions={setSortOptions}
+        sortOptions={sortOptions}
+      />
       {/* ALL PRODUCTS SECTION 4 [TABLE FOR PRODUCT] */}
-      <All_Products_4 products={filteredProducts} />
+      <All_Products_4
+        products={filteredAndSortedProducts}
+        itemsPerPage={itemsPerPage}
+      />
 
       <hr className="mt-6 mb-5 border-gray-200" />
 
