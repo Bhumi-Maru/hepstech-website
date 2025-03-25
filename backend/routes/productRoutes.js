@@ -12,7 +12,7 @@ const {
 const upload = require("../Middleware/UploadMiddleware");
 
 productRouter.post("/create", upload, createProduct);
-productRouter.put("/update/:id", updateProduct);
+productRouter.put("/update/:id", upload, updateProduct);
 productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getProductById);
 productRouter.delete("/delete/:id", deleteProductById);

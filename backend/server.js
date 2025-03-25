@@ -16,6 +16,7 @@ const app = express();
 // Middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

@@ -1,9 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
 export default function Create_Products_1() {
   const { isActive, handleActive } = useAdminGlobalContext();
+  const { productId } = useParams();
+  console.log("pro", productId);
   return (
     <>
       {/* CREATE PRODUCTS SECTION 1 [HEADING] */}
@@ -36,7 +39,9 @@ export default function Create_Products_1() {
         </nav>
 
         {/* <!-- PAGE TITLE --> */}
-        <h1 className="mt-3 heading-1 sm:mt-0">Create Product</h1>
+        <h1 className="mt-3 heading-1 sm:mt-0">
+          {productId ? "Edit Product" : "Create Product"}
+        </h1>
       </div>
     </>
   );

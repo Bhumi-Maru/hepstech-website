@@ -17,7 +17,7 @@ import Create_Products_13 from "./Create_Products_13";
 import { useProductContext } from "../../../context/Product_Create_Context";
 
 export default function Create_Products() {
-  const { handleCreateProduct } = useProductContext();
+  const { handleCreateProduct, productId } = useProductContext();
 
   return (
     <>
@@ -74,7 +74,7 @@ export default function Create_Products() {
             className="btn btn-primary"
             onClick={handleCreateProduct}
           >
-            Create
+            {productId ? "Update Product" : "Create Product"}
           </button>
         </div>
       </div>

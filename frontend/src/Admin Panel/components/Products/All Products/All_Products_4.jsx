@@ -1,6 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
 export default function All_Products_4({ products }) {
+  const { productId } = useParams();
+  const { handleEdit } = useProductContext();
+
+  console.log(products);
+
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  // Get current page products
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedProducts = products.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
   return (
     <>
       {/* ALL PRODUCTS SECTION 4 [TABLE FOR PRODUCT] */}
@@ -24,8 +43,8 @@ export default function All_Products_4({ products }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 list">
-                    {products.length > 0 ? (
-                      products.map((product) => (
+                    {displayedProducts.length > 0 ? (
+                      displayedProducts.map((product) => (
                         <tr key={product.id}>
                           {" "}
                           {/* Ensure a unique key */}
@@ -35,45 +54,45 @@ export default function All_Products_4({ products }) {
                           <td className="nowrap">
                             <div className="flex items-center space-x-3">
                               <div className="flex items-center justify-center flex-none w-12 h-12 overflow-hidden bg-gray-200 rounded-md">
-                                <svg
-                                  className="w-6 h-6 text-gray-500"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                  />
-                                </svg>
+                                <img
+                                  src={`http://localhost:7000/uploads/${product.productMainImage
+                                    .split("/")
+                                    .pop()}`}
+                                  alt={product.productTitle}
+                                  className="w-full h-full object-cover"
+                                />
                               </div>
                               <span className="font-medium product-name">
-                                {product.name}
+                                {product.productTitle}
                               </span>
                             </div>
                           </td>
-                          <td>₹{product.price}</td>
+                          <td>₹ {product.pricing.sellingPrice}</td>
                           <td className="nowrap">
                             <span className="!px-2 badge badge-info">
-                              {product.inventory}
+                              {product.productPurchaseMaxQuantity}
                             </span>
                             <span className="ml-1 text-gray-600">in stock</span>
                           </td>
-                          <td>{product.type}</td>
+                          <td>{product.type || "simple"}</td>
                           <td>
-                            <span className="badge badge-success">
-                              {product.status}
+                            <span
+                              className={`badge ${
+                                product.productStatus === "Draft"
+                                  ? "badge-danger"
+                                  : "badge-success"
+                              }`}
+                            >
+                              {product.productStatus}
                             </span>
                           </td>
                           <td>
                             <div className="flex items-center -ml-2 space-x-3">
-                              <a
-                                href="#"
+                              <Link
+                                to={`/products/edit-product/${product._id}`}
                                 className="btn-circle"
                                 aria-label="Edit"
+                                onClick={() => handleEdit(product._id)}
                               >
                                 <svg
                                   className="w-5 h-5"
@@ -89,7 +108,7 @@ export default function All_Products_4({ products }) {
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                   />
                                 </svg>
-                              </a>
+                              </Link>
                               <a
                                 href="#"
                                 className="btn-circle"
@@ -176,17 +195,33 @@ export default function All_Products_4({ products }) {
 
         <div className="flex flex-col items-center mt-8 sm:mt-4 sm:flex-row sm:justify-between">
           <p className="text-gray-700 showing">
-            Showing <span id="page-first-item-number">1</span> -{" "}
-            <span id="page-last-item-number">5</span> of{" "}
-            <span id="totalProducts">40</span> products
+            Showing <span id="page-first-item-number">{startIndex + 1}</span> -{" "}
+            <span id="page-last-item-number">
+              {" "}
+              {Math.min(startIndex + itemsPerPage, products.length)}
+            </span>{" "}
+            of <span id="totalProducts">{products.length}</span> products
           </p>
 
           <ul className="mt-5 pagination sm:mt-0">
-            <li className="active">
-              <a className="page" href="#" data-i="1" data-page="10">
-                1
-              </a>
-            </li>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <li className="active" key={i}>
+                <a
+                  // className="page"
+                  href="#"
+                  data-i="1"
+                  data-page="10"
+                  className={`page ${
+                    currentPage === i + 1
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-300"
+                  }`}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

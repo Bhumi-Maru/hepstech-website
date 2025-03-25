@@ -10,13 +10,21 @@ export const useProductContext = () => {
 };
 
 // Context Provider Component
-export const ProductPovider = ({ children }) => {
+export const ProductProvider = ({ children }) => {
+  // PRICING DETAILS SECTION 5 [VARIANT PRODUCT]
+  const [isOpenProduct, setIsOpenProduct] = useState({
+    variant_Product_Section_5: false,
+    Enable_Color_Option: false,
+  });
+
+  const [productId, setProductId] = useState(null); // Store product ID if updating
+
   const [productTitle, setProductTitle] = useState("");
   const [productMainCategory, setProductMainCategory] = useState("");
   const [productSubCategory, setProductSubCategory] = useState("");
   const [productMainImage, setProductMainImage] = useState(null);
-  const [productMaxQuantity, setProductMaxQuantity] = useState(0);
-  const [productMinQuantity, setProductMinQuantity] = useState(0);
+  const [productMaxQuantity, setProductMaxQuantity] = useState(null);
+  const [productMinQuantity, setProductMinQuantity] = useState(null);
 
   //   product main image
   const [mainImagePreview, setMainImagePreview] = useState(null);
@@ -29,8 +37,8 @@ export const ProductPovider = ({ children }) => {
   });
 
   const [tax, setTax] = useState({
-    taxType: "percentage", // or "flat"
-    value: 0,
+    taxType: "flat", // or "flat"
+    value: null,
   });
   const [productStatus, setProductStatus] = useState("");
   const [productStockVisibility, setProductStockVisibility] = useState("");
@@ -49,6 +57,96 @@ export const ProductPovider = ({ children }) => {
     ]);
   };
 
+  // handle open product variant
+  // const handleProductVariant = () => {
+  //   setIsOpenProduct({
+  //     variant_Product_Section_5: value === "2", // Open when 'Variant Product' is selected
+  //   });
+  // };
+
+  // const handleCreateProduct = async () => {
+  //   if (!pricing.mrpPrice || !pricing.sellingPrice) {
+  //     alert("Pricing details are required.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("productTitle", productTitle);
+  //   formData.append("productMainCategory", productMainCategory);
+  //   formData.append("productSubCategory", productSubCategory);
+  //   formData.append("productMainImage", productMainImage);
+  //   formData.append("productPurchaseMinQuantity", productMinQuantity);
+  //   formData.append("productPurchaseMaxQuantity", productMaxQuantity);
+  //   formData.append("pricing.mrpPrice", pricing.mrpPrice);
+  //   formData.append("pricing.sellingPrice", pricing.sellingPrice);
+  //   formData.append("pricing.sku", pricing.sku);
+  //   formData.append("pricing.quantity", pricing.quantity);
+  //   formData.append("tax.taxType", tax.taxType);
+  //   formData.append("tax.value", tax.value);
+  //   formData.append("productStatus", productStatus);
+  //   formData.append("productStockVisibility", productStockVisibility);
+  //   formData.append("productLabel", productLabel);
+  //   formData.append("descriptionSections", JSON.stringify(descriptionSections));
+  //   formData.append("seoTitle", seoTitle);
+  //   formData.append("seoDescription", seoDescription);
+  //   formData.append("seoUrl", seoUrl);
+
+  //   galleryImages.forEach((image) => {
+  //     formData.append("galleryImages", image);
+  //   });
+
+  //   try {
+  //     let response;
+  //     if (productId) {
+  //       // UPDATE PRODUCT
+  //       response = await axios.put(
+  //         `http://localhost:7000/api/products/update/${productId}`,
+  //         formData,
+  //         { headers: { "Content-Type": "multipart/form-data" } }
+  //       );
+  //     } else {
+  //       // CREATE PRODUCT
+  //       response = await axios.post(
+  //         "http://localhost:7000/api/products/create",
+  //         formData,
+  //         { headers: { "Content-Type": "multipart/form-data" } }
+  //       );
+  //     }
+
+  //     if (response.status === 200 || response.status === 201) {
+  //       alert(
+  //         productId
+  //           ? "Product updated successfully!"
+  //           : "Product created successfully!"
+  //       );
+
+  //       // Reset fields after success
+  //       setProductId(null); // Reset product ID after update
+  //       setProductTitle("");
+  //       setProductMainCategory("");
+  //       setProductSubCategory("");
+  //       setProductMainImage(null);
+  //       setMainImagePreview(null);
+  //       setProductMinQuantity(null);
+  //       setProductMaxQuantity(null);
+  //       setPricing({ mrpPrice: "", sellingPrice: "", sku: "", quantity: "" });
+  //       setTax({ taxType: "flat", value: null });
+  //       setProductStatus("");
+  //       setProductStockVisibility("");
+  //       setProductLabel("");
+  //       setDescriptionSections([]);
+  //       setGalleryImages([]);
+  //       setSelectedImages([]);
+  //       setSeoTitle("");
+  //       setSeoDescription("");
+  //       setSeoUrl("");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error saving product:", error.response?.data || error);
+  //     alert("Failed to save product.");
+  //   }
+  // };
+
   const handleCreateProduct = async () => {
     if (!pricing.mrpPrice || !pricing.sellingPrice) {
       alert("Pricing details are required.");
@@ -62,15 +160,12 @@ export const ProductPovider = ({ children }) => {
     formData.append("productMainImage", productMainImage);
     formData.append("productPurchaseMinQuantity", productMinQuantity);
     formData.append("productPurchaseMaxQuantity", productMaxQuantity);
-
     formData.append("pricing.mrpPrice", pricing.mrpPrice);
     formData.append("pricing.sellingPrice", pricing.sellingPrice);
     formData.append("pricing.sku", pricing.sku);
     formData.append("pricing.quantity", pricing.quantity);
-
     formData.append("tax.taxType", tax.taxType);
     formData.append("tax.value", tax.value);
-
     formData.append("productStatus", productStatus);
     formData.append("productStockVisibility", productStockVisibility);
     formData.append("productLabel", productLabel);
@@ -78,69 +173,168 @@ export const ProductPovider = ({ children }) => {
     formData.append("seoTitle", seoTitle);
     formData.append("seoDescription", seoDescription);
     formData.append("seoUrl", seoUrl);
-
     galleryImages.forEach((image) => {
       formData.append("galleryImages", image);
     });
 
     try {
-      const response = await axios.post(
-        "http://localhost:7000/api/products/create",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      let response;
+      if (productId) {
+        // UPDATE PRODUCT
+        response = await axios.put(
+          `http://localhost:7000/api/products/update/${productId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+      } else {
+        // CREATE PRODUCT
+        response = await axios.post(
+          "http://localhost:7000/api/products/create",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+      }
 
-      if (response.status === 201) {
-        alert("Product created successfully!");
-
-        // ✅ Reset all fields properly
-        setProductTitle("");
-        setProductMainCategory("");
-        setProductSubCategory("");
-        setProductMainImage(null); // File input reset
-        setMainImagePreview(null);
-
-        setProductMinQuantity(0);
-        setProductMaxQuantity(0);
-
-        setPricing({
-          mrpPrice: "",
-          sellingPrice: "",
-          sku: "",
-          quantity: "",
-        });
-
-        setTax({
-          taxType: "percentage",
-          value: 0,
-        });
-
-        setProductStatus("");
-        setProductStockVisibility("");
-        setProductLabel("");
-        setDescriptionSections([]); // ✅ Clears all description sections
-
-        setGalleryImages([]); // Reset array
-        // ✅ Reset gallery preview images in the Create_Products_4 component
-        setSelectedImages([]); // 🔥 Reset selectedImages state
-        setSeoTitle("");
-        setSeoDescription("");
-        setSeoUrl("");
-
-        // ✅ Clear file input manually
-        setProductMainImage(null);
-        setMainImagePreview(null); // 🔥 Reset the preview
+      if (response.status === 200 || response.status === 201) {
+        alert(
+          productId
+            ? "Product updated successfully!"
+            : "Product created successfully!"
+        );
+        resetProductForm(); // Reset form after successful save
       }
     } catch (error) {
-      console.error("Error creating product:", error.response?.data || error);
-      alert("Failed to create product.");
+      console.error("Error saving product:", error.response?.data || error);
+      alert("Failed to save product.");
     }
   };
+
+  const fetchProductForEdit = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:7000/api/products/${id}`
+      );
+      const product = response.data;
+
+      // Set all the form fields with the product data
+      setProductId(product._id);
+      setProductTitle(product.productTitle || "");
+      setProductMainCategory(
+        product.productMainCategory?._id || product.productMainCategory || ""
+      );
+      setProductSubCategory(
+        product.productSubCategory?._id || product.productSubCategory || ""
+      );
+
+      setProductMinQuantity(product.productPurchaseMinQuantity || null);
+      setProductMaxQuantity(product.productPurchaseMaxQuantity || null);
+
+      // Pricing
+      setPricing({
+        mrpPrice: product.pricing?.mrpPrice || "",
+        sellingPrice: product.pricing?.sellingPrice || "",
+        sku: product.pricing?.sku || "",
+        quantity: product.pricing?.quantity || "",
+      });
+
+      // Tax
+      setTax({
+        taxType: product.tax?.taxType || "flat",
+        value: product.tax?.value || null,
+      });
+
+      // Status and visibility
+      setProductStatus(product.productStatus || "");
+      setProductStockVisibility(product.productStockVisibility || "");
+      setProductLabel(product.productLabel || "");
+
+      // Descriptions
+      if (
+        product.descriptionSections &&
+        product.descriptionSections.length > 0
+      ) {
+        setDescriptionSections(product.descriptionSections);
+      } else {
+        setDescriptionSections([
+          { id: 1, title: "Untitled Section 01", description: "" },
+        ]);
+      }
+
+      // SEO
+      setSeoTitle(product.seoTitle || "");
+      setSeoDescription(product.seoDescription || "");
+      setSeoUrl(product.seoUrl || "");
+
+      // Main Image Preview
+      if (product.productMainImage) {
+        setMainImagePreview(
+          `http://localhost:7000/uploads/${product.productMainImage
+            .split("/")
+            .pop()}`
+        );
+      }
+
+      // Gallery Images (assuming product.galleryImages contains URLs)
+      // Note: This handles display only - actual file uploads would need separate handling
+      if (product.galleryImages && product.galleryImages.length > 0) {
+        setSelectedImages(
+          product.galleryImages.map((img) => ({
+            url: `http://localhost:7000/uploads/${img.split("/").pop()}`,
+            name: img.split("/").pop(),
+          }))
+        );
+      }
+
+      return true; // Indicate success
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      alert("Failed to load product for editing.");
+      return false; // Indicate failure
+    }
+  };
+
+  const handleEdit = async (id) => {
+    return await fetchProductForEdit(id);
+  };
+
+  // Reset form after saving
+  const resetProductForm = () => {
+    setProductId(null);
+    setProductTitle("");
+    setProductMainCategory("");
+    setProductSubCategory("");
+    setProductMainImage(null);
+    setMainImagePreview(null);
+    setProductMinQuantity(null);
+    setProductMaxQuantity(null);
+    setPricing({ mrpPrice: "", sellingPrice: "", sku: "", quantity: "" });
+    setTax({ taxType: "flat", value: null });
+    setProductStatus("");
+    setProductStockVisibility("");
+    setProductLabel("");
+    setDescriptionSections([]);
+    setGalleryImages([]);
+    setSeoTitle("");
+    setSeoDescription("");
+    setSeoUrl("");
+  };
+
   return (
     <ProductContext.Provider
       value={{
+        // PRICING DETAILS SECTION 5 [VARIANT PRODUCT]
+        isOpenProduct,
+        setIsOpenProduct,
+        // handleProductVariant,
+
+        //
+        productId, // Store product ID if updating
+
+        // product information
         productTitle,
         setProductTitle,
         productMainCategory,
@@ -183,6 +377,7 @@ export const ProductPovider = ({ children }) => {
 
         //  SECTION 9 [Product Status]
         setProductStatus,
+        productStatus,
 
         // SECTION 12 [Stock Visibility State]
         setProductStockVisibility,
@@ -194,6 +389,9 @@ export const ProductPovider = ({ children }) => {
 
         // create product
         handleCreateProduct,
+
+        handleEdit,
+        // resetProductForm,
       }}
     >
       {children}
