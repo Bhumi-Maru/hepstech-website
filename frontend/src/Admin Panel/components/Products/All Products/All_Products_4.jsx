@@ -1,16 +1,87 @@
-import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useProductContext } from "../../../context/Product_Create_Context";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import axios from "axios";
 
-export default function All_Products_4({ products, itemsPerPage }) {
+export default function All_Products_4({
+  products,
+  itemsPerPage,
+  fetchProducts,
+  selectedProducts,
+  setSelectedProducts,
+}) {
   const { handleEdit } = useProductContext();
   const { isActive, handleActive } = useAdminGlobalContext();
 
   console.log(products);
-
-  // const itemsPerPage = 2;
+  // current page in pagination
   const [currentPage, setCurrentPage] = useState(1);
+
+  // selected product for checkbox
+  // const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  // Handle header checkbox change
+  const handleSelectAllChange = (e) => {
+    const isChecked = e.target.checked;
+    setSelectAll(isChecked);
+
+    if (isChecked) {
+      // Select all products on current page
+      const currentPageProductIds = displayedProducts.map((p) => p._id);
+      setSelectedProducts(currentPageProductIds);
+    } else {
+      // Deselect all
+      setSelectedProducts([]);
+    }
+  };
+
+  // Handle individual product checkbox change
+  // const handleProductSelect = (productId, isChecked) => {
+  //   if (isChecked) {
+  //     setSelectedProducts([...selectedProducts, productId]);
+  //   } else {
+  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+  //   }
+
+  //   // Update selectAll status based on current selections
+  //   const allSelected = displayedProducts.every((p) =>
+  //     selectedProducts.includes(p._id)
+  //   );
+  //   setSelectAll(allSelected);
+  // };
+
+  useEffect(() => {
+    setSelectedProducts([]);
+    setSelectAll(false);
+  }, [currentPage]);
+
+  /////////////////////////////////////
+
+  useEffect(() => {
+    const allSelected = displayedProducts.every((p) =>
+      selectedProducts.includes(p._id)
+    );
+    setSelectAll(allSelected);
+  }, [selectedProducts]);
+
+  // Delete single product
+  const handleDeleteProduct = async (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await axios.delete(
+          `http://localhost:7000/api/products/delete/${productId}`
+        );
+        fetchProducts(); // Refresh the product list
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Failed to delete product");
+      }
+    }
+  };
+
+  //////////////////////////////////////
 
   // Calculate total pages
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -33,7 +104,13 @@ export default function All_Products_4({ products, itemsPerPage }) {
                   <thead>
                     <tr>
                       <th scope="col">
-                        <input type="checkbox" name="" id="" />
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          // checked={selectAll}
+                          onChange={handleSelectAllChange}
+                        />
                       </th>
                       <th scope="col">Product</th>
                       <th scope="col">Price</th>
@@ -50,7 +127,23 @@ export default function All_Products_4({ products, itemsPerPage }) {
                           {" "}
                           {/* Ensure a unique key */}
                           <td>
-                            <input type="checkbox" />
+                            <input
+                              type="checkbox"
+                              checked={selectedProducts.includes(product._id)}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                if (checked) {
+                                  setSelectedProducts((prev) => [
+                                    ...prev,
+                                    product._id,
+                                  ]);
+                                } else {
+                                  setSelectedProducts((prev) =>
+                                    prev.filter((id) => id !== product._id)
+                                  );
+                                }
+                              }}
+                            />
                           </td>
                           <td className="nowrap">
                             <div className="flex items-center space-x-3">
@@ -119,6 +212,7 @@ export default function All_Products_4({ products, itemsPerPage }) {
                                 href="#"
                                 className="btn-circle"
                                 aria-label="Delete"
+                                onClick={() => handleDeleteProduct(product._id)}
                               >
                                 <svg
                                   className="w-5 h-5"

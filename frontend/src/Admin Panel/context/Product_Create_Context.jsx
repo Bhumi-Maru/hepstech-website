@@ -200,11 +200,6 @@ export const ProductProvider = ({ children }) => {
       }
 
       if (response.status === 200 || response.status === 201) {
-        alert(
-          productId
-            ? "Product updated successfully!"
-            : "Product created successfully!"
-        );
         resetProductForm(); // Reset form after successful save
       }
     } catch (error) {
@@ -220,15 +215,11 @@ export const ProductProvider = ({ children }) => {
       );
       const product = response.data;
 
-      // Set all the form fields with the product data
+      // Set product ID and basic details
       setProductId(product._id);
       setProductTitle(product.productTitle || "");
-      setProductMainCategory(
-        product.productMainCategory?._id || product.productMainCategory || ""
-      );
-      setProductSubCategory(
-        product.productSubCategory?._id || product.productSubCategory || ""
-      );
+      setProductMainCategory(product.productMainCategory?._id || "");
+      setProductSubCategory(product.productSubCategory?._id || "");
 
       setProductMinQuantity(product.productPurchaseMinQuantity || null);
       setProductMaxQuantity(product.productPurchaseMaxQuantity || null);
@@ -252,22 +243,25 @@ export const ProductProvider = ({ children }) => {
       setProductStockVisibility(product.productStockVisibility || "");
       setProductLabel(product.productLabel || "");
 
-      // Descriptions
-      if (
-        product.descriptionSections &&
-        product.descriptionSections.length > 0
-      ) {
-        setDescriptionSections(product.descriptionSections);
+      // Descriptions (Now correctly extracting from `product.description.descriptionSections`)
+      if (product.description?.descriptionSections?.length > 0) {
+        setDescriptionSections(
+          product.description.descriptionSections.map((section, index) => ({
+            id: index + 1,
+            title: section.sectionTitle || `Untitled Section ${index + 1}`,
+            description: section.description || "",
+          }))
+        );
       } else {
         setDescriptionSections([
           { id: 1, title: "Untitled Section 01", description: "" },
         ]);
       }
 
-      // SEO
-      setSeoTitle(product.seoTitle || "");
-      setSeoDescription(product.seoDescription || "");
-      setSeoUrl(product.seoUrl || "");
+      // SEO (Now correctly extracting from `product.seo`)
+      setSeoTitle(product.seo?.title || "");
+      setSeoDescription(product.seo?.description || "");
+      setSeoUrl(product.seo?.url || "");
 
       // Main Image Preview
       if (product.productMainImage) {
@@ -278,15 +272,23 @@ export const ProductProvider = ({ children }) => {
         );
       }
 
-      // Gallery Images (assuming product.galleryImages contains URLs)
-      // Note: This handles display only - actual file uploads would need separate handling
-      if (product.galleryImages && product.galleryImages.length > 0) {
-        setSelectedImages(
-          product.galleryImages.map((img) => ({
-            url: `http://localhost:7000/uploads/${img.split("/").pop()}`,
-            name: img.split("/").pop(),
-          }))
-        );
+      // Gallery Images (Now correctly extracting from `product.gallery.galleryImages`)
+      if (product.gallery?.galleryImages?.length > 0) {
+        const galleryPreviews = product.gallery.galleryImages.map((img) => ({
+          file: null, // No File object for existing images
+          previewURL: `http://localhost:7000/uploads/gallery/${img
+            .split("/")
+            .pop()}`,
+          existingPath: img, // Store the server path
+          isNew: false, // Mark as existing image
+        }));
+
+        setSelectedImages(galleryPreviews);
+        // Store both the paths (for existing) and will add new files later
+        setGalleryImages([...product.gallery.galleryImages]);
+      } else {
+        setSelectedImages([]);
+        setGalleryImages([]);
       }
 
       return true; // Indicate success

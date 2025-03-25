@@ -27,24 +27,33 @@ export default function Create_Products_4() {
         validFiles.push({
           file,
           previewURL: URL.createObjectURL(file),
+          isNew: true, // Mark as new file
         });
       }
     });
 
-    setSelectedImages([...selectedImages, ...validFiles]);
-    setGalleryImages([
-      ...selectedImages.map((img) => img.file),
-      ...validFiles.map((img) => img.file),
-    ]);
+    // Combine existing previews with new ones
+    setSelectedImages((prev) => [...prev, ...validFiles]);
+
+    // Update gallery images - keep existing and add new files
+    setGalleryImages((prev) => [...prev, ...validFiles.map((img) => img.file)]);
   };
 
   const handleRemoveImage = (index) => {
     const updatedImages = [...selectedImages];
-    updatedImages.splice(index, 1);
-    setSelectedImages(updatedImages);
-    setGalleryImages(updatedImages.map((img) => img.file));
-  };
+    const removedImage = updatedImages.splice(index, 1)[0];
 
+    setSelectedImages(updatedImages);
+
+    if (removedImage.isNew) {
+      // Remove only if it was a newly added image
+      setGalleryImages((prev) =>
+        prev.filter((img) => img !== removedImage.file)
+      );
+    }
+    // If it was an existing image, we keep it in galleryImages
+    // but remove from preview (selectedImages)
+  };
   return (
     <div className="overflow-hidden bg-white rounded-lg shadow xl:col-span-3">
       <div className="px-4 py-3 sm:px-5">

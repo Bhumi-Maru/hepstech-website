@@ -3,6 +3,7 @@ import All_Products_1 from "./All_Products_1";
 import All_Products_2 from "./All_Products_2";
 import All_Products_3 from "./All_Products_3";
 import All_Products_4 from "./All_Products_4";
+import axios from "axios";
 
 export default function All_Products() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,23 +11,73 @@ export default function All_Products() {
   const [itemsPerPage, setItemsPerPage] = useState(10); // Default to 2 items per page
   const [sortOptions, setSortOptions] = useState("Product Title A-Z");
 
+  // selected product for checkbox
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
   // Fetch products from API
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:7000/api/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        setProducts(data); // Store fetched data in state
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:7000/api/products");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await response.json();
+      setProducts(data); // Store fetched data in state
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // delete all and delete selected
+  // Delete selected products
+  const handleDeleteSelected = async () => {
+    if (selectedProducts.length === 0) {
+      alert("Please select at least one product to delete");
+      return;
+    }
+
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${selectedProducts.length} selected products?`
+      )
+    ) {
+      try {
+        await axios.delete(
+          "http://localhost:7000/api/products/delete-selected",
+          {
+            data: { ids: selectedProducts },
+          }
+        );
+
+        fetchProducts(); // Refresh the product list
+        setSelectedProducts([]); // Clear selection
+      } catch (error) {
+        console.error("Error deleting selected products:", error);
+        alert("Failed to delete selected products");
+      }
+    }
+  };
+
+  // Delete all products
+  const handleDeleteAll = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete ALL products? This cannot be undone!"
+      )
+    ) {
+      try {
+        await axios.delete("http://localhost:7000/api/products/delete-all");
+        fetchProducts(); // Refresh the product list
+      } catch (error) {
+        console.error("Error deleting all products:", error);
+        alert("Failed to delete all products");
+      }
+    }
+  };
 
   // Filter and sort products
   const filteredAndSortedProducts = React.useMemo(() => {
@@ -98,11 +149,18 @@ export default function All_Products() {
       <All_Products_4
         products={filteredAndSortedProducts}
         itemsPerPage={itemsPerPage}
+        fetchProducts={fetchProducts}
+        selectedProducts={selectedProducts}
+        setSelectedProducts={setSelectedProducts}
       />
 
       <hr className="mt-6 mb-5 border-gray-200" />
 
-      <button type="button" className="btn btn-error">
+      <button
+        type="button"
+        className="btn btn-error"
+        onClick={handleDeleteSelected}
+      >
         <svg
           className="w-5 h-5 mr-2 -ml-1"
           xmlns="http://www.w3.org/2000/svg"

@@ -78,17 +78,12 @@ export default function Create_Products() {
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={handleCreateProduct}
+            onClick={() => {
+              handleCreateProduct();
+              navigate("/products/all-products");
+            }}
           >
-            {productId ? (
-              <button onClick={() => navigate("/products/all-products")}>
-                Update
-              </button>
-            ) : (
-              <button onClick={() => navigate("/products/all-products")}>
-                Create
-              </button>
-            )}
+            {productId ? "Update" : "Create"}
           </button>
         </div>
       </div>
