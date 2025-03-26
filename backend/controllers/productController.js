@@ -17,6 +17,8 @@ const createProduct = async (req, res) => {
       productStatus,
       productStockVisibility,
       productLabel,
+      productType,
+      variantOptions,
       seoTitle,
       seoDescription,
       seoUrl,
