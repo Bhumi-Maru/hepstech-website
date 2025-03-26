@@ -14,7 +14,6 @@ export const ProductProvider = ({ children }) => {
   // PRICING DETAILS SECTION 5 [VARIANT PRODUCT]
   const [isOpenProduct, setIsOpenProduct] = useState({
     variant_Product_Section_5: false,
-    Enable_Color_Option: false,
   });
 
   const [productId, setProductId] = useState(null); // Store product ID if updating
@@ -58,96 +57,6 @@ export const ProductProvider = ({ children }) => {
   };
 
   console.log("product id", productId);
-
-  // handle open product variant
-  // const handleProductVariant = () => {
-  //   setIsOpenProduct({
-  //     variant_Product_Section_5: value === "2", // Open when 'Variant Product' is selected
-  //   });
-  // };
-
-  // const handleCreateProduct = async () => {
-  //   if (!pricing.mrpPrice || !pricing.sellingPrice) {
-  //     alert("Pricing details are required.");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("productTitle", productTitle);
-  //   formData.append("productMainCategory", productMainCategory);
-  //   formData.append("productSubCategory", productSubCategory);
-  //   formData.append("productMainImage", productMainImage);
-  //   formData.append("productPurchaseMinQuantity", productMinQuantity);
-  //   formData.append("productPurchaseMaxQuantity", productMaxQuantity);
-  //   formData.append("pricing.mrpPrice", pricing.mrpPrice);
-  //   formData.append("pricing.sellingPrice", pricing.sellingPrice);
-  //   formData.append("pricing.sku", pricing.sku);
-  //   formData.append("pricing.quantity", pricing.quantity);
-  //   formData.append("tax.taxType", tax.taxType);
-  //   formData.append("tax.value", tax.value);
-  //   formData.append("productStatus", productStatus);
-  //   formData.append("productStockVisibility", productStockVisibility);
-  //   formData.append("productLabel", productLabel);
-  //   formData.append("descriptionSections", JSON.stringify(descriptionSections));
-  //   formData.append("seoTitle", seoTitle);
-  //   formData.append("seoDescription", seoDescription);
-  //   formData.append("seoUrl", seoUrl);
-
-  //   galleryImages.forEach((image) => {
-  //     formData.append("galleryImages", image);
-  //   });
-
-  //   try {
-  //     let response;
-  //     if (productId) {
-  //       // UPDATE PRODUCT
-  //       response = await axios.put(
-  //         `http://localhost:7000/api/products/update/${productId}`,
-  //         formData,
-  //         { headers: { "Content-Type": "multipart/form-data" } }
-  //       );
-  //     } else {
-  //       // CREATE PRODUCT
-  //       response = await axios.post(
-  //         "http://localhost:7000/api/products/create",
-  //         formData,
-  //         { headers: { "Content-Type": "multipart/form-data" } }
-  //       );
-  //     }
-
-  //     if (response.status === 200 || response.status === 201) {
-  //       alert(
-  //         productId
-  //           ? "Product updated successfully!"
-  //           : "Product created successfully!"
-  //       );
-
-  //       // Reset fields after success
-  //       setProductId(null); // Reset product ID after update
-  //       setProductTitle("");
-  //       setProductMainCategory("");
-  //       setProductSubCategory("");
-  //       setProductMainImage(null);
-  //       setMainImagePreview(null);
-  //       setProductMinQuantity(null);
-  //       setProductMaxQuantity(null);
-  //       setPricing({ mrpPrice: "", sellingPrice: "", sku: "", quantity: "" });
-  //       setTax({ taxType: "flat", value: null });
-  //       setProductStatus("");
-  //       setProductStockVisibility("");
-  //       setProductLabel("");
-  //       setDescriptionSections([]);
-  //       setGalleryImages([]);
-  //       setSelectedImages([]);
-  //       setSeoTitle("");
-  //       setSeoDescription("");
-  //       setSeoUrl("");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving product:", error.response?.data || error);
-  //     alert("Failed to save product.");
-  //   }
-  // };
 
   const handleCreateProduct = async () => {
     if (!pricing.mrpPrice || !pricing.sellingPrice) {

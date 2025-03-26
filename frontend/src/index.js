@@ -9,6 +9,7 @@ import AdminGlobalProvider from "./Admin Panel/context/Admin_Global_Context";
 import { AllMediaProvider } from "./Admin Panel/context/All_Media_Context";
 import { SubCategoryProvider } from "./Admin Panel/context/SubCategory_Context";
 import { ProductProvider } from "./Admin Panel/context/Product_Create_Context";
+import { ProductVariantProvider } from "./Admin Panel/context/Product_Variant_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -30,7 +31,9 @@ root.render(
         <AllMediaProvider>
           <SubCategoryProvider>
             <ProductProvider>
-              <Admin_Panel_App />
+              <ProductVariantProvider>
+                <Admin_Panel_App />
+              </ProductVariantProvider>
             </ProductProvider>
           </SubCategoryProvider>
         </AllMediaProvider>

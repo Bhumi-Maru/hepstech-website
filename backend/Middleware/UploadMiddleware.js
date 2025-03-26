@@ -36,6 +36,7 @@ const upload = multer({ storage }).fields([
   { name: "sub_image", maxCount: 1 },
   { name: "productMainImage", maxCount: 1 },
   { name: "galleryImages", maxCount: 10 },
+  // { name: "productVariants", maxCount: 1 },
 ]);
 
 module.exports = upload;

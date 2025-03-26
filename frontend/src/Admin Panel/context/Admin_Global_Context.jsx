@@ -84,6 +84,7 @@ const AdminGlobalProvider = ({ children }) => {
   const [isChecked, setIsChecked] = useState({
     isContact: false,
     isOfferBanner: false,
+    Enable_Color_Option: false,
   });
 
   // Function to toggle dropdown dynamically
