@@ -6,7 +6,6 @@ const AdminGlobalProvider = ({ children }) => {
   //
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [isActive, setIsActive] = useState("All"); // Track Active Page
-  const [activeTab, setActiveTab] = useState("All"); // Track active tab
   const [toggleStates, setToggleStates] = useState({
     estimatedShippingTime: false,
     sizeChartStatus: false,
@@ -105,11 +104,6 @@ const AdminGlobalProvider = ({ children }) => {
     setPasswordVisible(!passwordVisible);
   };
 
-  //Track Active TabName
-  const handleActiveTabName = (tabName) => {
-    setActiveTab(tabName);
-  };
-
   //// Toggle the specific checkbox state
   const handleToggle = (key) => {
     setToggleStates((prev) => ({
@@ -157,9 +151,6 @@ const AdminGlobalProvider = ({ children }) => {
   return (
     <AdminGlobalContext.Provider
       value={{
-        activeTab,
-        setActiveTab,
-        handleActiveTabName,
         handleToggle,
         toggleStates,
         isActive,

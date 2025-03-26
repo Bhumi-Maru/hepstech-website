@@ -19,7 +19,7 @@ const CreateProductSchema = new mongoose.Schema(
     pricing: {
       mrpPrice: { type: Number, required: true, min: 0 },
       sellingPrice: { type: Number, required: true, min: 0 },
-      sku: { type: String, unique: true, trim: true },
+      sku: { type: String, unique: false, trim: true },
       quantity: { type: Number, default: 0, min: 0 },
     },
     tax: {
@@ -45,7 +45,7 @@ const CreateProductSchema = new mongoose.Schema(
     },
     productLabel: {
       type: String,
-      enum: ["none", "new", "offer", "flash sale"],
+      enum: ["none", "new", "offer", "flash_sale"],
       default: "none",
     },
   },

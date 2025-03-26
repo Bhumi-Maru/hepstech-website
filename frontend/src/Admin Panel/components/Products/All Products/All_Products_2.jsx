@@ -1,8 +1,14 @@
 import React from "react";
-import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
-export default function All_Products_2() {
-  const { activeTab, handleActiveTabName } = useAdminGlobalContext();
+export default function All_Products_2({
+  onStatusFilterChange,
+  activeStatusFilter,
+}) {
+  const handleStatusFilter = (status) => {
+    if (onStatusFilterChange) {
+      onStatusFilterChange(status);
+    }
+  };
   return (
     <>
       {/* ALL PRODUCTS SECTION 2 [ALL , ACTIVE , DRAFT] */}
@@ -12,13 +18,15 @@ export default function All_Products_2() {
             <button
               type="button"
               id="home-tab"
-              className={`tab-link ${activeTab === "All" ? "active" : ""}`}
-              onClick={() => handleActiveTabName("All")}
+              className={`tab-link ${
+                activeStatusFilter === "All" ? "active" : ""
+              }`}
+              onClick={() => handleStatusFilter("All")}
               data-toggle="tab"
               data-target="#home"
               role="tab"
               aria-controls="home"
-              aria-selected={activeTab === "All"}
+              aria-selected={activeStatusFilter === "All"}
             >
               All
             </button>
@@ -31,10 +39,12 @@ export default function All_Products_2() {
               data-toggle="tab"
               data-target="#profile"
               role="tab"
-              className={`tab-link ${activeTab === "Active" ? "active" : ""}`}
-              onClick={() => handleActiveTabName("Active")}
+              className={`tab-link ${
+                activeStatusFilter === "Active" ? "active" : ""
+              }`}
+              onClick={() => handleStatusFilter("Active")}
               aria-controls="profile"
-              aria-selected={activeTab === "Active"}
+              aria-selected={activeStatusFilter === "Active"}
             >
               Active
             </button>
@@ -47,10 +57,12 @@ export default function All_Products_2() {
               data-toggle="tab"
               data-target="#contact"
               role="tab"
-              className={`tab-link ${activeTab === "Draft" ? "active" : ""}`}
-              onClick={() => handleActiveTabName("Draft")}
+              className={`tab-link ${
+                activeStatusFilter === "Draft" ? "active" : ""
+              }`}
+              onClick={() => handleStatusFilter("Draft")}
               aria-controls="contact"
-              aria-selected={activeTab === "Draft"}
+              aria-selected={activeStatusFilter === "Draft"}
             >
               Draft
             </button>

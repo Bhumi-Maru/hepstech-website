@@ -10,6 +10,8 @@ export default function All_Products() {
   const [products, setProducts] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Default to 2 items per page
   const [sortOptions, setSortOptions] = useState("Product Title A-Z");
+  // Add this state to track the active status filter
+  const [activeStatusFilter, setActiveStatusFilter] = useState("All");
 
   // selected product for checkbox
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -81,8 +83,13 @@ export default function All_Products() {
 
   // Filter and sort products
   const filteredAndSortedProducts = React.useMemo(() => {
-    let result = [...products].filter((product) =>
-      product.productTitle.toLowerCase().includes(searchQuery.toLowerCase())
+    let result = [...products].filter(
+      (product) =>
+        product.productTitle
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) &&
+        (activeStatusFilter === "All" ||
+          product.productStatus === activeStatusFilter)
     );
 
     // Apply sorting based on the selected option
@@ -131,13 +138,16 @@ export default function All_Products() {
     }
 
     return result;
-  }, [products, searchQuery, sortOptions]);
+  }, [products, searchQuery, sortOptions, activeStatusFilter]);
   return (
     <div className="container">
       {/* ALL PRODUCT SECTION 1 [HEADING] */}
       <All_Products_1 />
       {/* ALL PRODUCTS SECTION 2 [ALL , ACTIVE , DRAFT] */}
-      <All_Products_2 />
+      <All_Products_2
+        onStatusFilterChange={(status) => setActiveStatusFilter(status)}
+        activeStatusFilter={activeStatusFilter}
+      />
       {/* ALL PRODUCTS SECTION 3 [SEARCH , SORTING ON PRODUCTS] */}
       <All_Products_3
         setSearchQuery={setSearchQuery}
