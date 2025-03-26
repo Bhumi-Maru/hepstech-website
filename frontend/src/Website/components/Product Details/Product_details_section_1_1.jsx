@@ -6,79 +6,79 @@ export default function Product_details_section_1_1() {
     "nature-2.jpg",
     "nature-3.jpg",
     "nature-4.jpg",
-    "nature-1.jpg",
-    "nature-2.jpg",
   ];
-  const [selectedImage, setSelectedImage] = useState(images[0]); // Set default main image
+
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [xZoomLoaded, setXZoomLoaded] = useState(false);
+  const [jQueryLoaded, setJQueryLoaded] = useState(false);
+
+  // Correct image path handling
+  const getImagePath = (imageName) => {
+    return `/website_assets/images/${imageName}`;
+  };
 
   useEffect(() => {
-    let xzoomScript;
+    // Load jQuery if not already loaded
+    if (!window.jQuery) {
+      const jqueryScript = document.createElement("script");
+      jqueryScript.src = "https://code.jquery.com/jquery-3.6.1.min.js";
+      jqueryScript.async = true;
+      jqueryScript.onload = () => setJQueryLoaded(true);
+      jqueryScript.onerror = () => console.error("jQuery failed to load");
+      document.body.appendChild(jqueryScript);
 
-    const loadJQuery = () => {
-      const script = document.createElement("script");
-      script.src = "https://code.jquery.com/jquery-3.6.0.min.js"; // Use a CDN link for jQuery
-      script.async = true;
-      document.body.appendChild(script);
-      return script;
-    };
-
-    const loadXZoom = () => {
-      xzoomScript = document.createElement("script");
-      xzoomScript.src = "../website assets/plugins/xzoom/xzoom.min.js"; // Ensure the correct path
-      xzoomScript.async = true;
-      document.body.appendChild(xzoomScript);
-      return xzoomScript;
-    };
-
-    // Load jQuery and then xZoom
-    const jqueryScript = loadJQuery();
-    jqueryScript.onload = () => {
-      const xzoomScript = loadXZoom();
-      xzoomScript.onload = () => {
-        // Initialize xZoom after both scripts are loaded
-        if (window.jQuery) {
-          window.$(".xzoom").xzoom({
-            zoomWidth: 400,
-            title: true,
-            tint: false,
-            Xoffset: 15,
-          });
+      return () => {
+        if (jqueryScript.parentNode) {
+          document.body.removeChild(jqueryScript);
         }
       };
-    };
-
-    return () => {
-      // Cleanup scripts on unmount
-      if (jqueryScript && jqueryScript.parentNode) {
-        document.body.removeChild(jqueryScript);
-      }
-      if (xzoomScript && xzoomScript.parentNode) {
-        document.body.removeChild(xzoomScript);
-      }
-    };
+    } else {
+      setJQueryLoaded(true);
+    }
   }, []);
 
   useEffect(() => {
-    // Reinitialize xZoom when the selected image changes
-    if (window.jQuery) {
-      setTimeout(() => {
+    // Load xZoom after jQuery is loaded
+    if (jQueryLoaded && !window.$.fn.xzoom) {
+      const xzoomScript = document.createElement("script");
+      xzoomScript.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/xzoom/1.0.15/xzoom.min.js";
+      xzoomScript.async = true;
+      xzoomScript.onload = () => setXZoomLoaded(true);
+      xzoomScript.onerror = () => console.error("xZoom failed to load");
+      document.body.appendChild(xzoomScript);
+
+      return () => {
+        if (xzoomScript.parentNode) {
+          document.body.removeChild(xzoomScript);
+        }
+      };
+    }
+  }, [jQueryLoaded]);
+
+  useEffect(() => {
+    // Initialize xZoom when both libraries are loaded
+    if (xZoomLoaded && jQueryLoaded) {
+      try {
         window.$(".xzoom").xzoom({
           zoomWidth: 400,
           title: true,
           tint: false,
           Xoffset: 15,
         });
-      }, 100); // Timeout to ensure the image is loaded
+      } catch (error) {
+        console.error("Error initializing xZoom:", error);
+      }
     }
-  }, [selectedImage]);
+  }, [xZoomLoaded, jQueryLoaded, selectedImage]);
 
   useEffect(() => {
-    // Load Swiper JS script dynamically
-    const script = document.createElement("script");
-    script.src = "https://unpkg.com/swiper/swiper-bundle.min.js"; // CDN for Swiper JS
-    script.async = true;
-    script.onload = () => {
-      // Initialize Swiper for thumbnail navigation once the script loads
+    // Initialize Swiper
+    const swiperScript = document.createElement("script");
+    swiperScript.src =
+      "https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js";
+    swiperScript.async = true;
+    swiperScript.onload = () => {
       new window.Swiper(".gallery-thumbs", {
         spaceBetween: 10,
         slidesPerView: 4,
@@ -86,63 +86,61 @@ export default function Product_details_section_1_1() {
         watchSlidesVisibility: true,
         watchSlidesProgress: true,
         navigation: {
-          nextEl: ".swiper-button-next", // Link to the next button
-          prevEl: ".swiper-button-prev", // Link to the previous button
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
         },
       });
     };
-    document.body.appendChild(script);
+    document.body.appendChild(swiperScript);
+
     return () => {
-      document.body.removeChild(script); // Cleanup on unmount
+      if (swiperScript.parentNode) {
+        document.body.removeChild(swiperScript);
+      }
     };
-  }, []); // Empty dependency array ensures this effect runs once on mount
+  }, []);
 
   return (
-    <>
-      {/* PRODUCT DETAILS SECTION */}
-      <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
-        <div className="product-carousel">
-          {/* Main Image Section */}
-          <div className="swiper-container gallery-top">
-            <div className="status-badge lg sale">Sale</div>
-            <div
-              className="swiper-wrapper xzoom-container"
-              style={{ height: "450px" }}
-            >
-              <div className="bg-white swiper-slide">
-                <img
-                  className="xzoom"
-                  src={`../website assets/images/${selectedImage}`}
-                  xoriginal={`../website assets/images/${selectedImage}`}
-                  alt="Main Product"
-                />
-              </div>
+    <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
+      <div className="product-carousel">
+        {/* Main Image Section */}
+        <div className="swiper-container gallery-top">
+          <div className="status-badge lg sale">Sale</div>
+          <div
+            className="swiper-wrapper xzoom-container"
+            style={{ height: "450px" }}
+          >
+            <div className="bg-white swiper-slide">
+              <img
+                className="xzoom"
+                src={getImagePath(selectedImage)}
+                xoriginal={getImagePath(selectedImage)}
+                alt="Main Product"
+              />
             </div>
-          </div>
-          {/* Thumbnail Images */}
-          <div className="relative">
-            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
-            <div className="swiper-container gallery-thumbs">
-              <div className="swiper-wrapper">
-                {images.map((img, index) => (
-                  <div
-                    key={index}
-                    className="bg-white swiper-slide cursor-pointer"
-                    style={{ height: "100px", width: "100px" }}
-                    onClick={() => setSelectedImage(img)} // Set selected image on click
-                  >
-                    <img
-                      src={`../website assets/images/${img}`}
-                      alt={`Thumbnail ${index + 1}`}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
           </div>
         </div>
+
+        {/* Thumbnail Images */}
+        <div className="relative">
+          <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
+          <div className="swiper-container gallery-thumbs">
+            <div className="swiper-wrapper">
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className="bg-white swiper-slide cursor-pointer"
+                  style={{ height: "100px", width: "100px" }}
+                  onClick={() => setSelectedImage(img)}
+                >
+                  <img src={getImagePath(img)} alt={`Thumbnail ${index + 1}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

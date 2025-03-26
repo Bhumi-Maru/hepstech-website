@@ -1,12 +1,11 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useProductContext } from "../../../context/Product_Create_Context";
 
 export default function Create_Products_1() {
   const { isActive, handleActive } = useAdminGlobalContext();
-  const { productId } = useParams();
-  console.log("pro", productId);
+  const { productId } = useProductContext();
   return (
     <>
       {/* CREATE PRODUCTS SECTION 1 [HEADING] */}

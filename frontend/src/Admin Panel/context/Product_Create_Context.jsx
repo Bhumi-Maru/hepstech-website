@@ -57,6 +57,8 @@ export const ProductProvider = ({ children }) => {
     ]);
   };
 
+  console.log("product id", productId);
+
   // handle open product variant
   // const handleProductVariant = () => {
   //   setIsOpenProduct({
@@ -160,12 +162,12 @@ export const ProductProvider = ({ children }) => {
     formData.append("productMainImage", productMainImage);
     formData.append("productPurchaseMinQuantity", productMinQuantity);
     formData.append("productPurchaseMaxQuantity", productMaxQuantity);
-    formData.append("pricing.mrpPrice", pricing.mrpPrice);
-    formData.append("pricing.sellingPrice", pricing.sellingPrice);
+    formData.append("pricing.mrpPrice", Number(pricing.mrpPrice) || 0);
+    formData.append("pricing.sellingPrice", Number(pricing.sellingPrice) || 0);
     formData.append("pricing.sku", pricing.sku);
-    formData.append("pricing.quantity", pricing.quantity);
+    formData.append("pricing.quantity", Number(pricing.quantity) || 0);
     formData.append("tax.taxType", tax.taxType);
-    formData.append("tax.value", tax.value);
+    formData.append("tax.value", Number(tax.value) || 0);
     formData.append("productStatus", productStatus);
     formData.append("productStockVisibility", productStockVisibility);
     formData.append("productLabel", productLabel);

@@ -150,116 +150,136 @@ const updateProduct = async (req, res) => {
       seoUrl,
     } = req.body;
 
-    // Handle Uploaded Files
+    // Step 3: Handle Main Image
     const productMainImage = req.files?.productMainImage
       ? req.files.productMainImage[0].path.replace(/\\/g, "/")
-      : productExists.productMainImage; // Keep old image if not provided
+      : productExists.productMainImage;
 
-    const galleryImages = req.files?.galleryImages
-      ? req.files.galleryImages.map((file) => file.path.replace(/\\/g, "/"))
-      : productExists.galleryImages; // Keep old images if not provided
+    // Step 4: Handle Gallery Images - Initialize with existing images
+    let galleryImages = [...(productExists.galleryImages || [])];
 
-    // Parse Pricing JSON from FormData
-    const pricing = req.body.pricing
-      ? JSON.parse(req.body.pricing)
-      : productExists.pricing;
+    // If new gallery images are uploaded
+    if (req.files?.galleryImages) {
+      const newGalleryImages = req.files.galleryImages.map((file) =>
+        file.path.replace(/\\/g, "/")
+      );
 
-    // Parse Tax JSON from FormData
-    const tax = req.body.tax ? JSON.parse(req.body.tax) : productExists.tax;
+      // Add new images to the existing array
+      galleryImages = [...galleryImages, ...newGalleryImages];
 
-    // Parse Description Sections JSON
-    let descriptionSections = [];
+      // Update ProductGalleryImage collection (append new images)
+      await ProductGalleryImage.findOneAndUpdate(
+        { productId: id },
+        {
+          $setOnInsert: { productId: id }, // Ensure productId is set if creating new
+          $push: { galleryImages: { $each: newGalleryImages } },
+        },
+        {
+          upsert: true, // Create if doesn't exist
+          new: true,
+        }
+      );
+    }
+
+    // Step 5: Handle Pricing
+    let pricing = productExists.pricing;
+    if (
+      req.body["pricing.mrpPrice"] ||
+      req.body["pricing.sellingPrice"] ||
+      req.body["pricing.sku"] ||
+      req.body["pricing.quantity"]
+    ) {
+      pricing = {
+        mrpPrice: req.body["pricing.mrpPrice"]
+          ? Number(req.body["pricing.mrpPrice"])
+          : pricing.mrpPrice,
+        sellingPrice: req.body["pricing.sellingPrice"]
+          ? Number(req.body["pricing.sellingPrice"])
+          : pricing.sellingPrice,
+        sku: req.body["pricing.sku"] || pricing.sku,
+        quantity: req.body["pricing.quantity"]
+          ? Number(req.body["pricing.quantity"])
+          : pricing.quantity,
+      };
+    }
+
+    // Step 6: Handle Tax
+    let tax = productExists.tax;
+    if (req.body["tax.taxType"] || req.body["tax.value"]) {
+      tax = {
+        taxType: req.body["tax.taxType"] || tax.taxType,
+        value: req.body["tax.value"]
+          ? Number(req.body["tax.value"])
+          : tax.value,
+      };
+    }
+
+    // Step 7: Handle Description Sections
     if (req.body.descriptionSections) {
       try {
-        descriptionSections = JSON.parse(req.body.descriptionSections);
+        const parsedSections = JSON.parse(req.body.descriptionSections);
+        const descriptionSections = parsedSections.map((section) => ({
+          sectionTitle: section.title,
+          description: section.description,
+        }));
+
+        await ProductDescription.findOneAndUpdate(
+          { productId: id },
+          { descriptionSections },
+          { new: true, upsert: true }
+        );
       } catch (error) {
-        return res.status(400).json({
-          message: "Invalid descriptionSections format",
-        });
-      }
-    } else {
-      descriptionSections = productExists.descriptionSections;
-    }
-
-    // Step 3: Validate Categories (If provided)
-    if (productMainCategory) {
-      const mainCategoryExists = await MainCategory.findById(
-        productMainCategory
-      );
-      if (!mainCategoryExists) {
-        return res.status(400).json({ message: "Invalid Main Category ID" });
+        return res
+          .status(400)
+          .json({ message: "Invalid descriptionSections format" });
       }
     }
 
-    if (productSubCategory) {
-      const subCategoryExists = await SubCategory.findById(productSubCategory);
-      if (!subCategoryExists) {
-        return res.status(400).json({ message: "Invalid Subcategory ID" });
-      }
-    }
+    // Step 8: Update SEO Data
+    await SeoTag.findOneAndUpdate(
+      { productId: id },
+      {
+        title: seoTitle || productExists.seo?.title,
+        description: seoDescription || productExists.seo?.description,
+        url: seoUrl || productExists.seo?.url,
+      },
+      { new: true, upsert: true }
+    );
 
-    // Step 4: Update Product
+    // Step 9: Update Product Model
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
-        // Prevents Overwriting Fields: Only updates specific fields instead of replacing the whole document
-        // Efficient: MongoDB updates only the necessary fields instead of rewriting the entire document.
-        $set: {
-          ...(productTitle && { productTitle }),
-          ...(productMainCategory && { productMainCategory }),
-          ...(productSubCategory && { productSubCategory }),
-          productMainImage, // Ensure image is updated
-          ...(productPurchaseMinQuantity && {
-            productPurchaseMinQuantity: Number(productPurchaseMinQuantity),
-          }),
-          ...(productPurchaseMaxQuantity && {
-            productPurchaseMaxQuantity: Number(productPurchaseMaxQuantity),
-          }),
-          pricing,
-          tax,
-          ...(productStatus && { productStatus }),
-          ...(productStockVisibility && { productStockVisibility }),
-          ...(productLabel && { productLabel }),
-        },
+        productTitle: productTitle || productExists.productTitle,
+        productMainCategory:
+          productMainCategory || productExists.productMainCategory,
+        productSubCategory:
+          productSubCategory || productExists.productSubCategory,
+        productPurchaseMinQuantity:
+          productPurchaseMinQuantity ||
+          productExists.productPurchaseMinQuantity,
+        productPurchaseMaxQuantity:
+          productPurchaseMaxQuantity ||
+          productExists.productPurchaseMaxQuantity,
+        productStatus: productStatus || productExists.productStatus,
+        productStockVisibility:
+          productStockVisibility || productExists.productStockVisibility,
+        productLabel: productLabel || productExists.productLabel,
+        productMainImage,
+        pricing,
+        tax,
+        galleryImages, // Update with combined gallery images
       },
       { new: true }
     );
 
-    // Step 5: Update Related Data (Only If Provided)
-    if (req.body.descriptionSections) {
-      await ProductDescription.findOneAndUpdate(
-        { productId: id },
-        { descriptionSections },
-        { new: true }
-      );
-    }
-
-    if (req.files?.galleryImages) {
-      await ProductGalleryImage.findOneAndUpdate(
-        { productId: id },
-        { galleryImages },
-        { new: true }
-      );
-    }
-
-    if (seoTitle || seoDescription || seoUrl) {
-      await SeoTag.findOneAndUpdate(
-        { productId: id },
-        {
-          ...(seoTitle && { title: seoTitle }),
-          ...(seoDescription && { description: seoDescription }),
-          ...(seoUrl && { url: seoUrl }),
-        },
-        { new: true }
-      );
-    }
-
     res.status(200).json({
-      message: "Product updated successfully!",
-      updatedProduct,
+      message: "Product updated successfully",
+      product: updatedProduct,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating product:", error);
+    res.status(500).json({ message: "Failed to update product", error });
   }
 };
 
