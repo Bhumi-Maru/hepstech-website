@@ -45,6 +45,12 @@ const createProduct = async (req, res) => {
       });
     }
 
+    console.log("Received files:", {
+      main: req.files["productMainImage"]?.[0]?.originalname,
+      gallery: req.files["galleryImages"]?.map((f) => f.originalname),
+      variants: req.files["variantImages"]?.map((f) => f.originalname),
+    });
+
     // Validate Main & Subcategory
     const mainCategory = await MainCategory.findById(productMainCategory);
     const subCategory = await SubCategory.findById(productSubCategory);
