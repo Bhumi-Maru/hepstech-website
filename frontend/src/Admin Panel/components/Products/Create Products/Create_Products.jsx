@@ -16,10 +16,55 @@ import Create_Products_13 from "./Create_Products_13";
 // import axios from "axios";
 import { useProductContext } from "../../../context/Product_Create_Context";
 import { useNavigate } from "react-router-dom";
+import { useProductVariantContext } from "../../../context/Product_Variant_Context";
 
 export default function Create_Products() {
   const { handleCreateProduct, productId } = useProductContext();
+  const { options, variants } = useProductVariantContext();
   const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    try {
+      // Prepare variant data
+      const variantOptions = options.map((option) => ({
+        name: option.name,
+        values: option.values,
+      }));
+
+      const productVariants = variants.map((variant) => ({
+        variantAttributes: [
+          ...(variant.color ? [{ name: "Color", value: variant.color }] : []),
+          ...(variant.option1
+            ? [{ name: options[0]?.name || "Option 1", value: variant.option1 }]
+            : []),
+          ...(variant.option2
+            ? [{ name: options[1]?.name || "Option 2", value: variant.option2 }]
+            : []),
+          ...(variant.option3
+            ? [{ name: options[2]?.name || "Option 3", value: variant.option3 }]
+            : []),
+        ],
+        mrpPrice: Number(variant.mrpPrice) || 0,
+        sellingPrice: Number(variant.sellingPrice) || 0,
+        sku: variant.sku || "",
+        quantity: Number(variant.quantity) || 0,
+        image: variant.image || null,
+      }));
+
+      // Call handleCreateProduct with the prepared data
+      const success = await handleCreateProduct({
+        options: variantOptions,
+        variants: productVariants,
+      });
+
+      if (success) {
+        navigate("/products/all-products");
+      }
+    } catch (error) {
+      console.error("Error submitting product:", error);
+      alert("Failed to submit product. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -78,10 +123,7 @@ export default function Create_Products() {
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={() => {
-              handleCreateProduct();
-              navigate("/products/all-products");
-            }}
+            onClick={handleSubmit}
           >
             {productId ? "Update" : "Create"}
           </button>

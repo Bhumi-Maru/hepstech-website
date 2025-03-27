@@ -16,7 +16,9 @@ const storage = multer.diskStorage({
     let uploadDir = path.join(__dirname, "../uploads");
 
     if (file.fieldname === "galleryImages") {
-      uploadDir = path.join(uploadDir, "gallery"); // Store gallery images in /uploads/gallery/
+      uploadDir = path.join(uploadDir, "gallery");
+    } else if (file.fieldname === "variantImages") {
+      uploadDir = path.join(uploadDir, "variants");
     }
 
     ensureDirectoryExists(uploadDir);
@@ -36,7 +38,7 @@ const upload = multer({ storage }).fields([
   { name: "sub_image", maxCount: 1 },
   { name: "productMainImage", maxCount: 1 },
   { name: "galleryImages", maxCount: 10 },
-  // { name: "productVariants", maxCount: 1 },
+  { name: "variantImages", maxCount: 1 },
 ]);
 
 module.exports = upload;

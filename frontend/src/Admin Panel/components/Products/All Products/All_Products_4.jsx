@@ -168,7 +168,7 @@ export default function All_Products_4({
                             </span>
                             <span className="ml-1 text-gray-600">in stock</span>
                           </td>
-                          <td>{product.type || "simple"}</td>
+                          <td>{product.productType || "simple"}</td>
                           <td>
                             <span
                               className={`badge ${
