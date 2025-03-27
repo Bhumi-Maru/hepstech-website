@@ -5,8 +5,15 @@ import Create_Product_5_Variant from "./Create_Product_5_Variant";
 
 export default function Create_Products_5() {
   const { toggleStates, handleToggle } = useAdminGlobalContext();
-  const { setPricing, setTax, tax, pricing, setIsOpenProduct } =
-    useProductContext();
+  const {
+    setPricing,
+    setTax,
+    tax,
+    pricing,
+    setIsOpenProduct,
+    productType,
+    setProductType,
+  } = useProductContext();
 
   const handlePricingChange = (e) => {
     const { name, value } = e.target;
@@ -25,11 +32,12 @@ export default function Create_Products_5() {
     }));
   };
 
-  //open craete_product_5_variant component when click on variant product
-  const handleProductVariant = (e) => {
-    const selectedValue = e.target.value; // Extract selected value
+  // Handle product type change
+  const handleProductTypeChange = (e) => {
+    const selectedType = e.target.value === "variant" ? "variant" : "simple";
+    setProductType(selectedType);
     setIsOpenProduct({
-      variant_Product_Section_5: selectedValue === "2", // Open when 'Variant Product' is selected
+      variant_Product_Section_5: selectedType === "variant",
     });
   };
 
@@ -50,139 +58,145 @@ export default function Create_Products_5() {
                   name="productType"
                   id="productType"
                   className="light"
-                  onChange={handleProductVariant}
+                  value={productType}
+                  onChange={handleProductTypeChange}
                 >
-                  <option value="1">Simple Product</option>
-                  <option value="2">Variant Product</option>
+                  <option value="simple">Simple Product</option>
+                  <option value="variant">Variant Product</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="px-4 pt-2 pb-5 sm:px-5" id="simpleProduct">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-5">
-            <div>
-              <label for="mrpPrice">MRP Price</label>
-              <div className="relative mt-1 rounded-md">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm">₹</span>
-                </div>
-                <input
-                  type="number"
-                  name="mrpPrice"
-                  id="mrpPrice"
-                  value={pricing.mrpPrice}
-                  className="!pl-7"
-                  placeholder="0.00"
-                  onChange={handlePricingChange}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label for="sellingPrice">Selling Price</label>
-              <div className="relative mt-1 rounded-md">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm">₹</span>
-                </div>
-                <input
-                  type="number"
-                  name="sellingPrice"
-                  value={pricing.sellingPrice}
-                  id="sellingPrice"
-                  className="!pl-7"
-                  placeholder="0.00"
-                  onChange={handlePricingChange}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label for="">SKU</label>
-              <div className="mt-1 form-input">
-                <input
-                  type="text"
-                  name="sku"
-                  value={pricing.sku}
-                  id="sku"
-                  placeholder="Enter SKU"
-                  className=""
-                  onChange={handlePricingChange}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label for="">Quantity</label>
-              <div className="mt-1 form-input">
-                <input
-                  type="number"
-                  name="quantity"
-                  id="quantity"
-                  placeholder="0"
-                  className=""
-                  value={pricing.quantity}
-                  onChange={handlePricingChange}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-2 lg:col-span-4">
-              <div className="relative flex items-start">
-                <div className="flex items-center h-5">
+        {productType === "simple" && (
+          <div className="px-4 pt-2 pb-5 sm:px-5" id="simpleProduct">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-5">
+              <div>
+                <label for="mrpPrice">MRP Price</label>
+                <div className="relative mt-1 rounded-md">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">₹</span>
+                  </div>
                   <input
-                    type="checkbox"
-                    id="chargeTax"
-                    className=""
-                    checked={toggleStates.pricingDetails}
-                    onChange={() => handleToggle("pricingDetails")}
+                    type="number"
+                    name="mrpPrice"
+                    id="mrpPrice"
+                    value={pricing.mrpPrice}
+                    className="!pl-7"
+                    placeholder="0.00"
+                    onChange={handlePricingChange}
                   />
                 </div>
-                <div className="ml-3 text-sm leading-5">
-                  <label for="chargeTax" className="font-medium text-gray-700">
-                    Charge tax on this product
-                  </label>
+              </div>
+
+              <div>
+                <label for="sellingPrice">Selling Price</label>
+                <div className="relative mt-1 rounded-md">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">₹</span>
+                  </div>
+                  <input
+                    type="number"
+                    name="sellingPrice"
+                    value={pricing.sellingPrice}
+                    id="sellingPrice"
+                    className="!pl-7"
+                    placeholder="0.00"
+                    onChange={handlePricingChange}
+                  />
                 </div>
               </div>
 
-              {toggleStates.pricingDetails && (
-                <>
-                  <div className="mt-3" id="vatTaxInput">
-                    <label for="">VAT & TAX</label>
-                    <div className="relative mt-1 rounded-md">
-                      <input
-                        type="number"
-                        name="value"
-                        id="taxValue"
-                        className="pr-12"
-                        placeholder="0.00"
-                        value={tax.value}
-                        onChange={handleTaxChange}
-                      />
+              <div>
+                <label for="">SKU</label>
+                <div className="mt-1 form-input">
+                  <input
+                    type="text"
+                    name="sku"
+                    value={pricing.sku}
+                    id="sku"
+                    placeholder="Enter SKU"
+                    className=""
+                    onChange={handlePricingChange}
+                  />
+                </div>
+              </div>
 
-                      <div className="absolute inset-y-0 right-0 flex items-center">
-                        <label for="type" className="sr-only">
-                          Type
-                        </label>
-                        <select
-                          id="taxType"
-                          name="taxType"
+              <div>
+                <label for="">Quantity</label>
+                <div className="mt-1 form-input">
+                  <input
+                    type="number"
+                    name="quantity"
+                    id="quantity"
+                    placeholder="0"
+                    className=""
+                    value={pricing.quantity}
+                    onChange={handlePricingChange}
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-2 lg:col-span-4">
+                <div className="relative flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      type="checkbox"
+                      id="chargeTax"
+                      className=""
+                      checked={toggleStates.pricingDetails}
+                      onChange={() => handleToggle("pricingDetails")}
+                    />
+                  </div>
+                  <div className="ml-3 text-sm leading-5">
+                    <label
+                      for="chargeTax"
+                      className="font-medium text-gray-700"
+                    >
+                      Charge tax on this product
+                    </label>
+                  </div>
+                </div>
+
+                {toggleStates.pricingDetails && (
+                  <>
+                    <div className="mt-3" id="vatTaxInput">
+                      <label for="">VAT & TAX</label>
+                      <div className="relative mt-1 rounded-md">
+                        <input
+                          type="number"
+                          name="value"
+                          id="taxValue"
+                          className="pr-12"
+                          placeholder="0.00"
+                          value={tax.value}
                           onChange={handleTaxChange}
-                          value={tax.taxType} // Ensures controlled input
-                          className="h-full py-0 pl-2 pr-8 bg-transparent border-transparent shadow-none"
-                        >
-                          <option value="flat">Flat</option>
-                          <option value="percentage">Percentage</option>
-                        </select>
+                        />
+
+                        <div className="absolute inset-y-0 right-0 flex items-center">
+                          <label for="type" className="sr-only">
+                            Type
+                          </label>
+                          <select
+                            id="taxType"
+                            name="taxType"
+                            onChange={handleTaxChange}
+                            value={tax.taxType} // Ensures controlled input
+                            className="h-full py-0 pl-2 pr-8 bg-transparent border-transparent shadow-none"
+                          >
+                            <option value="flat">Flat</option>
+                            <option value="percentage">Percentage</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <Create_Product_5_Variant />
       </div>

@@ -1,23 +1,109 @@
 import React from "react";
-import { useProductVariantContext } from "../../../context/Product_Variant_Context";
+import { useProductContext } from "../../../context/Product_Create_Context";
 
 export default function Create_Product_5_AddSection() {
   const {
-    options,
-    removeOption,
-    addOptionValue,
-    removeOptionValue,
-    addOption,
-  } = useProductVariantContext();
+    variantOptions,
+    setVariantOptions,
+    productVariants,
+    setProductVariants,
+  } = useProductContext();
+
+  // Function to add a new option (Max 3 options allowed)
+  const addOption = () => {
+    if (variantOptions.length >= 3) {
+      alert("You can only add up to 3 variant options.");
+      return;
+    }
+    setVariantOptions([...variantOptions, { name: "", values: [] }]);
+  };
+
+  // Function to remove an option
+  const removeOption = (index) => {
+    const newOptions = [...variantOptions];
+    newOptions.splice(index, 1);
+    setVariantOptions(newOptions);
+
+    // Also update variants to remove any references to this option
+    const updatedVariants = productVariants.map((variant) => {
+      const newAttributes = variant.variantAttributes.filter(
+        (attr) => attr.name !== variantOptions[index].name
+      );
+      return { ...variant, variantAttributes: newAttributes };
+    });
+    setProductVariants(updatedVariants);
+  };
+
+  // Function to update an option name
+  const updateOptionName = (index, newName) => {
+    const oldName = variantOptions[index].name;
+    const updatedOptions = [...variantOptions];
+    updatedOptions[index].name = newName;
+    setVariantOptions(updatedOptions);
+
+    // Update variant attributes if option name changed
+    if (oldName && oldName !== newName) {
+      const updatedVariants = productVariants.map((variant) => {
+        const newAttributes = variant.variantAttributes.map((attr) => {
+          if (attr.name === oldName) {
+            return { ...attr, name: newName };
+          }
+          return attr;
+        });
+        return { ...variant, variantAttributes: newAttributes };
+      });
+      setProductVariants(updatedVariants);
+    }
+  };
+
+  // Function to add a value to an option
+  const addOptionValue = (optionIndex, value) => {
+    if (value.trim() === "") return;
+
+    setVariantOptions((prevOptions) => {
+      const updatedOptions = [...prevOptions];
+      if (!updatedOptions[optionIndex].values.includes(value)) {
+        updatedOptions[optionIndex].values = [
+          ...updatedOptions[optionIndex].values,
+          value,
+        ];
+      }
+      return updatedOptions;
+    });
+  };
+
+  // Function to remove a value from an option
+  const removeOptionValue = (optionIndex, valueIndex) => {
+    const optionName = variantOptions[optionIndex].name;
+    const valueToRemove = variantOptions[optionIndex].values[valueIndex];
+
+    setVariantOptions((prevOptions) => {
+      const updatedOptions = [...prevOptions];
+      updatedOptions[optionIndex].values = updatedOptions[
+        optionIndex
+      ].values.filter((_, i) => i !== valueIndex);
+      return updatedOptions;
+    });
+
+    // Remove any variants that use this value
+    setProductVariants((prevVariants) =>
+      prevVariants.filter(
+        (variant) =>
+          !variant.variantAttributes.some(
+            (attr) => attr.name === optionName && attr.value === valueToRemove
+          )
+      )
+    );
+  };
+
   return (
     <>
-      {/* CREATE PRODUCT 5[2] ADD SECTION */}
       <div className="divide-y divide-gray-200">
-        {options.map((option, index) => (
+        {variantOptions.map((option, index) => (
           <div key={index} className="py-4 sm:flex sm:items-start sm:space-x-4">
             <div className="w-full sm:w-36 xl:w-48">
               <div className="flex items-center justify-between">
-                <label>{option.name}</label>
+                <label>{option.name || `Option ${index + 1}`}</label>
                 {index > 0 && (
                   <button
                     type="button"
@@ -31,16 +117,13 @@ export default function Create_Product_5_AddSection() {
               <div className="mt-1 form-input">
                 <input
                   type="text"
-                  placeholder={`Enter ${option.name} value`}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      addOptionValue(index, e.target.value);
-                      e.target.value = "";
-                    }
-                  }}
+                  placeholder="Enter option name"
+                  value={option.name}
+                  onChange={(e) => updateOptionName(index, e.target.value)}
                 />
               </div>
             </div>
+
             <div className="flex-1 mt-2 sm:mt-0">
               <label className="invisible opacity-0">{option.name}</label>
               <div className="flex items-start mt-1 space-x-4">
@@ -80,6 +163,7 @@ export default function Create_Product_5_AddSection() {
                   Add
                 </button>
               </div>
+
               <div>
                 <div className="flex flex-wrap items-center gap-3 mt-4">
                   {option.values.map((value, valueIndex) => (
@@ -117,7 +201,7 @@ export default function Create_Product_5_AddSection() {
         ))}
       </div>
 
-      {options.length < 3 && (
+      {variantOptions.length < 3 && (
         <button type="button" className="btn btn-light" onClick={addOption}>
           <svg
             className="w-5 h-5 mr-2 -ml-1 text-gray-500"
@@ -129,7 +213,7 @@ export default function Create_Product_5_AddSection() {
               fillRule="evenodd"
               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
               clipRule="evenodd"
-            ></path>
+            />
           </svg>
           Add Option
         </button>

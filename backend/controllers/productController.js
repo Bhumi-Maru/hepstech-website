@@ -2,6 +2,7 @@ const Product = require("../models/CreateProductModel");
 const ProductDescription = require("../models/ProductDescription");
 const ProductGalleryImage = require("../models/ProductGalleryImageModel");
 const SeoTag = require("../models/ProductSEO");
+const ProductVariant = require("../models/ProductVariantModel");
 const MainCategory = require("../models/mainCategoryModel");
 const SubCategory = require("../models/subCategoryModel");
 
@@ -18,69 +19,88 @@ const createProduct = async (req, res) => {
       productStockVisibility,
       productLabel,
       productType,
-      variantOptions,
       seoTitle,
       seoDescription,
       seoUrl,
     } = req.body;
 
-    // Handle Uploaded Files
-    const productMainImage = req.files["productMainImage"]
-      ? req.files["productMainImage"][0].path.replace(/\\/g, "/")
-      : null;
+    console.log(req.body); // Debugging incoming data
 
-    const galleryImages = req.files["galleryImages"]
-      ? req.files["galleryImages"].map((file) => file.path.replace(/\\/g, "/"))
-      : [];
+    // Handle File Uploads
+    const productMainImage =
+      req.files["productMainImage"]?.[0]?.path.replace(/\\/g, "/") || null;
+    const galleryImages =
+      req.files["galleryImages"]?.map((file) =>
+        file.path.replace(/\\/g, "/")
+      ) || [];
 
-    // 🔹 Check if Main & Subcategories exist
+    // Handle Variant Images Mapping
+    const variantImagesMap = {};
+    if (req.files["variantImages"]) {
+      req.files["variantImages"].forEach((file) => {
+        const match = file.originalname.match(/variant-(\d+)-image/); // Extract variant index
+        if (match) {
+          variantImagesMap[match[1]] = file.path.replace(/\\/g, "/");
+        }
+      });
+    }
+
+    // Validate Main & Subcategory
     const mainCategory = await MainCategory.findById(productMainCategory);
     const subCategory = await SubCategory.findById(productSubCategory);
-
     if (!mainCategory || !subCategory) {
       return res
         .status(400)
         .json({ message: "Invalid Main or Subcategory ID" });
     }
 
-    // 🔹 Fix: Extract and parse pricing & tax from FormData
-    const pricing = {
-      mrpPrice: Number(req.body["pricing.mrpPrice"]),
-      sellingPrice: Number(req.body["pricing.sellingPrice"]),
-      sku: req.body["pricing.sku"],
-      quantity: Number(req.body["pricing.quantity"]),
-    };
+    // Parse Pricing & Tax
+    const pricing =
+      productType === "simple"
+        ? {
+            mrpPrice: Number(req.body["pricing.mrpPrice"]),
+            sellingPrice: Number(req.body["pricing.sellingPrice"]),
+            sku: req.body["pricing.sku"],
+            quantity: Number(req.body["pricing.quantity"]),
+          }
+        : undefined;
 
     const tax = {
       taxType: req.body["tax.taxType"],
       value: Number(req.body["tax.value"]),
     };
 
-    // ✅ **Fixing descriptionSections parsing**
-    let descriptionSections = [];
-    if (req.body.descriptionSections) {
+    // Helper function to parse JSON fields safely
+    const parseJSON = (field) => {
       try {
-        const parsedSections = JSON.parse(req.body.descriptionSections);
-        descriptionSections = parsedSections.map((section) => ({
-          sectionTitle: section.title,
-          description: section.description,
-        }));
+        return req.body[field] ? JSON.parse(req.body[field]) : [];
       } catch (error) {
-        return res
-          .status(400)
-          .json({ message: "Invalid descriptionSections format" });
+        return res.status(400).json({ message: `Invalid ${field} format` });
       }
-    }
+    };
 
-    // 🔹 Step 1: Create Product
+    const variantOptions = parseJSON("variantOptions");
+    let productVariants = parseJSON("productVariants");
+
+    const descriptionSections = parseJSON("descriptionSections").map(
+      (section) => ({
+        sectionTitle: section.title,
+        description: section.description,
+      })
+    );
+
+    // Create Product
     const newProduct = new Product({
       productTitle,
       productMainCategory,
       productSubCategory,
-      productMainImage, // Store file path in DB
+      productMainImage,
       productPurchaseMinQuantity,
       productPurchaseMaxQuantity,
       pricing,
+      productType,
+      variantOptions: productType === "variant" ? variantOptions : [],
+      productVariants: [],
       tax,
       productStatus,
       productStockVisibility,
@@ -89,38 +109,54 @@ const createProduct = async (req, res) => {
 
     await newProduct.save();
 
-    // 🔹 Step 2: Create Product Description
-    const newDescription = new ProductDescription({
+    // Create Product Description
+    await new ProductDescription({
       productId: newProduct._id,
-      descriptionSections, // Now correctly parsed
-    });
+      descriptionSections,
+    }).save();
 
-    await newDescription.save();
-
-    // 🔹 Step 3: Create Gallery Images
-    const newGallery = new ProductGalleryImage({
+    // Create Gallery Images
+    await new ProductGalleryImage({
       productId: newProduct._id,
-      galleryImages, // Store file paths in DB
-    });
+      galleryImages,
+    }).save();
 
-    await newGallery.save();
-
-    // 🔹 Step 4: Create SEO Tags
-    const newSeoTag = new SeoTag({
+    // Create SEO Tags
+    await new SeoTag({
       productId: newProduct._id,
       title: seoTitle,
       description: seoDescription,
       url: seoUrl,
-    });
+    }).save();
 
-    await newSeoTag.save();
+    // Create Variants if applicable
+    if (productType === "variant") {
+      let createdVariants = [];
+
+      for (let i = 0; i < productVariants.length; i++) {
+        let variant = productVariants[i];
+
+        const newVariant = new ProductVariant({
+          productId: newProduct._id,
+          variantAttributes: variant.variantAttributes,
+          mrpPrice: variant.mrpPrice,
+          sellingPrice: variant.sellingPrice,
+          sku: variant.sku,
+          quantity: variant.quantity,
+          image: variantImagesMap[i] || null, // Assign uploaded image if available
+        });
+
+        await newVariant.save();
+        createdVariants.push(newVariant._id);
+      }
+
+      newProduct.productVariants = createdVariants;
+      await newProduct.save();
+    }
 
     res.status(201).json({
       message: "Product created successfully!",
       product: newProduct,
-      description: newDescription,
-      gallery: newGallery,
-      seo: newSeoTag,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

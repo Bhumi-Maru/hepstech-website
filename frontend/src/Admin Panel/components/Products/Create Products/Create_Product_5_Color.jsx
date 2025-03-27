@@ -8,6 +8,14 @@ export default function Create_Product_5_Color() {
 
   const { isChecked, handleCheckboxChange } = useAdminGlobalContext();
 
+  const handleColorNameChange = (e) => {
+    setNewColor((prev) => ({ ...prev, name: e.target.value }));
+  };
+
+  const handleColorHexChange = (e) => {
+    setNewColor((prev) => ({ ...prev, hex: e.target.value }));
+  };
+
   return (
     <>
       {/* CREATE PRODUCT 5[1] COLOR CREATE */}
@@ -37,9 +45,7 @@ export default function Create_Product_5_Color() {
                 <input
                   type="text"
                   value={newColor.name}
-                  onChange={(e) =>
-                    setNewColor({ ...newColor, name: e.target.value })
-                  }
+                  onChange={handleColorNameChange}
                   placeholder="Color name"
                 />
               </div>
@@ -50,9 +56,7 @@ export default function Create_Product_5_Color() {
                 <input
                   type="color"
                   value={newColor.hex}
-                  onChange={(e) =>
-                    setNewColor({ ...newColor, hex: e.target.value })
-                  }
+                  onChange={handleColorHexChange}
                   className="block w-full border border-gray-300 rounded-md h-9"
                 />
                 <button
