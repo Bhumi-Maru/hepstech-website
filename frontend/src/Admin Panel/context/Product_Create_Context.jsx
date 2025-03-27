@@ -302,7 +302,7 @@ export const ProductProvider = ({ children }) => {
       }));
 
       // Prepare variants data
-      const variantsData = productVariants.map((variant) => ({
+      const variantsData = productVariants.map((variant, index) => ({
         variantAttributes: variant.variantAttributes.map((attr) => ({
           name: attr.name,
           value: attr.value,
@@ -314,20 +314,22 @@ export const ProductProvider = ({ children }) => {
         // Handle image if present
         // image: variant.image ? "variant_image_" + variant.id : null,
         // Send filename reference if image exists
-        image: variant.image ? variant.image.name : null,
+        // image: variant.image ? variant.image.name : null,
+        index: index,
       }));
 
       // Append to formData
       formData.append("variantOptions", JSON.stringify(optionsData));
       formData.append("productVariants", JSON.stringify(variantsData));
 
-      // Append variant images
-      productVariants.forEach((variant) => {
+      // Append variant images with proper naming convention
+      productVariants.forEach((variant, index) => {
         if (variant.image) {
+          // Use a consistent naming pattern the backend can parse
           formData.append(
             "variantImages",
             variant.image,
-            "image" + `variant-${variant.id}`
+            `variant-${index}-image` // This pattern matches backend expectation
           );
         }
       });
