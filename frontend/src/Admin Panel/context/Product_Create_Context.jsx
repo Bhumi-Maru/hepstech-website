@@ -48,21 +48,6 @@ export const ProductProvider = ({ children }) => {
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
   const [seoUrl, setSeoUrl] = useState("");
-  // const [variantOptions, setVariantOptions] = useState([
-  //   { name: "", values: [] },
-  // ]);
-  // const [productVariants, setProductVariants] = useState([
-  //   {
-  //     variantAttributes: [
-  //       { name: "", value: "" },
-  //       { name: "", value: "" },
-  //     ],
-  //     mrpPrice: "",
-  //     sellingPrice: "",
-  //     sku: "",
-  //     quantity: "",
-  //   },
-  // ]);
 
   const [productType, setProductType] = useState("simple");
 
@@ -528,15 +513,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  // ✅ Add a new option (max 3 options allowed)
-  // const addOption = () => {
-  //   if (variantOptions.length >= 3) {
-  //     alert("You can only add up to 3 variant options.");
-  //     return;
-  //   }
-  //   setVariantOptions([...variantOptions, { name: "", values: [] }]);
-  // };
-
   const handleEdit = async (id) => {
     return await fetchProductForEdit(id);
   };
@@ -561,93 +537,14 @@ export const ProductProvider = ({ children }) => {
     setSeoTitle("");
     setSeoDescription("");
     setSeoUrl("");
+
+    setProductType("simple");
+    setProductVariants([]);
+    setVariantOptions([]);
+    setIsOpenProduct({
+      variant_Product_Section_5: false,
+    });
   };
-
-  // Function to add a new color
-  // const addColor = () => {
-  //   if (newColor.name.trim() !== "") {
-  //     setColors([...colors, newColor]);
-  //     setNewColor({ name: "", hex: "#000000" });
-  //   }
-  // };
-
-  // // Function to remove a color
-  // const removeColor = (index) => {
-  //   setColors((prevColors) => prevColors.filter((_, i) => i !== index));
-  // };
-
-  // // Function to add a new option
-  // const addOption = () => {
-  //   if (options.length < 3) {
-  //     setOptions([
-  //       ...options,
-  //       { name: `Option ${options.length + 1}`, values: [] },
-  //     ]);
-  //   }
-  // };
-
-  // // Function to remove an option
-  // const removeOption = (index) => {
-  //   setOptions(options.filter((_, i) => i !== index));
-  // };
-
-  // // Function to add a value to an option
-  // const addOptionValue = (optionIndex, value) => {
-  //   if (value.trim() === "") return;
-
-  //   setOptions((prevOptions) => {
-  //     const updatedOptions = [...prevOptions];
-  //     updatedOptions[optionIndex].values = [
-  //       ...updatedOptions[optionIndex].values,
-  //       value,
-  //     ];
-  //     return updatedOptions;
-  //   });
-  // };
-
-  // // Function to remove a value from an option
-  // const removeOptionValue = (optionIndex, valueIndex) => {
-  //   setOptions((prevOptions) => {
-  //     const updatedOptions = [...prevOptions];
-  //     updatedOptions[optionIndex].values = updatedOptions[
-  //       optionIndex
-  //     ].values.filter((_, i) => i !== valueIndex);
-  //     return updatedOptions;
-  //   });
-  // };
-
-  // // Function to add a new variant
-  // const addVariant = () => {
-  //   setVariants((prevVariants) => [
-  //     ...prevVariants,
-  //     {
-  //       id: prevVariants.length + 1,
-  //       color: colors[0]?.name || "",
-  //       option1: options[0]?.values[0] || "",
-  //       option2: options[1]?.values[0] || "",
-  //       option3: options[2]?.values[0] || "",
-  //       mrpPrice: "",
-  //       sellingPrice: "",
-  //       sku: "",
-  //       quantity: "",
-  //       image: null,
-  //     },
-  //   ]);
-  // };
-
-  // // Function to remove a variant
-  // const removeVariant = (id) => {
-  //   setVariants((prevVariants) => prevVariants.filter((v) => v.id !== id));
-  // };
-
-  // // Function to handle variant field changes
-  // const handleVariantChange = (id, field, value) => {
-  //   setVariants((prevVariants) =>
-  //     prevVariants.map((variant) =>
-  //       variant.id === id ? { ...variant, [field]: value } : variant
-  //     )
-  //   );
-  // };
 
   return (
     <ProductContext.Provider
