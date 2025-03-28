@@ -191,6 +191,7 @@ const updateProduct = async (req, res) => {
       seoTitle,
       seoDescription,
       seoUrl,
+      productType,
     } = req.body;
 
     // Step 3: Handle Main Image
@@ -289,6 +290,58 @@ const updateProduct = async (req, res) => {
       { new: true, upsert: true }
     );
 
+    let variantOptions = req.body.variantOptions
+      ? JSON.parse(req.body.variantOptions)
+      : productExists.variantOptions;
+
+    let productVariants = req.body.productVariants
+      ? JSON.parse(req.body.productVariants)
+      : productExists.productVariants;
+
+    const variantImages =
+      req.files?.variantImages?.map((file) => file.path.replace(/\\/g, "/")) ||
+      [];
+
+    if (productType === "variant") {
+      let updatedVariants = [];
+
+      for (let i = 0; i < productVariants.length; i++) {
+        let variant = productVariants[i];
+
+        let existingVariant = await ProductVariant.findById(variant._id);
+
+        if (existingVariant) {
+          existingVariant.variantAttributes = variant.variantAttributes;
+          existingVariant.mrpPrice = variant.mrpPrice;
+          existingVariant.sellingPrice = variant.sellingPrice;
+          existingVariant.sku = variant.sku;
+          existingVariant.quantity = variant.quantity;
+
+          if (variantImages[i]) {
+            existingVariant.variantImages = [variantImages[i]];
+          }
+
+          await existingVariant.save();
+          updatedVariants.push(existingVariant._id);
+        } else {
+          const newVariant = new ProductVariant({
+            productId: id,
+            variantAttributes: variant.variantAttributes,
+            mrpPrice: variant.mrpPrice,
+            sellingPrice: variant.sellingPrice,
+            sku: variant.sku,
+            quantity: variant.quantity,
+            variantImages: variantImages[i] ? [variantImages[i]] : [],
+          });
+
+          await newVariant.save();
+          updatedVariants.push(newVariant._id);
+        }
+      }
+
+      productVariants = updatedVariants;
+    }
+
     // Step 9: Update Product Model
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
@@ -312,6 +365,9 @@ const updateProduct = async (req, res) => {
         pricing,
         tax,
         galleryImages, // Update with combined gallery images
+        productType,
+        variantOptions,
+        productVariants,
       },
       { new: true }
     );
@@ -337,6 +393,14 @@ const getAllProducts = async (req, res) => {
       .populate({
         path: "productSubCategory",
         select: "sub_category_id sub_category_title",
+      })
+      .populate({
+        path: "productVariants",
+        populate: {
+          path: "productId", // Ensures it links back to Product
+          select: "productTitle",
+        },
+        select: "variantAttributes mrpPrice sellingPrice sku quantity image",
       });
 
     const populatedProducts = await Promise.all(
@@ -379,18 +443,24 @@ const getProductById = async (req, res) => {
       .populate({
         path: "productSubCategory",
         select: "sub_category_id sub_category_title",
+      })
+      .populate({
+        path: "productVariants",
+        populate: {
+          path: "productId", // Ensures it links back to Product
+          select: "productTitle",
+        },
+        select: "variantAttributes mrpPrice sellingPrice sku quantity image",
       });
 
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    // Fetch related data separately
-    const description = await ProductDescription.findOne({
-      productId: product._id,
-    });
-    const gallery = await ProductGalleryImage.findOne({
-      productId: product._id,
-    });
-    const seo = await SeoTag.findOne({ productId: product._id });
+    // Fetch related data in parallel for performance improvement
+    const [description, gallery, seo] = await Promise.all([
+      ProductDescription.findOne({ productId: product._id }),
+      ProductGalleryImage.findOne({ productId: product._id }),
+      SeoTag.findOne({ productId: product._id }),
+    ]);
 
     res.status(200).json({
       ...product.toObject(),
@@ -414,6 +484,7 @@ const deleteProductById = async (req, res) => {
     await ProductDescription.deleteOne({ productId: id });
     await ProductGalleryImage.deleteOne({ productId: id });
     await SeoTag.deleteOne({ productId: id });
+    await ProductVariant.deleteOne({ productId: id });
 
     res
       .status(200)
@@ -435,6 +506,7 @@ const deleteSelectedProducts = async (req, res) => {
     await ProductDescription.deleteMany({ productId: { $in: ids } });
     await ProductGalleryImage.deleteMany({ productId: { $in: ids } });
     await SeoTag.deleteMany({ productId: { $in: ids } });
+    await ProductVariant.deleteMany({ productId: ids });
 
     res
       .status(200)
@@ -451,6 +523,7 @@ const deleteAllProducts = async (req, res) => {
     await ProductDescription.deleteMany({});
     await ProductGalleryImage.deleteMany({});
     await SeoTag.deleteMany({});
+    await ProductVariant.deleteMany({});
 
     res.status(200).json({ message: "All products deleted successfully!" });
   } catch (error) {
