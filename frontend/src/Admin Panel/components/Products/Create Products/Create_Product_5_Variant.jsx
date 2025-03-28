@@ -103,7 +103,7 @@ export default function Create_Product_5_Variant() {
       <div className="px-4 py-5 border-t border-gray-200 sm:px-5">
         <div className="flex items-center justify-between">
           <p className="text-xs font-medium text-gray-600">Variant Details</p>
-          <button
+          {/* <button
             type="button"
             className="btn btn-light"
             onClick={generateAllVariants}
@@ -121,7 +121,7 @@ export default function Create_Product_5_Variant() {
               ></path>
             </svg>
             Generate All Variants
-          </button>
+          </button> */}
         </div>
 
         <div className="flow-root mt-2">
@@ -207,7 +207,7 @@ export default function Create_Product_5_Variant() {
                                   }
                                 >
                                   {" "}
-                                  <option value="" selected>
+                                  <option value="" disabled>
                                     Select {option.name}
                                   </option>
                                   {option.values.map((value) => (
