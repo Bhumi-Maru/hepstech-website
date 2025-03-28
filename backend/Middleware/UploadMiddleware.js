@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}_${file.originalname}`;
+    const uniqueName = `${Date.now()}_${file.originalname}`; // ✅ Keeps original filename with extension
     cb(null, uniqueName);
   },
 });
@@ -38,7 +38,7 @@ const upload = multer({ storage }).fields([
   { name: "sub_image", maxCount: 1 },
   { name: "productMainImage", maxCount: 1 },
   { name: "galleryImages", maxCount: 10 },
-  { name: "variantImages", maxCount: 1 },
+  { name: "variantImages", maxCount: 10 },
 ]);
 
 module.exports = upload;

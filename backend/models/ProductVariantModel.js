@@ -18,7 +18,7 @@ const ProductVariantSchema = new mongoose.Schema(
     sellingPrice: { type: Number, min: 0 },
     sku: { type: String, trim: true, unique: false },
     quantity: { type: Number, default: 0, min: 0 },
-    image: { type: String, trim: true }, // URL or image path
+    image: [{ type: String, trim: true }], /// URL or image path
   },
   { timestamps: true }
 );
