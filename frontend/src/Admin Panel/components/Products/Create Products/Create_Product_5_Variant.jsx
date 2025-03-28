@@ -77,16 +77,12 @@ export default function Create_Product_5_Variant() {
   // Handle image upload
   // Handle image upload
   const handleImageUpload = (variantId, file) => {
-    if (!file) return;
+    const imagePreview = URL.createObjectURL(file); // Create preview URL
 
-    setProductVariants((prevVariants) =>
-      prevVariants.map((variant) =>
+    setProductVariants(
+      productVariants.map((variant) =>
         variant.id === variantId
-          ? {
-              ...variant,
-              image: file, // Store the File object
-              imagePreview: URL.createObjectURL(file), // Store preview URL
-            }
+          ? { ...variant, image: file, imagePreview }
           : variant
       )
     );
@@ -340,7 +336,7 @@ export default function Create_Product_5_Variant() {
                           <div className="mt-1">
                             <input
                               type="file"
-                              name="variantImages"
+                              name="image"
                               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                               onChange={(e) =>
                                 handleImageUpload(variant.id, e.target.files[0])
@@ -349,8 +345,8 @@ export default function Create_Product_5_Variant() {
                             {variant.image && (
                               <div className="mt-2">
                                 <p className="text-sm text-gray-500">
-                                  {variant.image.name}
-                                </p>
+                                  {variant.image?.name}
+                                  </p>
                                 {variant.imagePreview && (
                                   <img
                                     src={variant.imagePreview}

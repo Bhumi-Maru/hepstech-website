@@ -300,6 +300,7 @@ export const ProductProvider = ({ children }) => {
         // image: variant.image ? "variant_image_" + variant.id : null,
         // Send filename reference if image exists
         // image: variant.image ? variant.image.name : null,
+        image: variant.image ? variant.image.name : "", // Store filename reference
         index: index,
       }));
 
@@ -314,7 +315,8 @@ export const ProductProvider = ({ children }) => {
           formData.append(
             "variantImages",
             variant.image,
-            variant.image.name // Use the original filename
+            variant.image.name, // Use the original filename
+            console.log("variant", variant.image)
           );
         }
       });
@@ -347,39 +349,6 @@ export const ProductProvider = ({ children }) => {
     galleryImages.forEach((image) => {
       formData.append("galleryImages", image);
     });
-
-    // Append variant data if product type is variant
-    // if (productType === "variant") {
-    //   // Convert variant options format
-    //   // const variantOptions = options.map((option) => ({
-    //   //   name: option.name,
-    //   //   values: option.values,
-    //   // }));
-
-    //   // // Convert variants format
-    //   // const productVariants = variants.map((variant) => ({
-    //   //   variantAttributes: [
-    //   //     ...(variant.color ? [{ name: "Color", value: variant.color }] : []),
-    //   //     ...(variant.option1
-    //   //       ? [{ name: options[0]?.name || "Option 1", value: variant.option1 }]
-    //   //       : []),
-    //   //     ...(variant.option2
-    //   //       ? [{ name: options[1]?.name || "Option 2", value: variant.option2 }]
-    //   //       : []),
-    //   //     ...(variant.option3
-    //   //       ? [{ name: options[2]?.name || "Option 3", value: variant.option3 }]
-    //   //       : []),
-    //   //   ],
-    //   //   mrpPrice: Number(variant.mrpPrice) || 0,
-    //   //   sellingPrice: Number(variant.sellingPrice) || 0,
-    //   //   sku: variant.sku || "",
-    //   //   quantity: Number(variant.quantity) || 0,
-    //   //   image: variant.image,
-    //   // }));
-
-    //   formData.append("variantOptions", JSON.stringify(variantOptions));
-    //   formData.append("productVariants", JSON.stringify(productVariants));
-    // }
 
     try {
       let response;
@@ -505,10 +474,40 @@ export const ProductProvider = ({ children }) => {
         setGalleryImages([]);
       }
 
+      // ✅ Prefill Variant Options
+      setVariantOptions(product.variantOptions || []);
+      // Set product type and toggle variant section accordingly
+      setProductType(product.productType || "simple");
+      setIsOpenProduct({
+        variant_Product_Section_5: product.productType === "variant",
+      });
+
+      // ✅ Prefill Product Variants with Images
+      if (product.productVariants?.length > 0) {
+        const formattedVariants = product.productVariants.map((variant) => ({
+          id: variant.id || "",
+          variantAttributes: variant.variantAttributes || [],
+          mrpPrice: variant.mrpPrice || 0,
+          sellingPrice: variant.sellingPrice || 0,
+          sku: variant.sku || "",
+          quantity: variant.quantity || 0,
+          image: variant.image
+            ? `http://localhost:7000/uploads/variants/${variant.image
+                .split("/")
+                .pop()}`
+            : null,
+        }));
+
+        setProductVariants(formattedVariants);
+        console.log("pres", productVariants);
+      } else {
+        setProductVariants([]);
+      }
+
       return true; // Indicate success
     } catch (error) {
       console.error("Error fetching product:", error);
-      alert("Failed to load product for editing.");
+      // alert("Failed to load product for editing.");
       return false; // Indicate failure
     }
   };
