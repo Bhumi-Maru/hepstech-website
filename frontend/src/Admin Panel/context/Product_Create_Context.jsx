@@ -329,7 +329,7 @@ export const ProductProvider = ({ children }) => {
           formData.append(
             "variantImages",
             variant.image,
-            `variant-${index}-image` // This pattern matches backend expectation
+            variant.image.name // Use the original filename
           );
         }
       });

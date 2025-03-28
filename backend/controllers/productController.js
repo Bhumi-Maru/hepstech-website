@@ -34,16 +34,11 @@ const createProduct = async (req, res) => {
         file.path.replace(/\\/g, "/")
       ) || [];
 
-    // Handle Variant Images Mapping
-    const variantImagesMap = {};
-    if (req.files["variantImages"]) {
-      req.files["variantImages"].forEach((file) => {
-        const match = file.originalname.match(/variant-(\d+)-image/); // Extract variant index
-        if (match) {
-          variantImagesMap[match[1]] = file.path.replace(/\\/g, "/");
-        }
-      });
-    }
+    // Handle Variant Images
+    const variantImages =
+      req.files["variantImages"]?.map((file) =>
+        file.path.replace(/\\/g, "/")
+      ) || [];
 
     console.log("Received files:", {
       main: req.files["productMainImage"]?.[0]?.originalname,
@@ -149,7 +144,11 @@ const createProduct = async (req, res) => {
           sellingPrice: variant.sellingPrice,
           sku: variant.sku,
           quantity: variant.quantity,
-          image: variantImagesMap[i] || null, // Assign uploaded image if available
+          variantImages:
+            variantImages.slice(
+              i * variant.variantAttributes.length,
+              (i + 1) * variant.variantAttributes.length
+            ) || [], // ✅ Assign multiple images per variant
         });
 
         await newVariant.save();
