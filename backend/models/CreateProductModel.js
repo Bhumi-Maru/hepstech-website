@@ -37,8 +37,22 @@ const CreateProductSchema = new mongoose.Schema(
         },
         min: 0,
       },
-      sku: { type: String, unique: false, trim: true },
-      quantity: { type: Number, default: 0, min: 0 },
+      sku: {
+        type: String,
+        unique: false,
+        trim: true,
+        required: function () {
+          return this.productType === "simple"; // ✅ Required only for "simple" products
+        },
+      },
+      quantity: {
+        type: Number,
+        default: 0,
+        min: 0,
+        required: function () {
+          return this.productType === "simple"; // ✅ Required only for "simple" products
+        },
+      },
     },
     // Variants - Only for "variant" products
     enableColorOptions: { type: Boolean, default: false },
