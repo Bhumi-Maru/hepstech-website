@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 //create Context
@@ -66,109 +66,17 @@ export const ProductProvider = ({ children }) => {
   const [variantOptions, setVariantOptions] = useState([]);
   const [productVariants, setProductVariants] = useState([]);
 
-  // ======================
-  // VARIANT FUNCTIONS
-  // ======================
-
-  // Add a new variant option (e.g., Color, Size)
-  const addVariantOption = (optionName) => {
-    if (variantOptions.length >= 3) {
-      alert("Maximum 3 variant options allowed");
-      return;
+  useEffect(() => {
+    if (productId) {
+      fetchProductForEdit(productId);
     }
-    if (
-      variantOptions.some(
-        (opt) => opt.name.toLowerCase() === optionName.toLowerCase()
-      )
-    ) {
-      alert("Option with this name already exists");
-      return;
-    }
-    setVariantOptions([...variantOptions, { name: optionName, values: [] }]);
-  };
+  }, [productId]);
 
-  // Remove a variant option
-  const removeVariantOption = (optionName) => {
-    setVariantOptions(variantOptions.filter((opt) => opt.name !== optionName));
-    // Clean up variants that use this option
-    setProductVariants(
-      productVariants.map((variant) => ({
-        ...variant,
-        variantAttributes: variant.variantAttributes.filter(
-          (attr) => attr.name !== optionName
-        ),
-      }))
-    );
-  };
+  console.log("ppppp", productVariants);
 
-  // Add values to an option
-  const addOptionValues = (optionName, values) => {
-    setVariantOptions(
-      variantOptions.map((option) => {
-        if (option.name === optionName) {
-          return {
-            ...option,
-            values: [...new Set([...option.values, ...values])],
-          };
-        }
-        return option;
-      })
-    );
-  };
-
-  // Remove a value from an option
-  const removeOptionValue = (optionName, valueToRemove) => {
-    setVariantOptions(
-      variantOptions.map((option) => {
-        if (option.name === optionName) {
-          return {
-            ...option,
-            values: option.values.filter((value) => value !== valueToRemove),
-          };
-        }
-        return option;
-      })
-    );
-  };
-
-  // Add a new product variant
-  const addProductVariant = () => {
-    const newVariant = {
-      id: Date.now(), // unique ID
-      variantAttributes: variantOptions.map((option) => ({
-        name: option.name,
-        value: option.values[0] || "",
-      })),
-      mrpPrice: "",
-      sellingPrice: "",
-      sku: "",
-      quantity: "",
-      image: null,
-    };
-    setProductVariants([...productVariants, newVariant]);
-  };
-
-  // Remove a product variant
-  const removeProductVariant = (variantId) => {
-    setProductVariants(productVariants.filter((v) => v.id !== variantId));
-  };
-
-  // Update a variant attribute
-  const updateVariantAttribute = (variantId, optionName, newValue) => {
-    setProductVariants(
-      productVariants.map((variant) => {
-        if (variant.id === variantId) {
-          return {
-            ...variant,
-            variantAttributes: variant.variantAttributes.map((attr) =>
-              attr.name === optionName ? { ...attr, value: newValue } : attr
-            ),
-          };
-        }
-        return variant;
-      })
-    );
-  };
+  // ======================
+  // PRODUCT CRUD FUNCTIONS
+  // ======================
 
   // Update other variant fields (price, sku, etc.)
   const updateVariantField = (variantId, field, value) => {
@@ -178,55 +86,6 @@ export const ProductProvider = ({ children }) => {
       )
     );
   };
-
-  // Handle variant image upload
-  const handleVariantImageUpload = (variantId, file) => {
-    setProductVariants(
-      productVariants.map((variant) =>
-        variant.id === variantId ? { ...variant, image: file } : variant
-      )
-    );
-  };
-
-  // Generate all possible variant combinations
-  const generateAllVariants = () => {
-    if (variantOptions.length === 0) {
-      alert("Please add variant options first");
-      return;
-    }
-
-    // Create all combinations of option values
-    const combinations = variantOptions.reduce((acc, option) => {
-      if (!acc.length) {
-        return option.values.map((value) => ({ [option.name]: value }));
-      }
-      return acc.flatMap((comb) =>
-        option.values.map((value) => ({ ...comb, [option.name]: value }))
-      );
-    }, []);
-
-    // Create variants from combinations
-    const newVariants = combinations.map((comb) => ({
-      id: Date.now() + Math.random(),
-      variantAttributes: Object.entries(comb).map(([name, value]) => ({
-        name,
-        value,
-      })),
-      mrpPrice: "",
-      sellingPrice: "",
-      sku: "",
-      quantity: "",
-      image: null,
-    }));
-
-    setProductVariants(newVariants);
-  };
-
-  console.log("ppppp", productVariants);
-
-  // ======================
-  // PRODUCT CRUD FUNCTIONS
-  // ======================
 
   // Update the handleCreateProduct function
   const handleCreateProduct = async (
@@ -245,13 +104,9 @@ export const ProductProvider = ({ children }) => {
         return;
       }
       // Validate tax
-      if (
-        !tax.taxType ||
-        tax.value === null ||
-        tax.value === undefined ||
-        isNaN(tax.value)
-      ) {
-        alert("Please enter valid tax information");
+      // Validate tax value
+      if (isNaN(tax.value) || tax.value === null || tax.value === undefined) {
+        alert("Please enter a valid tax value");
         return;
       }
     }
@@ -274,63 +129,34 @@ export const ProductProvider = ({ children }) => {
 
     // Append variant data if product type is variant
     if (productType === "variant") {
-      // Validate variant options and variants
       if (variantOptions.length === 0 || productVariants.length === 0) {
         alert("Please add at least one variant option and variant");
         return;
       }
 
-      // Prepare variant options data
-      const optionsData = variantOptions.map((option) => ({
-        name: option.name,
-        values: option.values,
-      }));
+      formData.append("variantOptions", JSON.stringify(variantOptions));
+      formData.append("productVariants", JSON.stringify(productVariants));
 
-      // Prepare variants data
-      const variantsData = productVariants.map((variant, index) => ({
-        variantAttributes: variant.variantAttributes.map((attr) => ({
-          name: attr.name,
-          value: attr.value,
-        })),
-        mrpPrice: Number(variant.mrpPrice) || 0,
-        sellingPrice: Number(variant.sellingPrice) || 0,
-        sku: variant.sku || "",
-        quantity: Number(variant.quantity) || 0,
-        // Handle image if present
-        // image: variant.image ? "variant_image_" + variant.id : null,
-        // Send filename reference if image exists
-        // image: variant.image ? variant.image.name : null,
-        image: variant.image ? variant.image.name : "", // Store filename reference
-        index: index,
-      }));
-
-      // Append to formData
-      formData.append("variantOptions", JSON.stringify(optionsData));
-      formData.append("productVariants", JSON.stringify(variantsData));
-
-      // Append variant images with proper naming convention
-      productVariants.forEach((variant, index) => {
-        if (variant.image) {
-          // Use a consistent naming pattern the backend can parse
-          formData.append(
-            "variantImages",
-            variant.image,
-            variant.image.name, // Use the original filename
-            console.log("variant", variant.image)
-          );
+      productVariants.forEach((variant) => {
+        if (variant.image instanceof File) {
+          formData.append("variantImages", variant.image, variant.image.name);
         }
       });
     } else {
       // Append simple product pricing
-      formData.append("pricing.mrpPrice", pricing.mrpPrice);
-      formData.append("pricing.sellingPrice", pricing.sellingPrice);
+      formData.append("pricing.mrpPrice", Number(pricing.mrpPrice) || 0);
+      formData.append(
+        "pricing.sellingPrice",
+        Number(pricing.sellingPrice) || 0
+      );
       formData.append("pricing.sku", pricing.sku || "");
-      formData.append("pricing.quantity", pricing.quantity || "0");
+      formData.append("pricing.quantity", Number(pricing.quantity) || 0);
+      // formData.append("pricing.quantity", pricing.quantity || "0");
     }
 
     // Append tax
     formData.append("tax.taxType", tax.taxType);
-    formData.append("tax.value", tax.value);
+    formData.append("tax.value", Number(tax.value) || 0);
 
     // Append SEO
     formData.append("seoTitle", seoTitle || "");
@@ -474,32 +300,50 @@ export const ProductProvider = ({ children }) => {
         setGalleryImages([]);
       }
 
-      // ✅ Prefill Variant Options
+      // Handle variant options and variants
       setVariantOptions(product.variantOptions || []);
-      // Set product type and toggle variant section accordingly
       setProductType(product.productType || "simple");
       setIsOpenProduct({
         variant_Product_Section_5: product.productType === "variant",
       });
 
-      // ✅ Prefill Product Variants with Images
+      // Prefill Product Variants with Images
       if (product.productVariants?.length > 0) {
-        const formattedVariants = product.productVariants.map((variant) => ({
-          id: variant.id || "",
-          variantAttributes: variant.variantAttributes || [],
-          mrpPrice: variant.mrpPrice || 0,
-          sellingPrice: variant.sellingPrice || 0,
-          sku: variant.sku || "",
-          quantity: variant.quantity || 0,
-          image: variant.image
-            ? `http://localhost:7000/uploads/variants/${variant.image
-                .split("/")
-                .pop()}`
-            : null,
-        }));
+        const formattedVariants = await Promise.all(
+          product.productVariants.map(async (variant) => {
+            let imageData = null;
+            let imagePreview = null;
+
+            // Handle existing variant images
+            if (variant.image) {
+              if (typeof variant.image === "string") {
+                // This is an existing image path
+                imageData = variant.image; // Store the path
+                imagePreview = `http://localhost:7000/uploads/variants/${variant.image
+                  .split("/")
+                  .pop()}`;
+              } else if (variant.image instanceof File) {
+                // This is a newly uploaded file
+                imageData = variant.image;
+                imagePreview = URL.createObjectURL(variant.image);
+              }
+            }
+
+            return {
+              id: variant._id || Date.now(),
+              variantAttributes: variant.variantAttributes || [],
+              mrpPrice: variant.mrpPrice || 0,
+              sellingPrice: variant.sellingPrice || 0,
+              sku: variant.sku || "",
+              quantity: variant.quantity || 0,
+              image: imageData,
+              imagePreview: imagePreview,
+              _id: variant._id, // Keep the original ID if exists
+            };
+          })
+        );
 
         setProductVariants(formattedVariants);
-        console.log("pres", productVariants);
       } else {
         setProductVariants([]);
       }
@@ -633,8 +477,8 @@ export const ProductProvider = ({ children }) => {
 
         // variant managment
         updateVariantField,
-        handleVariantImageUpload,
-        generateAllVariants,
+        // handleVariantImageUpload,
+        // generateAllVariants,
       }}
     >
       {children}

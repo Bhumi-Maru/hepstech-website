@@ -171,14 +171,12 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Step 1: Check if Product Exists
     const productExists = await Product.findById(id);
+
     if (!productExists) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Step 2: Extract Data from FormData
     const {
       productTitle,
       productMainCategory,
@@ -194,38 +192,50 @@ const updateProduct = async (req, res) => {
       productType,
     } = req.body;
 
-    // Step 3: Handle Main Image
+    // Handle File Uploads
     const productMainImage = req.files?.productMainImage
       ? req.files.productMainImage[0].path.replace(/\\/g, "/")
       : productExists.productMainImage;
 
-    // Step 4: Handle Gallery Images - Initialize with existing images
+    // Handle Gallery Images
     let galleryImages = [...(productExists.galleryImages || [])];
-
-    // If new gallery images are uploaded
     if (req.files?.galleryImages) {
       const newGalleryImages = req.files.galleryImages.map((file) =>
         file.path.replace(/\\/g, "/")
       );
-
-      // Add new images to the existing array
       galleryImages = [...galleryImages, ...newGalleryImages];
 
-      // Update ProductGalleryImage collection (append new images)
+      // Update gallery images in DB
       await ProductGalleryImage.findOneAndUpdate(
         { productId: id },
         {
-          $setOnInsert: { productId: id }, // Ensure productId is set if creating new
+          $setOnInsert: { productId: id },
           $push: { galleryImages: { $each: newGalleryImages } },
         },
-        {
-          upsert: true, // Create if doesn't exist
-          new: true,
-        }
+        { upsert: true, new: true }
       );
     }
 
-    // Step 5: Handle Pricing
+    // Parse JSON Fields
+    const parseJSON = (field) => {
+      try {
+        return req.body[field] ? JSON.parse(req.body[field]) : [];
+      } catch (error) {
+        return res.status(400).json({ message: `Invalid ${field} format` });
+      }
+    };
+
+    const variantOptions = parseJSON("variantOptions");
+    let productVariants = parseJSON("productVariants");
+
+    const descriptionSections = parseJSON("descriptionSections").map(
+      (section) => ({
+        sectionTitle: section.title,
+        description: section.description,
+      })
+    );
+
+    // Handle Pricing & Tax
     let pricing = productExists.pricing;
     if (
       req.body["pricing.mrpPrice"] ||
@@ -234,52 +244,31 @@ const updateProduct = async (req, res) => {
       req.body["pricing.quantity"]
     ) {
       pricing = {
-        mrpPrice: req.body["pricing.mrpPrice"]
-          ? Number(req.body["pricing.mrpPrice"])
-          : pricing.mrpPrice,
-        sellingPrice: req.body["pricing.sellingPrice"]
-          ? Number(req.body["pricing.sellingPrice"])
-          : pricing.sellingPrice,
+        mrpPrice: Number(req.body["pricing.mrpPrice"] || pricing.mrpPrice),
+        sellingPrice: Number(
+          req.body["pricing.sellingPrice"] || pricing.sellingPrice
+        ),
         sku: req.body["pricing.sku"] || pricing.sku,
-        quantity: req.body["pricing.quantity"]
-          ? Number(req.body["pricing.quantity"])
-          : pricing.quantity,
+        quantity: Number(req.body["pricing.quantity"] || pricing.quantity),
       };
     }
 
-    // Step 6: Handle Tax
     let tax = productExists.tax;
     if (req.body["tax.taxType"] || req.body["tax.value"]) {
       tax = {
         taxType: req.body["tax.taxType"] || tax.taxType,
-        value: req.body["tax.value"]
-          ? Number(req.body["tax.value"])
-          : tax.value,
+        value: Number(req.body["tax.value"] || tax.value),
       };
     }
 
-    // Step 7: Handle Description Sections
-    if (req.body.descriptionSections) {
-      try {
-        const parsedSections = JSON.parse(req.body.descriptionSections);
-        const descriptionSections = parsedSections.map((section) => ({
-          sectionTitle: section.title,
-          description: section.description,
-        }));
+    // Update Product Description
+    await ProductDescription.findOneAndUpdate(
+      { productId: id },
+      { descriptionSections },
+      { new: true, upsert: true }
+    );
 
-        await ProductDescription.findOneAndUpdate(
-          { productId: id },
-          { descriptionSections },
-          { new: true, upsert: true }
-        );
-      } catch (error) {
-        return res
-          .status(400)
-          .json({ message: "Invalid descriptionSections format" });
-      }
-    }
-
-    // Step 8: Update SEO Data
+    // Update SEO Data
     await SeoTag.findOneAndUpdate(
       { productId: id },
       {
@@ -290,14 +279,7 @@ const updateProduct = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    let variantOptions = req.body.variantOptions
-      ? JSON.parse(req.body.variantOptions)
-      : productExists.variantOptions;
-
-    let productVariants = req.body.productVariants
-      ? JSON.parse(req.body.productVariants)
-      : productExists.productVariants;
-
+    // Handle Variant Images
     const variantImages =
       req.files?.variantImages?.map((file) => file.path.replace(/\\/g, "/")) ||
       [];
@@ -307,7 +289,6 @@ const updateProduct = async (req, res) => {
 
       for (let i = 0; i < productVariants.length; i++) {
         let variant = productVariants[i];
-
         let existingVariant = await ProductVariant.findById(variant._id);
 
         if (existingVariant) {
@@ -317,8 +298,12 @@ const updateProduct = async (req, res) => {
           existingVariant.sku = variant.sku;
           existingVariant.quantity = variant.quantity;
 
-          if (variantImages[i]) {
-            existingVariant.variantImages = [variantImages[i]];
+          // Assign images correctly
+          if (variantImages.length > 0) {
+            existingVariant.variantImages = variantImages.slice(
+              i * variant.variantAttributes.length,
+              (i + 1) * variant.variantAttributes.length
+            );
           }
 
           await existingVariant.save();
@@ -331,7 +316,11 @@ const updateProduct = async (req, res) => {
             sellingPrice: variant.sellingPrice,
             sku: variant.sku,
             quantity: variant.quantity,
-            variantImages: variantImages[i] ? [variantImages[i]] : [],
+            variantImages:
+              variantImages.slice(
+                i * variant.variantAttributes.length,
+                (i + 1) * variant.variantAttributes.length
+              ) || [],
           });
 
           await newVariant.save();
@@ -342,7 +331,7 @@ const updateProduct = async (req, res) => {
       productVariants = updatedVariants;
     }
 
-    // Step 9: Update Product Model
+    // Update Product
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
@@ -364,7 +353,7 @@ const updateProduct = async (req, res) => {
         productMainImage,
         pricing,
         tax,
-        galleryImages, // Update with combined gallery images
+        galleryImages, // Ensure images are updated properly
         productType,
         variantOptions,
         productVariants,
@@ -372,10 +361,12 @@ const updateProduct = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
+    res
+      .status(200)
+      .json({
+        message: "Product updated successfully",
+        product: updatedProduct,
+      });
   } catch (error) {
     console.error("Error updating product:", error);
     res.status(500).json({ message: "Failed to update product", error });

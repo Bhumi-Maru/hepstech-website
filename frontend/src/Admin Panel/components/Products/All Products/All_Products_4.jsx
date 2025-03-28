@@ -161,7 +161,12 @@ export default function All_Products_4({
                               </span>
                             </div>
                           </td>
-                          <td>₹ {product.pricing?.sellingPrice}</td>
+                          <td>
+                            ₹{" "}
+                            {product.productType === "simple"
+                              ? product.pricing?.sellingPrice
+                              : product.productVariants[0].sellingPrice}
+                          </td>
                           <td className="nowrap">
                             <span className="!px-2 badge badge-info">
                               {product.productPurchaseMaxQuantity}
