@@ -31,27 +31,50 @@ export const HeaderSectionProvider = ({ children }) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedWebLogo, setSelectedWebLogo] = useState(null);
+
+  // Add this function to handle web logo selection
+  const handleWebLogoSelect = (file) => {
+    if (file) {
+      // Update the selected web logo ID for reference
+      setSelectedWebLogo(file._id);
+
+      // Update the actual form data with the logo URL
+      handleInputChange("headerLogo", file.fileUrl);
+
+      // Return the file URL for preview
+      return file.fileUrl;
+    }
+    return null;
+  };
 
   // Update form data dynamically
   const handleInputChange = (name, value) => {
     setFormData((prev) => {
+      let updatedFormData = { ...prev };
+
       if (name.includes(".")) {
         const [parent, child] = name.split(".");
-        return {
-          ...prev,
-          [parent]: {
-            ...prev[parent],
-            [child]: value,
-          },
+        updatedFormData[parent] = {
+          ...prev[parent],
+          [child]: value,
         };
       } else {
-        return { ...prev, [name]: value };
+        updatedFormData[name] = value;
       }
+
+      // If headerLogo is updated, also update selectedWebLogo
+      if (name === "headerLogo") {
+        setSelectedWebLogo(value);
+      }
+
+      return updatedFormData;
     });
   };
 
   // Event Handlers
-  const onLogoChange = (logo) => handleInputChange("headerLogo", logo);
+  const onLogoChange = (logo) =>
+    handleInputChange("headerLogo", selectedWebLogo);
   const onAdminLogoChange = (logo) => handleInputChange("adminLogo", logo);
   const onFaviconChange = (favicon) =>
     handleInputChange("faviconIcon", favicon);
@@ -136,6 +159,11 @@ export const HeaderSectionProvider = ({ children }) => {
         isSubmitting,
         handleSubmitHeaderSection,
         handleInputChange, // ✅ Provide handleInputChange
+
+        // web logo
+        setSelectedWebLogo,
+        selectedWebLogo,
+        handleWebLogoSelect,
       }}
     >
       {children}

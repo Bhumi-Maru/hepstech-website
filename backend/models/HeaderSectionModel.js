@@ -3,15 +3,18 @@ const mongoose = require("mongoose");
 const headerSectionSchema = new mongoose.Schema(
   {
     headerLogo: {
-      type: String, // Stores the filename or URL path
+      type: mongoose.Schema.Types.ObjectId, // Stores the filename or URL path
+      ref: "File",
       required: false,
     },
     adminLogo: {
-      type: String, // Stores the filename or URL path
+      type: mongoose.Schema.Types.ObjectId, // Stores the filename or URL path
+      ref: "File",
       required: false,
     },
     faviconIcon: {
-      type: String, // Stores the filename or URL path
+      type: mongoose.Schema.Types.ObjectId, // Stores the filename or URL path
+      ref: "File",
       required: false,
     },
     headerType: {

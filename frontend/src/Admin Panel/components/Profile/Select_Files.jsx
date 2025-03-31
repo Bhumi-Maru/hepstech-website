@@ -3,6 +3,7 @@ import { useAllMediaContext } from "../../context/All_Media_Context";
 import axios from "axios";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
+import { useHeaderSection } from "../../context/Header_Section_Context";
 
 export default function Select_Files() {
   const {
@@ -13,8 +14,14 @@ export default function Select_Files() {
     setSelectedBannerImage,
     isBannerImageVisible,
   } = useAllMediaContext();
+  const {
+    setSelectedWebLogo,
+    handleWebLogoSelect,
+    onLogoChange,
+    selectedWebLogo,
+  } = useHeaderSection();
 
-  const { isOpenPopupModal } = useAdminGlobalContext();
+  const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
 
   const { setSelectedSubImage } = useSubCategoryContext();
 
@@ -58,6 +65,24 @@ export default function Select_Files() {
     console.log("Sub image id", file._id);
     setPreviewUrl(file.fileUrl);
   };
+
+  const handleSelectFromMedia = () => {
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      startSelectFilesAndMedia: true,
+      Header_Section_web_Logo: true, // Add this flag to indicate we're selecting web logo
+    }));
+    setSelectedWebLogo(null); // Clear previous selection
+  };
+
+  //Handle Web Logo
+  const handleWebLogoselect = (file) => {
+    setSelectedWebLogo(file._id); // Set _id correctly
+    console.log("Web Logo ID:", file._id);
+    setPreviewUrl(file.fileUrl); // Update preview with selected image
+  };
+
+  console.log("selecte web", selectedWebLogo);
 
   return (
     <>
@@ -103,6 +128,8 @@ export default function Select_Files() {
                         isOpenPopupModal.editSubCategoryPopupModal
                       ) {
                         handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
+                      } else if (isOpenPopupModal.Header_Section_web_Logo) {
+                        handleWebLogoselect(item); // Select Web Logo
                       }
                     }}
                   />

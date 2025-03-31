@@ -12,6 +12,8 @@ export default function Header_Section_Link_Options() {
     contact,
     onContactInfoChange,
   } = useHeaderSection();
+
+  console.log("offersEnabled", offersEnabled);
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="px-4 py-3 sm:px-5">

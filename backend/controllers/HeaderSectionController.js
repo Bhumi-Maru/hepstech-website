@@ -1,80 +1,118 @@
+const mongoose = require("mongoose");
 const HeaderSectionModel = require("../models/HeaderSectionModel");
+const File = require("../models/fileModel"); // Assuming you have a File model
 
-const CreateHeaderSectionController = async (req, res) => {
+const createHeaderSection = async (req, res) => {
   try {
-    // Extract uploaded file paths
-    const headerLogo = req.files?.headerLogo?.[0]?.path || null;
-    const adminLogo = req.files?.adminLogo?.[0]?.path || null;
-    const faviconIcon = req.files?.faviconIcon?.[0]?.path || null;
-
-    // Extract and parse other fields
-    const headerType = req.body.headerType || "Sticky";
-    const offersEnabled = req.body.offersEnabled === "true"; // Convert string to boolean
-    const wishlistEnabled = req.body.wishlistEnabled === "true";
-
-    // Parse JSON string fields
-    const parsedContact = req.body.contact ? JSON.parse(req.body.contact) : {};
-    const parsedOfferBanner = req.body.offerBanner
-      ? JSON.parse(req.body.offerBanner)
-      : {};
-
-    // Determine if contact should be enabled
-    const isContactEnabled =
-      !!parsedContact.phoneNumber ||
-      !!parsedContact.whatsappNumber ||
-      !!parsedContact.emailAddress;
-
-    // Create a new header section document
-    const newHeaderSection = await HeaderSectionModel.create({
+    const {
       headerLogo,
       adminLogo,
       faviconIcon,
+      headerType = "Sticky",
+      offersEnabled = false,
+      wishlistEnabled = false,
+      contact = {},
+      offerBanner = {},
+    } = req.body;
+
+    // Validate and fetch file references
+    const validateFileReference = async (fileId) => {
+      if (!fileId) return null;
+      if (!mongoose.Types.ObjectId.isValid(fileId)) {
+        throw new Error(`Invalid ObjectId: ${fileId}`);
+      }
+      const file = await File.findById(fileId);
+      if (!file) {
+        throw new Error(`File not found with ID: ${fileId}`);
+      }
+      return file._id;
+    };
+
+    const validatedHeaderLogo = await validateFileReference(headerLogo);
+    const validatedAdminLogo = await validateFileReference(adminLogo);
+    const validatedFaviconIcon = await validateFileReference(faviconIcon);
+
+    // Create a new header section
+    const newHeaderSection = new HeaderSectionModel({
+      headerLogo: validatedHeaderLogo,
+      adminLogo: validatedAdminLogo,
+      faviconIcon: validatedFaviconIcon,
       headerType,
       offersEnabled,
       wishlistEnabled,
       contact: {
-        enabled: isContactEnabled, // Set enabled dynamically
-        phoneNumber: parsedContact.phoneNumber || "",
-        whatsappNumber: parsedContact.whatsappNumber || "",
-        emailAddress: parsedContact.emailAddress || "",
+        enabled: contact.enabled || false,
+        phoneNumber: contact.phoneNumber || "",
+        whatsappNumber: contact.whatsappNumber || "",
+        emailAddress: contact.emailAddress || "",
       },
       offerBanner: {
-        enabled: parsedOfferBanner.enabled || false,
-        title: parsedOfferBanner.title || "",
+        enabled: offerBanner.enabled || false,
+        title: offerBanner.title || "",
       },
     });
 
-    return res.status(201).json({
+    await newHeaderSection.save();
+
+    // Populate the response with full file details
+    const populatedSection = await HeaderSectionModel.findById(
+      newHeaderSection._id
+    )
+      .populate("headerLogo")
+      .populate("adminLogo")
+      .populate("faviconIcon");
+
+    res.status(201).json({
       success: true,
       message: "Header section created successfully",
-      data: newHeaderSection,
+      data: populatedSection,
     });
   } catch (error) {
     console.error("Error creating header section:", error);
-    return res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: "Internal server error",
-      error: error.message,
+      message: error.message || "Failed to create header section",
     });
   }
 };
 
-// Get all header sections
-const getAllHeaderSection = async (req, res) => {
+const getHeaderSection = async (req, res) => {
   try {
-    const headerSections = await HeaderSectionModel.find();
-    return res.status(200).json({
+    const headerSection = await HeaderSectionModel.find()
+      .populate({
+        path: "headerLogo",
+        select:
+          "fileId filename filePath fileType fileSize createdAt updatedAt",
+      })
+      .populate({
+        path: "adminLogo",
+        select:
+          "fileId filename filePath fileType fileSize createdAt updatedAt",
+      })
+      .populate({
+        path: "faviconIcon",
+        select:
+          "fileId filename filePath fileType fileSize createdAt updatedAt",
+      });
+
+    if (!headerSection) {
+      return res.status(404).json({
+        success: false,
+        message: "Header section not found",
+      });
+    }
+
+    res.status(200).json({
       success: true,
-      data: headerSections,
+      data: headerSection,
     });
   } catch (error) {
-    console.error("Error fetching header sections:", error);
-    return res.status(500).json({
+    console.error("Error fetching header section:", error);
+    res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message,
     });
   }
 };
 
-module.exports = { CreateHeaderSectionController, getAllHeaderSection };
+module.exports = { createHeaderSection, getHeaderSection };

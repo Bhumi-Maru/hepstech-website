@@ -1,20 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useHeaderSection } from "../../../context/Header_Section_Context";
+import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Header_Section_Logo({ logo, onLogoChange }) {
   const [isUploading, setIsUploading] = useState(false);
+  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { selectedWebLogo, handleWebLogoSelect } = useHeaderSection();
+  const { mediaItems } = useAllMediaContext();
+
+  // Set the preview logo either from the prop or selected web logo
   const [previewLogo, setPreviewLogo] = useState(logo || "");
+
+  useEffect(() => {
+    if (selectedWebLogo?.filePath) {
+      setPreviewLogo(
+        `${process.env.REACT_APP_BASE_URL}${selectedWebLogo.filePath}`
+      );
+      if (onLogoChange) onLogoChange(selectedWebLogo);
+    }
+  }, [selectedWebLogo, onLogoChange]);
+
+  // / Find the file URL for the selected main image and banner image
+  const headerLogo = mediaItems.find((item) => {
+    // console.log("main image ffgkjj id", item._id);
+    // console.log("main selkected image id", selectedMainImage);
+    return item._id === selectedWebLogo;
+  });
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setPreviewLogo(URL.createObjectURL(file)); // Show preview
-      if (onLogoChange) onLogoChange(file); // Pass file to parent
+      const fileUrl = URL.createObjectURL(file);
+      setPreviewLogo(fileUrl);
+      if (onLogoChange) onLogoChange(file); // Pass file for upload processing
     }
   };
 
   const handleRemoveLogo = () => {
     setPreviewLogo("");
-    if (onLogoChange) onLogoChange(null); // Clear parent state
+    if (onLogoChange) onLogoChange(null);
+  };
+
+  const handleSelectFromMedia = () => {
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      startSelectFilesAndMedia: true,
+      Header_Section_web_Logo: true,
+    }));
   };
 
   return (
@@ -26,10 +60,9 @@ export default function Header_Section_Logo({ logo, onLogoChange }) {
           good on dark backgrounds.)
         </p>
       </div>
-
       <div className="px-4 pb-5 sm:px-5">
-        <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
-          {previewLogo ? (
+        <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md w-100">
+          {/* {previewLogo ? (
             <img
               className="w-auto h-16"
               src={previewLogo}
@@ -40,17 +73,15 @@ export default function Header_Section_Logo({ logo, onLogoChange }) {
             <div className="w-auto h-16 flex items-center justify-center text-gray-400">
               No logo selected
             </div>
-          )}
+          )} */}
+          {getFilePreview(headerLogo)}
         </div>
-
         <div className="flex items-center mt-3 space-x-4">
-          {/* Upload Button */}
+          {/* Select from media */}
           <button
             type="button"
-            className={`btn ${isUploading ? "btn-disabled" : "btn-primary"}`}
-            onClick={() =>
-              document.getElementById("header-logo-upload").click()
-            }
+            className="btn btn-primary"
+            onClick={handleSelectFromMedia}
             disabled={isUploading}
           >
             {isUploading ? "Uploading..." : "Select File"}

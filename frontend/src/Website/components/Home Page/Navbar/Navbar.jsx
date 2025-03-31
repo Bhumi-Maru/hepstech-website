@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { useHeaderSection } from "../../../../Admin Panel/context/Header_Section_Context";
 
 export default function Navbar({
   setLoginModalOpen,
@@ -12,6 +13,11 @@ export default function Navbar({
     contact: false,
     profile: false,
   });
+
+  const { formData } = useHeaderSection();
+  const { enabled, title } = formData?.offerBanner; // Prevents undefined errors
+
+  console.log("e", enabled);
 
   // Function to toggle the dropdown menu
   const toggleDropdown = (dropdown) => {
@@ -34,19 +40,22 @@ export default function Navbar({
   return (
     <>
       {/* <!-- START OFFER ANNOUNCEMENT --> */}
-      <div className="relative py-2.5 bg-skin-primary">
-        <div className="container">
-          <div className="text-center sm:px-16">
-            <p className="text-sm font-medium text-white">
-              <span>
-                Super Saver Sale! Enjoy Up To 55% OFF! Use Code
-                <span className="font-bold">“SUPER20”</span> To Get Extra 20%
-                OFF.
-              </span>
-            </p>
+      {enabled && (
+        <div className="relative py-2.5 bg-skin-primary">
+          <div className="container">
+            <div className="text-center sm:px-16">
+              <p className="text-sm font-medium text-white">
+                <span>
+                  {/* Super Saver Sale! Enjoy Up To 55% OFF! Use Code
+                  <span className="font-bold">“SUPER20”</span> To Get Extra 20%
+                  OFF. */}
+                  {title}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       {/* <!-- END OFFER ANNOUNCEMENT --> */}
       {/* <!-- START HEADER --> */}
       <header className="z-20 text-gray-900 bg-white shadow nav-smart-sticky">
