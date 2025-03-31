@@ -361,15 +361,15 @@ export default function Create_Product_5_Variant() {
                         </div>
 
                         {variant.image && (
-                          <div className="mt-2">
-                            <p className="text-sm text-gray-500">
+                          <div className="w-100">
+                            {/* <p className="text-sm text-gray-500">
                               {variant.image?.name}
-                            </p>
+                            </p> */}
                             {variant.imagePreview && (
                               <img
                                 src={variant.imagePreview}
                                 alt="Variant preview"
-                                className="mt-1 h-20 object-cover rounded"
+                                className="mt-1 h-20 object-cover rounded-md border"
                               />
                             )}
                           </div>
