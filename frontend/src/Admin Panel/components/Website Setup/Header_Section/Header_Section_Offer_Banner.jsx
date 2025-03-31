@@ -1,11 +1,10 @@
 import React from "react";
+import { useHeaderSection } from "../../../context/Header_Section_Context";
 
-export default function Header_Section_Offer_Banner({
-  enabled,
-  title,
-  onEnabledChange,
-  onTitleChange,
-}) {
+export default function Header_Section_Offer_Banner() {
+  const { formData, onEnabledChange, onTitleChange } = useHeaderSection();
+  const { enabled, title } = formData.offerBanner;
+
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="px-4 py-3 sm:px-5">
