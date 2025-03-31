@@ -1,15 +1,17 @@
 import React from "react";
+import { useHeaderSection } from "../../../context/Header_Section_Context";
 
-export default function Header_Section_Link_Options({
-  offersEnabled,
-  wishlistEnabled,
-  contactEnabled,
-  onOffersChange,
-  onWishlistChange,
-  onContactChange,
-  contact,
-  onContactInfoChange,
-}) {
+export default function Header_Section_Link_Options() {
+  const {
+    offersEnabled,
+    wishlistEnabled,
+    contactEnabled,
+    onOffersChange,
+    onWishlistChange,
+    onContactChange,
+    contact,
+    onContactInfoChange,
+  } = useHeaderSection();
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="px-4 py-3 sm:px-5">
