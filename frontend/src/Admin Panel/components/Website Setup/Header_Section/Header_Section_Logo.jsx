@@ -7,39 +7,39 @@ import { getFilePreview } from "../../../utils/fileUploadUtils";
 export default function Header_Section_Logo({ logo, onLogoChange }) {
   const [isUploading, setIsUploading] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
-  const { selectedWebLogo, handleWebLogoSelect } = useHeaderSection();
+  const { selectedWebLogo, setSelectedWebLogo } = useHeaderSection();
   const { mediaItems } = useAllMediaContext();
 
-  // Set the preview logo either from the prop or selected web logo
+  // Store preview image URL
   const [previewLogo, setPreviewLogo] = useState(logo || "");
 
   useEffect(() => {
-    if (selectedWebLogo?.filePath) {
-      setPreviewLogo(
-        `${process.env.REACT_APP_BASE_URL}${selectedWebLogo.filePath}`
+    if (selectedWebLogo) {
+      const selectedMedia = mediaItems.find(
+        (item) => item._id === selectedWebLogo
       );
-      if (onLogoChange) onLogoChange(selectedWebLogo);
+      if (selectedMedia) {
+        setPreviewLogo(selectedMedia.fileUrl); // Update preview with fileUrl
+        if (onLogoChange) onLogoChange(selectedWebLogo); // Send _id instead of file object
+      }
     }
-  }, [selectedWebLogo, onLogoChange]);
+  }, [selectedWebLogo, mediaItems, onLogoChange]);
 
-  // / Find the file URL for the selected main image and banner image
-  const headerLogo = mediaItems.find((item) => {
-    // console.log("main image ffgkjj id", item._id);
-    // console.log("main selkected image id", selectedMainImage);
-    return item._id === selectedWebLogo;
-  });
+  // Find the selected header logo object
+  const headerLogo = mediaItems.find((item) => item._id === selectedWebLogo);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const fileUrl = URL.createObjectURL(file);
       setPreviewLogo(fileUrl);
-      if (onLogoChange) onLogoChange(file); // Pass file for upload processing
+      if (onLogoChange) onLogoChange(file); // Send actual file for upload
     }
   };
 
   const handleRemoveLogo = () => {
     setPreviewLogo("");
+    setSelectedWebLogo(null); // Reset selected logo
     if (onLogoChange) onLogoChange(null);
   };
 

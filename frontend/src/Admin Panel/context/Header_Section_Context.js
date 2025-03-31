@@ -33,21 +33,6 @@ export const HeaderSectionProvider = ({ children }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedWebLogo, setSelectedWebLogo] = useState(null);
 
-  // Add this function to handle web logo selection
-  const handleWebLogoSelect = (file) => {
-    if (file) {
-      // Update the selected web logo ID for reference
-      setSelectedWebLogo(file._id);
-
-      // Update the actual form data with the logo URL
-      handleInputChange("headerLogo", file.fileUrl);
-
-      // Return the file URL for preview
-      return file.fileUrl;
-    }
-    return null;
-  };
-
   // Update form data dynamically
   const handleInputChange = (name, value) => {
     setFormData((prev) => {
@@ -163,7 +148,7 @@ export const HeaderSectionProvider = ({ children }) => {
         // web logo
         setSelectedWebLogo,
         selectedWebLogo,
-        handleWebLogoSelect,
+        // handleWebLogoSelect,
       }}
     >
       {children}

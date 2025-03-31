@@ -14,12 +14,8 @@ export default function Select_Files() {
     setSelectedBannerImage,
     isBannerImageVisible,
   } = useAllMediaContext();
-  const {
-    setSelectedWebLogo,
-    handleWebLogoSelect,
-    onLogoChange,
-    selectedWebLogo,
-  } = useHeaderSection();
+  const { setSelectedWebLogo, onLogoChange, selectedWebLogo } =
+    useHeaderSection();
 
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
 
@@ -66,20 +62,11 @@ export default function Select_Files() {
     setPreviewUrl(file.fileUrl);
   };
 
-  const handleSelectFromMedia = () => {
-    setIsOpenPopupModal((prev) => ({
-      ...prev,
-      startSelectFilesAndMedia: true,
-      Header_Section_web_Logo: true, // Add this flag to indicate we're selecting web logo
-    }));
-    setSelectedWebLogo(null); // Clear previous selection
-  };
-
-  //Handle Web Logo
-  const handleWebLogoselect = (file) => {
-    setSelectedWebLogo(file._id); // Set _id correctly
-    console.log("Web Logo ID:", file._id);
-    setPreviewUrl(file.fileUrl); // Update preview with selected image
+  // Add this function to handle web logo selection
+  const handleWebLogoSelect = (file) => {
+    setSelectedWebLogo(file._id); // Only store _id
+    console.log("Selected Web Logo ID:", file._id);
+    setPreviewUrl(file.fileUrl); // Set preview
   };
 
   console.log("selecte web", selectedWebLogo);
@@ -129,7 +116,7 @@ export default function Select_Files() {
                       ) {
                         handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
                       } else if (isOpenPopupModal.Header_Section_web_Logo) {
-                        handleWebLogoselect(item); // Select Web Logo
+                        handleWebLogoSelect(item); // Select Web Logo
                       }
                     }}
                   />
