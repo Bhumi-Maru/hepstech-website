@@ -31,7 +31,11 @@ export const HeaderSectionProvider = ({ children }) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // WEB LOGO
   const [selectedWebLogo, setSelectedWebLogo] = useState(null);
+  // ADMIN LOG
+  const [selectedAdminLogo, setSelectedAdminLogo] = useState(null);
 
   // Update form data dynamically
   const handleInputChange = (name, value) => {
@@ -53,6 +57,11 @@ export const HeaderSectionProvider = ({ children }) => {
         setSelectedWebLogo(value);
       }
 
+      // If adminLogo is updated, also update selectedAdminLogo
+      if (name === "adminLogo") {
+        setSelectedAdminLogo(value);
+      }
+
       return updatedFormData;
     });
   };
@@ -60,7 +69,8 @@ export const HeaderSectionProvider = ({ children }) => {
   // Event Handlers
   const onLogoChange = (logo) =>
     handleInputChange("headerLogo", selectedWebLogo);
-  const onAdminLogoChange = (logo) => handleInputChange("adminLogo", logo);
+  const onAdminLogoChange = (logo) =>
+    handleInputChange("adminLogo", selectedAdminLogo);
   const onFaviconChange = (favicon) =>
     handleInputChange("faviconIcon", favicon);
   const onHeaderTypeChange = (type) => handleInputChange("headerType", type);
@@ -149,6 +159,10 @@ export const HeaderSectionProvider = ({ children }) => {
         setSelectedWebLogo,
         selectedWebLogo,
         // handleWebLogoSelect,
+
+        // admin logo
+        selectedAdminLogo,
+        setSelectedAdminLogo,
       }}
     >
       {children}

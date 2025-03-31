@@ -25,7 +25,12 @@ export default function Start_Select_Files_And_Media_Modal({
   } = useAllMediaContext();
 
   const { selectedSubImage, setSelectedSubImage } = useSubCategoryContext();
-  const { selectedWebLogo, setSelectedWebLogo } = useHeaderSection();
+  const {
+    selectedWebLogo,
+    setSelectedWebLogo,
+    selectedAdminLogo,
+    setSelectedAdminLogo,
+  } = useHeaderSection();
 
   useEffect(() => {
     // Reset the preview URL when the modal is opened
@@ -194,6 +199,9 @@ export default function Start_Select_Files_And_Media_Modal({
                         }
                         if (selectedWebLogo) {
                           setSelectedWebLogo(selectedWebLogo);
+                        }
+                        if (selectedAdminLogo) {
+                          setSelectedAdminLogo(selectedAdminLogo);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,

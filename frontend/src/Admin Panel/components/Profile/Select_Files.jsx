@@ -14,8 +14,12 @@ export default function Select_Files() {
     setSelectedBannerImage,
     isBannerImageVisible,
   } = useAllMediaContext();
-  const { setSelectedWebLogo, onLogoChange, selectedWebLogo } =
-    useHeaderSection();
+  const {
+    setSelectedWebLogo,
+    onLogoChange,
+    selectedWebLogo,
+    setSelectedAdminLogo,
+  } = useHeaderSection();
 
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
 
@@ -69,6 +73,13 @@ export default function Select_Files() {
     setPreviewUrl(file.fileUrl); // Set preview
   };
 
+  // Add this function to handle admin logo selection
+  const handleAdminLogoSelect = (file) => {
+    setSelectedAdminLogo(file._id); // Only store _id
+    console.log("Selected Web Logo ID:", file._id);
+    setPreviewUrl(file.fileUrl); // Set preview
+  };
+
   console.log("selecte web", selectedWebLogo);
 
   return (
@@ -117,6 +128,8 @@ export default function Select_Files() {
                         handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
                       } else if (isOpenPopupModal.Header_Section_web_Logo) {
                         handleWebLogoSelect(item); // Select Web Logo
+                      } else if (isOpenPopupModal.Header_Section_Admin_Logo) {
+                        handleAdminLogoSelect(item);
                       }
                     }}
                   />

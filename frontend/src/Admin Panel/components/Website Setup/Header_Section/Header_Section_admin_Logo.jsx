@@ -1,19 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useHeaderSection } from "../../../context/Header_Section_Context";
+import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
+  const [isUploading, setIsUploading] = useState(false);
+  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { selectedAdminLogo, setSelectedAdminLogo } = useHeaderSection();
+  const { mediaItems } = useAllMediaContext();
+
+  // Store preview image URL
   const [previewLogo, setPreviewLogo] = useState(logo || "");
+
+  useEffect(() => {
+    if (selectedAdminLogo) {
+      const selectedMedia = mediaItems.find(
+        (item) => item._id === selectedAdminLogo
+      );
+      if (selectedMedia) {
+        setPreviewLogo(selectedMedia.fileUrl); // Update preview with fileUrl
+        if (onLogoChange) onLogoChange(selectedAdminLogo); // Send _id instead of file object
+      }
+    }
+  }, [selectedAdminLogo, mediaItems, onLogoChange]);
+
+  // Find the selected header logo object
+  const adminLogo = mediaItems.find((item) => item._id === selectedAdminLogo);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setPreviewLogo(URL.createObjectURL(file)); // Show preview
-      if (onLogoChange) onLogoChange(file); // Pass file to parent
+      const fileUrl = URL.createObjectURL(file);
+      setPreviewLogo(fileUrl);
+      if (onLogoChange) onLogoChange(file); // Send actual file for upload
     }
   };
 
   const handleRemoveLogo = () => {
     setPreviewLogo("");
-    if (onLogoChange) onLogoChange(null); // Clear parent state
+    setSelectedAdminLogo(null); // Reset selected logo
+    if (onLogoChange) onLogoChange(null);
+  };
+
+  const handleSelectFromMedia = () => {
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      startSelectFilesAndMedia: true,
+      Header_Section_Admin_Logo: true,
+    }));
   };
 
   return (
@@ -23,7 +58,7 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
       </div>
       <div className="px-4 pb-5 sm:px-5">
         <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
-          {previewLogo ? (
+          {/* {previewLogo ? (
             <img
               className="w-auto h-16"
               src={previewLogo}
@@ -34,7 +69,8 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
             <div className="w-auto h-16 flex items-center justify-center text-gray-400">
               No logo selected
             </div>
-          )}
+          )} */}
+          {getFilePreview(adminLogo)}
         </div>
 
         <div className="flex items-center mt-3 space-x-4">
@@ -42,9 +78,10 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => document.getElementById("admin-logo-upload").click()}
+            onClick={handleSelectFromMedia}
+            disabled={isUploading}
           >
-            Select File
+            {isUploading ? "Uploading..." : "Select File"}
           </button>
 
           {/* Hidden File Input */}
@@ -54,6 +91,7 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
             accept="image/*"
             style={{ display: "none" }}
             onChange={handleFileChange}
+            disabled={isUploading}
           />
 
           {/* Remove Button */}
@@ -61,6 +99,7 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
             type="button"
             className="btn btn-error-light"
             onClick={handleRemoveLogo}
+            disabled={isUploading}
           >
             Remove
           </button>
