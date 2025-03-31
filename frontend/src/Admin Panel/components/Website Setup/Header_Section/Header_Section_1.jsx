@@ -46,38 +46,10 @@ export default function Header_Section_1() {
         />
 
         {/* Link Options */}
-        <Header_Section_Link_Options
-        // offersEnabled={formData.offersEnabled}
-        // wishlistEnabled={formData.wishlistEnabled}
-        // contactEnabled={formData.contactEnabled} // <-- Corrected
-        // onOffersChange={(enabled) =>
-        //   handleInputChange("offersEnabled", enabled)
-        // }
-        // onWishlistChange={(enabled) =>
-        //   handleInputChange("wishlistEnabled", enabled)
-        // }
-        // onContactChange={(enabled) =>
-        //   handleInputChange("contactEnabled", enabled)
-        // }
-        // contact={formData.contact}
-        // onContactInfoChange={(field, value) => {
-        //   handleInputChange(`contact.${field}`, value);
-        //   console.log(`contact.${field}`, value);
-        // }} // <-- Added
-        />
+        <Header_Section_Link_Options />
 
         {/* Offer Banner */}
-        <Header_Section_Offer_Banner
-        // enabled={formData.offerBanner.enabled}
-        // title={formData.offerBanner.title}
-        // onEnabledChange={(enabled) =>
-        //   handleInputChange("offerBanner.enabled", enabled)
-        // }
-        // onTitleChange={(title) => {
-        //   handleInputChange("offerBanner.title", title);
-        //   console.log("title", title);
-        // }}
-        />
+        <Header_Section_Offer_Banner />
       </div>
 
       {/* Buttons */}

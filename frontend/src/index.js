@@ -43,7 +43,9 @@ root.render(
       </AdminGlobalProvider>
     ) : (
       <GlobalProvider>
-        <Website_App />
+        <HeaderSectionProvider>
+          <Website_App />
+        </HeaderSectionProvider>
       </GlobalProvider>
     )}
   </React.StrictMode>

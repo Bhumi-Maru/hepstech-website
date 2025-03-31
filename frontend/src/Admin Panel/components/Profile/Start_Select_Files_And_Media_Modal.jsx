@@ -5,6 +5,7 @@ import { handleFileUpload } from "../../utils/fileUploadUtils";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
+import { useHeaderSection } from "../../context/Header_Section_Context";
 
 export default function Start_Select_Files_And_Media_Modal({
   isBannerImageVisible,
@@ -24,6 +25,7 @@ export default function Start_Select_Files_And_Media_Modal({
   } = useAllMediaContext();
 
   const { selectedSubImage, setSelectedSubImage } = useSubCategoryContext();
+  const { selectedWebLogo, setSelectedWebLogo } = useHeaderSection();
 
   useEffect(() => {
     // Reset the preview URL when the modal is opened
@@ -35,6 +37,14 @@ export default function Start_Select_Files_And_Media_Modal({
   // console.log("selected file", selectedFile);
 
   console.log("selected sub image", selectedSubImage);
+
+  // const handleFileSelect = (file) => {
+  //   if (isOpenPopupModal.isSelectingWebLogo) {
+  //     setSelectedWebLogo(file._id);
+  //     onLogoChange(file.fileUrl); // Update the logo in the form
+  //     setPreviewUrl(file.fileUrl);
+  //   }
+  // };
 
   return (
     <>
@@ -119,11 +129,7 @@ export default function Start_Select_Files_And_Media_Modal({
             </div>
             <div className="modal-body">
               <div className="tab-content" id="myTabContent">
-                {selectedTab === "select" ? (
-                  <Select_Files isBannerImageVisible={isBannerImageVisible} />
-                ) : (
-                  <Upload_New />
-                )}
+                {selectedTab === "select" ? <Select_Files /> : <Upload_New />}
               </div>
             </div>
             <div className="modal-footer" style={{ padding: "0rem" }}>
@@ -186,16 +192,20 @@ export default function Start_Select_Files_And_Media_Modal({
                         if (selectedSubImage) {
                           setSelectedSubImage(selectedSubImage);
                         }
+                        if (selectedWebLogo) {
+                          setSelectedWebLogo(selectedWebLogo);
+                        }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
                           startSelectFilesAndMedia: false,
                         }));
                       }}
-                      disabled={
-                        !selectedBannerImage &&
-                        !selectedMainImage &&
-                        !selectedSubImage
-                      } // Check selectedSubImage properly
+                      // disabled={
+                      //   !selectedBannerImage &&
+                      //   !selectedMainImage &&
+                      //   !selectedSubImage &&
+                      //   !selectedWebLogo
+                      // } // Check selectedSubImage properly
                     >
                       Select Files
                     </button>

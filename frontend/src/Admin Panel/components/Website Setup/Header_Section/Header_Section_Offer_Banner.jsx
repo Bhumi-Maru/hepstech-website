@@ -5,6 +5,8 @@ export default function Header_Section_Offer_Banner() {
   const { formData, onEnabledChange, onTitleChange } = useHeaderSection();
   const { enabled, title } = formData.offerBanner;
 
+  console.log("ena", enabled);
+
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="px-4 py-3 sm:px-5">
