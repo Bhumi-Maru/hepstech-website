@@ -21,6 +21,8 @@ export default function Select_Files() {
     selectedAdminLogo,
     selectedFaviconIcon,
     setSelectedFaviconIcon,
+    setSelectedOfferImage,
+    selectedOfferImage,
   } = useHeaderSection();
 
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
@@ -94,9 +96,18 @@ export default function Select_Files() {
     }
   };
 
+  const handleOfferImageSelect = (file) => {
+    if (isOpenPopupModal.Header_Link_section_offer_image) {
+      setSelectedOfferImage(file._id);
+      console.log("Selected offer image ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
+  };
+
   console.log("selecte web", selectedWebLogo);
   console.log("selected admin", selectedAdminLogo);
   console.log("selected favicon", selectedFaviconIcon);
+  console.log("selected offer image", selectedOfferImage);
 
   return (
     <>
@@ -119,7 +130,8 @@ export default function Select_Files() {
               isOpenPopupModal.editSubCategoryPopupModal ||
               isOpenPopupModal.Header_Section_web_Logo ||
               isOpenPopupModal.Header_Section_Admin_Logo ||
-              isOpenPopupModal.Header_Section_Favicon_Icon
+              isOpenPopupModal.Header_Section_Favicon_Icon ||
+              isOpenPopupModal.Header_Link_section_offer_image
                 ? item.mimeType &&
                   item.mimeType.startsWith("image/") &&
                   !item.mimeType.includes("gif")
@@ -151,6 +163,10 @@ export default function Select_Files() {
                         handleAdminLogoSelect(item);
                       } else if (isOpenPopupModal.Header_Section_Favicon_Icon) {
                         handleFaviconSelect(item);
+                      } else if (
+                        isOpenPopupModal.Header_Link_section_offer_image
+                      ) {
+                        handleOfferImageSelect(item);
                       }
                     }}
                   />

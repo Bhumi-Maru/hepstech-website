@@ -43,6 +43,8 @@ const upload = multer({ storage }).fields([
   { name: "headerLogo", maxCount: 1 },
   { name: "adminLogo", maxCount: 1 },
   { name: "faviconIcon", maxCount: 1 },
+  //offer banner
+  { name: "offer_Image", maxCount: 1 },
 ]);
 
 module.exports = upload;

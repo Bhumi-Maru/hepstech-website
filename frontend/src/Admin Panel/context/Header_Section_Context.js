@@ -15,7 +15,12 @@ export const HeaderSectionProvider = ({ children }) => {
     adminLogo: "",
     faviconIcon: "",
     headerType: "sticky",
-    offersEnabled: false,
+    offersEnabled: {
+      enabled: false,
+      offer_Image: "",
+      main_category: "",
+      sub_categry: "",
+    },
     wishlistEnabled: false,
     contactEnabled: false,
     contact: {
@@ -38,6 +43,8 @@ export const HeaderSectionProvider = ({ children }) => {
   const [selectedAdminLogo, setSelectedAdminLogo] = useState(null);
   // Favicon Icon
   const [selectedFaviconIcon, setSelectedFaviconIcon] = useState(null);
+  //offer image
+  const [selectedOfferImage, setSelectedOfferImage] = useState(null);
 
   // Update form data dynamically
   const handleInputChange = (name, value) => {
@@ -64,6 +71,14 @@ export const HeaderSectionProvider = ({ children }) => {
         setSelectedAdminLogo(value);
       }
 
+      if (name === "faviconIcon") {
+        setSelectedFaviconIcon(value);
+      }
+
+      if (name === "offer_Image") {
+        setSelectedOfferImage(value);
+      }
+
       return updatedFormData;
     });
   };
@@ -72,11 +87,15 @@ export const HeaderSectionProvider = ({ children }) => {
 
   const onHeaderTypeChange = (type) => handleInputChange("headerType", type);
   const onOffersChange = (enabled) =>
-    handleInputChange("offersEnabled", enabled);
+    handleInputChange("offersEnabled.enabled", enabled);
   const onWishlistChange = (enabled) =>
     handleInputChange("wishlistEnabled", enabled);
   const onContactChange = (enabled) => {
     handleInputChange("contact.enabled", enabled); // ✅ Updates contact.enabled instead of contactEnabled
+  };
+
+  const onOfferInfoChange = (field, value) => {
+    handleInputChange(`offersEnabled.${field}`, value);
   };
 
   const onContactInfoChange = (field, value) => {
@@ -102,7 +121,22 @@ export const HeaderSectionProvider = ({ children }) => {
         formDataToSend.append("faviconIcon", formData.faviconIcon);
 
       formDataToSend.append("headerType", formData.headerType);
-      formDataToSend.append("offersEnabled", formData.offersEnabled);
+      formDataToSend.append(
+        "offersEnabled[enabled]",
+        formData.offersEnabled.enabled
+      );
+      formDataToSend.append(
+        "offersEnabled[offer_Image]",
+        formData.offersEnabled.offer_Image
+      );
+      formDataToSend.append(
+        "offersEnabled[main_category]",
+        formData.offersEnabled.main_category
+      );
+      formDataToSend.append(
+        "offersEnabled[sub_category]",
+        formData.offersEnabled.sub_category
+      );
       formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);
       // formDataToSend.append("contactEnabled", formData.contactEnabled);
       // formDataToSend.append("contact", JSON.stringify(formData.contact));
@@ -171,6 +205,7 @@ export const HeaderSectionProvider = ({ children }) => {
         // onFaviconChange,
         onHeaderTypeChange,
         onOffersChange,
+        onOfferInfoChange,
         onWishlistChange,
         onContactChange,
         onContactInfoChange,
@@ -193,6 +228,10 @@ export const HeaderSectionProvider = ({ children }) => {
         // favicon icon
         selectedFaviconIcon,
         setSelectedFaviconIcon,
+
+        // offer image
+        selectedOfferImage,
+        setSelectedOfferImage,
       }}
     >
       {children}

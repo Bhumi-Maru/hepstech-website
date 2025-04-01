@@ -23,8 +23,25 @@ const headerSectionSchema = new mongoose.Schema(
       default: "sticky",
     },
     offersEnabled: {
-      type: Boolean,
-      default: false,
+      enabled: {
+        type: Boolean,
+        default: false,
+      },
+      offer_Image: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "File",
+        required: false,
+      },
+      main_category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MainCategory",
+        required: false,
+      },
+      sub_category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SubCategory",
+        required: false,
+      },
     },
     wishlistEnabled: {
       type: Boolean,
