@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Header_Section_Logo from "./Header_Section_Logo";
 import Header_Section_Setting from "./Header_Section_Setting";
 import Header_Section_Link_Options from "./Header_Section_Link_Options";
@@ -14,6 +13,11 @@ export default function Header_Section_1() {
     isSubmitting,
     handleSubmitHeaderSection,
     handleInputChange,
+    setSelectedWebLogo,
+    selectedWebLogo,
+    // admin logo
+    selectedAdminLogo,
+    setSelectedAdminLogo,
   } = useHeaderSection();
   return (
     <div className="container">
@@ -22,14 +26,14 @@ export default function Header_Section_1() {
       <div className="mt-6 space-y-4">
         {/* Header Logo */}
         <Header_Section_Logo
-          logo={formData.headerLogo}
+          headerLogo={formData.headerLogo}
           onLogoChange={(logo) => handleInputChange("headerLogo", logo)}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-x-5 gap-y-4">
           <Header_Section_admin_Logo
-            logo={formData.adminLogo}
-            onLogoChange={(logo) => handleInputChange("adminLogo", logo)}
+            adminLogo={formData.adminLogo}
+            onAdminLogoChange={(logo) => handleInputChange("adminLogo", logo)}
           />
           <Header_Section_Favicon_Icon
             favicon={formData.faviconIcon}

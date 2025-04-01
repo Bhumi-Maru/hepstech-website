@@ -11,10 +11,14 @@ const createHeaderSection = async (req, res) => {
       headerType = "Sticky",
       offersEnabled = false,
       wishlistEnabled = false,
-      contact = {},
-      offerBanner = {},
+      contact = "{}",
+      offerBanner = "{}",
     } = req.body;
 
+    console.log("request", req.body);
+
+    console.log("Raw contact data:", contact); // Debugging
+    console.log("Raw offerBanner data:", offerBanner); // Debugging
     // Validate and fetch file references
     const validateFileReference = async (fileId) => {
       if (!fileId) return null;
@@ -115,4 +119,21 @@ const getHeaderSection = async (req, res) => {
   }
 };
 
-module.exports = { createHeaderSection, getHeaderSection };
+const deleteHeaderSection = async (req, res) => {
+  try {
+    const data = await HeaderSectionModel.deleteMany();
+    res.status(200).json({
+      success: true,
+      data: data,
+      message: "data deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error Deleting header section:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+module.exports = { createHeaderSection, getHeaderSection, deleteHeaderSection };

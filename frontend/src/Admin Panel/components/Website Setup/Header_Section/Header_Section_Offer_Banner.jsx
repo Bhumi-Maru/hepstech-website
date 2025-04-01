@@ -2,10 +2,17 @@ import React from "react";
 import { useHeaderSection } from "../../../context/Header_Section_Context";
 
 export default function Header_Section_Offer_Banner() {
-  const { formData, onEnabledChange, onTitleChange } = useHeaderSection();
-  const { enabled, title } = formData.offerBanner;
+  const {
+    formData: { offerBanner },
+    onEnabledChange,
+    onTitleChange,
+  } = useHeaderSection();
+  // const { enabled, title } = formData.offerBanner;
 
-  console.log("ena", enabled);
+  // console.log("ena", enabled);
+  // console.log("title", title);
+
+  console.log("offerBanner data:", offerBanner); // Debugging
 
   return (
     <div className="bg-white rounded-lg shadow">
@@ -24,14 +31,14 @@ export default function Header_Section_Offer_Banner() {
               role="checkbox"
               value=""
               tabIndex="0"
-              checked={enabled}
+              checked={offerBanner?.enabled || false}
               onChange={(e) => onEnabledChange(e.target.checked)}
             />
             <label htmlFor="offerBanner"></label>
           </div>
         </div>
 
-        {enabled && (
+        {offerBanner?.enabled && (
           <div className="mt-4" id="offerBannerContent">
             <div>
               <label htmlFor="offerTitle">Enter Offer Title</label>
@@ -39,7 +46,7 @@ export default function Header_Section_Offer_Banner() {
                 <input
                   type="text"
                   id="offerTitle"
-                  value={title}
+                  value={offerBanner?.title || ""}
                   onChange={(e) => onTitleChange(e.target.value)}
                   placeholder="Enter offer title"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-primary focus:outline-none"

@@ -30,6 +30,8 @@ export default function Start_Select_Files_And_Media_Modal({
     setSelectedWebLogo,
     selectedAdminLogo,
     setSelectedAdminLogo,
+    selectedFaviconIcon,
+    setSelectedFaviconIcon,
   } = useHeaderSection();
 
   useEffect(() => {
@@ -197,11 +199,23 @@ export default function Start_Select_Files_And_Media_Modal({
                         if (selectedSubImage) {
                           setSelectedSubImage(selectedSubImage);
                         }
-                        if (selectedWebLogo) {
+                        if (
+                          isOpenPopupModal.Header_Section_web_Logo &&
+                          selectedWebLogo
+                        ) {
                           setSelectedWebLogo(selectedWebLogo);
                         }
-                        if (selectedAdminLogo) {
+                        if (
+                          isOpenPopupModal.Header_Section_Admin_Logo &&
+                          selectedAdminLogo
+                        ) {
                           setSelectedAdminLogo(selectedAdminLogo);
+                        }
+                        if (
+                          isOpenPopupModal.Header_Section_Favicon_Icon &&
+                          selectedFaviconIcon
+                        ) {
+                          setSelectedFaviconIcon(selectedFaviconIcon);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,

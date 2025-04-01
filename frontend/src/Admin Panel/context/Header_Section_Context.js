@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const HeaderSectionContext = createContext();
 
@@ -36,6 +36,8 @@ export const HeaderSectionProvider = ({ children }) => {
   const [selectedWebLogo, setSelectedWebLogo] = useState(null);
   // ADMIN LOG
   const [selectedAdminLogo, setSelectedAdminLogo] = useState(null);
+  // Favicon Icon
+  const [selectedFaviconIcon, setSelectedFaviconIcon] = useState(null);
 
   // Update form data dynamically
   const handleInputChange = (name, value) => {
@@ -67,19 +69,21 @@ export const HeaderSectionProvider = ({ children }) => {
   };
 
   // Event Handlers
-  const onLogoChange = (logo) =>
-    handleInputChange("headerLogo", selectedWebLogo);
-  const onAdminLogoChange = (logo) =>
-    handleInputChange("adminLogo", selectedAdminLogo);
-  const onFaviconChange = (favicon) =>
-    handleInputChange("faviconIcon", favicon);
+  // const onLogoChange = (logo) =>
+  //   handleInputChange("headerLogo", selectedWebLogo);
+  // const onAdminLogoChange = (logo) =>
+  //   handleInputChange("adminLogo", selectedAdminLogo);
+  // const onFaviconChange = (favicon) =>
+  //   handleInputChange("faviconIcon", favicon);
   const onHeaderTypeChange = (type) => handleInputChange("headerType", type);
   const onOffersChange = (enabled) =>
     handleInputChange("offersEnabled", enabled);
   const onWishlistChange = (enabled) =>
     handleInputChange("wishlistEnabled", enabled);
-  const onContactChange = (enabled) =>
-    handleInputChange("contactEnabled", enabled);
+  const onContactChange = (enabled) => {
+    handleInputChange("contact.enabled", enabled); // ✅ Updates contact.enabled instead of contactEnabled
+  };
+
   const onContactInfoChange = (field, value) =>
     handleInputChange(`contact.${field}`, value);
   const onEnabledChange = (enabled) =>
@@ -103,7 +107,7 @@ export const HeaderSectionProvider = ({ children }) => {
       formDataToSend.append("headerType", formData.headerType);
       formDataToSend.append("offersEnabled", formData.offersEnabled);
       formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);
-      formDataToSend.append("contactEnabled", formData.contactEnabled);
+      // formDataToSend.append("contactEnabled", formData.contactEnabled);
       formDataToSend.append("contact", JSON.stringify(formData.contact));
       formDataToSend.append(
         "offerBanner",
@@ -136,13 +140,13 @@ export const HeaderSectionProvider = ({ children }) => {
         headerType: formData.headerType,
         offersEnabled: formData.offersEnabled,
         wishlistEnabled: formData.wishlistEnabled,
-        contactEnabled: formData.contactEnabled,
+        // contactEnabled: formData.contactEnabled, 
         contact: formData.contact,
         offerBanner: formData.offerBanner,
 
-        onLogoChange,
-        onAdminLogoChange, // Renamed to match admin logo
-        onFaviconChange,
+        // onLogoChange,
+        // onAdminLogoChange, // Renamed to match admin logo
+        // onFaviconChange,
         onHeaderTypeChange,
         onOffersChange,
         onWishlistChange,
@@ -163,6 +167,10 @@ export const HeaderSectionProvider = ({ children }) => {
         // admin logo
         selectedAdminLogo,
         setSelectedAdminLogo,
+
+        // favicon icon
+        selectedFaviconIcon,
+        setSelectedFaviconIcon,
       }}
     >
       {children}
