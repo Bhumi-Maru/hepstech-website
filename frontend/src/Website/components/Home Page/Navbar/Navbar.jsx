@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { fetchHeaderData } from "../../../../Admin Panel/utils/fileUploadUtils";
 
 export default function Navbar({
   setLoginModalOpen,
@@ -11,31 +12,10 @@ export default function Navbar({
   const [formData, setFormData] = useState({});
   // Fetch latest data on initial load
   useEffect(() => {
-    fetchHeaderData();
+    fetchHeaderData(setFormData);
   }, []);
 
   console.log("gggg", formData);
-
-  const fetchHeaderData = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:7000/api/header-section/getAll"
-      );
-
-      if (response.data.success && response.data.data.length > 0) {
-        // Sort by createdAt to get the most recent entry
-        const sortedData = [...response.data.data].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-        const latestData = sortedData[0];
-
-        setFormData(latestData);
-        console.log("Most Recent Data:", latestData);
-      }
-    } catch (error) {
-      console.error("Error fetching header data:", error);
-    }
-  };
 
   const [isScrollingUp, setIsScrollingUp] = useState(false);
   let lastScrollY = window.scrollY;
@@ -156,11 +136,13 @@ export default function Navbar({
               title="logo"
               className="flex flex-shrink-0 ml-5 mr-auto xl:ml-0 sm:mr-0"
             >
-              <img
-                className="w-auto h-10"
-                src="../admin assets/images/logo.png"
-                alt=""
-              />
+              {formData?.headerLogo?.filePath && (
+                <img
+                  className="w-auto h-10"
+                  src={`http://localhost:7000${formData.headerLogo.filePath}`}
+                  alt="Logo"
+                />
+              )}
             </a>
 
             <form
