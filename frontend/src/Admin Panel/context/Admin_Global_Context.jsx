@@ -85,6 +85,8 @@ const AdminGlobalProvider = ({ children }) => {
     Header_Section_web_Logo: false,
     Header_Section_Admin_Logo: false,
     Header_Section_Favicon_Icon: false,
+    // offer
+    Header_Link_section_offer_image: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

@@ -4,45 +4,46 @@ const File = require("../models/fileModel"); // Assuming you have a File model
 
 const createHeaderSection = async (req, res) => {
   try {
-    const {
+    let {
       headerLogo,
       adminLogo,
       faviconIcon,
       headerType = "sticky",
-      offersEnabled = false,
+      offersEnabled = "{}",
       wishlistEnabled = false,
       contact = "{}",
       offerBanner = "{}",
     } = req.body;
 
-    console.log("request", req.body);
+    // Parse JSON fields if they are strings
+    offersEnabled =
+      typeof offersEnabled === "string"
+        ? JSON.parse(offersEnabled)
+        : offersEnabled;
+    contact = typeof contact === "string" ? JSON.parse(contact) : contact;
+    offerBanner =
+      typeof offerBanner === "string" ? JSON.parse(offerBanner) : offerBanner;
 
-    console.log("Raw contact data:", contact); // Debugging
-    console.log("Raw offerBanner data:", offerBanner); // Debugging
-    // Validate and fetch file references
-    const validateFileReference = async (fileId) => {
-      if (!fileId) return null;
-      if (!mongoose.Types.ObjectId.isValid(fileId)) {
-        throw new Error(`Invalid ObjectId: ${fileId}`);
-      }
-      const file = await File.findById(fileId);
-      if (!file) {
-        throw new Error(`File not found with ID: ${fileId}`);
-      }
-      return file._id;
-    };
+    // Convert empty strings to null for ObjectId fields
+    const parseObjectId = (value) =>
+      mongoose.Types.ObjectId.isValid(value) ? value : null;
 
-    const validatedHeaderLogo = await validateFileReference(headerLogo);
-    const validatedAdminLogo = await validateFileReference(adminLogo);
-    const validatedFaviconIcon = await validateFileReference(faviconIcon);
+    const validatedHeaderLogo = parseObjectId(headerLogo);
+    const validatedAdminLogo = parseObjectId(adminLogo);
+    const validatedFaviconIcon = parseObjectId(faviconIcon);
 
-    // Create a new header section
+    // Create new header section
     const newHeaderSection = new HeaderSectionModel({
       headerLogo: validatedHeaderLogo,
       adminLogo: validatedAdminLogo,
       faviconIcon: validatedFaviconIcon,
       headerType,
-      offersEnabled,
+      offersEnabled: {
+        enabled: offersEnabled.enabled || false,
+        offer_Image: parseObjectId(offersEnabled.offer_Image),
+        main_Category: parseObjectId(offersEnabled.main_category),
+        sub_Category: parseObjectId(offersEnabled.sub_category),
+      },
       wishlistEnabled,
       contact: {
         enabled: contact.enabled || false,
@@ -58,13 +59,14 @@ const createHeaderSection = async (req, res) => {
 
     await newHeaderSection.save();
 
-    // Populate the response with full file details
+    // Populate file details
     const populatedSection = await HeaderSectionModel.findById(
       newHeaderSection._id
     )
       .populate("headerLogo")
       .populate("adminLogo")
-      .populate("faviconIcon");
+      .populate("faviconIcon")
+      .populate("offersEnabled.offer_Image");
 
     res.status(201).json({
       success: true,
@@ -82,7 +84,9 @@ const createHeaderSection = async (req, res) => {
 
 const getHeaderSection = async (req, res) => {
   try {
-    const headerSection = await HeaderSectionModel.find()
+    // Fetch all header section entries
+    const headerSections = await HeaderSectionModel.find()
+      .sort({ createdAt: -1 }) // Get most recent entries first
       .populate({
         path: "headerLogo",
         select:
@@ -97,21 +101,34 @@ const getHeaderSection = async (req, res) => {
         path: "faviconIcon",
         select:
           "fileId filename filePath fileType fileSize createdAt updatedAt",
+      })
+      .populate({
+        path: "offersEnabled.offer_Image",
+        select:
+          "fileId filename filePath fileType fileSize createdAt updatedAt",
+      })
+      .populate({
+        path: "offersEnabled.main_category",
+        select: "_id main_category_title",
+      })
+      .populate({
+        path: "offersEnabled.sub_category",
+        select: "_id sub_category_title",
       });
 
-    if (!headerSection) {
+    if (!headerSections.length) {
       return res.status(404).json({
         success: false,
-        message: "Header section not found",
+        message: "No header sections found",
       });
     }
 
     res.status(200).json({
       success: true,
-      data: headerSection,
+      data: headerSections, // Return all header sections
     });
   } catch (error) {
-    console.error("Error fetching header section:", error);
+    console.error("Error fetching header sections:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",

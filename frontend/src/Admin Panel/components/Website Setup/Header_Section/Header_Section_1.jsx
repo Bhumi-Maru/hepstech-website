@@ -50,7 +50,12 @@ export default function Header_Section_1() {
         />
 
         {/* Link Options */}
-        <Header_Section_Link_Options />
+        <Header_Section_Link_Options
+          offerImage={formData.offersEnabled.offer_Image}
+          onOfferImageChange={(offerImage) =>
+            handleInputChange("offer_Image", offerImage)
+          }
+        />
 
         {/* Offer Banner */}
         <Header_Section_Offer_Banner />

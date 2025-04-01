@@ -32,6 +32,8 @@ export default function Start_Select_Files_And_Media_Modal({
     setSelectedAdminLogo,
     selectedFaviconIcon,
     setSelectedFaviconIcon,
+    selectedOfferImage,
+    setSelectedOfferImage,
   } = useHeaderSection();
 
   useEffect(() => {
@@ -216,6 +218,9 @@ export default function Start_Select_Files_And_Media_Modal({
                           selectedFaviconIcon
                         ) {
                           setSelectedFaviconIcon(selectedFaviconIcon);
+                        }
+                        if (isOpenPopupModal.Header_Link_section_offer_image) {
+                          setSelectedOfferImage(selectedOfferImage);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
