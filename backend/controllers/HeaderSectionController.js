@@ -8,7 +8,7 @@ const createHeaderSection = async (req, res) => {
       headerLogo,
       adminLogo,
       faviconIcon,
-      headerType = "Sticky",
+      headerType = "sticky",
       offersEnabled = false,
       wishlistEnabled = false,
       contact = "{}",

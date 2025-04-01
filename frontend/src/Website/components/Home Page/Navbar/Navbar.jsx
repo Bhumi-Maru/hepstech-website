@@ -1,23 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import { useHeaderSection } from "../../../../Admin Panel/context/Header_Section_Context";
+import axios from "axios";
 
 export default function Navbar({
   setLoginModalOpen,
   setIsMobileNavigationModal,
 }) {
+  // const { formData } = useHeaderSection();
+  const [formData, setFormData] = useState({});
+  // Fetch latest data on initial load
+  useEffect(() => {
+    fetchHeaderData();
+  }, []);
+
+  console.log("gggg", formData);
+
+  const fetchHeaderData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7000/api/header-section/getAll"
+      );
+
+      if (response.data.success && response.data.data.length > 0) {
+        // Sort by createdAt to get the most recent entry
+        const sortedData = [...response.data.data].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        const latestData = sortedData[0];
+
+        setFormData(latestData);
+        console.log("Most Recent Data:", latestData);
+      }
+    } catch (error) {
+      console.error("Error fetching header data:", error);
+    }
+  };
+
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
+  let lastScrollY = window.scrollY;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setIsScrollingUp(true);
+      } else {
+        setIsScrollingUp(false);
+      }
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  ////admin data
+
+  // Safely destructure offerBanner with default values
+  // const { enabled, title } = formData.offerBanner || {
+  //   enabled: false,
+  //   title: "",
+  // };
+
+  // useEffect(() => {
+  //   console.log("Offer Banner State:", enabled, title);
+  // }, [enabled, title]);
+
+  ///////////////////////////////////////////////////////
   const [hoveredMenu, setHoveredMenu] = useState(null);
   // State to manage the dropdown visibility
   const [isOpen, setIsOpen] = useState({
     contact: false,
     profile: false,
   });
-
-  const { formData } = useHeaderSection();
-  const { enabled, title } = formData?.offerBanner; // Prevents undefined errors
-
-  console.log("e", enabled);
 
   // Function to toggle the dropdown menu
   const toggleDropdown = (dropdown) => {
@@ -40,7 +95,7 @@ export default function Navbar({
   return (
     <>
       {/* <!-- START OFFER ANNOUNCEMENT --> */}
-      {enabled && (
+      {formData?.offerBanner?.enabled && (
         <div className="relative py-2.5 bg-skin-primary">
           <div className="container">
             <div className="text-center sm:px-16">
@@ -49,7 +104,7 @@ export default function Navbar({
                   {/* Super Saver Sale! Enjoy Up To 55% OFF! Use Code
                   <span className="font-bold">“SUPER20”</span> To Get Extra 20%
                   OFF. */}
-                  {title}
+                  {formData?.offerBanner.title}
                 </span>
               </p>
             </div>
@@ -58,7 +113,19 @@ export default function Navbar({
       )}
       {/* <!-- END OFFER ANNOUNCEMENT --> */}
       {/* <!-- START HEADER --> */}
-      <header className="z-20 text-gray-900 bg-white shadow nav-smart-sticky">
+      <header
+        className={`z-20 text-gray-900 bg-white shadow nav-${
+          formData.headerType
+        } ${
+          formData.headerType === "smart-sticky"
+            ? "nav-sticky nav-smart-sticky"
+            : ""
+        } ${
+          isScrollingUp && formData.headerType === "smart-sticky"
+            ? "scroll-up"
+            : ""
+        }`}
+      >
         <div className="container">
           <div className="flex items-center justify-between h-20">
             <button
@@ -191,128 +258,143 @@ export default function Navbar({
                   </button>
 
                   {/* Dropdown Menu */}
-                  <div
-                    className={`dropdown-menu ${
-                      isOpen.contact ? "block" : "hidden"
-                    }`} // Show or hide based on isOpen state
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="menu-button"
-                    tabIndex="-1"
-                  >
-                    <div className="divide-y divide-gray-100">
-                      <div className="px-4 py-5" role="none">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium" role="none">
-                            Call Us
-                          </p>
-                          <a
-                            href="#"
-                            title="Call Us"
-                            className="inline-flex font-medium hover:text-skin-primary"
-                          >
-                            (885) 242-9095
-                          </a>
-                        </div>
-
-                        <hr className="my-5 border-gray-200" />
-
-                        <p
-                          className="text-base font-medium text-gray-600 truncate"
-                          role="none"
-                        >
-                          Need more help?
-                        </p>
-                        <p
-                          className="text-sm text-gray-600 truncate"
-                          role="none"
-                        >
-                          Connect with our team and they will sort it out for
-                          you
-                        </p>
-                        <div className="grid grid-cols-2 gap-4 mt-3 text-center">
-                          <div>
-                            <a
-                              href="#"
-                              title=""
-                              className="flex flex-col items-center p-3 transition-all duration-200 rounded-md hover:text-skin-primary hover:bg-gray-50"
-                            >
-                              <svg
-                                className="w-6 h-6 mx-auto"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 256 256"
+                  {formData?.contact && (
+                    <>
+                      <div
+                        className={`dropdown-menu ${
+                          isOpen.contact ? "block" : "hidden"
+                        }`} // Show or hide based on isOpen state
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="menu-button"
+                        tabIndex="-1"
+                      >
+                        <div className="divide-y divide-gray-100">
+                          <div className="px-4 py-5" role="none">
+                            <div className="flex items-center justify-between">
+                              <p className="font-medium" role="none">
+                                Call Us
+                              </p>
+                              <a
+                                href="#"
+                                title="Call Us"
+                                className="inline-flex font-medium hover:text-skin-primary"
                               >
-                                <path
-                                  d="M45.429,176.99811A95.95978,95.95978,0,1,1,79.00277,210.5717l.00023-.001L45.84643,220.044a8,8,0,0,1-9.89-9.89l9.47331-33.15657Z"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="16"
-                                ></path>
-                                <path
-                                  d="M152.11369,183.99992a80,80,0,0,1-80.11361-80.11361A27.97622,27.97622,0,0,1,100,76h0a6.89265,6.89265,0,0,1,5.98451,3.47295l11.69105,20.45931a8,8,0,0,1-.086,8.08508l-9.38907,15.64844h0a48.18239,48.18239,0,0,0,24.13373,24.13373l0,0,15.64841-9.389a8,8,0,0,1,8.08508-.086l20.45931,11.691A6.89265,6.89265,0,0,1,180,156v0A28.081,28.081,0,0,1,152.11369,183.99992Z"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="16"
-                                ></path>
-                              </svg>
-                              <span className="block mt-1"> WhatsApp Us </span>
-                            </a>
-                          </div>
+                                {/* (885) 242-9095 */}
+                                {formData?.contact.phoneNumber}
+                              </a>
+                            </div>
 
-                          <div>
-                            <a
-                              href="#"
-                              title=""
-                              className="flex flex-col items-center p-3 transition-all duration-200 rounded-md hover:text-skin-primary hover:bg-gray-50"
+                            <hr className="my-5 border-gray-200" />
+
+                            <p
+                              className="text-base font-medium text-gray-600 truncate"
+                              role="none"
                             >
-                              <svg
-                                className="w-6 h-6 mx-auto"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                />
-                              </svg>
-                              <span className="block mt-1"> Email Us </span>
-                            </a>
+                              Need more help?
+                            </p>
+                            <p
+                              className="text-sm text-gray-600 truncate"
+                              role="none"
+                            >
+                              Connect with our team and they will sort it out
+                              for you
+                            </p>
+                            <div className="grid grid-cols-2 gap-4 mt-3 text-center">
+                              <div>
+                                <a
+                                  href="#"
+                                  title=""
+                                  className="flex flex-col items-center p-3 transition-all duration-200 rounded-md hover:text-skin-primary hover:bg-gray-50"
+                                >
+                                  <svg
+                                    className="w-6 h-6 mx-auto"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 256 256"
+                                  >
+                                    <path
+                                      d="M45.429,176.99811A95.95978,95.95978,0,1,1,79.00277,210.5717l.00023-.001L45.84643,220.044a8,8,0,0,1-9.89-9.89l9.47331-33.15657Z"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="16"
+                                    ></path>
+                                    <path
+                                      d="M152.11369,183.99992a80,80,0,0,1-80.11361-80.11361A27.97622,27.97622,0,0,1,100,76h0a6.89265,6.89265,0,0,1,5.98451,3.47295l11.69105,20.45931a8,8,0,0,1-.086,8.08508l-9.38907,15.64844h0a48.18239,48.18239,0,0,0,24.13373,24.13373l0,0,15.64841-9.389a8,8,0,0,1,8.08508-.086l20.45931,11.691A6.89265,6.89265,0,0,1,180,156v0A28.081,28.081,0,0,1,152.11369,183.99992Z"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="16"
+                                    ></path>
+                                  </svg>
+                                  <span className="block mt-1">
+                                    {" "}
+                                    WhatsApp Us{" "}
+                                  </span>
+                                </a>
+                              </div>
+
+                              <div>
+                                <a
+                                  href="#"
+                                  title=""
+                                  className="flex flex-col items-center p-3 transition-all duration-200 rounded-md hover:text-skin-primary hover:bg-gray-50"
+                                >
+                                  <svg
+                                    className="w-6 h-6 mx-auto"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    />
+                                  </svg>
+                                  <span className="block mt-1"> Email Us </span>
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
 
               {/* WISHLIST */}
-              <Link
-                to="/wishlist"
-                title="Wishlist"
-                className="flex-col items-center hidden transition-all duration-200 md:flex hover:text-skin-primary"
-              >
-                <svg
-                  className="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-                <span className="mt-1 text-xs font-semibold"> Wishlist </span>
-              </Link>
+              {formData?.wishlistEnabled && (
+                <>
+                  <Link
+                    to="/wishlist"
+                    title="Wishlist"
+                    className="flex-col items-center hidden transition-all duration-200 md:flex hover:text-skin-primary"
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      />
+                    </svg>
+                    <span className="mt-1 text-xs font-semibold">
+                      {" "}
+                      Wishlist{" "}
+                    </span>
+                  </Link>
+                </>
+              )}
 
               {/* CART */}
               <Link

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHeaderSection } from "../../../context/Header_Section_Context";
 
 export default function Header_Section_Offer_Banner() {
   const { formData, onEnabledChange, onTitleChange } = useHeaderSection();
   const { enabled, title } = formData.offerBanner;
+
+  useEffect(() => {
+    console.log("Offer Banner Updated:", enabled);
+  }, [enabled]);
 
   console.log("ena", enabled);
   console.log("title", title);

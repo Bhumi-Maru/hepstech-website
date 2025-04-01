@@ -14,7 +14,7 @@ export const HeaderSectionProvider = ({ children }) => {
     headerLogo: "",
     adminLogo: "",
     faviconIcon: "",
-    headerType: "Sticky",
+    headerType: "sticky",
     offersEnabled: false,
     wishlistEnabled: false,
     contactEnabled: false,

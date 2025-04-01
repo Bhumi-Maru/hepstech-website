@@ -19,8 +19,8 @@ const headerSectionSchema = new mongoose.Schema(
     },
     headerType: {
       type: String,
-      enum: ["Sticky", "Non-sticky", "Smart Sticky"],
-      default: "Sticky",
+      enum: ["sticky", "Non-sticky", "smart-sticky"],
+      default: "sticky",
     },
     offersEnabled: {
       type: Boolean,

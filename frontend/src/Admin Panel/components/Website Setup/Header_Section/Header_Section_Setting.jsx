@@ -5,7 +5,7 @@ export default function Header_Section_Setting({
   onHeaderTypeChange,
 }) {
   const [selectedHeaderType, setSelectedHeaderType] = useState(
-    headerType || "Sticky"
+    headerType || "sticky"
   );
 
   const handleHeaderTypeChange = (event) => {
@@ -28,8 +28,8 @@ export default function Header_Section_Setting({
               type="radio"
               name="headerType"
               id="stickyHeader"
-              value="Sticky"
-              checked={selectedHeaderType === "Sticky"}
+              value="sticky"
+              checked={selectedHeaderType === "sticky"}
               onChange={handleHeaderTypeChange}
               className="form-radio text-primary"
             />
@@ -64,8 +64,8 @@ export default function Header_Section_Setting({
               type="radio"
               name="headerType"
               id="smartStickyHeader"
-              value="Smart Sticky"
-              checked={selectedHeaderType === "Smart Sticky"}
+              value="smart-sticky"
+              checked={selectedHeaderType === "smart-sticky"}
               onChange={handleHeaderTypeChange}
               className="form-radio text-primary"
             />
