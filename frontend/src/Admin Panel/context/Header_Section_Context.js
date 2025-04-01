@@ -27,7 +27,7 @@ export const HeaderSectionProvider = ({ children }) => {
     offerBanner: {
       enabled: false,
       title: "",
-    },
+    }, // Link Option
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,12 +69,7 @@ export const HeaderSectionProvider = ({ children }) => {
   };
 
   // Event Handlers
-  // const onLogoChange = (logo) =>
-  //   handleInputChange("headerLogo", selectedWebLogo);
-  // const onAdminLogoChange = (logo) =>
-  //   handleInputChange("adminLogo", selectedAdminLogo);
-  // const onFaviconChange = (favicon) =>
-  //   handleInputChange("faviconIcon", favicon);
+
   const onHeaderTypeChange = (type) => handleInputChange("headerType", type);
   const onOffersChange = (enabled) =>
     handleInputChange("offersEnabled", enabled);
@@ -84,8 +79,10 @@ export const HeaderSectionProvider = ({ children }) => {
     handleInputChange("contact.enabled", enabled); // ✅ Updates contact.enabled instead of contactEnabled
   };
 
-  const onContactInfoChange = (field, value) =>
+  const onContactInfoChange = (field, value) => {
     handleInputChange(`contact.${field}`, value);
+  };
+
   const onEnabledChange = (enabled) =>
     handleInputChange("offerBanner.enabled", enabled);
   const onTitleChange = (title) =>
@@ -108,10 +105,35 @@ export const HeaderSectionProvider = ({ children }) => {
       formDataToSend.append("offersEnabled", formData.offersEnabled);
       formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);
       // formDataToSend.append("contactEnabled", formData.contactEnabled);
-      formDataToSend.append("contact", JSON.stringify(formData.contact));
+      // formDataToSend.append("contact", JSON.stringify(formData.contact));
+      // formDataToSend.append(
+      //   "offerBanner",
+      //   JSON.stringify(formData.offerBanner)
+      // );
+
+      // Append contact fields individually for better reliability
+      formDataToSend.append("contact[enabled]", formData.contact.enabled);
       formDataToSend.append(
-        "offerBanner",
-        JSON.stringify(formData.offerBanner)
+        "contact[phoneNumber]",
+        formData.contact.phoneNumber || ""
+      );
+      formDataToSend.append(
+        "contact[whatsappNumber]",
+        formData.contact.whatsappNumber || ""
+      );
+      formDataToSend.append(
+        "contact[emailAddress]",
+        formData.contact.emailAddress || ""
+      );
+
+      // Append offer banner
+      formDataToSend.append(
+        "offerBanner[enabled]",
+        formData.offerBanner.enabled
+      );
+      formDataToSend.append(
+        "offerBanner[title]",
+        formData.offerBanner.title || ""
       );
 
       const response = await axios.post(
@@ -138,9 +160,9 @@ export const HeaderSectionProvider = ({ children }) => {
         adminLogo: formData.adminLogo, // ✅ Separate 'adminLogo'
         favicon: formData.faviconIcon,
         headerType: formData.headerType,
-        offersEnabled: formData.offersEnabled,
+        offersEnabled: formData.offersEnabled, // Link option
         wishlistEnabled: formData.wishlistEnabled,
-        // contactEnabled: formData.contactEnabled, 
+        // contactEnabled: formData.contactEnabled,
         contact: formData.contact,
         offerBanner: formData.offerBanner,
 
