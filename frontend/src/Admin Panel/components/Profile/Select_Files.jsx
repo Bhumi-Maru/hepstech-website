@@ -16,9 +16,11 @@ export default function Select_Files() {
   } = useAllMediaContext();
   const {
     setSelectedWebLogo,
-    onLogoChange,
     selectedWebLogo,
     setSelectedAdminLogo,
+    selectedAdminLogo,
+    selectedFaviconIcon,
+    setSelectedFaviconIcon,
   } = useHeaderSection();
 
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
@@ -68,19 +70,33 @@ export default function Select_Files() {
 
   // Add this function to handle web logo selection
   const handleWebLogoSelect = (file) => {
-    setSelectedWebLogo(file._id); // Only store _id
-    console.log("Selected Web Logo ID:", file._id);
-    setPreviewUrl(file.fileUrl); // Set preview
+    if (isOpenPopupModal.Header_Section_web_Logo) {
+      setSelectedWebLogo(file._id); // Only store _id
+      console.log("Selected Web Logo ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
   };
 
   // Add this function to handle admin logo selection
   const handleAdminLogoSelect = (file) => {
-    setSelectedAdminLogo(file._id); // Only store _id
-    console.log("Selected Web Logo ID:", file._id);
-    setPreviewUrl(file.fileUrl); // Set preview
+    if (isOpenPopupModal.Header_Section_Admin_Logo) {
+      setSelectedAdminLogo(file._id); // Only store _id
+      console.log("Selected Admin Logo ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
+  };
+
+  const handleFaviconSelect = (file) => {
+    if (isOpenPopupModal.Header_Section_Favicon_Icon) {
+      setSelectedFaviconIcon(file._id);
+      console.log("Selected  favicon ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
   };
 
   console.log("selecte web", selectedWebLogo);
+  console.log("selected admin", selectedAdminLogo);
+  console.log("selected favicon", selectedFaviconIcon);
 
   return (
     <>
@@ -100,7 +116,10 @@ export default function Select_Files() {
               isOpenPopupModal.addMainCategoryPopupModal ||
               isOpenPopupModal.editMainCategoryPopupModal ||
               isOpenPopupModal.addSubCategoryPopupModal ||
-              isOpenPopupModal.editSubCategoryPopupModal
+              isOpenPopupModal.editSubCategoryPopupModal ||
+              isOpenPopupModal.Header_Section_web_Logo ||
+              isOpenPopupModal.Header_Section_Admin_Logo ||
+              isOpenPopupModal.Header_Section_Favicon_Icon
                 ? item.mimeType &&
                   item.mimeType.startsWith("image/") &&
                   !item.mimeType.includes("gif")
@@ -130,6 +149,8 @@ export default function Select_Files() {
                         handleWebLogoSelect(item); // Select Web Logo
                       } else if (isOpenPopupModal.Header_Section_Admin_Logo) {
                         handleAdminLogoSelect(item);
+                      } else if (isOpenPopupModal.Header_Section_Favicon_Icon) {
+                        handleFaviconSelect(item);
                       }
                     }}
                   />

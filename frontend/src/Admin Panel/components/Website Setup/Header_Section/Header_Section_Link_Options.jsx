@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHeaderSection } from "../../../context/Header_Section_Context";
 
 export default function Header_Section_Link_Options() {
   const {
+    formData,
     offersEnabled,
     wishlistEnabled,
     contactEnabled,
@@ -13,7 +14,18 @@ export default function Header_Section_Link_Options() {
     onContactInfoChange,
   } = useHeaderSection();
 
+  // Debugging logs
+  useEffect(() => {
+    console.log("Current contact state:", contact);
+  }, [contact]);
+
   console.log("offersEnabled", offersEnabled);
+  console.log("contactEnabled", contactEnabled);
+  console.log("contact", contact); // Debugging
+  console.log("phoneNumber:", contact?.phoneNumber); // Debugging
+  console.log("whatsappNumber:", contact?.whatsappNumber); // Debugging
+  console.log("emailAddress:", contact?.emailAddress); // Debugging
+
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="px-4 py-3 sm:px-5">
@@ -66,7 +78,7 @@ export default function Header_Section_Link_Options() {
                 <input
                   type="checkbox"
                   id="contactLink"
-                  checked={contactEnabled}
+                  checked={contact.enabled}
                   onChange={(e) => onContactChange(e.target.checked)}
                   className="form-checkbox h-5 w-5 text-primary"
                 />
@@ -77,7 +89,7 @@ export default function Header_Section_Link_Options() {
         </div>
 
         {/* Contact Section - Conditionally Rendered */}
-        {contactEnabled && (
+        {contact.enabled && (
           <div className="mt-4" id="contactLinkContent">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
               {/* Phone Number */}
@@ -89,7 +101,7 @@ export default function Header_Section_Link_Options() {
                   <input
                     type="tel"
                     id="phoneNumber"
-                    value={contact.phoneNumber}
+                    value={contact?.phoneNumber}
                     onChange={(e) =>
                       onContactInfoChange("phoneNumber", e.target.value)
                     }
@@ -108,7 +120,7 @@ export default function Header_Section_Link_Options() {
                   <input
                     type="tel"
                     id="whatsappNumber"
-                    value={contact.whatsappNumber}
+                    value={contact?.whatsappNumber}
                     onChange={(e) =>
                       onContactInfoChange("whatsappNumber", e.target.value)
                     }
@@ -127,7 +139,7 @@ export default function Header_Section_Link_Options() {
                   <input
                     type="email"
                     id="emailAddress"
-                    value={contact.emailAddress}
+                    value={contact?.emailAddress}
                     onChange={(e) =>
                       onContactInfoChange("emailAddress", e.target.value)
                     }

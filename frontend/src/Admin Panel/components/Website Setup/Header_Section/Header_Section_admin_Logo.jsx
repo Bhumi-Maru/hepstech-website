@@ -4,46 +4,55 @@ import { useHeaderSection } from "../../../context/Header_Section_Context";
 import { useAllMediaContext } from "../../../context/All_Media_Context";
 import { getFilePreview } from "../../../utils/fileUploadUtils";
 
-export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
+export default function Header_Section_admin_Logo({
+  adminLogo,
+  onAdminLogoChange,
+}) {
   const [isUploading, setIsUploading] = useState(false);
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const { selectedAdminLogo, setSelectedAdminLogo } = useHeaderSection();
   const { mediaItems } = useAllMediaContext();
 
   // Store preview image URL
-  const [previewLogo, setPreviewLogo] = useState(logo || "");
+  const [previewLogo, setPreviewLogo] = useState(adminLogo || "");
 
+  // Ensure proper effect dependencies
   useEffect(() => {
     if (selectedAdminLogo) {
       const selectedMedia = mediaItems.find(
         (item) => item._id === selectedAdminLogo
       );
       if (selectedMedia) {
-        setPreviewLogo(selectedMedia.fileUrl); // Update preview with fileUrl
-        if (onLogoChange) onLogoChange(selectedAdminLogo); // Send _id instead of file object
+        setPreviewLogo(selectedMedia.fileUrl);
+        if (onAdminLogoChange) onAdminLogoChange(selectedAdminLogo);
       }
+    } else {
+      setPreviewLogo("");
     }
-  }, [selectedAdminLogo, mediaItems, onLogoChange]);
+  }, [selectedAdminLogo, mediaItems]); // No onAdminLogoChange in dependencies
 
   // Find the selected header logo object
-  const adminLogo = mediaItems.find((item) => item._id === selectedAdminLogo);
+  const adminLogoFile = mediaItems.find(
+    (item) => item._id === selectedAdminLogo
+  );
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const fileUrl = URL.createObjectURL(file);
       setPreviewLogo(fileUrl);
-      if (onLogoChange) onLogoChange(file); // Send actual file for upload
+      if (onAdminLogoChange) onAdminLogoChange(file); // Send actual file for upload
     }
   };
 
   const handleRemoveLogo = () => {
     setPreviewLogo("");
     setSelectedAdminLogo(null); // Reset selected logo
-    if (onLogoChange) onLogoChange(null);
+    if (onAdminLogoChange) onAdminLogoChange(null);
   };
 
   const handleSelectFromMedia = () => {
+    // alert("firstly , select admi logo....");
     setIsOpenPopupModal((prev) => ({
       ...prev,
       startSelectFilesAndMedia: true,
@@ -70,7 +79,7 @@ export default function Header_Section_admin_Logo({ logo, onLogoChange }) {
               No logo selected
             </div>
           )} */}
-          {getFilePreview(adminLogo)}
+          {getFilePreview(adminLogoFile)}
         </div>
 
         <div className="flex items-center mt-3 space-x-4">
