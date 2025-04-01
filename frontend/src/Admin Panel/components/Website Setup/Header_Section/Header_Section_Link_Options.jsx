@@ -20,7 +20,7 @@ export default function Header_Section_Link_Options() {
   }, [contact]);
 
   console.log("offersEnabled", offersEnabled);
-  console.log("contactEnabled", contactEnabled);
+  // console.log("contactEnabled", contactEnabled);
   console.log("contact", contact); // Debugging
   console.log("phoneNumber:", contact?.phoneNumber); // Debugging
   console.log("whatsappNumber:", contact?.whatsappNumber); // Debugging
@@ -78,7 +78,8 @@ export default function Header_Section_Link_Options() {
                 <input
                   type="checkbox"
                   id="contactLink"
-                  checked={contact.enabled}
+                  name={contact?.enabled}
+                  checked={contact?.enabled}
                   onChange={(e) => onContactChange(e.target.checked)}
                   className="form-checkbox h-5 w-5 text-primary"
                 />
@@ -89,7 +90,7 @@ export default function Header_Section_Link_Options() {
         </div>
 
         {/* Contact Section - Conditionally Rendered */}
-        {contact.enabled && (
+        {contact?.enabled && (
           <div className="mt-4" id="contactLinkContent">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
               {/* Phone Number */}
@@ -100,6 +101,7 @@ export default function Header_Section_Link_Options() {
                 <div className="mt-1">
                   <input
                     type="tel"
+                    name="phoneNumber"
                     id="phoneNumber"
                     value={contact?.phoneNumber}
                     onChange={(e) =>
@@ -120,6 +122,7 @@ export default function Header_Section_Link_Options() {
                   <input
                     type="tel"
                     id="whatsappNumber"
+                    name="whatsappNumber"
                     value={contact?.whatsappNumber}
                     onChange={(e) =>
                       onContactInfoChange("whatsappNumber", e.target.value)
@@ -139,6 +142,7 @@ export default function Header_Section_Link_Options() {
                   <input
                     type="email"
                     id="emailAddress"
+                    name="emailAddress"
                     value={contact?.emailAddress}
                     onChange={(e) =>
                       onContactInfoChange("emailAddress", e.target.value)
