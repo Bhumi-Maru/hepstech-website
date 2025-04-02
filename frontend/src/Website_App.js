@@ -50,29 +50,23 @@ import ForgotPasswordModal from "./Website/components/Profile/Authentication/For
 import LoginOtpConfirmationForm from "./Website/components/Profile/Authentication/LoginOtpConfirmationForm";
 import SetPassword_From_Login from "./Website/components/Profile/Authentication/SetPassword_From_Login";
 import Offer_Image from "./Website/components/Home Page/Offer Image/Offer_Image";
+import { useGlobalContext } from "./Website/context/GlobalContext";
 
 export default function WebsiteApp() {
-  // offer image modal
-  const [isOfferImageModalOpen, setIsOfferImageModalOpen] = useState(false);
-  const [hasOfferImage, setHasOfferImage] = useState(false);
-
-  useEffect(() => {
-    setIsOfferImageModalOpen(true);
-  }, []);
-
+  const { isOfferImageModalOpen } = useGlobalContext();
   // Add this useEffect to handle body scrolling
-  useEffect(() => {
-    if (isOfferImageModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  // useEffect(() => {
+  //   if (isOfferImageModalOpen) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "auto";
+  //   }
 
-    // Cleanup function to reset overflow when component unmounts
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOfferImageModalOpen]);
+  //   // Cleanup function to reset overflow when component unmounts
+  //   return () => {
+  //     document.body.style.overflow = "auto";
+  //   };
+  // }, [isOfferImageModalOpen]);
 
   // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -104,11 +98,7 @@ export default function WebsiteApp() {
         {/* offer image modal */}
         {isOfferImageModalOpen === true && (
           <>
-            <Offer_Image
-              isOfferImageModalOpen={isOfferImageModalOpen}
-              setIsOfferImageModalOpen={setIsOfferImageModalOpen}
-              setHasOfferImage={setHasOfferImage}
-            />
+            <Offer_Image />
           </>
         )}
         {/* login popup modal */}

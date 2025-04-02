@@ -40,11 +40,14 @@ const upload = multer({ storage }).fields([
   { name: "galleryImages", maxCount: 10 },
   { name: "variantImages", maxCount: 10 },
   // header section
-  { name: "headerLogo", maxCount: 1 },
-  { name: "adminLogo", maxCount: 1 },
-  { name: "faviconIcon", maxCount: 1 },
-  //offer banner
-  { name: "offer_Image", maxCount: 1 },
+  // { name: "headerLogo", maxCount: 1 },
+  // { name: "adminLogo", maxCount: 1 },
+  // { name: "faviconIcon", maxCount: 1 },
+  //offer banner in header section
+  // { name: "offer_Image", maxCount: 1 },
+  // footer section
+  // { name: "footerLogo", maxCount: 1 },
+  // { name: "PaymentOptionsPhoto", maxCount: 10 },
 ]);
 
 module.exports = upload;

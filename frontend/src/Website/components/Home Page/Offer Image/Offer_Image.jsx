@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { fetchHeaderData } from "../../../../Admin Panel/utils/fileUploadUtils";
+import { useGlobalContext } from "../../../context/GlobalContext";
 
-export default function Offer_Image({
-  setIsOfferImageModalOpen,
-  setHasOfferImage,
-}) {
+export default function Offer_Image() {
   const [formData, setFormData] = useState(null);
   const [offerImagePath, setOfferImagePath] = useState("");
+  const [offerType, setOfferType] = useState("");
+  const { setIsOfferImageModalOpen, setHasOfferImage, setShopOfferType } =
+    useGlobalContext();
 
   useEffect(() => {
     fetchHeaderData(setFormData);
@@ -15,26 +16,27 @@ export default function Offer_Image({
   useEffect(() => {
     if (formData) {
       const path = formData?.offersEnabled?.offer_Image?.filePath || "";
+      const type = formData?.offersEnabled?.offerType || "";
+
+      setOfferType(type);
       setOfferImagePath(path);
-      // Update parent component whether we have an image to show
-      setHasOfferImage(!!path);
-      // If no image, close the modal
-      if (!path) {
+      setShopOfferType(type); // ✅ Update Global Context
+
+      const shouldShowImage =
+        path &&
+        ["general", "everytime", "single type", "home page"].includes(type);
+
+      setHasOfferImage(shouldShowImage);
+      if (!shouldShowImage) {
         setIsOfferImageModalOpen(false);
       }
     }
-  }, [formData, setIsOfferImageModalOpen, setHasOfferImage]);
+  }, [formData, setIsOfferImageModalOpen, setHasOfferImage, setShopOfferType]);
 
-  // Don't render anything if there's no image path
   if (!offerImagePath) return null;
 
   return (
-    <div
-      className="modal active"
-      id="loginModal"
-      role="dialog"
-      aria-hidden="false"
-    >
+    <div className="modal active" role="dialog" aria-hidden="false">
       <div
         className="modal-overlay"
         onClick={() => setIsOfferImageModalOpen(false)}
@@ -44,18 +46,16 @@ export default function Offer_Image({
           <button
             type="button"
             className="btn-close"
-            data-dismiss="modal"
             aria-label="Close"
             onClick={() => setIsOfferImageModalOpen(false)}
           >
-            <span className="sr-only"> Close </span>
+            <span className="sr-only">Close</span>
             <svg
               className="w-6 h-6"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"

@@ -55,6 +55,10 @@ export default function Header_Section_1() {
           onOfferImageChange={(offerImage) =>
             handleInputChange("offersEnabled.offer_Image", offerImage)
           }
+          offerType={formData?.offersEnabled?.offerType}
+          onOfferTypeChange={(type) =>
+            handleInputChange("offersEnabled.offerType", type)
+          }
         />
 
         {/* Offer Banner */}
