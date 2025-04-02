@@ -54,6 +54,7 @@ import Offer_Image from "./Website/components/Home Page/Offer Image/Offer_Image"
 export default function WebsiteApp() {
   // offer image modal
   const [isOfferImageModalOpen, setIsOfferImageModalOpen] = useState(false);
+  const [hasOfferImage, setHasOfferImage] = useState(false);
 
   useEffect(() => {
     setIsOfferImageModalOpen(true);
@@ -101,11 +102,12 @@ export default function WebsiteApp() {
           setIsMobileNavigationModal={setIsMobileNavigationModal}
         />
         {/* offer image modal */}
-        {isOfferImageModalOpen && (
+        {isOfferImageModalOpen === true && (
           <>
             <Offer_Image
               isOfferImageModalOpen={isOfferImageModalOpen}
               setIsOfferImageModalOpen={setIsOfferImageModalOpen}
+              setHasOfferImage={setHasOfferImage}
             />
           </>
         )}

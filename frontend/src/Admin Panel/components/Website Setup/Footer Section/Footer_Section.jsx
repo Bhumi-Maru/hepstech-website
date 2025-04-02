@@ -17,7 +17,7 @@ export default function Footer_Section() {
         <h1 class="heading-1">Footer Section</h1>
 
         <div class="mt-4 space-y-4">
-          <Footer_Section_1 />
+          {/* <Footer_Section_1 /> */}
           <Footer_Section_2 />
           <Footer_Section_3 />
           <Footer_Section_4 />
