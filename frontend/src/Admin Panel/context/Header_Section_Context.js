@@ -19,7 +19,7 @@ export const HeaderSectionProvider = ({ children }) => {
       enabled: false,
       offer_Image: "",
       main_category: "",
-      sub_categry: "",
+      sub_category: "",
     },
     wishlistEnabled: false,
     contactEnabled: false,
@@ -113,6 +113,7 @@ export const HeaderSectionProvider = ({ children }) => {
       setIsSubmitting(true);
       const formDataToSend = new FormData();
 
+      // Append all fields
       if (formData.headerLogo)
         formDataToSend.append("headerLogo", formData.headerLogo);
       if (formData.adminLogo)
@@ -121,31 +122,33 @@ export const HeaderSectionProvider = ({ children }) => {
         formDataToSend.append("faviconIcon", formData.faviconIcon);
 
       formDataToSend.append("headerType", formData.headerType);
+
+      // Properly structure offersEnabled data with consistent bracket notation
       formDataToSend.append(
         "offersEnabled[enabled]",
         formData.offersEnabled.enabled
       );
-      formDataToSend.append(
-        "offersEnabled[offer_Image]",
-        formData.offersEnabled.offer_Image
-      );
+
+      if (formData?.offersEnabled.offer_Image) {
+        formDataToSend.append(
+          "offersEnabled[offer_Image]",
+          formData?.offersEnabled.offer_Image
+        );
+      }
+
+      // Always send these fields, even if empty
       formDataToSend.append(
         "offersEnabled[main_category]",
-        formData.offersEnabled.main_category
+        formData.offersEnabled.main_category || ""
       );
       formDataToSend.append(
         "offersEnabled[sub_category]",
-        formData.offersEnabled.sub_category
+        formData.offersEnabled.sub_category || ""
       );
-      formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);
-      // formDataToSend.append("contactEnabled", formData.contactEnabled);
-      // formDataToSend.append("contact", JSON.stringify(formData.contact));
-      // formDataToSend.append(
-      //   "offerBanner",
-      //   JSON.stringify(formData.offerBanner)
-      // );
 
-      // Append contact fields individually for better reliability
+      formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);
+
+      // Contact info
       formDataToSend.append("contact[enabled]", formData.contact.enabled);
       formDataToSend.append(
         "contact[phoneNumber]",
@@ -160,7 +163,7 @@ export const HeaderSectionProvider = ({ children }) => {
         formData.contact.emailAddress || ""
       );
 
-      // Append offer banner
+      // Offer banner
       formDataToSend.append(
         "offerBanner[enabled]",
         formData.offerBanner.enabled
@@ -169,6 +172,11 @@ export const HeaderSectionProvider = ({ children }) => {
         "offerBanner[title]",
         formData.offerBanner.title || ""
       );
+
+      // Debug: Log what's being sent
+      for (let [key, value] of formDataToSend.entries()) {
+        console.log(key, value);
+      }
 
       const response = await axios.post(
         "http://localhost:7000/api/header-section/create",

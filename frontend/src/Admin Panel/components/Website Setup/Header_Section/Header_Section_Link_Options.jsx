@@ -20,6 +20,8 @@ export default function Header_Section_Link_Options({
     onContactInfoChange,
     selectedOfferImage,
     setSelectedOfferImage,
+
+    onOfferInfoChange,
   } = useHeaderSection();
 
   const [isUploading, setIsUploading] = useState(false);
@@ -41,6 +43,83 @@ export default function Header_Section_Link_Options({
   console.log("whatsappNumber:", contact?.whatsappNumber); // Debugging
   console.log("emailAddress:", contact?.emailAddress); // Debugging
 
+  ////////////////////////////////////////////////////////////////////
+
+  // State for categories
+  const [mainCategories, setMainCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedMainCategory, setSelectedMainCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+
+  console.log("main", mainCategories);
+  console.log("sub", subCategories);
+
+  // Initialize form data from context
+  useEffect(() => {
+    if (offersEnabled?.main_category) {
+      setSelectedMainCategory(offersEnabled.main_category);
+    }
+    if (offersEnabled?.sub_category) {
+      setSelectedSubCategory(offersEnabled.sub_category);
+    }
+  }, [offersEnabled?.main_category, offersEnabled?.sub_category]);
+
+  // Fetch main categories
+  useEffect(() => {
+    const fetchMainCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:7000/api/main-category");
+        const data = await response.json();
+        setMainCategories(data.categories);
+        console.log("main", data.categories);
+      } catch (error) {
+        console.error("Error fetching main categories:", error);
+      }
+    };
+
+    fetchMainCategories();
+  }, []);
+
+  // Fetch sub-categories when main category is selected
+  useEffect(() => {
+    const fetchSubCategories = async () => {
+      // if (selectedMainCategory) {
+      try {
+        const response = await fetch(
+          "http://localhost:7000/api/sub-category/getAll"
+        );
+        const data = await response.json();
+        // Filter sub-categories based on selected main category if needed
+        setSubCategories(data);
+
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching sub-categories:", error);
+      }
+    };
+    // }
+
+    fetchSubCategories();
+  }, [selectedMainCategory]);
+
+  // Updated handlers to properly update form data
+  const handleMainCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedMainCategory(value);
+    onOfferInfoChange("main_category", value);
+    // Reset sub-category when main category changes
+    setSelectedSubCategory("");
+    onOfferInfoChange("sub_category", "");
+  };
+
+  const handleSubCategoryChange = (e) => {
+    const value = e.target.value;
+    setSelectedSubCategory(value);
+    onOfferInfoChange("sub_category", value);
+  };
+
+  /////////////////////////////////////////////////////////////////////
+  console.log("selected offer image", selectedOfferImage);
   useEffect(() => {
     if (selectedOfferImage) {
       const selectedMedia = mediaItems.find(
@@ -59,6 +138,8 @@ export default function Header_Section_Link_Options({
   const offerImageFile = mediaItems.find(
     (item) => item._id === selectedOfferImage
   );
+
+  console.log("offer image", offerImageFile);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -111,48 +192,179 @@ export default function Header_Section_Link_Options({
             </li>
 
             {offersEnabled?.enabled && (
-              <>
-                <div className="mt-4" style={{ borderTopWidth: "0px" }}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
-                    {getFilePreview(offerImageFile)}
+              <div
+                // className="mt-4"
+                id="contactLinkContent"
+                style={{ borderTopWidth: "0px", paddingBottom: "20px" }}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
+                  {/* offer Image */}
+                  <div>
+                    <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
+                      {getFilePreview(offerImageFile)}{" "}
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      {/* Upload Button */}
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSelectFromMedia}
+                        disabled={isUploading}
+                      >
+                        {isUploading ? "Uploading..." : "Select File"}
+                      </button>
+                      {/* Hidden File Input */}
+                      <input
+                        type="file"
+                        id="admin-logo-upload"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                        disabled={isUploading}
+                      />
+                      {/* Remove Button */}
+                      <button
+                        type="button"
+                        className="btn btn-error-light"
+                        onClick={handleRemoveLogo}
+                        disabled={isUploading}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                  {/* Main Category */}
+                  <div className="mt-6">
+                    <label
+                      htmlFor="MainCategory"
+                      className="text-sm font-medium"
+                    >
+                      Main Category
+                    </label>
+                    <div className="mt-1">
+                      <select
+                        name="mainCategory"
+                        id="MainCategory"
+                        value={selectedMainCategory}
+                        onChange={handleMainCategoryChange}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-primary focus:outline-none"
+                      >
+                        <option value="">Select Main Category</option>
+                        {mainCategories.map((category) => (
+                          <option key={category._id} value={category._id}>
+                            {category.main_category_title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  {/* Sub Category */}
+                  <div className="mt-6">
+                    <label
+                      htmlFor="SubCategory"
+                      className="text-sm font-medium"
+                    >
+                      Sub Category
+                    </label>
+                    <div className="mt-1">
+                      <select
+                        name="subCategory"
+                        id="SubCategory"
+                        value={selectedSubCategory}
+                        onChange={handleSubCategoryChange}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-primary focus:outline-none"
+                        // disabled={!selectedMainCategory}
+                      >
+                        <option value="">Select Sub Category</option>
+                        {subCategories.map((subCategory) => (
+                          <option key={subCategory._id} value={subCategory._id}>
+                            {subCategory.sub_category_title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <div
-                  className="flex items-center mt-3 space-x-4"
-                  style={{ borderTopWidth: "0px", paddingBottom: "20px" }}
-                >
-                  {/* Upload Button */}
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleSelectFromMedia}
-                    disabled={isUploading}
-                  >
-                    {isUploading ? "Uploading..." : "Select File"}
-                  </button>
+              </div>
+            )}
 
-                  {/* Hidden File Input */}
-                  <input
-                    type="file"
-                    id="admin-logo-upload"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                    disabled={isUploading}
-                  />
+            {/* {offersEnabled?.enabled && (
+              <>
+                <div className="mt-2" style={{ borderTopWidth: "0px" }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
+                    <div>
+                      {getFilePreview(offerImageFile)}{" "}
+                      <div
+                        className="flex items-center mt-3 space-x-4"
+                        style={{ borderTopWidth: "0px", paddingBottom: "20px" }}
+                      >
+                        Upload Button
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={handleSelectFromMedia}
+                          disabled={isUploading}
+                        >
+                          {isUploading ? "Uploading..." : "Select File"}
+                        </button>
 
-                  {/* Remove Button */}
-                  <button
-                    type="button"
-                    className="btn btn-error-light"
-                    onClick={handleRemoveLogo}
-                    disabled={isUploading}
-                  >
-                    Remove
-                  </button>
+                        Hidden File Input
+                        <input
+                          type="file"
+                          id="admin-logo-upload"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={handleFileChange}
+                          disabled={isUploading}
+                        />
+
+                        Remove Button
+                        <button
+                          type="button"
+                          className="btn btn-error-light"
+                          onClick={handleRemoveLogo}
+                          disabled={isUploading}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+
+                     main category
+                    <div>
+                      <label htmlFor="" style={{ border: "none" }}>
+                        Main Category
+                      </label>
+                      <div
+                        className="flex items-center mt-3 space-x-4"
+                        style={{ width: "200px" }}
+                      >
+                        <select name="" id="">
+                          <option value="">Ice Creame</option>
+                          <option value="">Shirt</option>
+                        </select>
+                      </div>
+                    </div>
+
+                     sub category
+                    <div>
+                      <label htmlFor="" style={{ border: "none" }}>
+                        Sub Category
+                      </label>
+                      <div
+                        className="flex items-center mt-3 space-x-4"
+                        style={{ width: "200px" }}
+                      >
+                        <select name="" id="">
+                          <option value="">Ice Creame</option>
+                          <option value="">Shirt</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </>
-            )}
+            )} */}
 
             {/* Wishlist */}
             <li className="flex items-center justify-between py-4">
