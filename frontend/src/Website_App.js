@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Website/components/Home Page/Navbar/Navbar";
@@ -49,8 +49,16 @@ import SignupOtpConfirmationForm from "./Website/components/Profile/Authenticati
 import ForgotPasswordModal from "./Website/components/Profile/Authentication/ForgotPasswordModal";
 import LoginOtpConfirmationForm from "./Website/components/Profile/Authentication/LoginOtpConfirmationForm";
 import SetPassword_From_Login from "./Website/components/Profile/Authentication/SetPassword_From_Login";
+import Offer_Image from "./Website/components/Home Page/Offer Image/Offer_Image";
 
 export default function WebsiteApp() {
+  // offer image modal
+  const [isOfferImageModalOpen, setIsOfferImageModalOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOfferImageModalOpen(true);
+  }, []);
+
   // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   // SIGNUP MODAL
@@ -78,6 +86,15 @@ export default function WebsiteApp() {
           setLoginModalOpen={setLoginModalOpen}
           setIsMobileNavigationModal={setIsMobileNavigationModal}
         />
+        {/* offer image modal */}
+        {isOfferImageModalOpen && (
+          <>
+            <Offer_Image
+              isOfferImageModalOpen={isOfferImageModalOpen}
+              setIsOfferImageModalOpen={setIsOfferImageModalOpen}
+            />
+          </>
+        )}
         {/* login popup modal */}
         {isLoginModalOpen && (
           <>
