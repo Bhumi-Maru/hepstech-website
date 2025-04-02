@@ -20,6 +20,7 @@ export const HeaderSectionProvider = ({ children }) => {
       offer_Image: "",
       main_category: "",
       sub_category: "",
+      offerType: "",
     },
     wishlistEnabled: false,
     contactEnabled: false,
@@ -144,6 +145,11 @@ export const HeaderSectionProvider = ({ children }) => {
       formDataToSend.append(
         "offersEnabled[sub_category]",
         formData.offersEnabled.sub_category || ""
+      );
+
+      formDataToSend.append(
+        "offersEnabled[offerType]",
+        formData.offersEnabled.offerType || ""
       );
 
       formDataToSend.append("wishlistEnabled", formData.wishlistEnabled);

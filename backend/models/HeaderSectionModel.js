@@ -42,6 +42,11 @@ const headerSectionSchema = new mongoose.Schema(
         ref: "SubCategory",
         required: false,
       },
+      offerType: {
+        type: String,
+        enum: ["general", "every_time", "single_time", "home_page"],
+        default: "",
+      },
     },
     wishlistEnabled: {
       type: Boolean,

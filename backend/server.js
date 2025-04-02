@@ -8,6 +8,7 @@ const mainCategoryRouter = require("./routes/mainCategoryRoutes");
 const subCategoryRouter = require("./routes/subCategoryRoutes");
 const productRouter = require("./routes/productRoutes");
 const HeaderSectionRouter = require("./routes/HeaderSectionRoutes");
+const footerSectionRouter = require("./routes/FooterSectionRoutes");
 
 dotenv.config();
 
@@ -36,6 +37,9 @@ app.use("/api/products", productRouter);
 
 // HEADER SECTION ROUTES
 app.use("/api/header-section", HeaderSectionRouter);
+
+//FOOTER SECTION ROUTES
+app.use("/api/footer-section", footerSectionRouter);
 
 // Home route
 app.get("/", (req, res) => {

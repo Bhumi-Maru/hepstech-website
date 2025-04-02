@@ -7,6 +7,9 @@ import { getFilePreview } from "../../../utils/fileUploadUtils";
 export default function Header_Section_Link_Options({
   offerImage,
   onOfferImageChange,
+  // offer type
+  offerType,
+  onOfferTypeChange,
 }) {
   const {
     formData,
@@ -20,7 +23,6 @@ export default function Header_Section_Link_Options({
     onContactInfoChange,
     selectedOfferImage,
     setSelectedOfferImage,
-
     onOfferInfoChange,
   } = useHeaderSection();
 
@@ -117,6 +119,16 @@ export default function Header_Section_Link_Options({
     setSelectedSubCategory(value);
     onOfferInfoChange("sub_category", value);
   };
+  ////////////////////////////////////////////////////////////////////
+  /////////////////////////offer type////////////////////////////////
+  const [selectedOfferType, setSelectedOfferType] = useState(offerType);
+
+  const handleOfferTypeChange = (event) => {
+    setSelectedOfferType(event.target.value);
+    if (onOfferTypeChange) onOfferTypeChange(event.target.value);
+  };
+
+  console.log("offer type", selectedOfferType);
 
   /////////////////////////////////////////////////////////////////////
   console.log("selected offer image", selectedOfferImage);
@@ -197,7 +209,7 @@ export default function Header_Section_Link_Options({
                 id="contactLinkContent"
                 style={{ borderTopWidth: "0px", paddingBottom: "20px" }}
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
+                <div className="px-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-4">
                   {/* offer Image */}
                   <div>
                     <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
@@ -282,6 +294,89 @@ export default function Header_Section_Link_Options({
                           </option>
                         ))}
                       </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  className="px-4 pb-5 sm:px-5 mt-3"
+                  style={{ borderTopWidth: "2px", paddingBottom: "20px" }}
+                >
+                  <p className="text-sm text-gray-500 mt-3">
+                    Select Offer Type
+                  </p>
+
+                  <div className="mt-4 space-y-4 sm:flex sm:items-center sm:space-x-4 sm:space-y-0">
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="offerType"
+                        id="general"
+                        value="general"
+                        checked={selectedOfferType === "general"}
+                        onChange={handleOfferTypeChange}
+                        className="form-radio text-primary"
+                      />
+                      <label
+                        htmlFor="general"
+                        className="block ml-3 text-sm font-medium text-gray-700"
+                      >
+                        General
+                      </label>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="offerType"
+                        id="every_time"
+                        value="every_time"
+                        checked={selectedOfferType === "every_time"}
+                        onChange={handleOfferTypeChange}
+                        className="form-radio text-primary"
+                      />
+                      <label
+                        htmlFor="every_time"
+                        className="block ml-3 text-sm font-medium text-gray-700"
+                      >
+                        Every Time
+                      </label>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="offerType"
+                        id="single_time"
+                        value="single_time"
+                        checked={selectedOfferType === "single_time"}
+                        onChange={handleOfferTypeChange}
+                        className="form-radio text-primary"
+                      />
+                      <label
+                        htmlFor="single_time"
+                        className="block ml-3 text-sm font-medium text-gray-700"
+                      >
+                        Single Time
+                      </label>
+                    </div>
+
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        name="offerType"
+                        id="home_page"
+                        value="home_page"
+                        checked={selectedOfferType === "home_page"}
+                        onChange={handleOfferTypeChange}
+                        className="form-radio text-primary"
+                      />
+                      <label
+                        htmlFor="home_page"
+                        className="block ml-3 text-sm font-medium text-gray-700"
+                      >
+                        Only Home Page
+                      </label>
                     </div>
                   </div>
                 </div>

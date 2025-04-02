@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const HeaderSectionModel = require("../models/HeaderSectionModel");
-const File = require("../models/fileModel"); // Assuming you have a File model
 
 const createHeaderSection = async (req, res) => {
   try {
@@ -34,14 +33,6 @@ const createHeaderSection = async (req, res) => {
     const validatedAdminLogo = parseObjectId(adminLogo);
     const validatedFaviconIcon = parseObjectId(faviconIcon);
 
-    // Ensure offersEnabled fields are properly structured
-    // const validatedOffersEnabled = {
-    //   enabled: offersEnabled.enabled || false,
-    //   offer_Image: parseObjectId(offersEnabled.offer_Image),
-    //   main_category: parseObjectId(offersEnabled.main_category), // Fixed field name
-    //   sub_category: parseObjectId(offersEnabled.sub_category), // Fixed field name
-    // };
-
     // Create new header section
     const newHeaderSection = new HeaderSectionModel({
       headerLogo: validatedHeaderLogo,
@@ -53,6 +44,7 @@ const createHeaderSection = async (req, res) => {
         offer_Image: offersEnabled.offer_Image || null,
         main_category: offersEnabled.main_category || null,
         sub_category: offersEnabled.sub_category || null,
+        offerType: offersEnabled.offerType || null,
       },
       wishlistEnabled,
       contact: {
