@@ -15,11 +15,13 @@ const createHeaderSection = async (req, res) => {
       offerBanner = "{}",
     } = req.body;
 
+    console.log("Received Data:", req.body);
+
     // Parse JSON fields if they are strings
-    offersEnabled =
-      typeof offersEnabled === "string"
-        ? JSON.parse(offersEnabled)
-        : offersEnabled;
+    // Parse offersEnabled if it's a string
+    if (typeof offersEnabled === "string") {
+      offersEnabled = JSON.parse(offersEnabled);
+    }
     contact = typeof contact === "string" ? JSON.parse(contact) : contact;
     offerBanner =
       typeof offerBanner === "string" ? JSON.parse(offerBanner) : offerBanner;
@@ -32,6 +34,14 @@ const createHeaderSection = async (req, res) => {
     const validatedAdminLogo = parseObjectId(adminLogo);
     const validatedFaviconIcon = parseObjectId(faviconIcon);
 
+    // Ensure offersEnabled fields are properly structured
+    // const validatedOffersEnabled = {
+    //   enabled: offersEnabled.enabled || false,
+    //   offer_Image: parseObjectId(offersEnabled.offer_Image),
+    //   main_category: parseObjectId(offersEnabled.main_category), // Fixed field name
+    //   sub_category: parseObjectId(offersEnabled.sub_category), // Fixed field name
+    // };
+
     // Create new header section
     const newHeaderSection = new HeaderSectionModel({
       headerLogo: validatedHeaderLogo,
@@ -40,9 +50,9 @@ const createHeaderSection = async (req, res) => {
       headerType,
       offersEnabled: {
         enabled: offersEnabled.enabled || false,
-        offer_Image: parseObjectId(offersEnabled.offer_Image),
-        main_Category: parseObjectId(offersEnabled.main_category),
-        sub_Category: parseObjectId(offersEnabled.sub_category),
+        offer_Image: offersEnabled.offer_Image || null,
+        main_category: offersEnabled.main_category || null,
+        sub_category: offersEnabled.sub_category || null,
       },
       wishlistEnabled,
       contact: {
@@ -59,14 +69,16 @@ const createHeaderSection = async (req, res) => {
 
     await newHeaderSection.save();
 
-    // Populate file details
+    // Populate file details properly
     const populatedSection = await HeaderSectionModel.findById(
       newHeaderSection._id
     )
       .populate("headerLogo")
       .populate("adminLogo")
       .populate("faviconIcon")
-      .populate("offersEnabled.offer_Image");
+      .populate("offersEnabled.offer_Image")
+      .populate("offersEnabled.main_category") // Fixed population syntax
+      .populate("offersEnabled.sub_category"); // Fixed population syntax
 
     res.status(201).json({
       success: true,
