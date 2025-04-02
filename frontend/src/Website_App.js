@@ -59,6 +59,20 @@ export default function WebsiteApp() {
     setIsOfferImageModalOpen(true);
   }, []);
 
+  // Add this useEffect to handle body scrolling
+  useEffect(() => {
+    if (isOfferImageModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOfferImageModalOpen]);
+
   // LOGIN MODAL
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   // SIGNUP MODAL
