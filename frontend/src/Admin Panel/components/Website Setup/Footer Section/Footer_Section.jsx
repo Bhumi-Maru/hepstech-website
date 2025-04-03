@@ -9,8 +9,12 @@ import Footer_Section__7 from "./Footer_Section__7";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
 
 export default function Footer_Section() {
-  const { handleFooterLogoChange, footerFormData, handleSubmitFooterData } =
-    useFooterSection();
+  const {
+    handleFooterLogoChange,
+    footerFormData,
+    handleSubmitFooterData,
+    handlePaymentImageChange,
+  } = useFooterSection();
   return (
     <>
       {/* FOOTER SECTION PAGE */}
@@ -31,7 +35,10 @@ export default function Footer_Section() {
           <Footer_Section_5 />
           <div class="bg-white rounded-lg shadow">
             <Footer_Section_6 />
-            <Footer_Section__7 />
+            <Footer_Section__7
+              paymentImage={footerFormData.PaymentOptionsPhoto}
+              onPaymentImageChange={handlePaymentImageChange}
+            />
           </div>
         </div>
 
