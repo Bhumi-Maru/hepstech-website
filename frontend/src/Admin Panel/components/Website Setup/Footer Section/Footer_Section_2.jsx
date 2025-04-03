@@ -1,24 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../../context/All_Media_Context";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
 import { getFilePreview } from "../../../utils/fileUploadUtils";
 
-export default function Footer_Section_2() {
+export default function Footer_Section_2({ footerLogo, onFooterLogoChange }) {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const { mediaItems } = useAllMediaContext();
-  const { selectedFooterLogo } = useFooterSection();
+  const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
+  const [previewLogo, setPreviewLogo] = useState(footerLogo || "");
+
+  useEffect(() => {
+    if (selectedFooterLogo) {
+      const selectedMedia = mediaItems.find(
+        (item) => item._id === selectedFooterLogo
+      );
+      if (selectedMedia) {
+        setPreviewLogo(selectedMedia.fileUrl);
+        if (onFooterLogoChange) onFooterLogoChange(selectedFooterLogo);
+      }
+    } else {
+      setPreviewLogo("");
+    }
+  }, [selectedFooterLogo, mediaItems]);
 
   // Find the selected footer logo object
   const footerLogoFile = mediaItems.find(
     (item) => item._id === selectedFooterLogo
   );
 
+  const handleRemoveLogo = () => {
+    setPreviewLogo("");
+    setSelectedFooterLogo(null);
+    if (onFooterLogoChange) onFooterLogoChange(null);
+  };
+
   const handleSelectFromMedia = () => {
     setIsOpenPopupModal((prev) => ({
       ...prev,
       startSelectFilesAndMedia: true,
-      Header_Section_Admin_Logo: true,
+      Footer_Section_footer_logo: true,
     }));
   };
 
@@ -48,7 +69,11 @@ export default function Footer_Section_2() {
               Select Files
             </button>
 
-            <button type="button" className="btn btn-error-light">
+            <button
+              type="button"
+              className="btn btn-error-light"
+              onClick={handleRemoveLogo}
+            >
               Remove
             </button>
           </div>

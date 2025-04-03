@@ -6,8 +6,11 @@ import Footer_Section_4 from "./Footer_Section_4";
 import Footer_Section_5 from "./Footer_Section_5";
 import Footer_Section_6 from "./Footer_Section_6";
 import Footer_Section__7 from "./Footer_Section__7";
+import { useFooterSection } from "../../../context/Footer_Section_Context";
 
 export default function Footer_Section() {
+  const { handleFooterLogoChange, footerFormData, handleSubmitFooterData } =
+    useFooterSection();
   return (
     <>
       {/* FOOTER SECTION PAGE */}
@@ -19,7 +22,10 @@ export default function Footer_Section() {
         <div class="mt-4 space-y-4">
           {/* <Footer_Section_1 /> */}
           {/* FOOTER SECTION 2 [LOGO] */}
-          <Footer_Section_2 />
+          <Footer_Section_2
+            footerLogo={footerFormData.footerLogo}
+            onFooterLogoChange={handleFooterLogoChange}
+          />
           <Footer_Section_3 />
           <Footer_Section_4 />
           <Footer_Section_5 />
@@ -35,7 +41,11 @@ export default function Footer_Section() {
             Discard
           </button>
 
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleSubmitFooterData}
+          >
             Create
           </button>
         </div>

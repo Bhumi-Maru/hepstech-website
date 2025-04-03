@@ -15,24 +15,26 @@ const footerSectionSchema = new mongoose.Schema({
   columnsData: {
     type: [
       {
-        columnTitle: { type: String, required: true },
+        columnTitle: { type: String, required: false },
         links: [
           {
-            title: { type: String, required: true },
-            url: { type: String, required: true },
+            title: { type: String, required: false },
+            url: { type: String, required: false },
             type: {
               type: String,
               enum: ["link", "page"],
-              required: true,
+              required: false,
             },
           },
         ],
       },
     ],
-    validate: [
-      (val) => val.length === 3,
-      "Exactly three columns are required.",
-    ],
+    validate: {
+      validator: function (val) {
+        return val.length >= 1 && val.length <= 3;
+      },
+      message: "ColumnsData must contain between 1 and 3 columns.",
+    },
     default: [
       { columnTitle: "First Column", links: [] },
       { columnTitle: "Second Column", links: [] },

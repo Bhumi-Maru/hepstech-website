@@ -57,6 +57,65 @@ export const FooterSectionProvider = ({ children }) => {
     }
   };
 
+  // Update form data dynamically
+  const handleInputChange = (name, value) => {
+    setFooterFormData((prev) => {
+      let updatedFormData = { ...prev };
+
+      if (name.includes(".")) {
+        const [parent, child] = name.split(".");
+        updatedFormData[parent] = {
+          ...prev[parent],
+          [child]: value,
+        };
+      } else {
+        updatedFormData[name] = value;
+      }
+
+      // If headerLogo is updated, also update selectedWebLogo
+      if (name === "footerLogo") {
+        setSelectedFooterLogo(value);
+      }
+
+      return updatedFormData;
+    });
+  };
+
+  ///////////////////////////////start add popup modal//////////////////////////////////////
+  // Add a new link to a specific column
+  const addLinkToColumn = (columnIndex, newLink) => {
+    setFooterFormData((prev) => {
+      const updatedColumns = [...prev.columnsData];
+      updatedColumns[columnIndex].links.push(newLink);
+      return { ...prev, columnsData: updatedColumns };
+    });
+  };
+
+  // Update a specific link in a column
+  const updateLinkInColumn = (columnIndex, linkIndex, updatedLink) => {
+    setFooterFormData((prev) => {
+      const updatedColumns = [...prev.columnsData];
+      updatedColumns[columnIndex].links[linkIndex] = updatedLink;
+      return { ...prev, columnsData: updatedColumns };
+    });
+  };
+
+  // Remove a link from a column
+  const removeLinkFromColumn = (columnIndex, linkIndex) => {
+    setFooterFormData((prev) => {
+      const updatedColumns = [...prev.columnsData];
+      updatedColumns[columnIndex].links.splice(linkIndex, 1);
+      return { ...prev, columnsData: updatedColumns };
+    });
+  };
+  ///////////////////////////////end add popup modal//////////////////////////////////////
+
+  // Handle each image type separately
+  const handleFooterLogoChange = (logo) => {
+    setSelectedFooterLogo(logo);
+    handleInputChange("footerLogo", logo);
+  };
+
   // Fetch footer data
   useEffect(() => {
     const fetchFooterData = async () => {
@@ -80,20 +139,24 @@ export const FooterSectionProvider = ({ children }) => {
   }, []);
 
   //   CREATE FOOTER SECTION DATA
-
+  // Update handleSubmitFooterData with safe property access
+  // Update handleSubmitFooterData to send the actual form data
   const handleSubmitFooterData = async () => {
     try {
-      const formData = new FormData();
-      formData.append("footerLogo", selectedFooterLogo); // Ensure the correct ID is sent
-
       const response = await axios.post(
-        "http://localhost:7000/api/footer-section/update",
-        formData
+        "http://localhost:7000/api/footer-section/create",
+        footerFormData, // Send the actual form data
+        {
+          headers: {
+            "Content-Type": "application/json", // Changed from multipart/form-data
+          },
+        }
       );
-
-      console.log("Footer data updated:", response.data);
+      console.log("Response:", response.data);
+      return response.data;
     } catch (error) {
-      console.error("Error updating footer data:", error);
+      console.error("Error:", error.response?.data || error.message);
+      throw error;
     }
   };
 
@@ -109,6 +172,16 @@ export const FooterSectionProvider = ({ children }) => {
 
         // submit [create] footer form data
         handleSubmitFooterData,
+
+        // handle footer logo change
+        handleFooterLogoChange,
+        // handle changed value
+        handleInputChange,
+
+        // add popup value
+        addLinkToColumn,
+        updateLinkInColumn,
+        removeLinkFromColumn,
       }}
     >
       {children}
