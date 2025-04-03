@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
+import Add_Popup_Modal from "./Add_Popup_Modal";
 
 export default function Footer_Section_4() {
-  const { toggleModal, setIsOpenPopupModal } = useAdminGlobalContext();
+  const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
   const { footerFormData, handleInputChange, removeLinkFromColumn } =
     useFooterSection();
   const [currentColumnIndex, setCurrentColumnIndex] = useState(null);
@@ -13,12 +14,16 @@ export default function Footer_Section_4() {
     setIsOpenPopupModal(true);
   };
 
-  // Ensure columnsData exists and is an array before mapping
-  const columnsData = footerFormData?.columnsData || [
-    { columnTitle: "First Column", links: [] },
-    { columnTitle: "Second Column", links: [] },
-    { columnTitle: "Third Column", links: [] },
-  ];
+  // Ensure we always have exactly 3 columns
+  const columnsData = Array(3)
+    .fill()
+    .map((_, index) => ({
+      ...(footerFormData?.columnsData?.[index] || {}),
+      columnTitle:
+        footerFormData?.columnsData?.[index]?.columnTitle ||
+        `Column ${index + 1}`,
+      links: footerFormData?.columnsData?.[index]?.links || [],
+    }));
 
   return (
     <>
@@ -27,9 +32,7 @@ export default function Footer_Section_4() {
         {columnsData.map((column, columnIndex) => (
           <div key={columnIndex} className="bg-white rounded-lg shadow">
             <div className="px-4 py-3 sm:px-5">
-              <h3 className="text-base font-medium">
-                {column.columnTitle || `Column ${columnIndex + 1}`}
-              </h3>
+              <h3 className="text-base font-medium">{column.columnTitle}</h3>
             </div>
 
             <div className="px-4 pb-5 sm:px-5">
@@ -43,7 +46,7 @@ export default function Footer_Section_4() {
                     id={`columnTitle-${columnIndex}`}
                     placeholder="Column title"
                     className="w-full"
-                    value={column.columnTitle || ""}
+                    value={column.columnTitle}
                     onChange={(e) =>
                       handleInputChange(
                         `columnsData.${columnIndex}.columnTitle`,
@@ -58,7 +61,7 @@ export default function Footer_Section_4() {
 
               <p className="text-sm text-gray-500">Links</p>
               <div className="mt-2 space-y-2">
-                {(column.links || []).map((link, linkIndex) => (
+                {column.links.map((link, linkIndex) => (
                   <div key={linkIndex} className="flex items-center space-x-5">
                     <div className="flex-1">
                       <p className="font-medium truncate">
@@ -103,10 +106,7 @@ export default function Footer_Section_4() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => {
-                    toggleModal("addPagesAndaddCustomLink");
-                    // openAddLinkModal(columnIndex);
-                  }}
+                  onClick={() => openAddLinkModal(columnIndex)}
                 >
                   <svg
                     className="w-5 h-5 mr-2 -ml-1"
@@ -129,6 +129,11 @@ export default function Footer_Section_4() {
           </div>
         ))}
       </div>
+
+      {/* Render the modal when needed */}
+      {isOpenPopupModal && currentColumnIndex !== null && (
+        <Add_Popup_Modal columnIndex={currentColumnIndex} />
+      )}
     </>
   );
 }

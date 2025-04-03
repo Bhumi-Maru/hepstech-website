@@ -47,7 +47,9 @@ root.render(
     ) : (
       <GlobalProvider>
         <HeaderSectionProvider>
-          <Website_App />
+          <FooterSectionProvider>
+            <Website_App />
+          </FooterSectionProvider>
         </HeaderSectionProvider>
       </GlobalProvider>
     )}

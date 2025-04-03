@@ -167,3 +167,25 @@ export const fetchHeaderData = async (setFormData) => {
     console.error("Error fetching header data:", error);
   }
 };
+
+///get footer section fetch data
+export const fetchFooterData = async (setFormData) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:7000/api/footer-section/getAll"
+    );
+
+    if (response.data.success && response.data.data.length > 0) {
+      // Sort by createdAt to get the most recent entry
+      const sortedData = [...response.data.data].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      const latestData = sortedData[0];
+
+      setFormData(latestData);
+      console.log("Most Recent Data:", latestData);
+    }
+  } catch (error) {
+    console.error("Error fetching header data:", error);
+  }
+};

@@ -1,61 +1,64 @@
 const mongoose = require("mongoose");
 
-const footerSectionSchema = new mongoose.Schema({
-  footerLogo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "File",
-    required: false,
-  },
-  contactDetails: {
-    address: { type: String, required: false },
-    phoneNumber: { type: String, required: false },
-    Email_Address: { type: String, required: false },
-    timings: { type: String, required: false },
-  },
-  columnsData: {
-    type: [
-      {
-        columnTitle: { type: String, required: false },
-        links: [
-          {
-            title: { type: String, required: false },
-            url: { type: String, required: false },
-            type: {
-              type: String,
-              enum: ["link", "page"],
-              required: false,
-            },
-          },
-        ],
-      },
-    ],
-    validate: {
-      validator: function (val) {
-        return val.length >= 1 && val.length <= 3;
-      },
-      message: "ColumnsData must contain between 1 and 3 columns.",
-    },
-    default: [
-      { columnTitle: "First Column", links: [] },
-      { columnTitle: "Second Column", links: [] },
-      { columnTitle: "Third Column", links: [] },
-    ],
-  },
-  socialMediaLinks: {
-    Facebook: { type: String, required: false },
-    Instagram: { type: String, required: false },
-    Pinterest: { type: String, required: false },
-    Twitter: { type: String, required: false },
-    LinkedIn: { type: String, required: false },
-  },
-  PaymentOptionsPhoto: [
-    {
+const footerSectionSchema = new mongoose.Schema(
+  {
+    footerLogo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "File",
       required: false,
     },
-  ],
-});
+    contactDetails: {
+      address: { type: String, required: false },
+      phoneNumber: { type: String, required: false },
+      Email_Address: { type: String, required: false },
+      timings: { type: String, required: false },
+    },
+    columnsData: {
+      type: [
+        {
+          columnTitle: { type: String, required: false },
+          links: [
+            {
+              title: { type: String, required: false },
+              url: { type: String, required: false },
+              type: {
+                type: String,
+                enum: ["link", "page"],
+                required: false,
+              },
+            },
+          ],
+        },
+      ],
+      validate: {
+        validator: function (val) {
+          return val.length >= 1 && val.length <= 3;
+        },
+        message: "ColumnsData must contain between 1 and 3 columns.",
+      },
+      default: [
+        { columnTitle: "First Column", links: [] },
+        { columnTitle: "Second Column", links: [] },
+        { columnTitle: "Third Column", links: [] },
+      ],
+    },
+    socialMediaLinks: {
+      Facebook: { type: String, required: false },
+      Instagram: { type: String, required: false },
+      Pinterest: { type: String, required: false },
+      Twitter: { type: String, required: false },
+      LinkedIn: { type: String, required: false },
+    },
+    PaymentOptionsPhoto: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "File",
+        required: false,
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 // Middleware to ensure correct URL format
 footerSectionSchema.pre("save", async function (next) {
