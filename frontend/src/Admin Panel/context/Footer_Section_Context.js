@@ -10,6 +10,7 @@ export const useFooterSection = () => {
 export const FooterSectionProvider = ({ children }) => {
   const [footerData, setFooterData] = useState(null);
   const [selectedFooterLogo, setSelectedFooterLogo] = useState(null);
+  const [selectedPaymentImage, setSelectedPaymentImage] = useState(null);
   const [footerFormData, setFooterFormData] = useState({
     footerLogo: "",
     contactDetails: {
@@ -116,6 +117,12 @@ export const FooterSectionProvider = ({ children }) => {
     handleInputChange("footerLogo", logo);
   };
 
+  // handle change payment image
+  const handlePaymentImageChange = (image) => {
+    setSelectedPaymentImage(image);
+    handleInputChange("PaymentOptionsPhoto", image);
+  };
+
   // Fetch footer data
   useEffect(() => {
     const fetchFooterData = async () => {
@@ -175,6 +182,8 @@ export const FooterSectionProvider = ({ children }) => {
 
         // handle footer logo change
         handleFooterLogoChange,
+        //handle payment option change
+        handlePaymentImageChange,
         // handle changed value
         handleInputChange,
 
@@ -182,6 +191,10 @@ export const FooterSectionProvider = ({ children }) => {
         addLinkToColumn,
         updateLinkInColumn,
         removeLinkFromColumn,
+
+        // payment footer images
+        selectedPaymentImage,
+        setSelectedPaymentImage,
       }}
     >
       {children}

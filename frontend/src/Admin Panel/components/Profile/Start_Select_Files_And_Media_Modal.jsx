@@ -35,6 +35,8 @@ export default function Start_Select_Files_And_Media_Modal({
     setSelectedFaviconIcon,
     selectedOfferImage,
     setSelectedOfferImage,
+    selectedPaymentImage,
+    setSelectedPaymentImage,
   } = useHeaderSection();
 
   const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
@@ -227,6 +229,12 @@ export default function Start_Select_Files_And_Media_Modal({
                         }
                         if (isOpenPopupModal.Footer_Section_footer_logo) {
                           setSelectedFooterLogo(selectedFooterLogo);
+                        }
+                        if (
+                          isOpenPopupModal.Footer_Section_payment_image &&
+                          selectedPaymentImage
+                        ) {
+                          setSelectedPaymentImage(selectedPaymentImage);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,

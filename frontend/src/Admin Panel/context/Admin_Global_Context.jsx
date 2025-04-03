@@ -90,6 +90,7 @@ const AdminGlobalProvider = ({ children }) => {
 
     ///////////////END HEADER SECTION ////////////////
     Footer_Section_footer_logo: false,
+    Footer_Section_payment_image: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,

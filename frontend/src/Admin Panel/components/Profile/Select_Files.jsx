@@ -30,7 +30,12 @@ export default function Select_Files() {
 
   const { setSelectedSubImage } = useSubCategoryContext();
 
-  const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
+  const {
+    selectedFooterLogo,
+    setSelectedFooterLogo,
+    selectedPaymentImage,
+    setSelectedPaymentImage,
+  } = useFooterSection();
 
   // Fetch media from the API
   useEffect(() => {
@@ -119,6 +124,14 @@ export default function Select_Files() {
     }
   };
 
+  const handlePaymentImageSelect = (file) => {
+    if (isOpenPopupModal.Footer_Section_payment_image) {
+      setSelectedPaymentImage(file._id);
+      console.log("Selected payment image section ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
+  };
+
   //////////////////end footer section////////////////////////////
 
   console.log("selecte web", selectedWebLogo);
@@ -126,6 +139,7 @@ export default function Select_Files() {
   console.log("selected favicon", selectedFaviconIcon);
   console.log("selected offer image", selectedOfferImage);
   console.log("selected footer logo", selectedFooterLogo);
+  console.log("selected payment image", selectedPaymentImage);
 
   return (
     <>
@@ -150,7 +164,8 @@ export default function Select_Files() {
               isOpenPopupModal.Header_Section_Admin_Logo ||
               isOpenPopupModal.Header_Section_Favicon_Icon ||
               isOpenPopupModal.Header_Link_section_offer_image ||
-              isOpenPopupModal.Footer_Section_footer_logo
+              isOpenPopupModal.Footer_Section_footer_logo ||
+              isOpenPopupModal.Footer_Section_payment_image
                 ? item.mimeType &&
                   item.mimeType.startsWith("image/") &&
                   !item.mimeType.includes("gif")
@@ -188,6 +203,10 @@ export default function Select_Files() {
                         handleOfferImageSelect(item);
                       } else if (isOpenPopupModal.Footer_Section_footer_logo) {
                         handleFooterLogoSelect(item);
+                      } else if (
+                        isOpenPopupModal.Footer_Section_payment_image
+                      ) {
+                        handlePaymentImageSelect(item);
                       }
                     }}
                   />
