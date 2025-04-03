@@ -126,9 +126,15 @@ export default function Select_Files() {
 
   const handlePaymentImageSelect = (file) => {
     if (isOpenPopupModal.Footer_Section_payment_image) {
-      setSelectedPaymentImage(file._id);
-      console.log("Selected payment image section ID:", file._id);
-      setPreviewUrl(file.fileUrl); // Set preview
+      setSelectedPaymentImage((prevSelected) => {
+        if (prevSelected.includes(file._id)) {
+          // Remove if already selected
+          return prevSelected.filter((id) => id !== file._id);
+        } else {
+          // Append new selection
+          return [...prevSelected, file._id];
+        }
+      });
     }
   };
 

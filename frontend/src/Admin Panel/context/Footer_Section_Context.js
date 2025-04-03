@@ -10,7 +10,7 @@ export const useFooterSection = () => {
 export const FooterSectionProvider = ({ children }) => {
   const [footerData, setFooterData] = useState(null);
   const [selectedFooterLogo, setSelectedFooterLogo] = useState(null);
-  const [selectedPaymentImage, setSelectedPaymentImage] = useState(null);
+  const [selectedPaymentImage, setSelectedPaymentImage] = useState([]);
   const [footerFormData, setFooterFormData] = useState({
     footerLogo: "",
     contactDetails: {
