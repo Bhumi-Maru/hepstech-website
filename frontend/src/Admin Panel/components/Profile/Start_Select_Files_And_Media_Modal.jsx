@@ -6,6 +6,7 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
 import { useHeaderSection } from "../../context/Header_Section_Context";
+import { useFooterSection } from "../../context/Footer_Section_Context";
 
 export default function Start_Select_Files_And_Media_Modal({
   isBannerImageVisible,
@@ -35,6 +36,8 @@ export default function Start_Select_Files_And_Media_Modal({
     selectedOfferImage,
     setSelectedOfferImage,
   } = useHeaderSection();
+
+  const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
 
   useEffect(() => {
     // Reset the preview URL when the modal is opened
@@ -221,6 +224,9 @@ export default function Start_Select_Files_And_Media_Modal({
                         }
                         if (isOpenPopupModal.Header_Link_section_offer_image) {
                           setSelectedOfferImage(selectedOfferImage);
+                        }
+                        if (isOpenPopupModal.Footer_Section_footer_logo) {
+                          setSelectedFooterLogo(selectedFooterLogo);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,

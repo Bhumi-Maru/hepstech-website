@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
 import { useHeaderSection } from "../../context/Header_Section_Context";
+import { useFooterSection } from "../../context/Footer_Section_Context";
 
 export default function Select_Files() {
   const {
@@ -28,6 +29,8 @@ export default function Select_Files() {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
 
   const { setSelectedSubImage } = useSubCategoryContext();
+
+  const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
 
   // Fetch media from the API
   useEffect(() => {
@@ -104,10 +107,25 @@ export default function Select_Files() {
     }
   };
 
+  //////////////////end header section///////////////////////////
+
+  //////////////////start footer section //////////////////////////
+
+  const handleFooterLogoSelect = (file) => {
+    if (isOpenPopupModal.Footer_Section_footer_logo) {
+      setSelectedFooterLogo(file._id);
+      console.log("Selected footer section ID:", file._id);
+      setPreviewUrl(file.fileUrl); // Set preview
+    }
+  };
+
+  //////////////////end footer section////////////////////////////
+
   console.log("selecte web", selectedWebLogo);
   console.log("selected admin", selectedAdminLogo);
   console.log("selected favicon", selectedFaviconIcon);
   console.log("selected offer image", selectedOfferImage);
+  console.log("selected footer logo", selectedFooterLogo);
 
   return (
     <>
@@ -131,7 +149,8 @@ export default function Select_Files() {
               isOpenPopupModal.Header_Section_web_Logo ||
               isOpenPopupModal.Header_Section_Admin_Logo ||
               isOpenPopupModal.Header_Section_Favicon_Icon ||
-              isOpenPopupModal.Header_Link_section_offer_image
+              isOpenPopupModal.Header_Link_section_offer_image ||
+              isOpenPopupModal.Footer_Section_footer_logo
                 ? item.mimeType &&
                   item.mimeType.startsWith("image/") &&
                   !item.mimeType.includes("gif")
@@ -167,6 +186,8 @@ export default function Select_Files() {
                         isOpenPopupModal.Header_Link_section_offer_image
                       ) {
                         handleOfferImageSelect(item);
+                      } else if (isOpenPopupModal.Footer_Section_footer_logo) {
+                        handleFooterLogoSelect(item);
                       }
                     }}
                   />

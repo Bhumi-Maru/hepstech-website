@@ -11,12 +11,12 @@ const createFooterSection = async (req, res) => {
     } = req.body;
 
     // Ensure that columnsData has exactly 3 columns
-    if (!columnsData || columnsData.length !== 3) {
-      return res.status(400).json({
-        success: false,
-        message: "columnsData must contain exactly three columns.",
-      });
-    }
+    // if (!columnsData || (columnsData.length >= 1 && columnsData.length <= 3)) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "columnsData must contain exactly three columns.",
+    //   });
+    // }
 
     // Create a new Footer Section
     const newFooterSection = new FooterSection({
