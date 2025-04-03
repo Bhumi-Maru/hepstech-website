@@ -19,10 +19,12 @@ const footerSectionSchema = new mongoose.Schema({
         links: [
           {
             title: { type: String, required: true },
-            url: { type: String, required: true }, // page id
-            // type:{
-            //     enum:[link , page]
-            // }
+            url: { type: String, required: true },
+            type: {
+              type: String,
+              enum: ["link", "page"],
+              required: true,
+            },
           },
         ],
       },
@@ -51,6 +53,26 @@ const footerSectionSchema = new mongoose.Schema({
       required: false,
     },
   ],
+});
+
+// Middleware to ensure correct URL format
+footerSectionSchema.pre("save", async function (next) {
+  this.columnsData.forEach((column) => {
+    column.links.forEach((link) => {
+      if (link.type === "page") {
+        if (!mongoose.Types.ObjectId.isValid(link.url)) {
+          return next(new Error("Invalid Page ID provided in links."));
+        }
+      } else if (link.type === "link") {
+        const urlPattern =
+          /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+        if (!urlPattern.test(link.url)) {
+          return next(new Error("Invalid URL format in links."));
+        }
+      }
+    });
+  });
+  next();
 });
 
 const FooterSection = mongoose.model("FooterSection", footerSectionSchema);

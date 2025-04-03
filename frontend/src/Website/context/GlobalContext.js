@@ -10,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [isOfferImageModalOpen, setIsOfferImageModalOpen] = useState(false);
   const [hasOfferImage, setHasOfferImage] = useState(false);
   const [shopOfferType, setShopOfferType] = useState("");
+  const [offerType, setOfferType] = useState("");
 
   useEffect(() => {
     setIsOfferImageModalOpen(true);
@@ -33,6 +34,8 @@ export const GlobalProvider = ({ children }) => {
         setHasOfferImage,
         shopOfferType, // ✅ Provide it to context
         setShopOfferType, // ✅ Add setter
+        offerType,
+        setOfferType,
       }}
     >
       {children}

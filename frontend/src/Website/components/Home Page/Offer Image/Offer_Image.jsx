@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { fetchHeaderData } from "../../../../Admin Panel/utils/fileUploadUtils";
 import { useGlobalContext } from "../../../context/GlobalContext";
 
-export default function Offer_Image() {
+export default function Offer_Image({ isOfferImageModalOpen }) {
   const [formData, setFormData] = useState(null);
   const [offerImagePath, setOfferImagePath] = useState("");
-  const [offerType, setOfferType] = useState("");
-  const { setIsOfferImageModalOpen, setHasOfferImage, setShopOfferType } =
-    useGlobalContext();
+
+  const {
+    setIsOfferImageModalOpen,
+    setHasOfferImage,
+    setShopOfferType,
+    setOfferType,
+  } = useGlobalContext();
 
   useEffect(() => {
     fetchHeaderData(setFormData);
@@ -36,7 +40,11 @@ export default function Offer_Image() {
   if (!offerImagePath) return null;
 
   return (
-    <div className="modal active" role="dialog" aria-hidden="false">
+    <div
+      className={`modal ${isOfferImageModalOpen ? "active" : ""}`}
+      role="dialog"
+      aria-hidden="false"
+    >
       <div
         className="modal-overlay"
         onClick={() => setIsOfferImageModalOpen(false)}

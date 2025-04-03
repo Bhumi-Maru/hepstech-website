@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Shop_Section_1 from "./Shop_Section_1";
 import Shop_Section_2 from "./Shop_Section_2";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -11,21 +11,28 @@ export default function ShopLayout({ setIsAddToCartModal }) {
     setHasOfferImage,
     hasOfferImage,
     shopOfferType, // ✅ Get offerType from Global Context
+    offerType,
   } = useGlobalContext();
+
+  useEffect(() => {
+    // if (offerType === "general") {
+    setIsOfferImageModalOpen(true);
+    // }
+  }, []);
 
   return (
     <>
       {/* Display Offer Image Modal */}
-      {isOfferImageModalOpen && hasOfferImage && (
+      {/* {isOfferImageModalOpen && hasOfferImage && (
         <Offer_Image
           isOfferImageModalOpen={isOfferImageModalOpen}
           setIsOfferImageModalOpen={setIsOfferImageModalOpen}
           setHasOfferImage={setHasOfferImage}
         />
-      )}
+      )} */}
 
       {/* Display Offer Image in Shop Page if offerType is "general" */}
-      {shopOfferType === "general" && hasOfferImage && <Offer_Image />}
+      {/* {shopOfferType === "general" && hasOfferImage && <Offer_Image />} */}
 
       <Shop_Section_1 />
       <Shop_Section_2 setIsAddToCartModal={setIsAddToCartModal} />

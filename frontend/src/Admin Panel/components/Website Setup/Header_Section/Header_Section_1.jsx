@@ -13,11 +13,10 @@ export default function Header_Section_1() {
     isSubmitting,
     handleSubmitHeaderSection,
     handleInputChange,
-    setSelectedWebLogo,
-    selectedWebLogo,
-    // admin logo
-    selectedAdminLogo,
-    setSelectedAdminLogo,
+    handleWebLogoChange,
+    handleAdminLogoChange,
+    handleFaviconChange,
+    handleOfferImageChange,
   } = useHeaderSection();
   return (
     <div className="container">
@@ -27,19 +26,17 @@ export default function Header_Section_1() {
         {/* Header Logo */}
         <Header_Section_Logo
           headerLogo={formData.headerLogo}
-          onLogoChange={(logo) => handleInputChange("headerLogo", logo)}
+          onLogoChange={handleWebLogoChange}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-x-5 gap-y-4">
           <Header_Section_admin_Logo
             adminLogo={formData.adminLogo}
-            onAdminLogoChange={(logo) => handleInputChange("adminLogo", logo)}
+            onAdminLogoChange={handleAdminLogoChange}
           />
           <Header_Section_Favicon_Icon
             favicon={formData.faviconIcon}
-            onFaviconChange={(favicon) =>
-              handleInputChange("faviconIcon", favicon)
-            }
+            onFaviconChange={handleFaviconChange}
           />
         </div>
 
@@ -52,9 +49,7 @@ export default function Header_Section_1() {
         {/* Link Options */}
         <Header_Section_Link_Options
           offerImage={formData?.offersEnabled?.offer_Image}
-          onOfferImageChange={(offerImage) =>
-            handleInputChange("offersEnabled.offer_Image", offerImage)
-          }
+          onOfferImageChange={handleOfferImageChange}
           offerType={formData?.offersEnabled?.offerType}
           onOfferTypeChange={(type) =>
             handleInputChange("offersEnabled.offerType", type)

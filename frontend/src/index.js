@@ -11,6 +11,7 @@ import { SubCategoryProvider } from "./Admin Panel/context/SubCategory_Context";
 import { ProductProvider } from "./Admin Panel/context/Product_Create_Context";
 import { ProductVariantProvider } from "./Admin Panel/context/Product_Variant_Context";
 import { HeaderSectionProvider } from "./Admin Panel/context/Header_Section_Context";
+import { FooterSectionProvider } from "./Admin Panel/context/Footer_Section_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -34,7 +35,9 @@ root.render(
             <ProductProvider>
               <ProductVariantProvider>
                 <HeaderSectionProvider>
-                  <Admin_Panel_App />
+                  <FooterSectionProvider>
+                    <Admin_Panel_App />
+                  </FooterSectionProvider>
                 </HeaderSectionProvider>
               </ProductVariantProvider>
             </ProductProvider>
