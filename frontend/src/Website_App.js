@@ -54,6 +54,13 @@ import { useGlobalContext } from "./Website/context/GlobalContext";
 
 export default function WebsiteApp() {
   const { isOfferImageModalOpen } = useGlobalContext();
+
+  // useEffect(() => {
+  //   if (offerType === "general" && offerType === "home_page") {
+  //     setIsOfferImageModalOpen(true);
+  //   }
+  // }, []);
+
   // Add this useEffect to handle body scrolling
   // useEffect(() => {
   //   if (isOfferImageModalOpen) {
@@ -98,7 +105,7 @@ export default function WebsiteApp() {
         {/* offer image modal */}
         {isOfferImageModalOpen === true && (
           <>
-            <Offer_Image />
+            <Offer_Image isOfferImageModalOpen={isOfferImageModalOpen} />
           </>
         )}
         {/* login popup modal */}

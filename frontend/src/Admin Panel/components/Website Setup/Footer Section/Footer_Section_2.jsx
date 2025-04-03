@@ -1,6 +1,27 @@
 import React from "react";
+import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { useFooterSection } from "../../../context/Footer_Section_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Footer_Section_2() {
+  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { mediaItems } = useAllMediaContext();
+  const { selectedFooterLogo } = useFooterSection();
+
+  // Find the selected footer logo object
+  const footerLogoFile = mediaItems.find(
+    (item) => item._id === selectedFooterLogo
+  );
+
+  const handleSelectFromMedia = () => {
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      startSelectFilesAndMedia: true,
+      Header_Section_Admin_Logo: true,
+    }));
+  };
+
   return (
     <>
       {/* FOOTER SECTION 2 [LOGO] */}
@@ -15,16 +36,15 @@ export default function Footer_Section_2() {
 
         <div className="px-4 pb-5 sm:px-5">
           <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
-            <img
-              className="w-auto h-16"
-              src="../../admin_assets/images/logo.png"
-              alt=""
-              loading="lazy"
-            />
+            {getFilePreview(footerLogoFile)}
           </div>
 
           <div className="flex items-center mt-3 space-x-4">
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleSelectFromMedia}
+            >
               Select Files
             </button>
 

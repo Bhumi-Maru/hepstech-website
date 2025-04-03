@@ -12,11 +12,8 @@ export default function Header_Section_admin_Logo({
   const { setIsOpenPopupModal } = useAdminGlobalContext();
   const { selectedAdminLogo, setSelectedAdminLogo } = useHeaderSection();
   const { mediaItems } = useAllMediaContext();
-
-  // Store preview image URL
   const [previewLogo, setPreviewLogo] = useState(adminLogo || "");
 
-  // Ensure proper effect dependencies
   useEffect(() => {
     if (selectedAdminLogo) {
       const selectedMedia = mediaItems.find(
@@ -29,9 +26,8 @@ export default function Header_Section_admin_Logo({
     } else {
       setPreviewLogo("");
     }
-  }, [selectedAdminLogo, mediaItems]); // No onAdminLogoChange in dependencies
+  }, [selectedAdminLogo, mediaItems]);
 
-  // Find the selected header logo object
   const adminLogoFile = mediaItems.find(
     (item) => item._id === selectedAdminLogo
   );
@@ -41,18 +37,17 @@ export default function Header_Section_admin_Logo({
     if (file) {
       const fileUrl = URL.createObjectURL(file);
       setPreviewLogo(fileUrl);
-      if (onAdminLogoChange) onAdminLogoChange(file); // Send actual file for upload
+      if (onAdminLogoChange) onAdminLogoChange(file);
     }
   };
 
   const handleRemoveLogo = () => {
     setPreviewLogo("");
-    setSelectedAdminLogo(null); // Reset selected logo
+    setSelectedAdminLogo(null);
     if (onAdminLogoChange) onAdminLogoChange(null);
   };
 
   const handleSelectFromMedia = () => {
-    // alert("firstly , select admi logo....");
     setIsOpenPopupModal((prev) => ({
       ...prev,
       startSelectFilesAndMedia: true,
@@ -67,23 +62,9 @@ export default function Header_Section_admin_Logo({
       </div>
       <div className="px-4 pb-5 sm:px-5">
         <div className="inline-block p-6 overflow-hidden border border-gray-200 rounded-md">
-          {/* {previewLogo ? (
-            <img
-              className="w-auto h-16"
-              src={previewLogo}
-              alt="Admin Logo"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-auto h-16 flex items-center justify-center text-gray-400">
-              No logo selected
-            </div>
-          )} */}
           {getFilePreview(adminLogoFile)}
         </div>
-
         <div className="flex items-center mt-3 space-x-4">
-          {/* Upload Button */}
           <button
             type="button"
             className="btn btn-primary"
@@ -92,8 +73,6 @@ export default function Header_Section_admin_Logo({
           >
             {isUploading ? "Uploading..." : "Select File"}
           </button>
-
-          {/* Hidden File Input */}
           <input
             type="file"
             id="admin-logo-upload"
@@ -102,8 +81,6 @@ export default function Header_Section_admin_Logo({
             onChange={handleFileChange}
             disabled={isUploading}
           />
-
-          {/* Remove Button */}
           <button
             type="button"
             className="btn btn-error-light"

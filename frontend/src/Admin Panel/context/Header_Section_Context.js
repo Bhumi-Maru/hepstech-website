@@ -68,9 +68,9 @@ export const HeaderSectionProvider = ({ children }) => {
       }
 
       // If adminLogo is updated, also update selectedAdminLogo
-      if (name === "adminLogo") {
-        setSelectedAdminLogo(value);
-      }
+      // if (name === "adminLogo") {
+      //   setSelectedAdminLogo(value);
+      // }
 
       if (name === "faviconIcon") {
         setSelectedFaviconIcon(value);
@@ -82,6 +82,27 @@ export const HeaderSectionProvider = ({ children }) => {
 
       return updatedFormData;
     });
+  };
+
+  // Handle each image type separately
+  const handleWebLogoChange = (logo) => {
+    setSelectedWebLogo(logo);
+    handleInputChange("headerLogo", logo);
+  };
+
+  const handleAdminLogoChange = (logo) => {
+    setSelectedAdminLogo(logo);
+    handleInputChange("adminLogo", logo);
+  };
+
+  const handleFaviconChange = (favicon) => {
+    setSelectedFaviconIcon(favicon);
+    handleInputChange("faviconIcon", favicon);
+  };
+
+  const handleOfferImageChange = (image) => {
+    setSelectedOfferImage(image);
+    handleInputChange("offersEnabled.offer_Image", image);
   };
 
   // Event Handlers
@@ -246,6 +267,12 @@ export const HeaderSectionProvider = ({ children }) => {
         // offer image
         selectedOfferImage,
         setSelectedOfferImage,
+
+        // function for handle logo
+        handleWebLogoChange,
+        handleAdminLogoChange,
+        handleFaviconChange,
+        handleOfferImageChange,
       }}
     >
       {children}

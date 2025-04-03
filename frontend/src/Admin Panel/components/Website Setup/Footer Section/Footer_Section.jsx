@@ -18,6 +18,7 @@ export default function Footer_Section() {
 
         <div class="mt-4 space-y-4">
           {/* <Footer_Section_1 /> */}
+          {/* FOOTER SECTION 2 [LOGO] */}
           <Footer_Section_2 />
           <Footer_Section_3 />
           <Footer_Section_4 />

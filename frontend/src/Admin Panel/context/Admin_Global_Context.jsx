@@ -81,12 +81,15 @@ const AdminGlobalProvider = ({ children }) => {
     testimonials_Reviews_Slider_Section_23: false,
     small_Screen_Sidebar: false,
 
-    //  header section
+    ////////////// START HEADER SECTION /////////////
     Header_Section_web_Logo: false,
     Header_Section_Admin_Logo: false,
     Header_Section_Favicon_Icon: false,
     // offer
     Header_Link_section_offer_image: false,
+
+    ///////////////END HEADER SECTION ////////////////
+    Footer_Section_footer_logo: false,
   });
   const [isChecked, setIsChecked] = useState({
     isContact: false,
