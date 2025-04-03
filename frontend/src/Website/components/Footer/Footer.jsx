@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useFooterSection } from "../../../Admin Panel/context/Footer_Section_Context";
+import { fetchFooterData } from "../../../Admin Panel/utils/fileUploadUtils";
 
 export default function Footer() {
+  // const { footerFormData, setFooterFormData } = useFooterSection();
+  const [formData, setFormData] = useState({});
+  console.log("footer", formData);
+
+  // Fetch latest data on initial load
+  useEffect(() => {
+    fetchFooterData(setFormData);
+  }, []);
   return (
     <>
       {/* <!-- START FOOTER --> */}
@@ -8,12 +18,16 @@ export default function Footer() {
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-y-10 gap-x-8">
             <div className="col-span-2 md:col-span-4 lg:col-span-3">
-              <a href="index.html" title="" className="block mr-auto">
-                <img
-                  className="w-auto h-10"
-                  src="../website assets/images/logo-alt.png"
-                  alt=""
-                />
+              <a href="/" title="" className="block mr-auto">
+                {formData?.footerLogo?.filePath && (
+                  <>
+                    <img
+                      className="w-auto h-10"
+                      src={`http://localhost:7000/${formData.footerLogo.filePath}`}
+                      alt=""
+                    />
+                  </>
+                )}
               </a>
 
               <p className="mt-4">

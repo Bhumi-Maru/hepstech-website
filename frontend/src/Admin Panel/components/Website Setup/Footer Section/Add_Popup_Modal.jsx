@@ -15,12 +15,10 @@ export default function Add_Popup_Modal({ columnIndex }) {
 
   const handleLinkChange = (field, value) => {
     const updatedLink = { ...linkData, [field]: value };
-
     // Auto-detect link type when URL changes
     if (field === "url") {
       updatedLink.type = getLinkType(value);
     }
-
     setLinkData(updatedLink);
   };
 
@@ -28,7 +26,11 @@ export default function Add_Popup_Modal({ columnIndex }) {
     e.preventDefault();
     if (!linkData.title || !linkData.url) return;
 
+    // Add the link to the specified column
     addLinkToColumn(columnIndex, linkData);
+
+    // Reset form and close modal
+    setLinkData({ title: "", url: "", type: "" });
     setIsOpenPopupModal(false);
   };
 

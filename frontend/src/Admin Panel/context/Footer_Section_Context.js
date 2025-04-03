@@ -45,17 +45,21 @@ export const FooterSectionProvider = ({ children }) => {
 
   // Function to determine if a given URL is an ObjectId or a normal link
   const getLinkType = (url) => {
-    const objectIdPattern = /^[a-f\d]{24}$/i; // MongoDB ObjectId pattern
-    const urlPattern =
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+    if (!url) return null;
+
+    // MongoDB ObjectId pattern (24 hex characters)
+    const objectIdPattern = /^[a-f\d]{24}$/i;
+
+    // General URL pattern (supports without "http://" or "https://")
+    const urlPattern = /^(?:https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/i;
 
     if (objectIdPattern.test(url)) {
-      return "page"; // It's a page (MongoDB ObjectId)
+      return "page"; // MongoDB ObjectId -> Page
     } else if (urlPattern.test(url)) {
-      return "link"; // It's a normal URL
-    } else {
-      return null; // Invalid format
+      return "link"; // Valid URL
     }
+
+    return null; // Invalid format
   };
 
   // Update form data dynamically
@@ -65,17 +69,21 @@ export const FooterSectionProvider = ({ children }) => {
 
       if (name.includes(".")) {
         const [parent, child] = name.split(".");
-        updatedFormData[parent] = {
-          ...prev[parent],
-          [child]: value,
-        };
+
+        // Ensure columnsData is an array before modifying it
+        if (parent === "columnsData") {
+          updatedFormData.columnsData = Array.isArray(prev?.columnsData)
+            ? [...prev.columnsData]
+            : [];
+          updatedFormData.columnsData[child] = {
+            ...prev?.columnsData?.[child],
+            columnTitle: value,
+          };
+        } else {
+          updatedFormData[parent] = { ...prev[parent], [child]: value };
+        }
       } else {
         updatedFormData[name] = value;
-      }
-
-      // If headerLogo is updated, also update selectedWebLogo
-      if (name === "footerLogo") {
-        setSelectedFooterLogo(value);
       }
 
       return updatedFormData;
@@ -86,8 +94,19 @@ export const FooterSectionProvider = ({ children }) => {
   // Add a new link to a specific column
   const addLinkToColumn = (columnIndex, newLink) => {
     setFooterFormData((prev) => {
-      const updatedColumns = [...prev.columnsData];
+      const updatedColumns = Array.isArray(prev?.columnsData)
+        ? [...prev.columnsData]
+        : [];
+
+      if (!updatedColumns[columnIndex]) {
+        updatedColumns[columnIndex] = {
+          columnTitle: `Column ${columnIndex + 1}`,
+          links: [],
+        };
+      }
+
       updatedColumns[columnIndex].links.push(newLink);
+
       return { ...prev, columnsData: updatedColumns };
     });
   };
@@ -105,10 +124,13 @@ export const FooterSectionProvider = ({ children }) => {
   const removeLinkFromColumn = (columnIndex, linkIndex) => {
     setFooterFormData((prev) => {
       const updatedColumns = [...prev.columnsData];
-      updatedColumns[columnIndex].links.splice(linkIndex, 1);
+      updatedColumns[columnIndex].links = updatedColumns[
+        columnIndex
+      ].links.filter((_, i) => i !== linkIndex);
       return { ...prev, columnsData: updatedColumns };
     });
   };
+
   ///////////////////////////////end add popup modal//////////////////////////////////////
 
   // Handle each image type separately
