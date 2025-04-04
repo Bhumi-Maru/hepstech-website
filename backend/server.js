@@ -10,6 +10,7 @@ const productRouter = require("./routes/productRoutes");
 const HeaderSectionRouter = require("./routes/HeaderSectionRoutes");
 const footerSectionRouter = require("./routes/FooterSectionRoutes");
 const headerMenuRouter = require("./routes/headerMenuRoutes");
+const pageRouter = require("./routes/StoreSetting_pageRoutes");
 
 dotenv.config();
 
@@ -44,6 +45,9 @@ app.use("/api/footer-section", footerSectionRouter);
 
 // HEADER MENU SECTION ROUTES
 app.use("/api/header-menu-section", headerMenuRouter);
+
+// store settings [page]
+app.use("/api/store-setting/page", pageRouter);
 
 // Home route
 app.get("/", (req, res) => {
