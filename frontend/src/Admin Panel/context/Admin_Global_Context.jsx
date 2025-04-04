@@ -91,7 +91,12 @@ const AdminGlobalProvider = ({ children }) => {
     ///////////////END HEADER SECTION ////////////////
     Footer_Section_footer_logo: false,
     Footer_Section_payment_image: false,
+
+    ////////////////////HEADER MENU SECTION////////////////
+    Header_Menu_Add_Category_Modal: false,
+    Header_Menu_Add_Page_Custom_Link_Popup_Modal: false,
   });
+
   const [isChecked, setIsChecked] = useState({
     isContact: false,
     isOfferBanner: false,
@@ -141,6 +146,7 @@ const AdminGlobalProvider = ({ children }) => {
 
   // Function to toggle a specific modal
   const toggleModal = (modalName, categoryId = null) => {
+    console.log(`Toggling modal: ${modalName}`);
     setIsOpenPopupModal((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
