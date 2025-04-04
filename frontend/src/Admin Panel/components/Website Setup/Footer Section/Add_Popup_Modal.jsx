@@ -1,17 +1,36 @@
-// Add_Popup_Modal.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
 
-export default function Add_Popup_Modal({ columnIndex }) {
+export default function Add_Popup_Modal({
+  columnIndex,
+  isEditing,
+  editLinkIndex,
+}) {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
-  const { addLinkToColumn, getLinkType } = useFooterSection();
+  const { footerFormData, addLinkToColumn, updateLinkInColumn, getLinkType } =
+    useFooterSection();
   const [activeTab, setActiveTab] = useState("addPages");
   const [linkData, setLinkData] = useState({
     title: "",
     url: "",
     type: "",
   });
+
+  useEffect(() => {
+    if (
+      isEditing &&
+      footerFormData.columnsData[columnIndex]?.links[editLinkIndex]
+    ) {
+      const existingLink =
+        footerFormData.columnsData[columnIndex].links[editLinkIndex];
+      setLinkData(existingLink);
+
+      // Set the active tab based on the link type
+      const detectedType = existingLink.type || getLinkType(existingLink.url);
+      setActiveTab(detectedType === "page" ? "addPages" : "addCustomLink");
+    }
+  }, [isEditing, columnIndex, editLinkIndex, footerFormData, getLinkType]);
 
   const handleLinkChange = (field, value) => {
     const updatedLink = {
@@ -33,22 +52,20 @@ export default function Add_Popup_Modal({ columnIndex }) {
 
     if (!linkData.title || !linkData.url) return;
 
-    // Create a new link object to avoid potential reference issues
     const newLink = {
       title: linkData.title,
       url: linkData.url,
       type: linkData.type || getLinkType(linkData.url),
     };
 
-    // Add the link to the specified column
-    addLinkToColumn(columnIndex, newLink);
+    if (isEditing) {
+      updateLinkInColumn(columnIndex, editLinkIndex, newLink);
+    } else {
+      addLinkToColumn(columnIndex, newLink);
+    }
 
-    // Reset form and close modal
-    setLinkData({
-      title: "",
-      url: "",
-      type: "",
-    });
+    // Reset
+    setLinkData({ title: "", url: "", type: "" });
     setIsOpenPopupModal(false);
   };
 
@@ -150,7 +167,7 @@ export default function Add_Popup_Modal({ columnIndex }) {
                           Cancel
                         </button>
                         <button type="submit" className="btn btn-primary">
-                          Add Page Link
+                          {isEditing ? "Update Page Link" : "Add Page Link"}
                         </button>
                       </div>
                     </div>
@@ -195,7 +212,7 @@ export default function Add_Popup_Modal({ columnIndex }) {
                           Cancel
                         </button>
                         <button type="submit" className="btn btn-primary">
-                          Add Custom Link
+                          {isEditing ? "Update Custom Link" : "Add Custom Link"}
                         </button>
                       </div>
                     </div>
