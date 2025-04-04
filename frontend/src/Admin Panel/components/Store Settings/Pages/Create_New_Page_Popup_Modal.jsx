@@ -1,8 +1,21 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
+import { useAllMediaContext } from "../../../context/All_Media_Context";
+import { getFilePreview } from "../../../utils/fileUploadUtils";
 
 export default function Create_New_Page_Popup_Modal() {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const {
+    isBannerImageVisible,
+    setIsBannerImageVisible,
+    setSelectedBannerImage,
+    mediaItems,
+    selectedBannerImage,
+  } = useAllMediaContext();
+
+  const bannerImageFile = mediaItems.find(
+    (item) => item._id === selectedBannerImage
+  );
   return (
     <>
       {/* CREATE A NEW PAGE POPUP MODAL */}
@@ -51,6 +64,7 @@ export default function Create_New_Page_Popup_Modal() {
             <div className="modal-body">
               <form action="#">
                 <div className="space-y-4">
+                  {/* PAGE TITLE */}
                   <div>
                     <label for=""> Enter Page Title </label>
                     <div className="mt-1">
@@ -63,6 +77,81 @@ export default function Create_New_Page_Popup_Modal() {
                       />
                     </div>
                   </div>
+
+                  {/* ADD BANNER IMAGE UPLOAD */}
+                  <div className="relative flex items-start">
+                    <div className="flex items-center h-5">
+                      <input
+                        type="checkbox"
+                        id="bannerImageStatus"
+                        checked={isBannerImageVisible}
+                        onChange={(e) =>
+                          setIsBannerImageVisible(e.target.checked)
+                        }
+                      />
+                    </div>
+                    <div className="ml-3 text-sm">
+                      <label htmlFor="bannerImageStatus">
+                        Add Banner Image
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Banner Image Upload - Shown When Checkbox is Checked */}
+                  {isBannerImageVisible && (
+                    <div className="mt-4">
+                      <label htmlFor="categoryBannerImage">Banner Image</label>
+                      <div>
+                        <label for="">
+                          {/* Select Image */}
+                          {/* <span>
+                                              (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                                              1MB)
+                                            </span> */}
+                          {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
+                        </label>
+                        <div className="flex" style={{ gap: "10px" }}>
+                          <div className="mt-1.5">
+                            <button
+                              type="button"
+                              className="btn btn-white"
+                              data-toggle="modal"
+                              data-target="#selectFilesModal"
+                              onClick={() => {
+                                setIsOpenPopupModal((prev) => ({
+                                  ...prev,
+                                  startSelectFilesAndMedia: true,
+                                }));
+                                setSelectedBannerImage(null); // Ensure previous selection is cleared
+                              }}
+                            >
+                              <svg
+                                className="w-5 h-5 mr-2 -ml-1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                ></path>
+                              </svg>
+                              Select Files
+                            </button>
+                          </div>
+
+                          <div className="mt-1">
+                            {/* Show Preview for Banner Image */}
+                            {getFilePreview(bannerImageFile)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {/* PAGE CONTENT */}
                   <div>
                     <label for=""> Page Content </label>
                     <div className="mt-1">
