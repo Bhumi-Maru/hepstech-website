@@ -9,8 +9,13 @@ export default function Footer_Section_4() {
     useFooterSection();
   const [currentColumnIndex, setCurrentColumnIndex] = useState(null);
 
-  const openAddLinkModal = (columnIndex) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editLinkIndex, setEditLinkIndex] = useState(null);
+
+  const openAddLinkModal = (columnIndex, linkIndex = null) => {
     setCurrentColumnIndex(columnIndex);
+    setEditLinkIndex(linkIndex); // null means "add", number means "edit"
+    setIsEditing(linkIndex !== null);
     setIsOpenPopupModal(true);
   };
 
@@ -81,9 +86,7 @@ export default function Footer_Section_4() {
                         type="button"
                         className="btn-circle"
                         aria-label="Update"
-                        // onClick={() =>
-                        //   removeLinkFromColumn(columnIndex, linkIndex)
-                        // }
+                        onClick={() => openAddLinkModal(columnIndex, linkIndex)}
                       >
                         <svg
                           class="w-5 h-5"
@@ -157,7 +160,11 @@ export default function Footer_Section_4() {
 
       {/* Render the modal when needed */}
       {isOpenPopupModal && currentColumnIndex !== null && (
-        <Add_Popup_Modal columnIndex={currentColumnIndex} />
+        <Add_Popup_Modal
+          columnIndex={currentColumnIndex}
+          isEditing={isEditing}
+          editLinkIndex={editLinkIndex}
+        />
       )}
     </>
   );
