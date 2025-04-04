@@ -7,6 +7,7 @@ import Footer_Section_5 from "./Footer_Section_5";
 import Footer_Section_6 from "./Footer_Section_6";
 import Footer_Section__7 from "./Footer_Section__7";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
+import Footer_Section_8 from "./Footer_Section_8";
 
 export default function Footer_Section() {
   const {
@@ -40,6 +41,7 @@ export default function Footer_Section() {
               onPaymentImageChange={handlePaymentImageChange}
             />
           </div>
+          <Footer_Section_8 />
         </div>
 
         <hr className="mt-6 mb-5 border-gray-200" />
