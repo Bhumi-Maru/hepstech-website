@@ -71,6 +71,8 @@ import UploadImage from "./Admin Panel/components/All Media/UploadImage";
 import Main_Category_Update_Modal from "./Admin Panel/components/Categories/Main Categories/Main_Category_Update_Modal";
 import Sub_Category_Update_Modal from "./Admin Panel/components/Categories/Sub Categories/Sub_Category_Update_Modal";
 import CreateProduct2 from "./Admin Panel/components/Products/Create Products/Create_Products_2";
+import Add_Main_Category_Modal from "./Admin Panel/components/Website Setup/Header Menu/Add_Main_Category_Modal";
+import Header_Menu_Add_Popup_Modal from "./Admin Panel/components/Website Setup/Header Menu/Header_Menu_Add_Popup_Modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
@@ -504,6 +506,20 @@ export default function Admin_Panel_App() {
           <Add_Testimonials_Section_23_Popup_Modal />
         </>
       )}
+
+      {/* HEADER MENU SECTION MAIN CATEGORY ADD MODAL */}
+      {/* {isOpenPopupModal.Header_Menu_Add_Category_Modal && (
+        <>
+          <Add_Main_Category_Modal />
+        </>
+      )} */}
+
+      {/* HEADER MENU SECTION ADD PAGE AND CUSTOM LINK MODAL */}
+      {/* {isOpenPopupModal.Header_Menu_Add_Page_Custom_Link_Popup_Modal && (
+        <>
+          <Header_Menu_Add_Popup_Modal />
+        </>
+      )} */}
 
       {/* <!-- END WRAPPER --> */}
     </div>
