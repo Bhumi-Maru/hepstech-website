@@ -41,6 +41,7 @@ export const FooterSectionProvider = ({ children }) => {
       LinkedIn: "",
     },
     PaymentOptionsPhoto: [],
+    CopyrightText: "",
   });
 
   // Function to determine if a given URL is an ObjectId or a normal link

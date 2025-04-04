@@ -8,6 +8,7 @@ const createFooterSection = async (req, res) => {
       columnsData,
       socialMediaLinks,
       PaymentOptionsPhoto,
+      CopyrightText,
     } = req.body;
 
     // Ensure that columnsData has exactly 3 columns
@@ -25,6 +26,7 @@ const createFooterSection = async (req, res) => {
       columnsData,
       socialMediaLinks,
       PaymentOptionsPhoto,
+      CopyrightText,
     });
 
     // Save to the database

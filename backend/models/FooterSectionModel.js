@@ -56,6 +56,11 @@ const footerSectionSchema = new mongoose.Schema(
         required: false,
       },
     ],
+
+    CopyrightText: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

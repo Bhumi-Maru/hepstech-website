@@ -37,7 +37,9 @@ export default function Footer_Section_4() {
         {columnsData.map((column, columnIndex) => (
           <div key={columnIndex} className="bg-white rounded-lg shadow">
             <div className="px-4 py-3 sm:px-5">
-              <h3 className="text-base font-medium">{column.columnTitle}</h3>
+              <h3 className="text-base font-medium">{`column ${
+                columnIndex + 1
+              }`}</h3>
             </div>
 
             <div className="px-4 pb-5 sm:px-5">
@@ -51,7 +53,7 @@ export default function Footer_Section_4() {
                     id={`columnTitle-${columnIndex}`}
                     placeholder="Column title"
                     className="w-full"
-                    value={column.columnTitle}
+                    // value={column.columnTitle}
                     onChange={(e) =>
                       handleInputChange(
                         `columnsData.${columnIndex}.columnTitle`,
