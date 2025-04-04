@@ -92,12 +92,20 @@ export const FooterSectionProvider = ({ children }) => {
 
   ///////////////////////////////start add popup modal//////////////////////////////////////
   // Add a new link to a specific column
+  // In your FooterSectionProvider
   const addLinkToColumn = (columnIndex, newLink) => {
     setFooterFormData((prev) => {
+      // Create a new array for columns
       const updatedColumns = Array.isArray(prev?.columnsData)
         ? [...prev.columnsData]
-        : [];
+        : Array(3)
+            .fill()
+            .map((_, i) => ({
+              columnTitle: `Column ${i + 1}`,
+              links: [],
+            }));
 
+      // Ensure the column exists
       if (!updatedColumns[columnIndex]) {
         updatedColumns[columnIndex] = {
           columnTitle: `Column ${columnIndex + 1}`,
@@ -105,9 +113,22 @@ export const FooterSectionProvider = ({ children }) => {
         };
       }
 
-      updatedColumns[columnIndex].links.push(newLink);
+      // Create a new links array with the new link added
+      const updatedLinks = [
+        ...(updatedColumns[columnIndex].links || []),
+        newLink,
+      ];
 
-      return { ...prev, columnsData: updatedColumns };
+      // Update the specific column
+      updatedColumns[columnIndex] = {
+        ...updatedColumns[columnIndex],
+        links: updatedLinks,
+      };
+
+      return {
+        ...prev,
+        columnsData: updatedColumns,
+      };
     });
   };
 

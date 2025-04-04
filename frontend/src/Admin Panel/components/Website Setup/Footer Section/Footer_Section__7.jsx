@@ -67,7 +67,7 @@ export default function Footer_Section__7({
             />
             <button
               type="button"
-              className="absolute top-0 right-0 p-1 text-xs text-white bg-red-500 rounded-full"
+              className="absolute top-0 right-0 p-1 text-xs text-dark bg-red-500 rounded-full"
               onClick={() => handleRemoveImage(index)}
             >
               ×

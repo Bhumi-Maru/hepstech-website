@@ -138,6 +138,36 @@ export default function Select_Files() {
     }
   };
 
+  const handleFileSelect = (file) => {
+    const popup = isOpenPopupModal;
+
+    if (isBannerImageVisible) {
+      handleBannerImageSelect(file); // Select banner image if the banner is visible
+    } else if (
+      popup.addMainCategoryPopupModal ||
+      popup.editMainCategoryPopupModal
+    ) {
+      handleMainImageSelect(file); // Select main image for main category actions
+    } else if (
+      popup.addSubCategoryPopupModal ||
+      popup.editSubCategoryPopupModal
+    ) {
+      handleSubImageSelect(file); // Select sub image in other cases (e.g., when editing sub-category)
+    } else if (popup.Header_Section_web_Logo) {
+      handleWebLogoSelect(file); // Select Web Logo
+    } else if (popup.Header_Section_Admin_Logo) {
+      handleAdminLogoSelect(file);
+    } else if (popup.Header_Section_Favicon_Icon) {
+      handleFaviconSelect(file);
+    } else if (popup.Header_Link_section_offer_image) {
+      handleOfferImageSelect(file);
+    } else if (popup.Footer_Section_footer_logo) {
+      handleFooterLogoSelect(file);
+    } else if (popup.Footer_Section_payment_image) {
+      handlePaymentImageSelect(file);
+    }
+  };
+
   //////////////////end footer section////////////////////////////
 
   console.log("selecte web", selectedWebLogo);
@@ -184,37 +214,38 @@ export default function Select_Files() {
                     type="checkbox"
                     name="selectedFiles"
                     id={`file-${index}`}
-                    onChange={() => {
-                      if (isBannerImageVisible) {
-                        handleBannerImageSelect(item); // Select banner image if the banner is visible
-                      } else if (
-                        isOpenPopupModal.addMainCategoryPopupModal ||
-                        isOpenPopupModal.editMainCategoryPopupModal
-                      ) {
-                        handleMainImageSelect(item); // Select main image for main category actions
-                      } else if (
-                        isOpenPopupModal.addSubCategoryPopupModal ||
-                        isOpenPopupModal.editSubCategoryPopupModal
-                      ) {
-                        handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
-                      } else if (isOpenPopupModal.Header_Section_web_Logo) {
-                        handleWebLogoSelect(item); // Select Web Logo
-                      } else if (isOpenPopupModal.Header_Section_Admin_Logo) {
-                        handleAdminLogoSelect(item);
-                      } else if (isOpenPopupModal.Header_Section_Favicon_Icon) {
-                        handleFaviconSelect(item);
-                      } else if (
-                        isOpenPopupModal.Header_Link_section_offer_image
-                      ) {
-                        handleOfferImageSelect(item);
-                      } else if (isOpenPopupModal.Footer_Section_footer_logo) {
-                        handleFooterLogoSelect(item);
-                      } else if (
-                        isOpenPopupModal.Footer_Section_payment_image
-                      ) {
-                        handlePaymentImageSelect(item);
-                      }
-                    }}
+                    // onChange={() => {
+                    //   if (isBannerImageVisible) {
+                    //     handleBannerImageSelect(item); // Select banner image if the banner is visible
+                    //   } else if (
+                    //     isOpenPopupModal.addMainCategoryPopupModal ||
+                    //     isOpenPopupModal.editMainCategoryPopupModal
+                    //   ) {
+                    //     handleMainImageSelect(item); // Select main image for main category actions
+                    //   } else if (
+                    //     isOpenPopupModal.addSubCategoryPopupModal ||
+                    //     isOpenPopupModal.editSubCategoryPopupModal
+                    //   ) {
+                    //     handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
+                    //   } else if (isOpenPopupModal.Header_Section_web_Logo) {
+                    //     handleWebLogoSelect(item); // Select Web Logo
+                    //   } else if (isOpenPopupModal.Header_Section_Admin_Logo) {
+                    //     handleAdminLogoSelect(item);
+                    //   } else if (isOpenPopupModal.Header_Section_Favicon_Icon) {
+                    //     handleFaviconSelect(item);
+                    //   } else if (
+                    //     isOpenPopupModal.Header_Link_section_offer_image
+                    //   ) {
+                    //     handleOfferImageSelect(item);
+                    //   } else if (isOpenPopupModal.Footer_Section_footer_logo) {
+                    //     handleFooterLogoSelect(item);
+                    //   } else if (
+                    //     isOpenPopupModal.Footer_Section_payment_image
+                    //   ) {
+                    //     handlePaymentImageSelect(item);
+                    //   }
+                    // }}
+                    onChange={() => handleFileSelect(item)}
                   />
                 </div>
                 <div className="block w-full overflow-hidden bg-gray-100 rounded-lg focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-skin-primary">

@@ -14,23 +14,41 @@ export default function Add_Popup_Modal({ columnIndex }) {
   });
 
   const handleLinkChange = (field, value) => {
-    const updatedLink = { ...linkData, [field]: value };
+    const updatedLink = {
+      ...linkData,
+      [field]: value,
+    };
+
     // Auto-detect link type when URL changes
     if (field === "url") {
       updatedLink.type = getLinkType(value);
     }
+
     setLinkData(updatedLink);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    e.stopPropagation();
+
     if (!linkData.title || !linkData.url) return;
 
+    // Create a new link object to avoid potential reference issues
+    const newLink = {
+      title: linkData.title,
+      url: linkData.url,
+      type: linkData.type || getLinkType(linkData.url),
+    };
+
     // Add the link to the specified column
-    addLinkToColumn(columnIndex, linkData);
+    addLinkToColumn(columnIndex, newLink);
 
     // Reset form and close modal
-    setLinkData({ title: "", url: "", type: "" });
+    setLinkData({
+      title: "",
+      url: "",
+      type: "",
+    });
     setIsOpenPopupModal(false);
   };
 
