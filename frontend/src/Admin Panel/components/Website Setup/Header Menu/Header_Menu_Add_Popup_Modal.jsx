@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
+import { useHeaderContext } from "../../../context/Header_Menu_Context";
+import { usePageContext } from "../../../context/Store_Setting_Page";
 
 export default function Header_Menu_Add_Popup_Modal({
   columnIndex,
@@ -10,6 +12,8 @@ export default function Header_Menu_Add_Popup_Modal({
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const { footerFormData, addLinkToColumn, updateLinkInColumn, getLinkType } =
     useFooterSection();
+  const { data } = usePageContext();
+  const { addPageOrLink } = useHeaderContext(); // ✅ access context
   const [activeTab, setActiveTab] = useState("addPages");
   const [linkData, setLinkData] = useState({
     title: "",
@@ -46,7 +50,7 @@ export default function Header_Menu_Add_Popup_Modal({
     setLinkData(updatedLink);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -58,15 +62,14 @@ export default function Header_Menu_Add_Popup_Modal({
       type: linkData.type || getLinkType(linkData.url),
     };
 
-    if (isEditing) {
-      updateLinkInColumn(columnIndex, editLinkIndex, newLink);
-    } else {
-      addLinkToColumn(columnIndex, newLink);
+    try {
+      await addPageOrLink(newLink); // ✅ call API to save
+      // Reset form
+      setLinkData({ title: "", url: "", type: "" });
+      setIsOpenPopupModal(false);
+    } catch (error) {
+      console.error("Failed to add link:", error);
     }
-
-    // Reset
-    setLinkData({ title: "", url: "", type: "" });
-    setIsOpenPopupModal(false);
   };
 
   return (
@@ -135,32 +138,43 @@ export default function Header_Menu_Add_Popup_Modal({
             <div className="tab-content">
               {activeTab === "addPages" && (
                 <div className="tab-pane !py-0 show" role="tabpanel">
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={(e) => {
+                      handleSubmit(e);
+                      setIsOpenPopupModal(false);
+                    }}
+                  >
                     <div className="space-y-4">
                       <div>
                         <label htmlFor="pageTitle">Page Title</label>
+                        {/* Add Pages Tab */}
                         <input
                           type="text"
                           id="pageTitle"
+                          required
                           value={linkData.title}
                           onChange={(e) =>
                             handleLinkChange("title", e.target.value)
                           }
-                          required
                         />
                       </div>
                       <div>
-                        <label htmlFor="pageId">Page ID</label>
-                        <input
-                          type="text"
+                        <label htmlFor="pageId">Page</label>
+                        <select
                           id="pageId"
                           value={linkData.url}
                           onChange={(e) =>
                             handleLinkChange("url", e.target.value)
                           }
-                          placeholder="Enter page ID"
                           required
-                        />
+                        >
+                          <option value="">Select a page</option>
+                          {data.map((page) => (
+                            <option key={page._id} value={page._id}>
+                              {page.pageTitle}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div className="flex justify-end space-x-4">
                         <button
@@ -180,18 +194,24 @@ export default function Header_Menu_Add_Popup_Modal({
               )}
               {activeTab === "addCustomLink" && (
                 <div className="tab-pane !py-0 show" role="tabpanel">
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={(e) => {
+                      handleSubmit(e);
+                      setIsOpenPopupModal(false);
+                    }}
+                  >
                     <div className="space-y-4">
                       <div>
                         <label htmlFor="linkTitle">Link Title</label>
+                        {/* Add Custom Link Tab */}
                         <input
                           type="text"
                           id="linkTitle"
+                          required
                           value={linkData.title}
                           onChange={(e) =>
                             handleLinkChange("title", e.target.value)
                           }
-                          required
                         />
                       </div>
                       <div>
@@ -199,12 +219,12 @@ export default function Header_Menu_Add_Popup_Modal({
                         <input
                           type="url"
                           id="linkUrl"
+                          required
+                          placeholder="https://example.com"
                           value={linkData.url}
                           onChange={(e) =>
                             handleLinkChange("url", e.target.value)
                           }
-                          placeholder="https://example.com"
-                          required
                         />
                       </div>
                       <div className="flex justify-end space-x-4">
@@ -216,7 +236,7 @@ export default function Header_Menu_Add_Popup_Modal({
                           Cancel
                         </button>
                         <button type="submit" className="btn btn-primary">
-                          {isEditing ? "Update Custom Link" : "Add Custom Link"}
+                          Add Custom Link
                         </button>
                       </div>
                     </div>
