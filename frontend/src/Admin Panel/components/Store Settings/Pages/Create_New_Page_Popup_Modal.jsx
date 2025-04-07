@@ -26,7 +26,7 @@ export default function Create_New_Page_Popup_Modal() {
   } = usePageContext();
 
   const [pageTitle, setPageTitle] = useState("");
-  const [pageContent, setPageContent] = useState("");
+  const [pageContent, setPageContent] = useState(""); 
   const [pageStatus, setPageStatus] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 

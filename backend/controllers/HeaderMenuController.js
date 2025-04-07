@@ -6,12 +6,10 @@ const getHeaderMenu = async (req, res) => {
     const headerMenu = await HeaderMenu.findOne().populate("main_categories");
     res.json(headerMenu || { pages: [], main_categories: [] });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        message: "Server Error: Unable to fetch header menu",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Server Error: Unable to fetch header menu",
+      error: err.message,
+    });
   }
 };
 

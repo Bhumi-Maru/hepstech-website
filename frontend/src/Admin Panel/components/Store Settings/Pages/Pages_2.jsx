@@ -8,7 +8,6 @@ export default function Pages_2() {
   const handleEdit = (page) => {
     console.log("page is", page._id);
     setCurrentPage(page);
-    // setIsEditingId(page._id); // Set the editing ID
     toggleModal("createNewPage");
     setIsOpenPopupModal((prev) => ({ ...prev, createNewPage: true }));
   };

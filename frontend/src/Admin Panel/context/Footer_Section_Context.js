@@ -96,7 +96,6 @@ export const FooterSectionProvider = ({ children }) => {
   // In your FooterSectionProvider
   const addLinkToColumn = (columnIndex, newLink) => {
     setFooterFormData((prev) => {
-      // Create a new array for columns
       const updatedColumns = Array.isArray(prev?.columnsData)
         ? [...prev.columnsData]
         : Array(3)
@@ -106,7 +105,6 @@ export const FooterSectionProvider = ({ children }) => {
               links: [],
             }));
 
-      // Ensure the column exists
       if (!updatedColumns[columnIndex]) {
         updatedColumns[columnIndex] = {
           columnTitle: `Column ${columnIndex + 1}`,
@@ -114,13 +112,16 @@ export const FooterSectionProvider = ({ children }) => {
         };
       }
 
-      // Create a new links array with the new link added
+      const typedLink = {
+        ...newLink,
+        type: getLinkType(newLink.url), // 👈 Set type here
+      };
+
       const updatedLinks = [
         ...(updatedColumns[columnIndex].links || []),
-        newLink,
+        typedLink,
       ];
 
-      // Update the specific column
       updatedColumns[columnIndex] = {
         ...updatedColumns[columnIndex],
         links: updatedLinks,

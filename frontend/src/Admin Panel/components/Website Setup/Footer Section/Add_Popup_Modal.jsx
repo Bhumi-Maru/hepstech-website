@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useFooterSection } from "../../../context/Footer_Section_Context";
+import { usePageContext } from "../../../context/Store_Setting_Page";
 
 export default function Add_Popup_Modal({
   columnIndex,
@@ -8,6 +10,9 @@ export default function Add_Popup_Modal({
   editLinkIndex,
 }) {
   const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { data } = usePageContext();
+  console.log("dddddddddddddata", data);
+  // const [data, setData] = useState([]);
   const { footerFormData, addLinkToColumn, updateLinkInColumn, getLinkType } =
     useFooterSection();
   const [activeTab, setActiveTab] = useState("addPages");
@@ -145,7 +150,7 @@ export default function Add_Popup_Modal({
                           required
                         />
                       </div>
-                      <div>
+                      {/* <div>
                         <label htmlFor="pageId">Page ID</label>
                         <input
                           type="text"
@@ -157,7 +162,27 @@ export default function Add_Popup_Modal({
                           placeholder="Enter page ID"
                           required
                         />
+                       
+                      </div> */}
+                      <div>
+                        <label htmlFor="pageId">Page</label>
+                        <select
+                          id="pageId"
+                          value={linkData.url}
+                          onChange={(e) =>
+                            handleLinkChange("url", e.target.value)
+                          }
+                          required
+                        >
+                          <option value="">Select a page</option>
+                          {data.map((page) => (
+                            <option key={page._id} value={page._id}>
+                              {page.pageTitle}
+                            </option>
+                          ))}
+                        </select>
                       </div>
+
                       <div className="flex justify-end space-x-4">
                         <button
                           type="button"

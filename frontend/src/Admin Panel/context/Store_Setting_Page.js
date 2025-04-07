@@ -11,7 +11,6 @@ export const PageProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState();
   const [currentPage, setCurrentPage] = useState(null); // Track the page being edited
-  //   const [isEditingId, setIsEditingId] = useState(null);
 
   useEffect(() => {
     fetchPageContent();
@@ -77,8 +76,6 @@ export const PageProvider = ({ children }) => {
         updatePage,
         deletePage,
         fetchPageContent,
-        // isEditingId,
-        // setIsEditingId,
       }}
     >
       {children}
