@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// quill
+import "react-quill/dist/quill.snow.css";
+
 import Sidebar from "./Admin Panel/components/Sidebar/Sidebar";
 import Navbar from "./Admin Panel/components/Navbar/Navbar";
 import Footer from "./Admin Panel/components/Footer/Footer";

@@ -75,4 +75,78 @@ const getPageById = async (req, res) => {
   }
 };
 
-module.exports = { createPage, getAllPages, getPageById };
+// delete all page data
+const deleteAllPages = async (req, res) => {
+  try {
+    const page = await StoreSettingPages.deleteMany({});
+
+    res.status(200).json(page);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error Deleting page", error: error.message });
+  }
+};
+
+//delete by id
+const deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const page = await StoreSettingPages.findByIdAndDelete(id);
+    res.status(200).json({
+      message: "successfully deleting by id",
+      page,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error Deleting page by id", error: error.message });
+  }
+};
+
+// update
+const editById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // If updating banner image, verify it exists
+    if (updateData.pages_add_banner_image) {
+      const bannerImage = await File.findById(
+        updateData.pages_add_banner_image
+      );
+      if (!bannerImage) {
+        return res.status(404).json({ message: "Banner image not found" });
+      }
+    }
+
+    const updatedPage = await StoreSettingPages.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true, runValidators: true }
+    ).populate("pages_add_banner_image");
+
+    if (!updatedPage) {
+      return res.status(404).json({ message: "Page not found" });
+    }
+
+    res.status(200).json({
+      message: "Page updated successfully",
+      page: updatedPage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating page",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  createPage,
+  getAllPages,
+  getPageById,
+  deleteAllPages,
+  deleteById,
+  editById,
+};

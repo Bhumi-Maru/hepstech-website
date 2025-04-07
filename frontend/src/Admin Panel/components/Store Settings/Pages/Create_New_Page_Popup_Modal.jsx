@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useAllMediaContext } from "../../../context/All_Media_Context";
 import { getFilePreview } from "../../../utils/fileUploadUtils";
+import { usePageContext } from "../../../context/Store_Setting_Page";
 
 export default function Create_New_Page_Popup_Modal() {
-  const { setIsOpenPopupModal } = useAdminGlobalContext();
+  const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const {
     isBannerImageVisible,
     setIsBannerImageVisible,
@@ -13,497 +16,293 @@ export default function Create_New_Page_Popup_Modal() {
     selectedBannerImage,
   } = useAllMediaContext();
 
+  const {
+    createPage,
+    fetchPageContent,
+    currentPage,
+    setCurrentPage,
+    updatePage,
+    setIsEditingId,
+  } = usePageContext();
+
+  const [pageTitle, setPageTitle] = useState("");
+  const [pageContent, setPageContent] = useState("");
+  const [pageStatus, setPageStatus] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Initialize form when currentPage changes (for editing)
+  useEffect(() => {
+    if (currentPage) {
+      setIsEditing(true);
+      setPageTitle(currentPage.pageTitle);
+      setPageContent(currentPage.pageContent);
+      setPageStatus(currentPage.page_status === "Published");
+      setSelectedBannerImage(currentPage.pages_add_banner_image?._id || null);
+      setIsBannerImageVisible(
+        currentPage.pages_add_banner_image_status === "active"
+      );
+    } else {
+      resetForm();
+    }
+  }, [currentPage]);
+
+  const handleSubmit = async () => {
+    const pageData = {
+      pageTitle,
+      pages_add_banner_image: selectedBannerImage,
+      pages_add_banner_image_status: isBannerImageVisible
+        ? "active"
+        : "deactive",
+      pageContent,
+      page_status: pageStatus ? "Published" : "Unpublished",
+    };
+
+    try {
+      if (isEditing) {
+        await updatePage(currentPage._id, pageData);
+      } else {
+        await createPage(pageData);
+      }
+      // setIsEditingId(null); // Close the modal
+      setIsOpenPopupModal(false);
+      resetForm();
+      fetchPageContent();
+    } catch (error) {
+      console.error("Error submitting page:", error);
+    }
+  };
+
+  // find banner image id and its preview
   const bannerImageFile = mediaItems.find(
     (item) => item._id === selectedBannerImage
   );
+
+  const resetForm = () => {
+    setPageTitle("");
+    setPageContent("");
+    setPageStatus(false);
+    setSelectedBannerImage(null);
+    setIsBannerImageVisible(false);
+    setIsEditing(false);
+    setCurrentPage(null);
+    // setIsEditingId(null);
+  };
   return (
     <>
+      <style>
+        {` .ql-tooltip.ql-editing {
+      left: 0px !important;
+    }`}
+      </style>
       {/* CREATE A NEW PAGE POPUP MODAL */}
-      <div
-        className="modal active"
-        id="createPageModal"
-        tabindex="-1"
-        role="dialog"
-        aria-hidden="false"
-      >
-        <div className="modal-overlay" tabindex="-1"></div>
-        <div className="modal-dialog modal-dialog-centered sm:max-w-2xl">
-          <div className="modal-content" role="document">
-            <div className="modal-header">
-              <h5 className="mr-12 text-lg font-bold truncate">
-                Create New Page
-              </h5>
+      {isOpenPopupModal.createNewPage && (
+        <>
+          <div
+            className="modal active"
+            id="createPageModal"
+            tabindex="-1"
+            role="dialog"
+            aria-hidden="false"
+          >
+            <div className="modal-overlay" tabindex="-1"></div>
+            <div className="modal-dialog modal-dialog-centered sm:max-w-2xl">
+              <div className="modal-content" role="document">
+                <div className="modal-header">
+                  <h5 className="mr-12 text-lg font-bold truncate">
+                    {isEditing ? "Edit Page" : "Create New Page"}
+                  </h5>
 
-              {/* <!-- close button --> */}
-              <button
-                type="button"
-                className="btn-close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={() => setIsOpenPopupModal(false)}
-              >
-                <span className="sr-only">Close</span>
-                <svg
-                  className="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+                  {/* <!-- close button --> */}
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => {
+                      setIsOpenPopupModal(false);
+                      resetForm();
+                    }}
+                  >
+                    <span className="sr-only">Close</span>
+                    <svg
+                      className="w-6 h-6"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
 
-            <div className="modal-body">
-              <form action="#">
-                <div className="space-y-4">
-                  {/* PAGE TITLE */}
-                  <div>
-                    <label for=""> Enter Page Title </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder=""
-                        className=""
-                      />
-                    </div>
-                  </div>
-
-                  {/* ADD BANNER IMAGE UPLOAD */}
-                  <div className="relative flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        type="checkbox"
-                        id="bannerImageStatus"
-                        checked={isBannerImageVisible}
-                        onChange={(e) =>
-                          setIsBannerImageVisible(e.target.checked)
-                        }
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label htmlFor="bannerImageStatus">
-                        Add Banner Image
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Banner Image Upload - Shown When Checkbox is Checked */}
-                  {isBannerImageVisible && (
-                    <div className="mt-4">
-                      <label htmlFor="categoryBannerImage">Banner Image</label>
+                <div className="modal-body">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
+                  >
+                    <div className="space-y-4">
+                      {/* PAGE TITLE */}
                       <div>
-                        <label for="">
-                          {/* Select Image */}
-                          {/* <span>
+                        <label for=""> Enter Page Title </label>
+                        <div className="mt-1">
+                          <input
+                            type="text"
+                            name="pageTitle"
+                            id="pageTitle"
+                            placeholder=""
+                            className="pageTitle"
+                            value={pageTitle}
+                            onChange={(e) => setPageTitle(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* ADD BANNER IMAGE UPLOAD */}
+                      <div className="relative flex items-start">
+                        <div className="flex items-center h-5">
+                          <input
+                            type="checkbox"
+                            id="bannerImageStatus"
+                            checked={isBannerImageVisible}
+                            onChange={(e) =>
+                              setIsBannerImageVisible(e.target.checked)
+                            }
+                          />
+                        </div>
+                        <div className="ml-3 text-sm">
+                          <label htmlFor="bannerImageStatus">
+                            Add Banner Image
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Banner Image Upload - Shown When Checkbox is Checked */}
+                      {isBannerImageVisible && (
+                        <div className="mt-4">
+                          <label htmlFor="categoryBannerImage">
+                            Banner Image
+                          </label>
+                          <div>
+                            <label for="">
+                              {/* Select Image */}
+                              {/* <span>
                                               (Image ratio should be 16:6. PNG, JPG, or JPEG up to
                                               1MB)
                                             </span> */}
-                          {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
-                        </label>
-                        <div className="flex" style={{ gap: "10px" }}>
-                          <div className="mt-1.5">
-                            <button
-                              type="button"
-                              className="btn btn-white"
-                              data-toggle="modal"
-                              data-target="#selectFilesModal"
-                              onClick={() => {
-                                setIsOpenPopupModal((prev) => ({
-                                  ...prev,
-                                  startSelectFilesAndMedia: true,
-                                }));
-                                setSelectedBannerImage(null); // Ensure previous selection is cleared
-                              }}
-                            >
-                              <svg
-                                className="w-5 h-5 mr-2 -ml-1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                ></path>
-                              </svg>
-                              Select Files
-                            </button>
-                          </div>
+                              {/* <p>Selected File : {selectedBannerImage || "None"}</p> */}
+                            </label>
+                            <div className="flex" style={{ gap: "10px" }}>
+                              <div className="mt-1.5">
+                                <button
+                                  type="button"
+                                  className="btn btn-white"
+                                  data-toggle="modal"
+                                  data-target="#selectFilesModal"
+                                  onClick={() => {
+                                    setIsOpenPopupModal((prev) => ({
+                                      ...prev,
+                                      startSelectFilesAndMedia: true,
+                                    }));
+                                    setSelectedBannerImage(null); // Ensure previous selection is cleared
+                                  }}
+                                >
+                                  <svg
+                                    className="w-5 h-5 mr-2 -ml-1"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    ></path>
+                                  </svg>
+                                  Select Files
+                                </button>
+                              </div>
 
-                          <div className="mt-1">
-                            {/* Show Preview for Banner Image */}
-                            {getFilePreview(bannerImageFile)}
+                              <div className="mt-1">
+                                {/* Show Preview for Banner Image */}
+                                {getFilePreview(bannerImageFile)}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  )}
-                  {/* PAGE CONTENT */}
-                  <div>
-                    <label for=""> Page Content </label>
-                    <div className="mt-1">
-                      <div className="ql-toolbar ql-snow">
-                        <span className="ql-formats">
-                          <span className="ql-header ql-picker">
-                            <span
-                              className="ql-picker-label"
-                              tabindex="0"
-                              role="button"
-                              aria-expanded="false"
-                              aria-controls="ql-picker-options-2"
-                            >
-                              <svg viewBox="0 0 18 18">
-                                {" "}
-                                <polygon
-                                  className="ql-stroke"
-                                  points="7 11 9 13 11 11 7 11"
-                                ></polygon>{" "}
-                                <polygon
-                                  className="ql-stroke"
-                                  points="7 7 9 5 11 7 7 7"
-                                ></polygon>{" "}
-                              </svg>
-                            </span>
-                            <span
-                              className="ql-picker-options"
-                              aria-hidden="true"
-                              tabindex="-1"
-                              id="ql-picker-options-2"
-                            >
-                              <span
-                                tabindex="0"
-                                role="button"
-                                className="ql-picker-item"
-                                data-value="1"
-                              ></span>
-                              <span
-                                tabindex="0"
-                                role="button"
-                                className="ql-picker-item"
-                                data-value="2"
-                              ></span>
-                              <span
-                                tabindex="0"
-                                role="button"
-                                className="ql-picker-item"
-                                data-value="3"
-                              ></span>
-                              <span
-                                tabindex="0"
-                                role="button"
-                                className="ql-picker-item ql-selected"
-                              ></span>
-                            </span>
-                          </span>
-                          <select
-                            className="ql-header"
-                            style={{ display: "none" }}
-                          >
-                            <option value="1"></option>
-                            <option value="2"></option>
-                            <option value="3"></option>
-                            <option selected="selected"></option>
-                          </select>
-                        </span>
-                        <span className="ql-formats">
-                          <button type="button" className="ql-bold">
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <path
-                                className="ql-stroke"
-                                d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"
-                              ></path>{" "}
-                              <path
-                                className="ql-stroke"
-                                d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"
-                              ></path>{" "}
-                            </svg>
-                          </button>
-                          <button type="button" className="ql-italic">
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <line
-                                className="ql-stroke"
-                                x1="7"
-                                x2="13"
-                                y1="4"
-                                y2="4"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="5"
-                                x2="11"
-                                y1="14"
-                                y2="14"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="8"
-                                x2="10"
-                                y1="14"
-                                y2="4"
-                              ></line>{" "}
-                            </svg>
-                          </button>
-                          <button type="button" className="ql-underline">
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <path
-                                className="ql-stroke"
-                                d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"
-                              ></path>{" "}
-                              <rect
-                                className="ql-fill"
-                                height="1"
-                                rx="0.5"
-                                ry="0.5"
-                                width="12"
-                                x="3"
-                                y="15"
-                              ></rect>{" "}
-                            </svg>
-                          </button>
-                          <button type="button" className="ql-link">
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <line
-                                className="ql-stroke"
-                                x1="7"
-                                x2="11"
-                                y1="7"
-                                y2="11"
-                              ></line>{" "}
-                              <path
-                                className="ql-even ql-stroke"
-                                d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"
-                              ></path>{" "}
-                              <path
-                                className="ql-even ql-stroke"
-                                d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"
-                              ></path>{" "}
-                            </svg>
-                          </button>
-                        </span>
-                        <span className="ql-formats">
-                          <button
-                            type="button"
-                            className="ql-list"
-                            value="ordered"
-                          >
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <line
-                                className="ql-stroke"
-                                x1="7"
-                                x2="15"
-                                y1="4"
-                                y2="4"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="7"
-                                x2="15"
-                                y1="9"
-                                y2="9"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="7"
-                                x2="15"
-                                y1="14"
-                                y2="14"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke ql-thin"
-                                x1="2.5"
-                                x2="4.5"
-                                y1="5.5"
-                                y2="5.5"
-                              ></line>{" "}
-                              <path
-                                className="ql-fill"
-                                d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"
-                              ></path>{" "}
-                              <path
-                                className="ql-stroke ql-thin"
-                                d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"
-                              ></path>{" "}
-                              <path
-                                className="ql-stroke ql-thin"
-                                d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"
-                              ></path>{" "}
-                            </svg>
-                          </button>
-                          <button
-                            type="button"
-                            className="ql-list"
-                            value="bullet"
-                          >
-                            <svg viewBox="0 0 18 18">
-                              {" "}
-                              <line
-                                className="ql-stroke"
-                                x1="6"
-                                x2="15"
-                                y1="4"
-                                y2="4"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="6"
-                                x2="15"
-                                y1="9"
-                                y2="9"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="6"
-                                x2="15"
-                                y1="14"
-                                y2="14"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="3"
-                                x2="3"
-                                y1="4"
-                                y2="4"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="3"
-                                x2="3"
-                                y1="9"
-                                y2="9"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="3"
-                                x2="3"
-                                y1="14"
-                                y2="14"
-                              ></line>{" "}
-                            </svg>
-                          </button>
-                        </span>
-                        <span className="ql-formats">
-                          <button type="button" className="ql-clean">
-                            <svg className="" viewBox="0 0 18 18">
-                              {" "}
-                              <line
-                                className="ql-stroke"
-                                x1="5"
-                                x2="13"
-                                y1="3"
-                                y2="3"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="6"
-                                x2="9.35"
-                                y1="12"
-                                y2="3"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="11"
-                                x2="15"
-                                y1="11"
-                                y2="15"
-                              ></line>{" "}
-                              <line
-                                className="ql-stroke"
-                                x1="15"
-                                x2="11"
-                                y1="11"
-                                y2="15"
-                              ></line>{" "}
-                              <rect
-                                className="ql-fill"
-                                height="1"
-                                rx="0.5"
-                                ry="0.5"
-                                width="7"
-                                x="2"
-                                y="14"
-                              ></rect>{" "}
-                            </svg>
-                          </button>
-                        </span>
-                      </div>
-                      <div
-                        className="rounded-b-lg long-content ql-container ql-snow"
-                        id="newPageContent"
-                      >
-                        <div
-                          className="ql-editor ql-blank"
-                          data-gramm="false"
-                          contenteditable="true"
-                          data-placeholder="Write content"
-                        >
-                          <p>
-                            <br />
-                          </p>
-                        </div>
-                        <div
-                          className="ql-clipboard"
-                          contenteditable="true"
-                          tabindex="-1"
-                        ></div>
-                        <div className="ql-tooltip ql-hidden">
-                          <a
-                            className="ql-preview"
-                            target="_blank"
-                            href="about:blank"
-                          ></a>
-                          <input
-                            type="text"
-                            data-formula="e=mc^2"
-                            data-link="https://quilljs.com"
-                            data-video="Embed URL"
+                      )}
+                      {/* PAGE CONTENT */}
+                      <div>
+                        <label>Page Content</label>
+                        <div className="mt-1">
+                          <ReactQuill
+                            theme="snow"
+                            value={pageContent}
+                            onChange={setPageContent}
+                            placeholder="Write content here..."
+                            className="bg-white"
                           />
-                          <a className="ql-action"></a>
-                          <a className="ql-remove"></a>
+                        </div>
+                      </div>
+
+                      {/* page status */}
+                      <div>
+                        <label for="toggleSwitch">Status</label>
+                        <div className="mt-1 toggle-switch">
+                          <input
+                            type="checkbox"
+                            id="toggleSwitch"
+                            role="checkbox"
+                            tabindex="0"
+                            checked={pageStatus}
+                            onChange={(e) => setPageStatus(e.target.checked)}
+                          />
+                          <label for="toggleSwitch"></label>
                         </div>
                       </div>
                     </div>
+                  </form>
+                </div>
+
+                <div className="modal-footer">
+                  <div className="flex items-center justify-end space-x-4">
+                    <button
+                      type="button"
+                      className="btn btn-light"
+                      data-dismiss="modal"
+                      aria-label="Close Modal"
+                      onClick={() => {
+                        setIsOpenPopupModal(false);
+                      }}
+                    >
+                      Discard
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        handleSubmit();
+                      }}
+                    >
+                      {isEditing ? "Edit Page" : "Add Page"}
+                    </button>
                   </div>
                 </div>
-              </form>
-            </div>
-
-            <div className="modal-footer">
-              <div className="flex items-center justify-end space-x-4">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  data-dismiss="modal"
-                  aria-label="Close Modal"
-                  onClick={() => setIsOpenPopupModal(false)}
-                >
-                  Discard
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Add Page
-                </button>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 }

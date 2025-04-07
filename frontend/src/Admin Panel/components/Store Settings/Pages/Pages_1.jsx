@@ -41,7 +41,7 @@ export default function Pages_1() {
             type="button"
             className="btn btn-primary"
             data-toggle="modal"
-            data-target="#createPageModal"
+            data-target="#createPageModal"  
             onClick={() => toggleModal("createNewPage")}
           >
             <svg
