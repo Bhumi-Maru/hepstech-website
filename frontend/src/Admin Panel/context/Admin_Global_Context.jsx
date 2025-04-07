@@ -49,7 +49,9 @@ const AdminGlobalProvider = ({ children }) => {
     createTimeSlots: false,
     deactiveAccountHeaderMenu: false,
     addPagesAndaddCustomLink: false,
+    // store setting pages
     createNewPage: false,
+    editNewPage: false,
     //open modal for upload image
     startSelectFilesAndMedia: false,
     //upload image in all-media
