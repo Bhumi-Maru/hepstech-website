@@ -76,6 +76,7 @@ import Sub_Category_Update_Modal from "./Admin Panel/components/Categories/Sub C
 import CreateProduct2 from "./Admin Panel/components/Products/Create Products/Create_Products_2";
 import Add_Main_Category_Modal from "./Admin Panel/components/Website Setup/Header Menu/Add_Main_Category_Modal";
 import Header_Menu_Add_Popup_Modal from "./Admin Panel/components/Website Setup/Header Menu/Header_Menu_Add_Popup_Modal";
+import Edit_Best_Of_Services_popup_modal from "./Admin Panel/components/Website Setup/Home Page/Best Of Services Section 24/Edit_Best_Of_Services_popup_modal";
 
 export default function Admin_Panel_App() {
   const { isOpenPopupModal, selectedCategoryId } = useAdminGlobalContext();
@@ -507,6 +508,12 @@ export default function Admin_Panel_App() {
       {isOpenPopupModal.testimonials_Reviews_Slider_Section_23 && (
         <>
           <Add_Testimonials_Section_23_Popup_Modal />
+        </>
+      )}
+
+      {isOpenPopupModal.best_of_services_section_24 && (
+        <>
+          <Edit_Best_Of_Services_popup_modal />
         </>
       )}
 

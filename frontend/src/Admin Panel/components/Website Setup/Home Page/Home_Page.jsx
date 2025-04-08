@@ -22,6 +22,7 @@ import Home_Page_Section__20 from "./Best Selling Products Slider 04 Section 20/
 import Home_Page_Section__21 from "./Vertical Banners - 4 Items Section 21/Home_Page_Section__21";
 import Home_Page_Section__22 from "./Horizontal Banners - Small - 1 Items Section 21/Home_Page_Section__22";
 import Home_Page_Section__23 from "./Testimonials - Reviews Slider Section 23/Home_Page_Section__23";
+import Best_Of_Services from "./Best Of Services Section 24/Best_Of_Services";
 
 export default function Home_Page() {
   return (
@@ -78,6 +79,8 @@ export default function Home_Page() {
           <Home_Page_Section__22 />
           {/* [HOME PAGE SECTION 23] Testimonials / Reviews Slider  */}
           <Home_Page_Section__23 />
+          {/* [home page section 24] Best Of Services */}
+          <Best_Of_Services />
         </div>
       </div>
     </>
