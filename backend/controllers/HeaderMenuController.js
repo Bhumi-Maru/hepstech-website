@@ -66,7 +66,7 @@ const removeMainCategory = async (req, res) => {
   }
 };
 
-// Reorder main categories in the header menu
+// Reorder main   categories in the header menu
 const reorderMainCategories = async (req, res) => {
   try {
     const { orderedIds } = req.body;

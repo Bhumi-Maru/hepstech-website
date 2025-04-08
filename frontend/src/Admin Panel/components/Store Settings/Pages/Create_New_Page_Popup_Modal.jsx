@@ -22,11 +22,10 @@ export default function Create_New_Page_Popup_Modal() {
     currentPage,
     setCurrentPage,
     updatePage,
-    setIsEditingId,
   } = usePageContext();
 
   const [pageTitle, setPageTitle] = useState("");
-  const [pageContent, setPageContent] = useState(""); 
+  const [pageContent, setPageContent] = useState("");
   const [pageStatus, setPageStatus] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -73,9 +72,13 @@ export default function Create_New_Page_Popup_Modal() {
   };
 
   // find banner image id and its preview
-  const bannerImageFile = mediaItems.find(
-    (item) => item._id === selectedBannerImage
-  );
+  console.log("media", mediaItems);
+  const bannerImageFile = mediaItems.find((item) => {
+    console.log("item is........", item);
+    return item._id === selectedBannerImage;
+  });
+
+  console.log("bannnnner", bannerImageFile);
 
   const resetForm = () => {
     setPageTitle("");
