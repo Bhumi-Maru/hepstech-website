@@ -89,11 +89,16 @@ export default function Add_Main_Category_Modal() {
                     required
                   >
                     <option value="">Select a category</option>
-                    {mainCategory.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.main_category_title}
-                      </option>
-                    ))}
+                    {mainCategory
+                      .filter(
+                        (category) =>
+                          category.main_category_status === "published"
+                      )
+                      .map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.main_category_title}
+                        </option>
+                      ))}
                   </select>
                 </div>
               </div>

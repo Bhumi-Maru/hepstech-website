@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { fetchHeaderData } from "../../../../Admin Panel/utils/fileUploadUtils";
+import { useHeaderContext } from "../../../../Admin Panel/context/Header_Menu_Context";
 
 export default function Navbar({
   setLoginModalOpen,
   setIsMobileNavigationModal,
 }) {
+  //////////////////START HEADER MENU ///////////////////
+  const { headerMenuData } = useHeaderContext();
+  console.log("headerMenuData headerMenuData", headerMenuData);
+  //////////////////END HEADER MENU ///////////////////
   // const { formData } = useHeaderSection();
   const [formData, setFormData] = useState({});
   // Fetch latest data on initial load
   useEffect(() => {
     fetchHeaderData(setFormData);
   }, []);
-
-  console.log("gggg", formData);
 
   const [isScrollingUp, setIsScrollingUp] = useState(false);
   let lastScrollY = window.scrollY;
@@ -71,6 +73,9 @@ export default function Navbar({
   const handleMouseLeave = () => {
     setHoveredMenu(null);
   };
+  ///////////////////////////////////START HEADER MENU///////////////////////////////////////////
+
+  ////////////////////////////////////END HEADER MENU///////////////////////////////////////////
 
   return (
     <>
@@ -561,7 +566,20 @@ export default function Navbar({
         <div className="container">
           <div className="mega-menu">
             <ul>
-              <li>
+              {headerMenuData.main_categories.map((maincategory) => {
+                return (
+                  <li>
+                    <Link
+                      to={maincategory.url}
+                      title=""
+                      className="parent-category-title"
+                    >
+                      {maincategory.main_category_title}
+                    </Link>
+                  </li>
+                );
+              })}
+              {/* <li>
                 <Link to="/shop" title="" className="parent-category-title">
                   Shop
                 </Link>
@@ -1083,7 +1101,7 @@ export default function Navbar({
                 <a href="#" title="" className="parent-category-title">
                   Modular Furniture
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

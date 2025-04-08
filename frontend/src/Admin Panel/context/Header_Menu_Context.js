@@ -7,7 +7,7 @@ export const useHeaderContext = () => {
   return useContext(headerMenuContext);
 };
 
-export const HeaderProvider = ({ children }) => {
+export const HeaderMenuProvider = ({ children }) => {
   const [mainCategory, setMainCategory] = useState([]);
   const [headerMenuData, setHeaderMenuData] = useState({
     main_categories: [],
