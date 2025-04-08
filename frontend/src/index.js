@@ -13,7 +13,10 @@ import { ProductVariantProvider } from "./Admin Panel/context/Product_Variant_Co
 import { HeaderSectionProvider } from "./Admin Panel/context/Header_Section_Context";
 import { FooterSectionProvider } from "./Admin Panel/context/Footer_Section_Context";
 import { PageProvider } from "./Admin Panel/context/Store_Setting_Page";
-import { HeaderProvider } from "./Admin Panel/context/Header_Menu_Context";
+import {
+  HeaderMenuProvider,
+  HeaderProvider,
+} from "./Admin Panel/context/Header_Menu_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -39,9 +42,9 @@ root.render(
                 <HeaderSectionProvider>
                   <FooterSectionProvider>
                     <PageProvider>
-                      <HeaderProvider>
+                      <HeaderMenuProvider>
                         <Admin_Panel_App />
-                      </HeaderProvider>
+                      </HeaderMenuProvider>
                     </PageProvider>
                   </FooterSectionProvider>
                 </HeaderSectionProvider>
@@ -54,7 +57,9 @@ root.render(
       <GlobalProvider>
         <HeaderSectionProvider>
           <FooterSectionProvider>
-            <Website_App />
+            <HeaderMenuProvider>
+              <Website_App />
+            </HeaderMenuProvider>
           </FooterSectionProvider>
         </HeaderSectionProvider>
       </GlobalProvider>

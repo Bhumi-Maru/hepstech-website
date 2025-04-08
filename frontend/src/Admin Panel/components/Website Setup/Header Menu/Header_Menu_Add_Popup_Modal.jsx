@@ -10,9 +10,9 @@ export default function Header_Menu_Add_Popup_Modal({
   editLinkIndex,
 }) {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
-  const { footerFormData, addLinkToColumn, updateLinkInColumn, getLinkType } =
-    useFooterSection();
+  const { footerFormData, getLinkType } = useFooterSection();
   const { data } = usePageContext();
+  console.log("DDDDDD", data);
   const { addPageOrLink } = useHeaderContext(); // ✅ access context
   const [activeTab, setActiveTab] = useState("addPages");
   const [linkData, setLinkData] = useState({
@@ -169,11 +169,15 @@ export default function Header_Menu_Add_Popup_Modal({
                           required
                         >
                           <option value="">Select a page</option>
-                          {data.map((page) => (
-                            <option key={page._id} value={page._id}>
-                              {page.pageTitle}
-                            </option>
-                          ))}
+                          {data
+                            ?.filter(
+                              (pages) => pages.page_status === "Published"
+                            )
+                            .map((page) => (
+                              <option key={page._id} value={page._id}>
+                                {page.pageTitle}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="flex justify-end space-x-4">

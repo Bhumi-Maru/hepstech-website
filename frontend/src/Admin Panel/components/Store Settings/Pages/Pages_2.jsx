@@ -3,7 +3,7 @@ import { usePageContext } from "../../../context/Store_Setting_Page";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 
 export default function Pages_2() {
-  const { data, setCurrentPage, deletePage, setIsEditingId } = usePageContext();
+  const { data, setCurrentPage, deletePage } = usePageContext();
   const { setIsOpenPopupModal, toggleModal } = useAdminGlobalContext();
   const handleEdit = (page) => {
     console.log("page is", page._id);
