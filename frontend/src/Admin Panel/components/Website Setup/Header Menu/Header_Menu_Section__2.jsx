@@ -156,11 +156,11 @@ export default function Header_Menu_Section__2() {
                   </>
                 )}
               </div>
-              <div className="flex justify-between border-t border-gray-200 pt-5">
+              {/* <div className="flex justify-between border-t border-gray-200 pt-5">
                 <button type="submit" className="btn btn-primary">
                   Save Changes
                 </button>
-              </div>
+              </div> */}
             </div>
           </form>
         </div>
