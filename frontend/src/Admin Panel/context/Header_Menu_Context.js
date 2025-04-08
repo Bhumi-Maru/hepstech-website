@@ -28,14 +28,14 @@ export const HeaderProvider = ({ children }) => {
           pages: headerMenuRes.data.pages,
         });
 
-        console.log("Header menu pages:", headerMenuRes.data.pages);
+        // console.log("Header menu pages:", headerMenuRes.data.pages);
       } catch (error) {
         console.error("Error fetching header menu data:", error);
       }
     };
 
     fetchAllMenuData();
-  }, []);
+  }, [headerMenuData, mainCategory]);
 
   const addPageOrLink = async (newItem) => {
     try {
@@ -51,6 +51,21 @@ export const HeaderProvider = ({ children }) => {
 
       return response.data;
     } catch (err) {
+      throw err;
+    }
+  };
+
+  const deleteMainCategory = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:7000/api/header-menu-section/category/${id}`
+      );
+      setHeaderMenuData((prev) => ({
+        ...prev,
+        main_categories: prev.main_categories.filter((cat) => cat._id !== id),
+      }));
+    } catch (err) {
+      console.error("Error deleting main category:", err);
       throw err;
     }
   };
@@ -78,6 +93,7 @@ export const HeaderProvider = ({ children }) => {
         setHeaderMenuData,
         addPageOrLink,
         deletePageOrLink,
+        deleteMainCategory,
       }}
     >
       {children}
