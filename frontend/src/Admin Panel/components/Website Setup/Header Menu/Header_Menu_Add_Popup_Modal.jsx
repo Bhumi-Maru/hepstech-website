@@ -56,15 +56,20 @@ export default function Header_Menu_Add_Popup_Modal({
 
     if (!linkData.title || !linkData.url) return;
 
+    // For custom links, ensure the URL has a protocol
+    let finalUrl = linkData.url;
+    if (activeTab === "addCustomLink" && !/^https?:\/\//i.test(finalUrl)) {
+      finalUrl = `https://${finalUrl}`;
+    }
+
     const newLink = {
       title: linkData.title,
-      url: linkData.url,
-      type: linkData.type || getLinkType(linkData.url),
+      url: finalUrl,
+      type: activeTab === "addPages" ? "page" : "link",
     };
 
     try {
-      await addPageOrLink(newLink); // ✅ call API to save
-      // Reset form
+      await addPageOrLink(newLink);
       setLinkData({ title: "", url: "", type: "" });
       setIsOpenPopupModal(false);
     } catch (error) {

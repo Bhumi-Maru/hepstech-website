@@ -579,6 +579,19 @@ export default function Navbar({
                   </li>
                 );
               })}
+              {headerMenuData.pages.map((page) => {
+                return (
+                  <li>
+                    <Link
+                      to={page.url}
+                      title=""
+                      className="parent-category-title"
+                    >
+                      {page.title}
+                    </Link>
+                  </li>
+                );
+              })}
               {/* <li>
                 <Link to="/shop" title="" className="parent-category-title">
                   Shop
