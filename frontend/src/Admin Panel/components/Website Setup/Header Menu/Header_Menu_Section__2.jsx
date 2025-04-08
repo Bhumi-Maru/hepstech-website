@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useHeaderContext } from "../../../context/Header_Menu_Context";
-
 export default function Header_Menu_Section__2() {
   const { headerMenuData, deletePageOrLink, deleteMainCategory } =
     useHeaderContext();
-
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -19,7 +17,6 @@ export default function Header_Menu_Section__2() {
     };
     document.body.appendChild(script);
   }, []);
-
   return (
     <div
       id="showmenu"
@@ -98,7 +95,6 @@ export default function Header_Menu_Section__2() {
                         </div>
                       </div>
                     ))}
-
                     {/* Render pages */}
                     {headerMenuData.pages.map((page) => (
                       <div
@@ -158,6 +154,7 @@ export default function Header_Menu_Section__2() {
                   </>
                 )}
               </div>
+              {/* <div className="flex justify-between border-t border-gray-200 pt-5"> <button type="submit" className="btn btn-primary"> Save Changes </button> </div> */}
             </div>
           </form>
         </div>
