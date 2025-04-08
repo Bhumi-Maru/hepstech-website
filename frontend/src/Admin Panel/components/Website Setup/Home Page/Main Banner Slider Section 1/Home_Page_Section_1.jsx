@@ -1,52 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import axios from "axios";
 
 export default function Home_Page_Section_1() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  const [homePage, setHomePage] = useState([]);
+  useEffect(() => {
+    fetchHomePage();
+  });
 
-  // Sample dynamic data for banners
-  const banners = [
-    {
-      id: 1,
-      image: "",
-      mainCategory: 3,
-      subCategory: 3,
-      products: 21,
-      status: "Published",
-    },
-    {
-      id: 2,
-      image: "",
-      mainCategory: 4,
-      subCategory: 2,
-      products: 15,
-      status: "Unpublished",
-    },
-    {
-      id: 3,
-      image: "",
-      mainCategory: 2,
-      subCategory: 5,
-      products: 10,
-      status: "Published",
-    },
-    {
-      id: 4,
-      image: "",
-      mainCategory: 4,
-      subCategory: 2,
-      products: 15,
-      status: "Unpublished",
-    },
-    {
-      id: 5,
-      image: "",
-      mainCategory: 2,
-      subCategory: 5,
-      products: 10,
-      status: "Published",
-    },
-  ];
+  const fetchHomePage = async () => {
+    try {
+      const response = await axios.get("http://localhost:7000/api/homepage");
+      console.log("home page", response.data);
+      setHomePage(response.data);
+    } catch (error) {}
+  };
+
+  
 
   return (
     <>
@@ -92,28 +63,51 @@ export default function Home_Page_Section_1() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                          {banners.map((banner, index) => (
+                          {homePage.map((banner, index) => (
                             <tr key={banner.id}>
                               <td>{index + 1}</td>
                               <td>
                                 <div className="overflow-hidden bg-gray-200 border border-gray-200 rounded-md w-28 aspect-w-16 aspect-h-6">
-                                  <img
-                                    className="object-cover w-full h-full"
-                                    src={banner.image}
-                                    alt=""
-                                    loading="lazy"
-                                  />
+                                  {banner.home_page_image &&
+                                  banner.home_page_image.filePath ? (
+                                    <img
+                                      className="object-cover w-full h-full"
+                                      src={`http://localhost:7000${banner.home_page_image.filePath}`}
+                                      alt={banner.home_page_image.filename}
+                                      loading="lazy"
+                                    />
+                                  ) : (
+                                    <div className="flex items-center justify-center w-full h-full text-sm text-gray-500">
+                                      No Image
+                                    </div>
+                                  )}
                                 </div>
                               </td>
-                              <td>{banner.mainCategory}</td>
-                              <td>{banner.subCategory}</td>
-                              <td>{banner.products}</td>
+                              <td>
+                                {
+                                  banner.home_page_main_category
+                                    .main_category_title
+                                }
+                              </td>
+                              <td>
+                                {
+                                  banner.home_page_sub_category
+                                    .sub_category_title
+                                }
+                              </td>
+                              <td>{banner.home_page_products.productTitle}</td>
                               <td>
                                 <div className="w-36">
-                                  <select name="" id="" className="">
-                                    <option value="">Published</option>
-                                    <option value="">Unpublished</option>
-                                  </select>
+                                  {/* <select
+                                    name="home_page_status"
+                                    id="home_page_status"
+                                    className="home_page_status"
+                                  > */}
+                                  <option value={banner.home_page_status}>
+                                    {banner.home_page_status}
+                                  </option>
+                                  {/* <option value="">Unpublished</option> */}
+                                  {/* </select> */}
                                 </div>
                               </td>
                               <td>
