@@ -26,22 +26,26 @@ const headerMenuSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Validation middleware
+/// Validation middleware
 headerMenuSchema.pre("save", function (next) {
-  this.pages.forEach((page) => {
-    if (page.type === "page") {
-      if (!mongoose.Types.ObjectId.isValid(page.url)) {
-        return next(new Error("Invalid Page ID format for page type"));
+  try {
+    this.pages.forEach((page) => {
+      if (page.type === "page") {
+        if (!mongoose.Types.ObjectId.isValid(page.url)) {
+          throw new Error("Invalid Page ID format for page type");
+        }
+      } else if (page.type === "link") {
+        try {
+          new URL(page.url); // Validate link using Node.js URL class
+        } catch (err) {
+          throw new Error("Invalid URL format for link type");
+        }
       }
-    } else if (page.type === "link") {
-      const urlPattern =
-        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-      if (!urlPattern.test(page.url)) {
-        return next(new Error("Invalid URL format for link type"));
-      }
-    }
-  });
-  next();
+    });
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 const HeaderMenu = mongoose.model("HeaderMenu", headerMenuSchema);
