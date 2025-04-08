@@ -118,6 +118,8 @@ const getHomePageById = async (req, res) => {
   }
 };
 
+////////////////////////////////////////////// LAYOUT ///////////////////////////////////////////////////////
+
 // Create a new layout
 const createLayout = async (req, res) => {
   try {
@@ -145,6 +147,23 @@ const createLayout = async (req, res) => {
   }
 };
 
+//get a layout data
+// Get all layout data
+const getAllLayouts = async (req, res) => {
+  try {
+    const layouts = await Layout.find({});
+    res.status(200).json({
+      message: "Layout data fetched successfully!",
+      layouts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching layout data",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createHomePage,
   updateHomePageById,
@@ -152,4 +171,5 @@ module.exports = {
   getAllHomePages,
   getHomePageById,
   createLayout,
+  getAllLayouts,
 };
