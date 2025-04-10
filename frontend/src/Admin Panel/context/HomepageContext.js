@@ -9,7 +9,7 @@ export const useHomePageContext = () => {
 };
 
 export const HomePageProvider = ({ children }) => {
-  const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
+  const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
   const [homePage, setHomePage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,6 +17,8 @@ export const HomePageProvider = ({ children }) => {
   console.log("current home page", currentBanner);
   const [isEditMode, setIsEditMode] = useState(false);
   console.log("edit mode", isEditMode);
+
+  const [selectedFile, setSelectedFile] = useState(null);
   const [formData, setFormData] = useState({
     home_page_main_category: "",
     home_page_sub_category: "",
@@ -24,8 +26,6 @@ export const HomePageProvider = ({ children }) => {
     home_page_status: "unpublished",
     layoutNumber: 1,
   });
-
-  const [selectedFile, setSelectedFile] = useState(null);
   const [addMainBannerStatus, setAddMainBannerStatus] = useState(true); // default 'published'
 
   useEffect(() => {
@@ -64,7 +64,9 @@ export const HomePageProvider = ({ children }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -90,12 +92,14 @@ export const HomePageProvider = ({ children }) => {
 
       // Call onSuccess with the new/updated banner data
       fetchHomePage();
-      // onSuccess(response.data);
+      //   onSuccess(response.data);
     } catch (error) {
       console.error("Error saving banner:", error);
       // You might want to add error handling here (e.g., show a toast message)
     }
   };
+
+  // Add this function
 
   const handleDelete = async (id) => {
     try {
@@ -122,6 +126,10 @@ export const HomePageProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    fetchHomePage();
+  }, []);
+
   const handleEdit = (banner) => {
     setCurrentBanner(banner);
     console.log(" i am edit", banner._id);
@@ -136,10 +144,6 @@ export const HomePageProvider = ({ children }) => {
     setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
   };
 
-  useEffect(() => {
-    fetchHomePage();
-  }, []);
-
   return (
     <HomePageContext.Provider
       value={{
@@ -153,11 +157,11 @@ export const HomePageProvider = ({ children }) => {
         isEditMode,
         setIsEditMode,
         handleInputChange,
+        handleSubmit,
         formData,
         setFormData,
-        handleSubmit,
-        handleAddNew,
         handleEdit,
+        handleAddNew,
       }}
     >
       {children}

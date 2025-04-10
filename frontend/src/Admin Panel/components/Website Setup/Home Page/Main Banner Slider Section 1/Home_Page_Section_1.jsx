@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
-import axios from "axios";
-import { useHomePageContext } from "../../../../context/HomePage_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
 
 export default function Home_Page_Section_1() {
   const { toggleStates, handleToggle } = useAdminGlobalContext();
-  const { homePage, handleDelete, isEditMode, handleAddNew, handleEdit } =
+  const { homePage, handleDelete, isEditMode, handleEdit, handleAddNew } =
     useHomePageContext();
   console.log("is", isEditMode);
 

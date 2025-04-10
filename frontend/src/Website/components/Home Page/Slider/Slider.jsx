@@ -5,10 +5,11 @@ import { Autoplay, Pagination } from "swiper";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-import { useHomePageContext } from "../../../../Admin Panel/context/HomePage_Context";
+import { useHomePageContext } from "../../../../Admin Panel/context/HomepageContext";
 
 export default function Slider() {
   const { homePage } = useHomePageContext();
+  console.log("hhhhh", homePage);
   return (
     <section className="pt-5">
       <div className="container">
