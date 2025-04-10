@@ -20,20 +20,16 @@ export const HeaderMenuProvider = ({ children }) => {
     const fetchAllMenuData = async () => {
       try {
         const [mainCategoryRes, subCategoryRes, productRes, headerMenuRes] =
-        const [mainCategoryRes, subCategoryRes, productsRes, headerMenuRes] =
           await Promise.all([
             axios.get("http://localhost:7000/api/main-category"),
             axios.get("http://localhost:7000/api/sub-category/getAll"),
             axios.get("http://localhost:7000/api/products"),
             axios.get("http://localhost:7000/api/header-menu-section/getAll"),
           ]);
-        setSubCategory(subCategoryRes.data);
         setMainCategory(mainCategoryRes.data.categories);
+        setSubCategory(subCategoryRes.data);
         setProducts(productRes.data);
 
-        setMainCategory(mainCategoryRes.data.categories);
-        setSubCategory(subCategoryRes.data);
-        setProducts(productsRes.data);
         setHeaderMenuData({
           main_categories: headerMenuRes.data.main_categories,
           pages: headerMenuRes.data.pages,

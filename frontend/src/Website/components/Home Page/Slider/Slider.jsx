@@ -9,11 +9,6 @@ import { useHomePageContext } from "../../../../Admin Panel/context/HomepageCont
 
 export default function Slider() {
   const { homePage } = useHomePageContext();
-  console.log("hhhhh", homePage);
-import { useHomePageContext } from "../../../../Admin Panel/context/Homepage_context";
-
-export default function Slider() {
-  const { homePage } = useHomePageContext();
 
   return (
     <section className="pt-5">

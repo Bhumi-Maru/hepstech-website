@@ -1,7 +1,6 @@
 const HomePage = require("../models/HomePageModel");
 const Layout = require("../models/LayoutOfHomePageModel");
 
-=======
 // ✅ Create Home Page Section
 // ✅ Create Home Page Section with automatic layout number assignment
 const createHomePage = async (req, res) => {

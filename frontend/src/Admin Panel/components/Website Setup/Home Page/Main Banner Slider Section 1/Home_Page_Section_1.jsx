@@ -3,13 +3,6 @@ import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context"
 import { useHomePageContext } from "../../../../context/HomepageContext";
 
 export default function Home_Page_Section_1() {
-  const { toggleStates, handleToggle } = useAdminGlobalContext();
-  const { homePage, handleDelete, isEditMode, handleEdit, handleAddNew } =
-    useHomePageContext();
-  console.log("is", isEditMode);
-import { useHomePageContext } from "../../../../context/Homepage_context";
-
-export default function Home_Page_Section_1() {
   const { toggleStates, handleToggle, toggleModal, setIsOpenPopupModal } =
     useAdminGlobalContext();
   const {
@@ -125,7 +118,6 @@ export default function Home_Page_Section_1() {
                               <td>
                                 <div className="flex items-center -ml-2 space-x-3">
                                   <a
-                                  <button
                                     title="Edit"
                                     className="btn-circle"
                                     onClick={() => handleEdit(banner)}
@@ -147,8 +139,6 @@ export default function Home_Page_Section_1() {
                                   </a>
 
                                   <a
-                                  </button>
-                                  <button
                                     title="Delete"
                                     className="btn-circle"
                                     onClick={() => handleDelete(banner._id)}
@@ -167,7 +157,7 @@ export default function Home_Page_Section_1() {
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                       />
                                     </svg>
-                                  </button>
+                                  </a>
                                 </div>
                               </td>
                             </tr>
