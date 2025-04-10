@@ -1,28 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
-import axios from "axios";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import { useHomePageContext } from "../../../../Admin Panel/context/Homepage_context";
 
 export default function Slider() {
-  const [homePage, setHomePage] = useState([]);
-
-  useEffect(() => {
-    fetchHomePage();
-  }, []); // ✅ Add dependency array to avoid multiple calls
-
-  const fetchHomePage = async () => {
-    try {
-      const response = await axios.get("http://localhost:7000/api/homepage");
-      console.log("home page", response.data);
-      setHomePage(response.data);
-    } catch (error) {
-      console.error("Error fetching homepage data:", error);
-    }
-  };
+  const { homePage } = useHomePageContext();
 
   return (
     <section className="pt-5">

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const AllMediaContext = createContext();
 
@@ -41,6 +42,46 @@ export const AllMediaProvider = ({ children }) => {
         category._id === updatedCategory._id ? updatedCategory : category
       )
     );
+  };
+
+  useEffect(() => {
+    fetchMedia();
+  }, [selectedSortOrder]);
+
+  const fetchMedia = async () => {
+    try {
+      const response = await axios.get("http://localhost:7000/api/files");
+      const mediaData = response.data.files.map((item) => {
+        return {
+          name: item.filename,
+          size: item.fileSize,
+          sizeFormatted: (item.fileSize / 1024 / 1024).toFixed(2) + " MB",
+          mimeType: item.fileType || "unknown",
+          fileUrl: `http://localhost:7000${item.filePath}`,
+          _id: item._id,
+          createdAt: item.createdAt,
+        };
+      });
+
+      const sortedMedia = mediaData.sort((a, b) => {
+        switch (selectedSortOrder) {
+          case "newest":
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          case "oldest":
+            return new Date(a.createdAt) - new Date(b.createdAt);
+          case "smallest":
+            return a.size - b.size;
+          case "largest":
+            return b.size - a.size;
+          default:
+            return 0;
+        }
+      });
+
+      setMediaItems(sortedMedia);
+    } catch (error) {
+      console.error("Failed to fetch media", error);
+    }
   };
 
   // Filter media items based on search term
@@ -105,7 +146,7 @@ export const AllMediaProvider = ({ children }) => {
         setSelectedMediaType,
         selectedSortOrder, // Provide sorting state
         setSelectedSortOrder,
-        // fetchMedia, // fetch all images
+        fetchMedia, // fetch all images
         selectedFile, // this is for selected file (start_select_files_And_Media_Modal)
         setSelectedFile, // this is for selected file (start_select_files_And_Media_Modal)
         selectedMainImage,

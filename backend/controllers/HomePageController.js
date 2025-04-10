@@ -2,39 +2,110 @@ const HomePage = require("../models/HomePageModel");
 const Layout = require("../models/LayoutOfHomePageModel");
 
 // ✅ Create Home Page Section
+// ✅ Create Home Page Section with automatic layout number assignment
 const createHomePage = async (req, res) => {
   try {
+    // If layoutNumber is not provided, find the next available layout number
+    if (!req.body.layoutNumber) {
+      // Find all layouts and sort by layoutNumber in descending order
+      const lastLayout = await Layout.findOne()
+        .sort({ layoutNumber: -1 })
+        .limit(1);
+
+      // Calculate the next layout number
+      const nextLayoutNumber = lastLayout ? lastLayout.layoutNumber + 1 : 1;
+
+      // Check if nextLayoutNumber is within valid range (1-24)
+      if (nextLayoutNumber > 24) {
+        return res.status(400).json({
+          message: "Maximum number of layouts (24) reached",
+        });
+      }
+
+      // Create a new layout with the next available number
+      const newLayout = new Layout({
+        layoutName: `Layout ${nextLayoutNumber}`,
+        layoutTitle: `Layout ${nextLayoutNumber}`,
+        layoutNumber: nextLayoutNumber,
+        layoutStatus: "active",
+      });
+
+      const savedLayout = await newLayout.save();
+      req.body.home_page_layout_number = savedLayout._id;
+    }
+    // If layoutNumber is provided, find the existing layout
+    else {
+      const layout = await Layout.findOne({
+        layoutNumber: req.body.layoutNumber,
+      });
+      if (layout) {
+        req.body.home_page_layout_number = layout._id;
+      } else {
+        return res.status(404).json({
+          message: "Layout with provided number not found",
+        });
+      }
+    }
+
     const newHomePage = new HomePage(req.body);
     const savedHomePage = await newHomePage.save();
+
     res.status(201).json({
       message: "Home Page Created Successfully....!",
-      newHomePage,
+      newHomePage: savedHomePage,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error creating home page", error: err.message });
+    res.status(500).json({
+      message: "Error creating home page",
+      error: err.message,
+    });
   }
 };
 
 // ✏️ Update Home Page by ID
+// ✏️ Update Home Page by ID
 const updateHomePageById = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // If layoutNumber is provided in the request, find the corresponding layout
+    if (req.body.layoutNumber) {
+      const layout = await Layout.findOne({
+        layoutNumber: req.body.layoutNumber,
+      });
+      if (layout) {
+        req.body.home_page_layout_number = layout._id;
+      } else {
+        return res.status(404).json({
+          message: "Layout with provided number not found",
+        });
+      }
+    }
+
     const updatedHomePage = await HomePage.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
-    });
+    }).populate([
+      "home_page_main_category",
+      "home_page_sub_category",
+      "home_page_products",
+      "home_page_image",
+      "home_page_layout_number",
+    ]);
 
     if (!updatedHomePage) {
       return res.status(404).json({ message: "Home page not found" });
     }
 
-    res.status(200).json(updatedHomePage);
+    res.status(200).json({
+      message: "Home Page Updated Successfully!",
+      updatedHomePage,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error updating home page", error: err.message });
+    res.status(500).json({
+      message: "Error updating home page",
+      error: err.message,
+    });
   }
 };
 
@@ -118,6 +189,18 @@ const getHomePageById = async (req, res) => {
   }
 };
 
+const deleteAll = async (req, res) => {
+  try {
+    const homePage = await HomePage.deleteMany({});
+    res.status(200).json({
+      message: "delete All successfully",
+      homePage,
+    });
+  } catch (error) {
+    console.log("deletet all data", error);
+  }
+};
+
 ////////////////////////////////////////////// LAYOUT ///////////////////////////////////////////////////////
 
 // Create a new layout
@@ -172,4 +255,5 @@ module.exports = {
   getHomePageById,
   createLayout,
   getAllLayouts,
+  deleteAll,
 };

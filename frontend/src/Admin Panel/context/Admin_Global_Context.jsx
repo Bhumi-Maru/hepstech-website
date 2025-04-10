@@ -59,7 +59,8 @@ const AdminGlobalProvider = ({ children }) => {
     //upload folder in all-media
     uploadFolder: false,
     // HOME PAGE
-    // addMainBanner: false,
+    addMainBanner: false,
+    editMainBanner: false,
     // categorySlider8Items: false,
     // horizontal_Banner_Small_1_Item_section_3: false,
     // flashSaleSlider: false,
