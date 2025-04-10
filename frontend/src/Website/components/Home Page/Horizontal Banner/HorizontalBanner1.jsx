@@ -15,11 +15,11 @@ export default function HorizontalBanner1() {
       <section class="section-banner">
         <div class="container">
           <div class="overflow-hidden bg-gray-200 border border-gray-200 rounded-lg shadow-sm aspect-w-16 aspect-h-2">
-            {console.log("sssssssssssssss", homePage)}
             {banner ? (
               banner.home_page_image?.filePath ? (
                 <img
-                  className="object-cover w-full h-full"
+                  // className="object-cover w-full h-full"
+                  className="w-full h-full"
                   src={`http://localhost:7000${banner.home_page_image.filePath}`}
                   alt={banner.home_page_image.filename || "Banner"}
                   loading="lazy"
