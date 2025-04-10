@@ -5,6 +5,7 @@ import { useAdminGlobalContext } from "../../context/Admin_Global_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
 import { useHeaderSection } from "../../context/Header_Section_Context";
 import { useFooterSection } from "../../context/Footer_Section_Context";
+import { useHomePageContext } from "../../context/HomepageContext";
 
 export default function Select_Files() {
   const {
@@ -36,6 +37,8 @@ export default function Select_Files() {
     selectedPaymentImage,
     setSelectedPaymentImage,
   } = useFooterSection();
+
+  const { selectedMainBanner1, setSelectedMainBanner1 } = useHomePageContext();
 
   // Fetch media from the API
   useEffect(() => {
@@ -114,6 +117,18 @@ export default function Select_Files() {
 
   //////////////////end header section///////////////////////////
 
+  //////////////////////START HOME PAGE/////////////////////////
+  const handleMainBannerSelect = (file) => {
+    if (isOpenPopupModal.MainBannerSlider_Section1) {
+      setSelectedMainBanner1(file._id);
+      console.log("ddddddddddd", file);
+      console.log("Selected Main Banner ID:", file._id);
+      setPreviewUrl(file.fileUrl);
+    }
+  };
+
+  //////////////////////END HOME PAGE/////////////////////////
+
   //////////////////start footer section //////////////////////////
 
   const handleFooterLogoSelect = (file) => {
@@ -165,6 +180,8 @@ export default function Select_Files() {
       handleFooterLogoSelect(file);
     } else if (popup.Footer_Section_payment_image) {
       handlePaymentImageSelect(file);
+    } else if (popup.MainBannerSlider_Section1) {
+      handleMainBannerSelect(file);
     }
   };
 
@@ -176,6 +193,10 @@ export default function Select_Files() {
   console.log("selected offer image", selectedOfferImage);
   console.log("selected footer logo", selectedFooterLogo);
   console.log("selected payment image", selectedPaymentImage);
+  console.log(
+    "selected homepage main banner slider section 1",
+    selectedMainBanner1
+  );
 
   return (
     <>
@@ -201,7 +222,8 @@ export default function Select_Files() {
               isOpenPopupModal.Header_Section_Favicon_Icon ||
               isOpenPopupModal.Header_Link_section_offer_image ||
               isOpenPopupModal.Footer_Section_footer_logo ||
-              isOpenPopupModal.Footer_Section_payment_image
+              isOpenPopupModal.Footer_Section_payment_image ||
+              isOpenPopupModal.MainBannerSlider_Section1
                 ? item.mimeType &&
                   item.mimeType.startsWith("image/") &&
                   !item.mimeType.includes("gif")
@@ -214,37 +236,6 @@ export default function Select_Files() {
                     type="checkbox"
                     name="selectedFiles"
                     id={`file-${index}`}
-                    // onChange={() => {
-                    //   if (isBannerImageVisible) {
-                    //     handleBannerImageSelect(item); // Select banner image if the banner is visible
-                    //   } else if (
-                    //     isOpenPopupModal.addMainCategoryPopupModal ||
-                    //     isOpenPopupModal.editMainCategoryPopupModal
-                    //   ) {
-                    //     handleMainImageSelect(item); // Select main image for main category actions
-                    //   } else if (
-                    //     isOpenPopupModal.addSubCategoryPopupModal ||
-                    //     isOpenPopupModal.editSubCategoryPopupModal
-                    //   ) {
-                    //     handleSubImageSelect(item); // Select sub image in other cases (e.g., when editing sub-category)
-                    //   } else if (isOpenPopupModal.Header_Section_web_Logo) {
-                    //     handleWebLogoSelect(item); // Select Web Logo
-                    //   } else if (isOpenPopupModal.Header_Section_Admin_Logo) {
-                    //     handleAdminLogoSelect(item);
-                    //   } else if (isOpenPopupModal.Header_Section_Favicon_Icon) {
-                    //     handleFaviconSelect(item);
-                    //   } else if (
-                    //     isOpenPopupModal.Header_Link_section_offer_image
-                    //   ) {
-                    //     handleOfferImageSelect(item);
-                    //   } else if (isOpenPopupModal.Footer_Section_footer_logo) {
-                    //     handleFooterLogoSelect(item);
-                    //   } else if (
-                    //     isOpenPopupModal.Footer_Section_payment_image
-                    //   ) {
-                    //     handlePaymentImageSelect(item);
-                    //   }
-                    // }}
                     onChange={() => handleFileSelect(item)}
                   />
                 </div>

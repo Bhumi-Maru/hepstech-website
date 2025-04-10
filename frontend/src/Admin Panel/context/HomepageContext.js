@@ -18,16 +18,19 @@ export const HomePageProvider = ({ children }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   console.log("edit mode", isEditMode);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [addMainBannerStatus, setAddMainBannerStatus] = useState(true); // default 'published'
+  const [selectedMainBanner1, setSelectedMainBanner1] = useState(null);
+
   const [formData, setFormData] = useState({
     home_page_main_category: "",
     home_page_sub_category: "",
     home_page_products: "",
     home_page_status: "unpublished",
+    home_page_image: null,
     layoutNumber: 1,
   });
-  const [addMainBannerStatus, setAddMainBannerStatus] = useState(true); // default 'published'
 
+  // Update the useEffect for edit mode
   useEffect(() => {
     if (isOpenPopupModal.addMainBanner) {
       if (isEditMode && currentBanner) {
@@ -38,11 +41,14 @@ export const HomePageProvider = ({ children }) => {
             currentBanner.home_page_sub_category?._id || "",
           home_page_products: currentBanner.home_page_products?._id || "",
           home_page_status: currentBanner?.home_page_status || "unpublished",
-
           layoutNumber:
             currentBanner.home_page_layout_number?.layoutNumber || 1,
+          // home_page_image: currentBanner.home_page_image?._id || "", // Make sure to set this
         });
-        setSelectedFile(currentBanner.home_page_image || null);
+        // Set the selected image if it exists
+        if (currentBanner.home_page_image) {
+          setSelectedMainBanner1(currentBanner.home_page_image._id);
+        }
         setAddMainBannerStatus(
           currentBanner.home_page_status === "unpublished"
         );
@@ -52,10 +58,11 @@ export const HomePageProvider = ({ children }) => {
           home_page_main_category: "",
           home_page_sub_category: "",
           home_page_products: "",
+          home_page_image: "",
           home_page_status: "unpublished",
           layoutNumber: 1,
         });
-        setSelectedFile(null);
+        setSelectedMainBanner1(null);
       }
     }
   }, [currentBanner, isOpenPopupModal.addMainBanner, isEditMode]);
@@ -64,17 +71,16 @@ export const HomePageProvider = ({ children }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const payload = {
         ...formData,
+        home_page_image: selectedMainBanner1, // This should be the _id
       };
-      let response;
 
+      let response;
       if (isEditMode) {
         response = await axios.put(
           `http://localhost:7000/api/homepage/${currentBanner._id}`,
@@ -87,15 +93,10 @@ export const HomePageProvider = ({ children }) => {
         );
       }
 
-      // Close the modal
       setIsOpenPopupModal(false);
-
-      // Call onSuccess with the new/updated banner data
       fetchHomePage();
-      //   onSuccess(response.data);
     } catch (error) {
       console.error("Error saving banner:", error);
-      // You might want to add error handling here (e.g., show a toast message)
     }
   };
 
@@ -162,6 +163,8 @@ export const HomePageProvider = ({ children }) => {
         setFormData,
         handleEdit,
         handleAddNew,
+        selectedMainBanner1,
+        setSelectedMainBanner1,
       }}
     >
       {children}

@@ -8,12 +8,14 @@ const {
   createLayout,
   getAllLayouts,
   deleteAll,
+  deleteAllLayout,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
 ////////////////////////////////////////////// START LAYOUT ///////////////////////////////////////////////////
 HomePageRouter.post("/layout/create", createLayout);
 HomePageRouter.get("/layout", getAllLayouts);
+HomePageRouter.delete("/layout", deleteAllLayout);
 
 ////////////////////////////////////////////// END LAYOUT ////////////////////////////////////////////////////
 

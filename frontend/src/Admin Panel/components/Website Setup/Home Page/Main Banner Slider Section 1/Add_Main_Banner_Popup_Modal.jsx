@@ -3,15 +3,30 @@ import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context"
 // import useSelect2AndList from "../../../../hooks/useSelect2AndList";
 import { useHeaderContext } from "../../../../context/Header_Menu_Context";
 import { useHomePageContext } from "../../../../context/HomepageContext";
+import { getFilePreview } from "../../../../utils/fileUploadUtils";
+import { useAllMediaContext } from "../../../../context/All_Media_Context";
 
 export default function Add_Main_Banner_Popup_Modal() {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
   const { mainCategory, subCategory, products } = useHeaderContext();
 
-  const { isEditMode, handleInputChange, handleSubmit, formData, setFormData } =
-    useHomePageContext();
+  const {
+    isEditMode,
+    handleInputChange,
+    handleSubmit,
+    formData,
+    setFormData,
+    selectedMainBanner1,
+    setSelectedMainBanner1,
+  } = useHomePageContext();
 
-  console.log("current banner", isEditMode);
+  const { mediaItems } = useAllMediaContext();
+
+  const mainBannerSlider1 = mediaItems.find(
+    (item) => item._id === selectedMainBanner1
+  );
+
+  console.log("add banner file", mainBannerSlider1);
 
   // useSelect2AndList();
   return (
@@ -75,7 +90,6 @@ export default function Add_Main_Banner_Popup_Modal() {
                     />
                   </div>
                   {/* MAIN CATEGORY */}
-                  {/* MAIN CATEGORY */}
                   <div>
                     <label htmlFor="selectMainCategory">
                       Select Main Category
@@ -100,7 +114,6 @@ export default function Add_Main_Banner_Popup_Modal() {
                       </select>
                     </div>
                   </div>
-
                   {/* SUB CATEGORY */}
                   <div>
                     <label htmlFor="selectSubCategory">
@@ -123,9 +136,7 @@ export default function Add_Main_Banner_Popup_Modal() {
                       </select>
                     </div>
                   </div>
-
                   {/* PRODUCTS */}
-
                   <div>
                     {" "}
                     <label>Product</label>{" "}
@@ -145,16 +156,8 @@ export default function Add_Main_Banner_Popup_Modal() {
                       ))}{" "}
                     </select>{" "}
                   </div>
-
                   {/* select image */}
-                  <div>
-                    <label for="">
-                      Select Image
-                      <span>
-                        (Image ratio should be 16:6. PNG, JPG, or JPEG up to
-                        1MB)
-                      </span>
-                    </label>
+                  <div className="flex" style={{ gap: "10px" }}>
                     <div className="mt-1.5">
                       <button
                         type="button"
@@ -164,10 +167,10 @@ export default function Add_Main_Banner_Popup_Modal() {
                         onClick={() => {
                           setIsOpenPopupModal((prev) => ({
                             ...prev,
-                            startSelectFilesAndMedia: true, // Open Select Files Modal
+                            startSelectFilesAndMedia: true,
                           }));
+                          setSelectedMainBanner1(null); // Ensure previous selection is cleared
 
-                          // Ensure Select Files modal is above Add Main Banner
                           setTimeout(() => {
                             document.getElementById(
                               "selectFilesModal"
@@ -192,8 +195,99 @@ export default function Add_Main_Banner_Popup_Modal() {
                         Select Files
                       </button>
                     </div>
-                  </div>
 
+                    <div className="mt-1">
+                      {/* Show Preview for Banner Image */}
+                      {getFilePreview(mainBannerSlider1)}
+                    </div>
+                  </div>
+                  {/* // Update the image preview section */}
+                  {/* <div>
+                    <label htmlFor="">
+                      Select Image
+                      <span>
+                        {" "}
+                        (Image ratio should be 16:6. PNG, JPG, or JPEG up to
+                        1MB){" "}
+                      </span>
+                    </label>
+                    <div className="mt-1.5">
+                      <button
+                        type="button"
+                        className="btn btn-white"
+                        onClick={() => {
+                          setIsOpenPopupModal((prev) => ({
+                            ...prev,
+                            startSelectFilesAndMedia: true,
+                            MainBannerSlider_Section1: true,
+                          }));
+                          setTimeout(() => {
+                            document.getElementById(
+                              "selectFilesModal"
+                            ).style.zIndex = "1060";
+                          }, 100);
+                        }}
+                      >
+                        <svg
+                          className="w-5 h-5 mr-2 -ml-1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          ></path>
+                        </svg>
+                        {selectedMainBanner1 ? "Change Image" : "Select Image"}
+                      </button>
+                    </div>
+
+                    Image Preview Section
+                    {selectedMainBanner1 && mainBannerSlider1 && (
+                      <div className="mt-4">
+                        <div className="relative inline-block">
+                          <img
+                            src={mainBannerSlider1.fileUrl}
+                            alt="Selected banner"
+                            className="object-cover w-full h-32 rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            className="absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full"
+                            onClick={() => {
+                              setSelectedMainBanner1(null);
+                              setFormData((prev) => ({
+                                ...prev,
+                                home_page_image: "",
+                              }));
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                        <p className="mt-1 text-sm text-gray-500">
+                          {mainBannerSlider1.name} ({mainBannerSlider1.size})
+                        </p>
+                      </div>
+                    )}
+                  </div> */}
                   {/* Status Toggle */}
                   <div>
                     <label htmlFor="toggleSwitch">Status</label>
@@ -218,20 +312,22 @@ export default function Add_Main_Banner_Popup_Modal() {
                   </div>
                 </div>
 
-                <div className="modal-footer">
-                  <div className="flex items-center justify-end space-x-4">
-                    <button
-                      type="button"
-                      className="btn btn-light"
-                      data-dismiss="modal"
-                      aria-label="Close Modal"
-                      onClick={() => setIsOpenPopupModal(false)}
-                    >
-                      Close
-                    </button>
-                    <button type="submit" className="btn btn-primary">
-                      {isEditMode ? "Update Banner" : "Add Banner"}
-                    </button>
+                <div className="space-y-4">
+                  <div className="modal-footer">
+                    <div className="flex items-center justify-end space-x-4">
+                      <button
+                        type="button"
+                        className="btn btn-light"
+                        data-dismiss="modal"
+                        aria-label="Close Modal"
+                        onClick={() => setIsOpenPopupModal(false)}
+                      >
+                        Close
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        {isEditMode ? "Update Banner" : "Add Banner"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </form>

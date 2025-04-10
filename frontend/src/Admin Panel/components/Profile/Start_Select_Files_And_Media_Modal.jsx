@@ -7,6 +7,7 @@ import { useAllMediaContext } from "../../context/All_Media_Context";
 import { useSubCategoryContext } from "../../context/SubCategory_Context";
 import { useHeaderSection } from "../../context/Header_Section_Context";
 import { useFooterSection } from "../../context/Footer_Section_Context";
+import { useHomePageContext } from "../../context/HomepageContext";
 
 export default function Start_Select_Files_And_Media_Modal({
   isBannerImageVisible,
@@ -40,6 +41,7 @@ export default function Start_Select_Files_And_Media_Modal({
   } = useHeaderSection();
 
   const { selectedFooterLogo, setSelectedFooterLogo } = useFooterSection();
+  const { selectedMainBanner1, setSelectedMainBanner1 } = useHomePageContext();
 
   useEffect(() => {
     // Reset the preview URL when the modal is opened
@@ -237,6 +239,20 @@ export default function Start_Select_Files_And_Media_Modal({
                         ) {
                           setSelectedPaymentImage(selectedPaymentImage);
                           setIsOpenPopupModal(false);
+                        }
+                        // Homepage section
+                        if (
+                          isOpenPopupModal.MainBannerSlider_Section1 &&
+                          selectedMainBanner1
+                        ) {
+                          setSelectedMainBanner1(selectedMainBanner1);
+                        }
+
+                        if (
+                          isOpenPopupModal.MainBannerSlider_Section1 &&
+                          selectedMainBanner1
+                        ) {
+                          setSelectedMainBanner1(selectedMainBanner1);
                         }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,

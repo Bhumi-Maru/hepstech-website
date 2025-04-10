@@ -96,8 +96,15 @@ const AdminGlobalProvider = ({ children }) => {
     Header_Link_section_offer_image: false,
 
     ///////////////END HEADER SECTION ////////////////
+
+    ////////////////START HOME PAGE//////////////////
+    MainBannerSlider_Section1: false,
+    ////////////////END HOME PAGE//////////////////
+
+    ////////////////FOOTER SECTION///////////////////
     Footer_Section_footer_logo: false,
     Footer_Section_payment_image: false,
+    ////////////////FOOTER SECTION///////////////////
 
     ////////////////////HEADER MENU SECTION////////////////
     Header_Menu_Add_Category_Modal: false,

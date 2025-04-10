@@ -1,3 +1,4 @@
+const File = require("../models/fileModel");
 const HomePage = require("../models/HomePageModel");
 const Layout = require("../models/LayoutOfHomePageModel");
 
@@ -47,6 +48,16 @@ const createHomePage = async (req, res) => {
       }
     }
 
+    // ✅ Validate home_page_image if provided
+    if (req.body.home_page_image) {
+      const bannerImage = await File.findById(req.body.home_page_image);
+      if (!bannerImage) {
+        return res
+          .status(404)
+          .json({ message: "Main banner image not found." });
+      }
+    }
+
     const newHomePage = new HomePage(req.body);
     const savedHomePage = await newHomePage.save();
 
@@ -79,6 +90,16 @@ const updateHomePageById = async (req, res) => {
         return res.status(404).json({
           message: "Layout with provided number not found",
         });
+      }
+    }
+
+    // ✅ Validate new image if being updated
+    if (req.body.home_page_image) {
+      const bannerImage = await File.findById(req.body.home_page_image);
+      if (!bannerImage) {
+        return res
+          .status(404)
+          .json({ message: "Main banner image not found." });
       }
     }
 
@@ -247,6 +268,19 @@ const getAllLayouts = async (req, res) => {
   }
 };
 
+// delete all layouts
+const deleteAllLayout = async (req, res) => {
+  try {
+    const layout = await Layout.deleteMany({});
+    res.status(200).json({
+      message: "delete All successfully",
+      layout,
+    });
+  } catch (error) {
+    console.log("deletet all data", error);
+  }
+};
+
 module.exports = {
   createHomePage,
   updateHomePageById,
@@ -256,4 +290,5 @@ module.exports = {
   createLayout,
   getAllLayouts,
   deleteAll,
+  deleteAllLayout,
 };
