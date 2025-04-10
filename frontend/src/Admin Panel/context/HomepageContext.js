@@ -22,12 +22,17 @@ export const HomePageProvider = ({ children }) => {
   const [selectedMainBanner1, setSelectedMainBanner1] = useState(null);
 
   const [formData, setFormData] = useState({
+    // home_page_layout_number: "",
     home_page_main_category: "",
     home_page_sub_category: "",
     home_page_products: "",
     home_page_status: "unpublished",
     home_page_image: null,
-    layoutNumber: 1,
+    home_page_section_title: "",
+    home_page_layout_type: "",
+    home_page_flash_sale: "",
+    home_page_testimonial: "",
+    // layoutNumber: 1,
   });
 
   // Update the useEffect for edit mode
@@ -41,8 +46,8 @@ export const HomePageProvider = ({ children }) => {
             currentBanner.home_page_sub_category?._id || "",
           home_page_products: currentBanner.home_page_products?._id || "",
           home_page_status: currentBanner?.home_page_status || "unpublished",
-          layoutNumber:
-            currentBanner.home_page_layout_number?.layoutNumber || 1,
+          // layoutNumber:
+          //   currentBanner.home_page_layout_number?.layoutNumber || 1,
           // home_page_image: currentBanner.home_page_image?._id || "", // Make sure to set this
         });
         // Set the selected image if it exists
@@ -60,7 +65,7 @@ export const HomePageProvider = ({ children }) => {
           home_page_products: "",
           home_page_image: "",
           home_page_status: "unpublished",
-          layoutNumber: 1,
+          // layoutNumber: 1,
         });
         setSelectedMainBanner1(null);
       }
@@ -139,11 +144,11 @@ export const HomePageProvider = ({ children }) => {
     setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
   };
 
-  const handleAddNew = () => {
-    setCurrentBanner(null);
-    setIsEditMode(false);
-    setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
-  };
+  // const handleAddNew = () => {
+  //   setCurrentBanner(null);
+  //   setIsEditMode(false);
+  //   setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
+  // };
 
   return (
     <HomePageContext.Provider
@@ -162,7 +167,7 @@ export const HomePageProvider = ({ children }) => {
         formData,
         setFormData,
         handleEdit,
-        handleAddNew,
+        // handleAddNew,
         selectedMainBanner1,
         setSelectedMainBanner1,
       }}
