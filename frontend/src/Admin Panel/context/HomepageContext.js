@@ -46,8 +46,8 @@ export const HomePageProvider = ({ children }) => {
             currentBanner.home_page_sub_category?._id || "",
           home_page_products: currentBanner.home_page_products?._id || "",
           home_page_status: currentBanner?.home_page_status || "unpublished",
-          // layoutNumber:
-          //   currentBanner.home_page_layout_number?.layoutNumber || 1,
+          layoutNumber:
+            currentBanner.home_page_layout_number?.layoutNumber || 1,
           // home_page_image: currentBanner.home_page_image?._id || "", // Make sure to set this
         });
         // Set the selected image if it exists
@@ -65,7 +65,7 @@ export const HomePageProvider = ({ children }) => {
           home_page_products: "",
           home_page_image: "",
           home_page_status: "unpublished",
-          // layoutNumber: 1,
+          layoutNumber: 1,
         });
         setSelectedMainBanner1(null);
       }

@@ -10,7 +10,7 @@ export default function Navbar({
 }) {
   //////////////////START HEADER MENU ///////////////////
   const { headerMenuData } = useHeaderContext();
-  console.log("headerMenuData headerMenuData", headerMenuData);
+  // console.log("headerMenuData headerMenuData", headerMenuData);
   //////////////////END HEADER MENU ///////////////////
   // const { formData } = useHeaderSection();
   const [formData, setFormData] = useState({});

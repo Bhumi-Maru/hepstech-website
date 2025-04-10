@@ -2,7 +2,7 @@ import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import { useHomePageContext } from "../../../../context/HomepageContext";
 
-export default function Home_Page_Section_1() {
+export default function Home_Page_Section_3() {
   const { toggleStates, handleToggle, setIsOpenPopupModal } =
     useAdminGlobalContext();
   const {
@@ -26,14 +26,17 @@ export default function Home_Page_Section_1() {
     setIsEditMode(false);
     setFormData((prev) => ({
       ...prev,
-      layoutNumber: 1, // Set layoutNumber to 1 for section 1
+      layoutNumber: 1, // ✅ This should be 3 for section 3
       home_page_main_category: "",
       home_page_sub_category: "",
       home_page_products: "",
       home_page_status: "unpublished",
       home_page_image: null,
     }));
-    setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      addMainBanner: true,
+    }));
   };
 
   return (
