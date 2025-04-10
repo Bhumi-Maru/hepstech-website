@@ -11,50 +11,51 @@ export default function Images_All_Media({ deleteSelectedFiles }) {
     selectedFiles,
     setSelectedFiles,
     selectedSortOrder,
+    fetchMedia,
   } = useAllMediaContext();
   const { isDropdownOpen, toggleDropdown } = useAdminGlobalContext();
 
   // Fetch media from the API
-  useEffect(() => {
-    const fetchMedia = async () => {
-      try {
-        const response = await axios.get("http://localhost:7000/api/files");
+  // useEffect(() => {
+  //   const fetchMedia = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:7000/api/files");
 
-        const mediaData = response.data.files.map((item) => {
-          return {
-            name: item.filename,
-            size: item.fileSize, // Keep the size in bytes for sorting
-            sizeFormatted: (item.fileSize / 1024 / 1024).toFixed(2) + " MB", // Formatted size for display
-            mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
-            fileUrl: `http://localhost:7000${item.filePath}`,
-            _id: item._id, // Ensure _id is included
-            createdAt: item.createdAt, // Ensure createdAt is included for sorting
-          };
-        });
+  //       const mediaData = response.data.files.map((item) => {
+  //         return {
+  //           name: item.filename,
+  //           size: item.fileSize, // Keep the size in bytes for sorting
+  //           sizeFormatted: (item.fileSize / 1024 / 1024).toFixed(2) + " MB", // Formatted size for display
+  //           mimeType: item.fileType || "unknown", // Default to 'unknown' if mimeType is undefined
+  //           fileUrl: `http://localhost:7000${item.filePath}`,
+  //           _id: item._id, // Ensure _id is included
+  //           createdAt: item.createdAt, // Ensure createdAt is included for sorting
+  //         };
+  //       });
 
-        // Apply sorting based on selectedSortOrder
-        const sortedMedia = mediaData.sort((a, b) => {
-          switch (selectedSortOrder) {
-            case "newest":
-              return new Date(b.createdAt) - new Date(a.createdAt); // Sort by newest
-            case "oldest":
-              return new Date(a.createdAt) - new Date(b.createdAt); // Sort by oldest
-            case "smallest":
-              return a.size - b.size; // Sort by smallest (in bytes)
-            case "largest":
-              return b.size - a.size; // Sort by largest (in bytes)
-            default:
-              return 0; // Default no sorting
-          }
-        });
+  //       // Apply sorting based on selectedSortOrder
+  //       const sortedMedia = mediaData.sort((a, b) => {
+  //         switch (selectedSortOrder) {
+  //           case "newest":
+  //             return new Date(b.createdAt) - new Date(a.createdAt); // Sort by newest
+  //           case "oldest":
+  //             return new Date(a.createdAt) - new Date(b.createdAt); // Sort by oldest
+  //           case "smallest":
+  //             return a.size - b.size; // Sort by smallest (in bytes)
+  //           case "largest":
+  //             return b.size - a.size; // Sort by largest (in bytes)
+  //           default:
+  //             return 0; // Default no sorting
+  //         }
+  //       });
 
-        setMediaItems(sortedMedia); // Set sorted media
-      } catch (error) {
-        console.error("Failed to fetch media", error);
-      }
-    };
-    fetchMedia();
-  }, [selectedSortOrder, mediaItems]); // Dependency array updated to trigger sorting when selectedSortOrder changes
+  //       setMediaItems(sortedMedia); // Set sorted media
+  //     } catch (error) {
+  //       console.error("Failed to fetch media", error);
+  //     }
+  //   };
+  //   fetchMedia();
+  // }, [selectedSortOrder]); // Dependency array updated to trigger sorting when selectedSortOrder changes
 
   // Handle checkbox click to select files
   const handleCheckboxChange = (e, _id) => {

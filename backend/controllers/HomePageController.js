@@ -1,6 +1,8 @@
 const HomePage = require("../models/HomePageModel");
 const Layout = require("../models/LayoutOfHomePageModel");
 
+=======
+// ✅ Create Home Page Section
 // ✅ Create Home Page Section with automatic layout number assignment
 const createHomePage = async (req, res) => {
   try {
@@ -188,6 +190,18 @@ const getHomePageById = async (req, res) => {
   }
 };
 
+const deleteAll = async (req, res) => {
+  try {
+    const homePage = await HomePage.deleteMany({});
+    res.status(200).json({
+      message: "delete All successfully",
+      homePage,
+    });
+  } catch (error) {
+    console.log("deletet all data", error);
+  }
+};
+
 ////////////////////////////////////////////// LAYOUT ///////////////////////////////////////////////////////
 
 // Create a new layout
@@ -242,4 +256,5 @@ module.exports = {
   getHomePageById,
   createLayout,
   getAllLayouts,
+  deleteAll,
 };

@@ -7,6 +7,7 @@ const {
   getHomePageById,
   createLayout,
   getAllLayouts,
+  deleteAll,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
@@ -21,5 +22,6 @@ HomePageRouter.get("/", getAllHomePages);
 HomePageRouter.get("/:id", getHomePageById);
 HomePageRouter.put("/:id", updateHomePageById);
 HomePageRouter.delete("/:id", deleteHomePageById);
+HomePageRouter.delete("/", deleteAll);
 
 module.exports = HomePageRouter;

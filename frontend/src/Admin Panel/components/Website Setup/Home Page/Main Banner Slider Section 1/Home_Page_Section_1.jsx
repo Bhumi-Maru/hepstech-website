@@ -7,31 +7,58 @@ export default function Home_Page_Section_1() {
   const { homePage, handleDelete, isEditMode, handleEdit, handleAddNew } =
     useHomePageContext();
   console.log("is", isEditMode);
+import { useHomePageContext } from "../../../../context/Homepage_context";
+
+export default function Home_Page_Section_1() {
+  const { toggleStates, handleToggle, toggleModal, setIsOpenPopupModal } =
+    useAdminGlobalContext();
+  const {
+    homePage,
+    fetchHomePage,
+    handleDelete,
+    setCurrentBanner,
+    isEditMode,
+    setIsEditMode,
+  } = useHomePageContext();
+  console.log("is", isEditMode);
+
+  const handleEdit = (banner) => {
+    setCurrentBanner(banner);
+    console.log(" i am edit", banner._id);
+
+    setIsEditMode(true);
+    setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
+  };
+
+  const handleAddNew = () => {
+    setCurrentBanner(null);
+    setIsEditMode(false);
+    setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
+  };
 
   return (
     <>
-      {/* <!-- MAIN BANNER SLIDER --> */}
       <div className="px-4 py-5 bg-white rounded-lg shadow sm:p-6">
         <div className="flex items-center justify-between space-x-8">
           <label
-            for="mainBannerStatus"
+            htmlFor="mainBannerStatus"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
             Main Banner Slider
           </label>
-
           <div className="flex-shrink-0 ml-4 toggle-switch">
             <input
               type="checkbox"
               id="mainBannerStatus"
               role="checkbox"
-              tabindex="0"
+              tabIndex="0"
               checked={toggleStates.mainBannerSlider}
               onChange={() => handleToggle("mainBannerSlider")}
             />
-            <label for="mainBannerStatus"></label>
+            <label htmlFor="mainBannerStatus"></label>
           </div>
         </div>
+
         {toggleStates.mainBannerSlider && (
           <>
             <div className="mt-4" id="mainBannerContent">
@@ -53,12 +80,11 @@ export default function Home_Page_Section_1() {
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                           {homePage.map((banner, index) => (
-                            <tr key={banner.id}>
+                            <tr key={banner._id}>
                               <td>{index + 1}</td>
                               <td>
                                 <div className="overflow-hidden bg-gray-200 border border-gray-200 rounded-md w-28 aspect-w-16 aspect-h-6">
-                                  {banner.home_page_image &&
-                                  banner.home_page_image.filePath ? (
+                                  {banner.home_page_image?.filePath ? (
                                     <img
                                       className="object-cover w-full h-full"
                                       src={`http://localhost:7000${banner.home_page_image.filePath}`}
@@ -73,18 +99,16 @@ export default function Home_Page_Section_1() {
                                 </div>
                               </td>
                               <td>
-                                {
-                                  banner.home_page_main_category
-                                    .main_category_title
-                                }
+                                {banner.home_page_main_category
+                                  ?.main_category_title || "-"}
                               </td>
                               <td>
-                                {
-                                  banner.home_page_sub_category
-                                    .sub_category_title
-                                }
+                                {banner.home_page_sub_category
+                                  ?.sub_category_title || "-"}
                               </td>
-                              <td>{banner.home_page_products.productTitle}</td>
+                              <td>
+                                {banner.home_page_products?.productTitle || "-"}
+                              </td>
                               <td>
                                 <div className="w-36">
                                   <span
@@ -101,6 +125,7 @@ export default function Home_Page_Section_1() {
                               <td>
                                 <div className="flex items-center -ml-2 space-x-3">
                                   <a
+                                  <button
                                     title="Edit"
                                     className="btn-circle"
                                     onClick={() => handleEdit(banner)}
@@ -113,15 +138,17 @@ export default function Home_Page_Section_1() {
                                       stroke="currentColor"
                                     >
                                       <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                      ></path>
+                                      />
                                     </svg>
                                   </a>
 
                                   <a
+                                  </button>
+                                  <button
                                     title="Delete"
                                     className="btn-circle"
                                     onClick={() => handleDelete(banner._id)}
@@ -134,13 +161,13 @@ export default function Home_Page_Section_1() {
                                       stroke="currentColor"
                                     >
                                       <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                      ></path>
+                                      />
                                     </svg>
-                                  </a>
+                                  </button>
                                 </div>
                               </td>
                             </tr>
@@ -151,7 +178,6 @@ export default function Home_Page_Section_1() {
                   </div>
                 </div>
               </div>
-
               <div className="mt-5 sm:flex sm:items-center sm:justify-between sm:space-x-4">
                 <button
                   type="button"
@@ -168,24 +194,14 @@ export default function Home_Page_Section_1() {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                     />
                   </svg>
                   Add Banner
                 </button>
-
-                <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
-                  <button type="button" className="btn btn-dark-light">
-                    Discard
-                  </button>
-
-                  <button type="button" className="btn btn-primary">
-                    Save
-                  </button>
-                </div>
               </div>
             </div>
           </>

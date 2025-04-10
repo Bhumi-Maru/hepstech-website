@@ -18,6 +18,7 @@ export default function UploadImage() {
     setFileType,
     selectedTab,
     setSelectedTab,
+    fetchMedia,
   } = useAllMediaContext();
 
   return (
@@ -144,15 +145,16 @@ export default function UploadImage() {
             </button>
             <button
               className="btn btn-primary"
-              onClick={() =>
-                handleFileUpload(
+              onClick={async () => {
+                await handleFileUpload(
                   selectedFile,
                   setMediaItems,
                   setIsOpenPopupModal,
                   setPreviewUrl,
                   setSelectedTab
-                )
-              }
+                );
+                fetchMedia(); // ✅ refresh gallery
+              }}
               disabled={!selectedFile}
             >
               Upload
