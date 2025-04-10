@@ -1,10 +1,19 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import useSelect2AndList from "../../../../hooks/useSelect2AndList";
+import { useHeaderContext } from "../../../../context/Header_Menu_Context";
+import { useHomePageContext } from "../../../../context/HomePage_Context";
 
 export default function Add_Main_Banner_Popup_Modal() {
   const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
-  useSelect2AndList();
+  const { mainCategory, subCategory, products } = useHeaderContext();
+
+  const { isEditMode, handleInputChange, formData, setFormData, handleSubmit } =
+    useHomePageContext();
+
+  console.log("current banner", isEditMode);
+
+  // useSelect2AndList();
   return (
     <>
       {/* START ADD  MAIN BANNER MODAL SECTION 1  */}
@@ -17,7 +26,10 @@ export default function Add_Main_Banner_Popup_Modal() {
       >
         <div className="modal-overlay" tabindex="-1"></div>
         <div className="modal-dialog modal-dialog-centered sm:max-w-xl">
-          <div className="modal-content" role="document">
+          <div
+            className="modal-content max-w-full overflow-x-hidden"
+            role="document"
+          >
             <div className="modal-header">
               <h5 className="mr-12 text-lg font-medium truncate">
                 Add Main Banner
@@ -51,20 +63,39 @@ export default function Add_Main_Banner_Popup_Modal() {
             </div>
 
             <div className="modal-body">
-              <form action="">
+              <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
+                  {/* LAYOUT NUMBER */}
+                  <div className="hidden">
+                    <label>Layout Number</label>
+                    <input
+                      type="text"
+                      name="layoutNumber"
+                      value={formData.layoutNumber}
+                    />
+                  </div>
+                  {/* MAIN CATEGORY */}
                   <div>
                     <label for=""> Select Main Category </label>
                     <div className="relative mt-1">
                       <select
                         className=""
                         id="selectMainCategory"
-                        name="selectMainCategory"
+                        name="home_page_main_category"
+                        value={formData.home_page_main_category}
+                        onChange={handleInputChange}
                       >
                         <option value="">Select Main Category</option>
-                        <option value="">Main Category 1</option>
-                        <option value="">Main Category 2</option>
-                        <option value="">Main Category 3</option>
+                        {mainCategory.map((mainCategory) => {
+                          return (
+                            <option
+                              key={mainCategory._id}
+                              value={mainCategory._id}
+                            >
+                              {mainCategory.main_category_title}
+                            </option>
+                          );
+                        })}
                       </select>
 
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -83,18 +114,28 @@ export default function Add_Main_Banner_Popup_Modal() {
                     </div>
                   </div>
 
+                  {/* SUB CATEGORY */}
                   <div>
                     <label for=""> Select Sub Category </label>
                     <div className="relative mt-1">
                       <select
                         className=""
                         id="selectSubCategory"
-                        name="selectSubCategory"
+                        name="home_page_sub_category"
+                        value={formData.home_page_sub_category}
+                        onChange={handleInputChange}
                       >
                         <option value="">Select Sub Category</option>
-                        <option value="">Sub Category 1</option>
-                        <option value="">Sub Category 2</option>
-                        <option value="">Sub Category 3</option>
+                        {subCategory.map((subCategory) => {
+                          return (
+                            <option
+                              key={subCategory._id}
+                              value={subCategory._id}
+                            >
+                              {subCategory.sub_category_title}
+                            </option>
+                          );
+                        })}
                       </select>
 
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -113,13 +154,16 @@ export default function Add_Main_Banner_Popup_Modal() {
                     </div>
                   </div>
 
-                  <div>
+                  {/* PRODUCTS */}
+                  {/* <div>
                     <label for=""> Select Product </label>
                     <div className="relative mt-1">
                       <select
                         className="select2-hidden-accessible"
                         id="selectProduct_Section_1"
-                        name="selectProduct"
+                        name="home_page_products"
+                        value={formData.home_page_products}
+                        onChange={handleInputChange}
                         data-select2-id="select2-data-selectProduct"
                         tabindex="-1"
                         aria-hidden="true"
@@ -127,15 +171,17 @@ export default function Add_Main_Banner_Popup_Modal() {
                         <option value="" data-select2-id="select2-data-6-6ixp">
                           Select Product
                         </option>
-                        <option value="" data-select2-id="select2-data-9-ijly">
-                          Product 1
-                        </option>
-                        <option value="" data-select2-id="select2-data-10-sxb0">
-                          Product 2
-                        </option>
-                        <option value="" data-select2-id="select2-data-11-5c4s">
-                          Product 3
-                        </option>
+                        {products.map((product) => {
+                          return (
+                            <option
+                              key={product._id}
+                              value={product._id}
+                              data-select2-id="select2-data-9-ijly"
+                            >
+                              {product.productTitle}
+                            </option>
+                          );
+                        })}
                       </select>
 
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -152,8 +198,29 @@ export default function Add_Main_Banner_Popup_Modal() {
                         </svg>
                       </div>
                     </div>
+                  </div> */}
+
+                  <div>
+                    {" "}
+                    <label>Product</label>{" "}
+                    <select
+                      name="home_page_products"
+                      value={formData.home_page_products}
+                      onChange={handleInputChange}
+                      className="w-full mt-1"
+                    >
+                      {" "}
+                      <option value="">Select Product</option>{" "}
+                      {products.map((product) => (
+                        <option key={product._id} value={product._id}>
+                          {" "}
+                          {product.productTitle}{" "}
+                        </option>
+                      ))}{" "}
+                    </select>{" "}
                   </div>
 
+                  {/* select image */}
                   <div>
                     <label for="">
                       Select Image
@@ -200,25 +267,48 @@ export default function Add_Main_Banner_Popup_Modal() {
                       </button>
                     </div>
                   </div>
+
+                  {/* Status Toggle */}
+                  <div>
+                    <label htmlFor="toggleSwitch">Status</label>
+                    <div className="mt-1 toggle-switch">
+                      <input
+                        type="checkbox"
+                        id="toggleSwitch"
+                        role="checkbox"
+                        tabIndex="0"
+                        checked={formData.home_page_status === "published"}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            home_page_status: e.target.checked
+                              ? "published"
+                              : "unpublished",
+                          }))
+                        }
+                      />
+                      <label htmlFor="toggleSwitch"></label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="modal-footer">
+                  <div className="flex items-center justify-end space-x-4">
+                    <button
+                      type="button"
+                      className="btn btn-light"
+                      data-dismiss="modal"
+                      aria-label="Close Modal"
+                      onClick={() => setIsOpenPopupModal(false)}
+                    >
+                      Close
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      {isEditMode ? "Update Banner" : "Add Banner"}
+                    </button>
+                  </div>
                 </div>
               </form>
-            </div>
-
-            <div className="modal-footer">
-              <div className="flex items-center justify-end space-x-4">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  data-dismiss="modal"
-                  aria-label="Close Modal"
-                  onClick={() => setIsOpenPopupModal(false)}
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Add Banner
-                </button>
-              </div>
             </div>
           </div>
         </div>

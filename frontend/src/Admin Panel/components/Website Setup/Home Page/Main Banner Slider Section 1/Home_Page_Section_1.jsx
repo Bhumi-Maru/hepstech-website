@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import axios from "axios";
+import { useHomePageContext } from "../../../../context/HomePage_Context";
 
 export default function Home_Page_Section_1() {
-  const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
-  const [homePage, setHomePage] = useState([]);
-  useEffect(() => {
-    fetchHomePage();
-  });
-
-  const fetchHomePage = async () => {
-    try {
-      const response = await axios.get("http://localhost:7000/api/homepage");
-      console.log("home page", response.data);
-      setHomePage(response.data);
-    } catch (error) {}
-  };
-
-  
+  const { toggleStates, handleToggle } = useAdminGlobalContext();
+  const { homePage, handleDelete, isEditMode, handleAddNew, handleEdit } =
+    useHomePageContext();
+  console.log("is", isEditMode);
 
   return (
     <>
@@ -98,27 +88,23 @@ export default function Home_Page_Section_1() {
                               <td>{banner.home_page_products.productTitle}</td>
                               <td>
                                 <div className="w-36">
-                                  {/* <select
-                                    name="home_page_status"
-                                    id="home_page_status"
-                                    className="home_page_status"
-                                  > */}
-                                  <option value={banner.home_page_status}>
+                                  <span
+                                    className={`badge ${
+                                      banner.home_page_status === "published"
+                                        ? "badge-success"
+                                        : "badge-danger"
+                                    }`}
+                                  >
                                     {banner.home_page_status}
-                                  </option>
-                                  {/* <option value="">Unpublished</option> */}
-                                  {/* </select> */}
+                                  </span>
                                 </div>
                               </td>
                               <td>
                                 <div className="flex items-center -ml-2 space-x-3">
                                   <a
-                                    href="#"
-                                    title=""
+                                    title="Edit"
                                     className="btn-circle"
-                                    aria-label="Edit"
-                                    data-microtip-position="top"
-                                    role="tooltip"
+                                    onClick={() => handleEdit(banner)}
                                   >
                                     <svg
                                       className="w-5 h-5"
@@ -137,12 +123,9 @@ export default function Home_Page_Section_1() {
                                   </a>
 
                                   <a
-                                    href="#"
-                                    title=""
+                                    title="Delete"
                                     className="btn-circle"
-                                    aria-label="Delete"
-                                    data-microtip-position="top"
-                                    role="tooltip"
+                                    onClick={() => handleDelete(banner._id)}
                                   >
                                     <svg
                                       className="w-5 h-5"
@@ -176,7 +159,7 @@ export default function Home_Page_Section_1() {
                   className="w-full btn btn-white sm:w-auto"
                   data-toggle="modal"
                   data-target="#addMainBannerModal"
-                  onClick={() => toggleModal("addMainBanner")}
+                  onClick={handleAddNew}
                 >
                   <svg
                     className="w-5 h-5 mr-2 -ml-1"

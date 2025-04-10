@@ -9,6 +9,8 @@ export const useHeaderContext = () => {
 
 export const HeaderMenuProvider = ({ children }) => {
   const [mainCategory, setMainCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  const [products, setProducts] = useState([]);
   const [headerMenuData, setHeaderMenuData] = useState({
     main_categories: [],
     pages: [],
@@ -17,12 +19,16 @@ export const HeaderMenuProvider = ({ children }) => {
   useEffect(() => {
     const fetchAllMenuData = async () => {
       try {
-        const [mainCategoryRes, headerMenuRes] = await Promise.all([
-          axios.get("http://localhost:7000/api/main-category"),
-          axios.get("http://localhost:7000/api/header-menu-section/getAll"),
-        ]);
-
+        const [mainCategoryRes, subCategoryRes, productRes, headerMenuRes] =
+          await Promise.all([
+            axios.get("http://localhost:7000/api/main-category"),
+            axios.get("http://localhost:7000/api/sub-category/getAll"),
+            axios.get("http://localhost:7000/api/products"),
+            axios.get("http://localhost:7000/api/header-menu-section/getAll"),
+          ]);
+        setSubCategory(subCategoryRes.data);
         setMainCategory(mainCategoryRes.data.categories);
+        setProducts(productRes.data);
         setHeaderMenuData({
           main_categories: headerMenuRes.data.main_categories,
           pages: headerMenuRes.data.pages,
@@ -89,6 +95,10 @@ export const HeaderMenuProvider = ({ children }) => {
       value={{
         mainCategory,
         setMainCategory,
+        subCategory,
+        setSubCategory,
+        products,
+        setProducts,
         headerMenuData,
         setHeaderMenuData,
         addPageOrLink,
