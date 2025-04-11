@@ -201,10 +201,13 @@ export default function WebsiteApp() {
                   />
                   {/* LAYOUT 10 */}
                   <HorizontalBanners_2Items />
+                  {/* LAYOUT 11 */}
                   <BestSellingProductsSlider01_6Items
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 12 */}
                   <VeticalBanners_4Items />
+                  {/* LAYOUT 13 */}
                   <HorizontalBanner_Large_1Item />
                   <BestSellingProductsSlider02_6Items
                     setIsAddToCartModal={setIsAddToCartModal}

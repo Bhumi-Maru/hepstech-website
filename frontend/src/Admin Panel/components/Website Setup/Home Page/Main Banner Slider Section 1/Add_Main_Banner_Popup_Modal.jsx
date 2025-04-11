@@ -17,8 +17,6 @@ export default function Add_Main_Banner_Section_3_Popup_Modal() {
     formData,
     setFormData,
     selectedMainBanner1,
-    setSelectedMainBanner1,
-    handleMainBannerSlider1Change,
   } = useHomePageContext();
 
   const { mediaItems } = useAllMediaContext();
@@ -45,7 +43,7 @@ export default function Add_Main_Banner_Section_3_Popup_Modal() {
       {/* START ADD  MAIN BANNER MODAL SECTION 1  */}
       <div
         className={`modal ${isOpenPopupModal.addMainBanner ? "active" : ""}`}
-        id="addMainBanner "
+        id="addMainBanner"
         tabindex="-1"
         role="dialog"
         aria-hidden="false"
