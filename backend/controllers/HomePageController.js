@@ -16,7 +16,7 @@ const createHomePage = async (req, res) => {
       // Calculate the next layout number
       const nextLayoutNumber = lastLayout ? lastLayout.layoutNumber + 1 : 1;
 
-      // Check if nextLayoutNumber is within valid range (1-24)
+      // ✅ Allow up to layoutNumber 24
       if (nextLayoutNumber > 24) {
         return res.status(400).json({
           message: "Maximum number of layouts (24) reached",

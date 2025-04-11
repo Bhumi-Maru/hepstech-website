@@ -20,8 +20,8 @@ export default function HorizontalBanner1() {
             {banner ? (
               banner.home_page_image?.filePath ? (
                 <img
-                  // className="object-cover w-full h-full"
-                  className="w-full h-full"
+                  className="object-cover w-full h-full"
+                  // className="w-full h-full"
                   src={`http://localhost:7000${banner.home_page_image.filePath}`}
                   alt={banner.home_page_image.filename || "Banner"}
                   loading="lazy"
