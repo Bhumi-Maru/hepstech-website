@@ -12,7 +12,7 @@ import FlashSaleSlider from "./Website/components/Home Page/Flash Sale Slider/Fl
 import HorizontalBanners3Items from "./Website/components/Home Page/Horizontal Banners - 3 Items/HorizontalBanners3Items";
 import CategorySlider5Items from "./Website/components/Home Page/Category Slider - 5 Items/CategorySlider5Items";
 import PopularProductsSlider01 from "./Website/components/Home Page/Popular Products Slider 01/PopularProductsSlider01";
-import HorizontalBannersLarge2Items from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items/HorizontalBannersLarge2Items";
+import HorizontalBannersLarge2Items from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items Section 18/HorizontalBannersLarge2Items_section18";
 import PopularProductsSlider02_4Items from "./Website/components/Home Page/Popular Products Slider 02 - 4 Items/PopularProductsSlider02_4Items";
 import HorizontalBanners_2Items from "./Website/components/Home Page/Horizontal Banners - 2 Items/HorizontalBanners_2Items";
 import BestSellingProductsSlider01_6Items from "./Website/components/Home Page/Best Selling Products Slider 01 - 6 Items/BestSellingProductsSlider01_6Items";
@@ -51,6 +51,8 @@ import LoginOtpConfirmationForm from "./Website/components/Profile/Authenticatio
 import SetPassword_From_Login from "./Website/components/Profile/Authentication/SetPassword_From_Login";
 import Offer_Image from "./Website/components/Home Page/Offer Image/Offer_Image";
 import { useGlobalContext } from "./Website/context/GlobalContext";
+import HorizontalBannersLarge2Items_section8 from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items Section 8/HorizontalBannersLarge2Items_section8";
+import HorizontalBannersLarge2Items_section18 from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items Section 18/HorizontalBannersLarge2Items_section18";
 
 export default function WebsiteApp() {
   const { isOfferImageModalOpen } = useGlobalContext();
@@ -194,7 +196,7 @@ export default function WebsiteApp() {
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
                   {/* LAYOUT 8 */}
-                  <HorizontalBannersLarge2Items />
+                  <HorizontalBannersLarge2Items_section8 />
                   {/* LAYOUT 9 */}
                   <PopularProductsSlider02_4Items
                     setIsAddToCartModal={setIsAddToCartModal}
@@ -222,7 +224,7 @@ export default function WebsiteApp() {
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
                   {/* LAYOUT 18 */}
-                  <HorizontalBannersLarge2Items />
+                  <HorizontalBannersLarge2Items_section18 />
                   {/* LAYOUT 19 */}
                   <Horizontal_Banner_Large_1_Item />
                   {/* LAYOUT 20 */}

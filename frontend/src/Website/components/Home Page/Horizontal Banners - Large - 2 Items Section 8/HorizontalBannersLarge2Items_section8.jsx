@@ -1,7 +1,7 @@
 import React from "react";
 import { useHomePageContext } from "../../../../Admin Panel/context/HomepageContext";
 
-export default function HorizontalBannersLarge2Items() {
+export default function HorizontalBannersLarge2Items_section8() {
   const { homePage } = useHomePageContext();
 
   // Filter all banners with layoutNumber === 8

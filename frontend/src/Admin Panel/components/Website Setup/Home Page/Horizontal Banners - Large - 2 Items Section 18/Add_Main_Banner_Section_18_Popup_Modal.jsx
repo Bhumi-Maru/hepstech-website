@@ -1,10 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
-import useSelect2AndList from "../../../../hooks/useSelect2AndList";
+// import useSelect2AndList from "../../../../hooks/useSelect2AndList";
+import { useHeaderContext } from "../../../../context/Header_Menu_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
+import { getFilePreview } from "../../../../utils/fileUploadUtils";
+import { useAllMediaContext } from "../../../../context/All_Media_Context";
 
 export default function Add_Main_Banner_Section_18_Popup_Modal() {
-  const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
-  useSelect2AndList();
+  const { setIsOpenPopupModal, isOpenPopupModal } = useAdminGlobalContext();
+  const { mainCategory, subCategory, products } = useHeaderContext();
+
+  const {
+    isEditMode,
+    handleInputChange,
+    handleSubmit,
+    formData,
+    setFormData,
+    selectedMainBanner1,
+  } = useHomePageContext();
+
+  const { mediaItems } = useAllMediaContext();
+
+  const mainBannerSlider1 = mediaItems.find((item) => {
+    return item._id === selectedMainBanner1;
+  });
+
+  useEffect(() => {
+    if (selectedMainBanner1) {
+      // Update formData with the selected image
+      setFormData((prev) => ({
+        ...prev,
+        home_page_image: selectedMainBanner1,
+      }));
+    }
+  }, [selectedMainBanner1, setFormData]);
+
+  console.log("add banner file", mainBannerSlider1);
+
+  // useSelect2AndList();
   return (
     <>
       {/* [HOME PAGE SECTION 8] Horizontal Banners - Large - 2 Items IN SECTION 8  */}
@@ -19,25 +52,28 @@ export default function Add_Main_Banner_Section_18_Popup_Modal() {
         role="dialog"
         aria-hidden="false"
       >
-        <div class="modal-overlay" tabindex="-1"></div>
-        <div class="modal-dialog modal-dialog-centered sm:max-w-xl">
-          <div class="modal-content" role="document">
-            <div class="modal-header">
-              <h5 class="mr-12 text-lg font-medium truncate">
+        <div className="modal-overlay" tabindex="-1"></div>
+        <div className="modal-dialog modal-dialog-centered sm:max-w-xl">
+          <div
+            className="modal-content max-w-full overflow-x-hidden"
+            role="document"
+          >
+            <div className="modal-header">
+              <h5 className="mr-12 text-lg font-medium truncate">
                 Add Main Banner
               </h5>
 
               {/* <!-- close button --> */}
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-dismiss="modal"
                 aria-label="Close"
                 onClick={() => setIsOpenPopupModal(false)}
               >
-                <span class="sr-only">Close</span>
+                <span className="sr-only">Close</span>
                 <svg
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -54,125 +90,97 @@ export default function Add_Main_Banner_Section_18_Popup_Modal() {
               </button>
             </div>
 
-            <div class="modal-body">
-              <form action="">
-                <div class="space-y-4">
+            <div className="modal-body">
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
+                  {/* LAYOUT NUMBER */}
+                  <div className="hidden">
+                    <label>Layout Number</label>
+                    <input
+                      type="text"
+                      name="layoutNumber"
+                      value={formData.layoutNumber === 1}
+                    />
+                  </div>
+                  {/* MAIN CATEGORY */}
                   <div>
-                    <label for=""> Select Main Category </label>
-                    <div class="relative mt-1">
+                    <label htmlFor="selectMainCategory">
+                      Select Main Category
+                    </label>
+                    <div className="relative mt-1">
                       <select
-                        class=""
+                        className=""
                         id="selectMainCategory"
-                        name="selectMainCategory"
+                        name="home_page_main_category"
+                        value={formData.home_page_main_category}
+                        onChange={handleInputChange}
                       >
                         <option value="">Select Main Category</option>
-                        <option value="">Main Category 1</option>
-                        <option value="">Main Category 2</option>
-                        <option value="">Main Category 3</option>
+                        {mainCategory.map((mainCategory) => (
+                          <option
+                            key={mainCategory._id}
+                            value={mainCategory._id}
+                          >
+                            {mainCategory.main_category_title}
+                          </option>
+                        ))}
                       </select>
-
-                      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg
-                          class="w-5 h-5 text-gray-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
                     </div>
                   </div>
-
+                  {/* SUB CATEGORY */}
                   <div>
-                    <label for=""> Select Sub Category </label>
-                    <div class="relative mt-1">
+                    <label htmlFor="selectSubCategory">
+                      Select Sub Category
+                    </label>
+                    <div className="relative mt-1">
                       <select
-                        class=""
+                        className=""
                         id="selectSubCategory"
-                        name="selectSubCategory"
+                        name="home_page_sub_category"
+                        value={formData.home_page_sub_category}
+                        onChange={handleInputChange}
                       >
                         <option value="">Select Sub Category</option>
-                        <option value="">Sub Category 1</option>
-                        <option value="">Sub Category 2</option>
-                        <option value="">Sub Category 3</option>
+                        {subCategory.map((subCategory) => (
+                          <option key={subCategory._id} value={subCategory._id}>
+                            {subCategory.sub_category_title}
+                          </option>
+                        ))}
                       </select>
-
-                      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg
-                          class="w-5 h-5 text-gray-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
                     </div>
                   </div>
-
+                  {/* PRODUCTS */}
                   <div>
-                    <label for=""> Select Product </label>
-                    <div class="relative mt-1">
-                      <select
-                        class="select2-hidden-accessible"
-                        id="selectProduct_Section_18"
-                        name="selectProduct"
-                        data-select2-id="select2-data-selectProduct"
-                        tabindex="-1"
-                        aria-hidden="true"
-                      >
-                        <option value="" data-select2-id="select2-data-6-zgic">
-                          Select Product
+                    {" "}
+                    <label>Product</label>{" "}
+                    <select
+                      name="home_page_products"
+                      value={formData.home_page_products}
+                      onChange={handleInputChange}
+                      className="w-full mt-1"
+                    >
+                      {" "}
+                      <option value="">Select Product</option>{" "}
+                      {products.map((product) => (
+                        <option key={product._id} value={product._id}>
+                          {" "}
+                          {product.productTitle}{" "}
                         </option>
-                        <option value="">Product 1</option>
-                        <option value="">Product 2</option>
-                        <option value="">Product 3</option>
-                      </select>
-
-                      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg
-                          class="w-5 h-5 text-gray-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
+                      ))}{" "}
+                    </select>{" "}
                   </div>
-
-                  <div>
-                    <label for="">
-                      Select Image
-                      <span>
-                        (Image ratio should be 16:6. PNG, JPG, or JPEG up to
-                        1MB)
-                      </span>
-                    </label>
-                    <div class="mt-1.5">
+                  {/* select image */}
+                  <div className="flex" style={{ gap: "10px" }}>
+                    <div className="mt-1.5">
                       <button
                         type="button"
-                        class="btn btn-white"
-                        data-toggle="modal"
-                        data-target="#selectFilesModal"
+                        className="btn btn-white"
                         onClick={() => {
                           setIsOpenPopupModal((prev) => ({
                             ...prev,
-                            startSelectFilesAndMedia: true, // Open Select Files Modal
+                            startSelectFilesAndMedia: true,
+                            MainBannerSlider_Section1: true, // This is crucial
                           }));
-
-                          // Ensure Select Files modal is above Add Main Banner
                           setTimeout(() => {
                             document.getElementById(
                               "selectFilesModal"
@@ -181,42 +189,74 @@ export default function Add_Main_Banner_Section_18_Popup_Modal() {
                         }}
                       >
                         <svg
-                          class="w-5 h-5 mr-2 -ml-1"
+                          className="w-5 h-5 mr-2 -ml-1"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                           ></path>
                         </svg>
+                        {/* {selectedMainBanner1 ? "Change Image" : "Select Files"} */}
+                        {/* {selectedMainBanner1 && "Select Files"} */}
                         Select Files
+                      </button>
+                    </div>
+
+                    <div className="mt-1">
+                      {/* Show Preview for Banner Image */}
+                      {mainBannerSlider1 && getFilePreview(mainBannerSlider1)}
+                    </div>
+                  </div>
+
+                  {/* Status Toggle */}
+                  <div>
+                    <label htmlFor="toggleSwitch">Status</label>
+                    <div className="mt-1 toggle-switch">
+                      <input
+                        type="checkbox"
+                        id="toggleSwitch"
+                        role="checkbox"
+                        tabIndex="0"
+                        checked={formData.home_page_status === "published"}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            home_page_status: e.target.checked
+                              ? "published"
+                              : "unpublished",
+                          }))
+                        }
+                      />
+                      <label htmlFor="toggleSwitch"></label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="modal-footer">
+                    <div className="flex items-center justify-end space-x-4">
+                      <button
+                        type="button"
+                        className="btn btn-light"
+                        data-dismiss="modal"
+                        aria-label="Close Modal"
+                        onClick={() => setIsOpenPopupModal(false)}
+                      >
+                        Close
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        {isEditMode ? "Update Banner" : "Add Banner"}
                       </button>
                     </div>
                   </div>
                 </div>
               </form>
-            </div>
-
-            <div class="modal-footer">
-              <div class="flex items-center justify-end space-x-4">
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  data-dismiss="modal"
-                  aria-label="Close Modal"
-                  onClick={() => setIsOpenPopupModal(false)}
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Add Banner
-                </button>
-              </div>
             </div>
           </div>
         </div>
