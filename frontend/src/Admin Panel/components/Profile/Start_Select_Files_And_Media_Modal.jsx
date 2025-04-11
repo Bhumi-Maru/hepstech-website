@@ -241,19 +241,10 @@ export default function Start_Select_Files_And_Media_Modal({
                           setIsOpenPopupModal(false);
                         }
                         // Homepage section
-                        if (
-                          isOpenPopupModal.MainBannerSlider_Section1 &&
-                          selectedMainBanner1
-                        ) {
+                        if (selectedMainBanner1) {
                           setSelectedMainBanner1(selectedMainBanner1);
                         }
 
-                        if (
-                          isOpenPopupModal.MainBannerSlider_Section1 &&
-                          selectedMainBanner1
-                        ) {
-                          setSelectedMainBanner1(selectedMainBanner1);
-                        }
                         setIsOpenPopupModal((prev) => ({
                           ...prev,
                           startSelectFilesAndMedia: false,

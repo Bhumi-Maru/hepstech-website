@@ -177,19 +177,29 @@ export default function WebsiteApp() {
               element={
                 <>
                   {/* Components outside Routes */}
+                  {/* LAYOUT 1 */}
                   <Slider />
+                  {/* LAYOUT 2 */}
                   <CategorySlider />
+                  {/* LAYOUT 3 */}
                   <HorizontalBanner1 />
+                  {/* LAYOUT 4 */}
                   <FlashSaleSlider setIsAddToCartModal={setIsAddToCartModal} />
+                  {/* LAYOUT 5 */}
                   <HorizontalBanners3Items />
+                  {/* LAYOUT 6 */}
                   <CategorySlider5Items />
+                  {/* LAYOUT 7 */}
                   <PopularProductsSlider01
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 8 */}
                   <HorizontalBannersLarge2Items />
+                  {/* LAYOUT 9 */}
                   <PopularProductsSlider02_4Items
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 10 */}
                   <HorizontalBanners_2Items />
                   <BestSellingProductsSlider01_6Items
                     setIsAddToCartModal={setIsAddToCartModal}

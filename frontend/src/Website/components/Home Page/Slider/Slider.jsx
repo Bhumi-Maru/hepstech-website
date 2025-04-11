@@ -13,7 +13,9 @@ export default function Slider() {
 
   // Get all banners with layoutNumber === 1
   const banners = homePage.filter(
-    (item) => item.home_page_layout_number?.layoutNumber === 1
+    (item) =>
+      item.home_page_layout_number?.layoutNumber === 1 &&
+      item.home_page_status === "published"
   );
 
   return (

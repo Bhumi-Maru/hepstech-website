@@ -6,7 +6,9 @@ export default function HorizontalBanner1() {
 
   // Get the first banner with layoutNumber === 3
   const banner = homePage.find(
-    (item) => item.home_page_layout_number.layoutNumber === 3
+    (item) =>
+      item.home_page_layout_number.layoutNumber === 3 &&
+      item.home_page_status === "published"
   );
 
   return (

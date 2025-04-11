@@ -39,7 +39,7 @@ export default function Select_Files() {
   } = useFooterSection();
 
   const { selectedMainBanner1, setSelectedMainBanner1 } = useHomePageContext();
-
+  console.log("select home page main bbbbbbbbbbbbbbb", selectedMainBanner1);
   // Fetch media from the API
   useEffect(() => {
     const fetchMedia = async () => {
@@ -118,12 +118,18 @@ export default function Select_Files() {
   //////////////////end header section///////////////////////////
 
   //////////////////////START HOME PAGE/////////////////////////
+  // Update the handleMainBannerSelect function
   const handleMainBannerSelect = (file) => {
     if (isOpenPopupModal.MainBannerSlider_Section1) {
       setSelectedMainBanner1(file._id);
-      console.log("ddddddddddd", file);
       console.log("Selected Main Banner ID:", file._id);
       setPreviewUrl(file.fileUrl);
+
+      // Close the modal after selection
+      // setIsOpenPopupModal((prev) => ({
+      //   ...prev,
+      //   startSelectFilesAndMedia: false,
+      // }));
     }
   };
 

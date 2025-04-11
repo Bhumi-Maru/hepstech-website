@@ -35,6 +35,46 @@ export const HomePageProvider = ({ children }) => {
     // layoutNumber: 1,
   });
 
+  // Add this useEffect to keep formData in sync
+  // useEffect(() => {
+  //   if (selectedMainBanner1) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       home_page_image: selectedMainBanner1,
+  //     }));
+  //   }
+  // }, [selectedMainBanner1]);
+
+  // Update the edit mode initialization
+  // useEffect(() => {
+  //   if (isOpenPopupModal.addMainBanner) {
+  //     if (isEditMode && currentBanner) {
+  //       setFormData({
+  //         // ... other fields ...
+  //         home_page_image: currentBanner.home_page_image?._id || "",
+  //       });
+  //       if (currentBanner.home_page_image) {
+  //         setSelectedMainBanner1(currentBanner.home_page_image._id);
+  //       }
+  //     } else {
+  //       // Reset for new banner
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         home_page_image: "",
+  //       }));
+  //       setSelectedMainBanner1(null);
+  //     }
+  //   }
+  // }, [currentBanner, isOpenPopupModal.addMainBanner, isEditMode]);
+
+  const handleMainBannerSlider1Change = (imageId) => {
+    setSelectedMainBanner1(imageId);
+    setFormData((prev) => ({
+      ...prev,
+      home_page_image: imageId,
+    }));
+  };
+
   // Update the useEffect for edit mode
   useEffect(() => {
     if (isOpenPopupModal.addMainBanner) {
@@ -48,11 +88,14 @@ export const HomePageProvider = ({ children }) => {
           home_page_status: currentBanner?.home_page_status || "unpublished",
           layoutNumber:
             currentBanner.home_page_layout_number?.layoutNumber || 1,
-          // home_page_image: currentBanner.home_page_image?._id || "", // Make sure to set this
         });
         // Set the selected image if it exists
         if (currentBanner.home_page_image) {
           setSelectedMainBanner1(currentBanner.home_page_image._id);
+          setFormData((prev) => ({
+            ...prev,
+            home_page_image: currentBanner.home_page_image._id,
+          }));
         }
         setAddMainBannerStatus(
           currentBanner.home_page_status === "unpublished"
@@ -97,7 +140,15 @@ export const HomePageProvider = ({ children }) => {
           payload
         );
       }
-
+      setFormData({
+        home_page_main_category: "",
+        home_page_sub_category: "",
+        home_page_products: "",
+        home_page_image: null,
+        home_page_status: "unpublished",
+        layoutNumber: 1,
+      });
+      setSelectedMainBanner1(null);
       setIsOpenPopupModal(false);
       fetchHomePage();
     } catch (error) {
@@ -168,6 +219,7 @@ export const HomePageProvider = ({ children }) => {
         setFormData,
         handleEdit,
         // handleAddNew,
+        handleMainBannerSlider1Change,
         selectedMainBanner1,
         setSelectedMainBanner1,
       }}

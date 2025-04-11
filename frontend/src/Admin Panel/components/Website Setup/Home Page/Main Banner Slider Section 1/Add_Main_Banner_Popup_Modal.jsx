@@ -18,13 +18,24 @@ export default function Add_Main_Banner_Section_3_Popup_Modal() {
     setFormData,
     selectedMainBanner1,
     setSelectedMainBanner1,
+    handleMainBannerSlider1Change,
   } = useHomePageContext();
 
   const { mediaItems } = useAllMediaContext();
 
-  const mainBannerSlider1 = mediaItems.find(
-    (item) => item._id === selectedMainBanner1
-  );
+  const mainBannerSlider1 = mediaItems.find((item) => {
+    return item._id === selectedMainBanner1;
+  });
+
+  useEffect(() => {
+    if (selectedMainBanner1) {
+      // Update formData with the selected image
+      setFormData((prev) => ({
+        ...prev,
+        home_page_image: selectedMainBanner1,
+      }));
+    }
+  }, [selectedMainBanner1, setFormData]);
 
   console.log("add banner file", mainBannerSlider1);
 
@@ -162,15 +173,12 @@ export default function Add_Main_Banner_Section_3_Popup_Modal() {
                       <button
                         type="button"
                         className="btn btn-white"
-                        data-toggle="modal"
-                        data-target="#selectFilesModal"
                         onClick={() => {
                           setIsOpenPopupModal((prev) => ({
                             ...prev,
                             startSelectFilesAndMedia: true,
+                            MainBannerSlider_Section1: true, // This is crucial
                           }));
-                          setSelectedMainBanner1(null); // Ensure previous selection is cleared
-
                           setTimeout(() => {
                             document.getElementById(
                               "selectFilesModal"
@@ -186,19 +194,21 @@ export default function Add_Main_Banner_Section_3_Popup_Modal() {
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                           ></path>
                         </svg>
+                        {/* {selectedMainBanner1 ? "Change Image" : "Select Files"} */}
+                        {/* {selectedMainBanner1 && "Select Files"} */}
                         Select Files
                       </button>
                     </div>
 
                     <div className="mt-1">
                       {/* Show Preview for Banner Image */}
-                      {getFilePreview(mainBannerSlider1)}
+                      {mainBannerSlider1 && getFilePreview(mainBannerSlider1)}
                     </div>
                   </div>
                   {/* // Update the image preview section */}

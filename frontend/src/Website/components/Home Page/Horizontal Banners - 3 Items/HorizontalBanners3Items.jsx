@@ -6,7 +6,9 @@ export default function HorizontalBanners3Items() {
 
   // Filter all banners with layoutNumber === 5
   const banners = homePage.filter(
-    (item) => item.home_page_layout_number.layoutNumber === 5
+    (item) =>
+      item.home_page_layout_number.layoutNumber === 5 &&
+      item.home_page_status === "published"
   );
 
   return (
