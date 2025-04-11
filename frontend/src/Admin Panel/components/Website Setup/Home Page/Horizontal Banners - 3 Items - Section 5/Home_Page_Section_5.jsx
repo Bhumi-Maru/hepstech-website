@@ -48,7 +48,8 @@ export default function Home_Page_Section_5() {
             htmlFor="horizontalBanners02Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Horizontal Banners - 3 Items (Layout 5)
+            Horizontal Banners - 3 Items &nbsp;
+            <span className="badge-success">(Layout 5)</span>
           </label>
           <div className="flex-shrink-0 ml-4 toggle-switch">
             <input
