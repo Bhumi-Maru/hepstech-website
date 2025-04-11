@@ -12,7 +12,8 @@ export default function Home_Page_Section__18() {
             for="horizontalBanners07Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Horizontal Banners - Large - 2 Items
+            Horizontal Banners - Large - 2 Items &nbsp;
+            <span className="badge-success">(Layout 18)</span>
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">

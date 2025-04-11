@@ -13,6 +13,8 @@ export default function Home_Page_Section__20() {
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
             Best Selling Products Slider 04
+            {/* &nbsp;
+            <span className="badge-success">(Layout 20)</span> */}
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">

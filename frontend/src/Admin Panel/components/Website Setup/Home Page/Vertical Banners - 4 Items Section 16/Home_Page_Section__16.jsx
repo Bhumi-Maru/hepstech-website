@@ -12,7 +12,8 @@ export default function Home_Page_Section__16() {
             for="verticalBanners02Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Vertical Banners - 4 Items
+            Vertical Banners - 4 Items &nbsp;
+            <span className="badge-success">(Layout 16)</span>
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">

@@ -9,6 +9,8 @@ const {
   getAllLayouts,
   deleteAll,
   deleteAllLayout,
+  updateLayoutById,
+  deleteLayoutById,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
@@ -16,6 +18,8 @@ const HomePageRouter = express.Router();
 HomePageRouter.post("/layout/create", createLayout);
 HomePageRouter.get("/layout", getAllLayouts);
 HomePageRouter.delete("/layout", deleteAllLayout);
+HomePageRouter.put("/layout/:id", updateLayoutById);
+HomePageRouter.delete("/layout/:id", deleteLayoutById);
 
 ////////////////////////////////////////////// END LAYOUT ////////////////////////////////////////////////////
 

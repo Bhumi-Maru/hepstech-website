@@ -12,7 +12,8 @@ export default function Home_Page_Section__22() {
             for="horizontalBanners09Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Horizontal Banners - Small - 1 Items
+            Horizontal Banners - Small - 1 Items &nbsp;
+            <span className="badge-success">(Layout 22)</span>
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">

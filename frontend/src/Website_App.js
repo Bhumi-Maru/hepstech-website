@@ -209,21 +209,31 @@ export default function WebsiteApp() {
                   <VeticalBanners_4Items />
                   {/* LAYOUT 13 */}
                   <HorizontalBanner_Large_1Item />
+                  {/* LAYOUT 14 */}
                   <BestSellingProductsSlider02_6Items
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 15 */}
                   <HorizontalBannerSmall_1Item />
+                  {/* LAYOUT 16 */}
                   <VerticalBanners_4Items />
+                  {/* LAYOUT 17 */}
                   <BestSellingProductsSlider_03_6Items
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 18 */}
                   <HorizontalBannersLarge2Items />
+                  {/* LAYOUT 19 */}
                   <Horizontal_Banner_Large_1_Item />
+                  {/* LAYOUT 20 */}
                   <BestSellingProductsSlider_04_6_Items
                     setIsAddToCartModal={setIsAddToCartModal}
                   />
+                  {/* LAYOUT 21 */}
                   <Vertical_Banners_4_Items />
+                  {/* LAYOUT 22 */}
                   <Horizontal_Banner_Small_1_Item />
+                  {/* LAYOUT 23 */}
                   <Testimonials />
                 </>
               }
@@ -362,6 +372,7 @@ export default function WebsiteApp() {
             />
           </>
         )}
+        {/* LAYOUT 24 */}
         <Information />
         <Footer />
       </div>

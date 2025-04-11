@@ -281,6 +281,66 @@ const deleteAllLayout = async (req, res) => {
   }
 };
 
+// Update layout by ID
+const updateLayoutById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { layoutName, layoutTitle, layoutNumber, layoutStatus } = req.body;
+
+    // Check if another layout already has the same number (excluding current one)
+    const exists = await Layout.findOne({
+      layoutNumber,
+      _id: { $ne: id },
+    });
+
+    if (exists) {
+      return res.status(400).json({ message: "Layout number already exists" });
+    }
+
+    const updatedLayout = await Layout.findByIdAndUpdate(
+      id,
+      { layoutName, layoutTitle, layoutNumber, layoutStatus },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedLayout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    res.status(200).json({
+      message: "Layout updated successfully!",
+      updatedLayout,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error updating layout",
+      error: err.message,
+    });
+  }
+};
+
+// Delete layout by ID
+const deleteLayoutById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedLayout = await Layout.findByIdAndDelete(id);
+
+    if (!deletedLayout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    res.status(200).json({
+      message: "Layout deleted successfully!",
+      deletedLayout,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error deleting layout",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   createHomePage,
   updateHomePageById,
@@ -291,4 +351,6 @@ module.exports = {
   getAllLayouts,
   deleteAll,
   deleteAllLayout,
+  updateLayoutById,
+  deleteLayoutById,
 };

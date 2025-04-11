@@ -88,7 +88,7 @@ export default function Add_Main_Banner_Section_8_Popup_Modal() {
                     <input
                       type="text"
                       name="layoutNumber"
-                      value={formData.layoutNumber === 3}
+                      value={formData.layoutNumber === 8}
                     />
                   </div>
                   {/* MAIN CATEGORY */}
