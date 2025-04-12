@@ -96,7 +96,7 @@ export default function Home_Page_Section__2() {
             for="categorySection01Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Category Section 01
+            Category Section 01 (Layout 2)
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">

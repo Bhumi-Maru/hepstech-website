@@ -1,18 +1,82 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
+import { useHeaderContext } from "../../../../context/Header_Menu_Context";
 
 export default function Home_Page_Section_7() {
-  const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  const { toggleStates, handleToggle, toggleModal, setIsOpenPopupModal } =
+    useAdminGlobalContext();
+  const { mainCategory, subCategory, products } = useHeaderContext();
+  const {
+    homePage,
+    fetchHomePage,
+    handleDelete,
+    setCurrentBanner,
+    isEditMode,
+    setIsEditMode,
+    setFormData,
+    // handleEdit,
+    formData,
+    handleInputChange,
+    saveSectionTitle,
+    setSelectedMainBanner1,
+  } = useHomePageContext();
+
+  // Filter banners for layoutNumber 6
+  const sectionBanners = homePage.filter((banner) => {
+    return banner.home_page_layout_number?.layoutNumber === 7;
+  });
+
+  const handleAddNew = () => {
+    setCurrentBanner(null);
+    setIsEditMode(false);
+    setFormData({
+      layoutNumber: 7,
+      home_page_section_title: "",
+      home_page_main_category: "",
+      home_page_sub_category: "",
+      home_page_image: null,
+    });
+    setSelectedMainBanner1(null);
+  };
+
+  const handleEdit = (banner) => {
+    setCurrentBanner(banner);
+    setFormData({
+      layoutNumber: banner.home_page_layout_number?.layoutNumber || 7,
+      home_page_section_title: banner.home_page_section_title || "",
+      home_page_main_category: banner.home_page_main_category?._id || "",
+      home_page_sub_category: banner.home_page_sub_category?._id || "",
+      home_page_layout_type: banner.home_page_layout_type || null,
+    });
+    setIsEditMode(true);
+    if (banner.home_page_image) {
+      setSelectedMainBanner1(banner.home_page_image._id);
+    }
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      popular_Products_Slider_01: true,
+    }));
+  };
+
   return (
     <>
       {/* [HOME PAGE SECTION 7] Popular Products Slider 01  */}
       <div className="px-4 py-5 bg-white rounded-lg shadow sm:p-6">
-        <div className="flex items-center justify-between space-x-8">
+        <div className="flex items-center justify-between">
+          <div className="hidden">
+            <label>Layout Number</label>
+            <input
+              type="text"
+              name="layoutNumber"
+              value={formData.layoutNumber === 7}
+            />
+          </div>
           <label
             for="popularProducts01Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Popular Products Slider 01
+            Popular Products Slider 01 (Layout 7)
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">
@@ -36,10 +100,10 @@ export default function Home_Page_Section_7() {
                   <div className="mt-1 form-input">
                     <input
                       type="text"
-                      name=""
-                      id=""
+                      name="home_page_section_title"
+                      value={formData.home_page_section_title || ""}
+                      onChange={handleInputChange}
                       placeholder="Enter section title"
-                      className=""
                     />
                   </div>
                   <div></div>
@@ -51,12 +115,16 @@ export default function Home_Page_Section_7() {
                     <select
                       className=""
                       id="selectMainCategory"
-                      name="selectMainCategory"
+                      name="home_page_main_category"
+                      value={formData.home_page_main_category || ""}
+                      onChange={handleInputChange}
                     >
                       <option value="">Select Main Category</option>
-                      <option value="">Main Category 1</option>
-                      <option value="">Main Category 2</option>
-                      <option value="">Main Category 3</option>
+                      {mainCategory.map((mainCategory) => (
+                        <option key={mainCategory._id} value={mainCategory._id}>
+                          {mainCategory.main_category_title}
+                        </option>
+                      ))}
                     </select>
 
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -81,12 +149,16 @@ export default function Home_Page_Section_7() {
                     <select
                       className=""
                       id="selectSubCategory"
-                      name="selectSubCategory"
+                      name="home_page_sub_category"
+                      value={formData.home_page_sub_category || ""}
+                      onChange={handleInputChange}
                     >
                       <option value="">Select Sub Category</option>
-                      <option value="">Sub Category 1</option>
-                      <option value="">Sub Category 2</option>
-                      <option value="">Sub Category 3</option>
+                      {subCategory.map((subCategory) => (
+                        <option key={subCategory._id} value={subCategory._id}>
+                          {subCategory.sub_category_title}
+                        </option>
+                      ))}
                     </select>
 
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -108,10 +180,15 @@ export default function Home_Page_Section_7() {
                 <div>
                   <label for=""> Select Layout Type </label>
                   <div className="mt-1 form-input">
-                    <select name="" id="" placeholder="0" className="">
-                      <option value="">4</option>
-                      <option value="">5</option>
-                      <option value="">6</option>
+                    <select
+                      name="home_page_layout_type"
+                      value={formData.home_page_layout_type || ""}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select Layout</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                   </div>
                   <div></div>
@@ -148,7 +225,11 @@ export default function Home_Page_Section_7() {
                     Discard
                   </button>
 
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleAddNew}
+                  >
                     Save
                   </button>
                 </div>
