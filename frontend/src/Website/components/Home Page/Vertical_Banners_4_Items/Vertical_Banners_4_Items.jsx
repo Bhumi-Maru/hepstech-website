@@ -22,7 +22,7 @@ export default function Vertical_Banners_4_Items() {
               return (
                 <div
                   key={index}
-                  className="overflow-hidden bg-gray-200 border border-gray-200 rounded-lg aspect-w-16 aspect-h-8"
+                  className="overflow-hidden bg-gray-200 border border-gray-200 rounded-lg aspect-w-4 aspect-h-5"
                 >
                   {banner ? (
                     banner.home_page_image?.filePath ? (

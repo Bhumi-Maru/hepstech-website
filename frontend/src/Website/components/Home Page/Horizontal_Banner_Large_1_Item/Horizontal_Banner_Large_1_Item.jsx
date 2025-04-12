@@ -15,7 +15,7 @@ export default function Horizontal_Banner_Large_1_Item() {
       {/* <!-- HORIZONTAL BANNER - LARGE - 1 ITEM --> */}
       <section class="section-banner">
         <div class="container">
-          <div class="overflow-hidden bg-gray-200 border border-gray-200 rounded-lg shadow-sm aspect-w-16 aspect-h-2">
+          <div class="overflow-hidden bg-gray-200 border border-gray-200 rounded-lg shadow-sm aspect-w-16 aspect-h-5">
             {banner ? (
               banner.home_page_image?.filePath ? (
                 <img
