@@ -17,6 +17,7 @@ const layoutOfHomePageSchema = new mongoose.Schema(
       enum: ["active", "deactive"],
       required: false,
     },
+    sectionTitle: { type: String, required: false },
   },
   { timestamps: true }
 );

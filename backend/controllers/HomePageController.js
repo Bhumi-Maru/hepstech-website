@@ -341,6 +341,53 @@ const deleteLayoutById = async (req, res) => {
   }
 };
 
+// Add this new method to your controller
+// Update layout by number
+const updateLayoutByNumber = async (req, res) => {
+  try {
+    const { layoutNumber } = req.params;
+    const updatedLayout = await Layout.findOneAndUpdate(
+      { layoutNumber: Number(layoutNumber) },
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedLayout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    res.status(200).json(updatedLayout);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating layout", error: err.message });
+  }
+};
+
+// Specifically update section title for a layout
+const updateLayoutSectionTitle = async (req, res) => {
+  try {
+    const { layoutNumber } = req.params;
+    const { sectionTitle } = req.body;
+
+    const updatedLayout = await Layout.findOneAndUpdate(
+      { layoutNumber: Number(layoutNumber) },
+      { sectionTitle },
+      { new: true }
+    );
+
+    if (!updatedLayout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    res.status(200).json(updatedLayout);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating section title", error: err.message });
+  }
+};
+
 module.exports = {
   createHomePage,
   updateHomePageById,
@@ -353,4 +400,6 @@ module.exports = {
   deleteAllLayout,
   updateLayoutById,
   deleteLayoutById,
+  updateLayoutByNumber,
+  updateLayoutSectionTitle,
 };

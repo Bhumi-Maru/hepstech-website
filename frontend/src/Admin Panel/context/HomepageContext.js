@@ -29,6 +29,7 @@ export const HomePageProvider = ({ children }) => {
     home_page_status: "unpublished",
     home_page_image: null,
     home_page_section_title: "",
+    sectionTitle: "",
     home_page_layout_type: "",
     home_page_flash_sale: "",
     home_page_testimonial: "",
@@ -89,6 +90,7 @@ export const HomePageProvider = ({ children }) => {
           layoutNumber:
             currentBanner.home_page_layout_number?.layoutNumber || 1,
           home_page_section_title: currentBanner?.home_page_section_title || "",
+          sectionTitle: currentBanner?.sectionTitle || "",
           home_page_testimonial: currentBanner?.home_page_testimonial || "",
         });
         // Set the selected image if it exists
@@ -127,7 +129,7 @@ export const HomePageProvider = ({ children }) => {
     try {
       const payload = {
         ...formData,
-        home_page_image: selectedMainBanner1,
+        home_page_image: selectedMainBanner1 || formData.home_page_image,
       };
 
       // Clean up empty strings for ObjectId fields
@@ -150,6 +152,7 @@ export const HomePageProvider = ({ children }) => {
         );
       }
 
+      // Reset form only on success
       setFormData({
         home_page_main_category: "",
         home_page_sub_category: "",
@@ -197,11 +200,39 @@ export const HomePageProvider = ({ children }) => {
     fetchHomePage();
   }, []);
 
-  const handleEdit = (banner) => {
-    setCurrentBanner(banner);
-    console.log(" i am edit", banner._id);
+  const saveSectionTitle = async (title, layoutNumber) => {
+    try {
+      // Only update the layout's section title
+      const response = await axios.put(
+        `http://localhost:7000/api/homepage/layout/title/${layoutNumber}`,
+        { sectionTitle: title }
+      );
 
+      // Return the updated layout data
+      return response.data;
+    } catch (error) {
+      console.error("Error saving section title:", error);
+      throw error;
+    }
+  };
+
+  const handleEdit = (banner, sectionNumber) => {
+    setCurrentBanner(banner);
     setIsEditMode(true);
+    setFormData({
+      home_page_main_category: banner.home_page_main_category?._id || "",
+      home_page_sub_category: banner.home_page_sub_category?._id || "",
+      home_page_products: banner.home_page_products?._id || "",
+      home_page_status: banner.home_page_status || "unpublished",
+      home_page_section_title: banner.home_page_section_title || "",
+      home_page_testimonial: banner.home_page_testimonial || "",
+      home_page_image: banner.home_page_image?._id || null,
+      layoutNumber:
+        sectionNumber || banner.home_page_layout_number?.layoutNumber || 1,
+    });
+    if (banner.home_page_image) {
+      setSelectedMainBanner1(banner.home_page_image._id);
+    }
     setIsOpenPopupModal((prev) => ({ ...prev, addMainBanner: true }));
   };
 
@@ -232,6 +263,7 @@ export const HomePageProvider = ({ children }) => {
         handleMainBannerSlider1Change,
         selectedMainBanner1,
         setSelectedMainBanner1,
+        saveSectionTitle,
       }}
     >
       {children}
