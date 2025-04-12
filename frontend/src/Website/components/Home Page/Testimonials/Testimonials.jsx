@@ -37,15 +37,12 @@ export default function Testimonials() {
   }, []);
 
   const { homePage } = useHomePageContext();
-  console.log("hh", homePage);
 
   // Filter all banners with layoutNumber === 23
   const testimonials = homePage.filter(
     (item) => item?.home_page_layout_number?.layoutNumber === 23
     // item.home_page_status === "published"
   );
-
-  console.log("tttt", testimonials);
 
   return (
     <section className="section-slider">

@@ -1,5 +1,0 @@
-import React from "react";
-
-export default function Edit_Best_Of_Services() {
-  return <>{/* EDIT POPUP MODAL BEST OF SERVICES */}</>;
-}

@@ -237,6 +237,8 @@ export default function WebsiteApp() {
                   <Horizontal_Banner_Small_1_Item />
                   {/* LAYOUT 23 */}
                   <Testimonials />
+                  {/* LAYOUT 24 */}
+                  <Information />
                 </>
               }
             />
@@ -375,7 +377,7 @@ export default function WebsiteApp() {
           </>
         )}
         {/* LAYOUT 24 */}
-        <Information />
+        {/* <Information /> */}
         <Footer />
       </div>
     </BrowserRouter>

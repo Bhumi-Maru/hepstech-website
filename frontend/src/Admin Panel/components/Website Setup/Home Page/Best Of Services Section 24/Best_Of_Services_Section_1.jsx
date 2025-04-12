@@ -1,8 +1,38 @@
 import React from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
 
 export default function Best_Of_Services_Section_1() {
-  const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  const { toggleStates, handleToggle, setIsOpenPopupModal } =
+    useAdminGlobalContext();
+  const {
+    setCurrentBanner,
+    setIsEditMode,
+    setFormData,
+    setSelectedMainBanner1,
+  } = useHomePageContext();
+
+  const { homePage } = useHomePageContext();
+
+  // Filter banners for layoutNumber 24
+  const sectionBanners = homePage.filter(
+    (banner) => banner.home_page_layout_number?.layoutNumber === 24
+  );
+
+  const handleEdit = (testimonial) => {
+    setCurrentBanner(testimonial);
+    setIsEditMode(true);
+    setFormData({
+      ...testimonial,
+      layoutNumber: testimonial.home_page_layout_number?.layoutNumber || 24,
+      home_page_image: testimonial.home_page_image?._id || null,
+    });
+    setSelectedMainBanner1(testimonial.home_page_image?._id || null);
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      best_of_services_section_24: true,
+    }));
+  };
 
   return (
     <>
@@ -46,47 +76,15 @@ export default function Best_Of_Services_Section_1() {
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                           {/* Example Static Row */}
-                          {[
-                            {
-                              id: "60",
-                              title: "FREE SHIPPING",
-                              subtitle: "Free shipping all our India",
-                              image:
-                                "https://zenithenergize.com/media/slider/353724267_free_shipping_PNG3.png",
-                            },
-                            {
-                              id: "61",
-                              title: "SUPPORT 24/7",
-                              subtitle:
-                                "Contact us 10:00 Am To 18:00 Pm hours a day, 7 days a week",
-                              image:
-                                "https://zenithenergize.com/media/slider/459964229_kisspng-vector-graphics-computer-icons-logo-portable-netwo-cisco-collaboration-support-solutions-voice-vi-5ba4b60abe8c24.4202629715375211627805.jpg",
-                            },
-                            {
-                              id: "62",
-                              title: "Return Policy",
-                              subtitle:
-                                "Simply return it within 2 days of delivery.",
-                              image:
-                                "https://zenithenergize.com/media/slider/306473457_11153377.png",
-                            },
-                            {
-                              id: "63",
-                              title: "100% PAYMENT SECURE",
-                              subtitle:
-                                "We ensure payment with razorpay, visa, amazon pay, apple pay, G-pay & more.",
-                              image:
-                                "https://zenithenergize.com/media/slider/222427605_pngtree-100-secure-grunge-vector-icon-picture-image_7866021.png",
-                            },
-                          ].map((service) => (
-                            <tr key={service.id}>
-                              <td>{service.title}</td>
+                          {sectionBanners.map((service) => (
+                            <tr key={service._id}>
+                              <td>{service.home_page_section_title}</td>
                               <td className="nowrap">
                                 <div className="flex items-center space-x-3">
                                   <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium truncate customer-name">
                                       <span className="text-gray-900 hover:text-skin-primary">
-                                        {service.subtitle}
+                                        {service.home_page_testimonial}
                                       </span>
                                     </p>
                                   </div>
@@ -94,12 +92,38 @@ export default function Best_Of_Services_Section_1() {
                               </td>
                               <td>
                                 <div className="flex-none">
-                                  <img
+                                  {/* <img
                                     className="w-10 h-10 overflow-hidden bg-gray-500 rounded-full"
                                     src={service.image}
                                     alt=""
                                     loading="lazy"
-                                  />
+                                  /> */}
+                                  {service.home_page_image?.filePath ? (
+                                    <img
+                                      className="w-10 h-10 overflow-hidden bg-gray-500 rounded-full"
+                                      src={`http://localhost:7000${service.home_page_image.filePath}`}
+                                      alt={service.home_page_image.filename}
+                                      style={{ background: "white" }}
+                                      loading="lazy"
+                                    />
+                                  ) : (
+                                    <div className="flex items-center justify-center w-full h-full text-sm text-gray-500">
+                                      <svg
+                                        className="w-6 h-6 text-gray-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="2"
+                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                        ></path>
+                                      </svg>
+                                    </div>
+                                  )}
                                 </div>
                               </td>
                               <td>
@@ -109,9 +133,7 @@ export default function Best_Of_Services_Section_1() {
                                     aria-label="Edit"
                                     data-toggle="modal"
                                     data-target="#addBastofservicesModal"
-                                    onClick={() =>
-                                      toggleModal("best_of_services_section_24")
-                                    }
+                                    onClick={() => handleEdit(service)}
                                   >
                                     <svg
                                       className="w-5 h-5"
