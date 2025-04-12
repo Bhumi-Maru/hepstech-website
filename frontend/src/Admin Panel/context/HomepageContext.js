@@ -88,6 +88,8 @@ export const HomePageProvider = ({ children }) => {
           home_page_status: currentBanner?.home_page_status || "unpublished",
           layoutNumber:
             currentBanner.home_page_layout_number?.layoutNumber || 1,
+          home_page_section_title: currentBanner?.home_page_section_title || "",
+          home_page_testimonial: currentBanner?.home_page_testimonial || "",
         });
         // Set the selected image if it exists
         if (currentBanner.home_page_image) {
@@ -125,8 +127,15 @@ export const HomePageProvider = ({ children }) => {
     try {
       const payload = {
         ...formData,
-        home_page_image: selectedMainBanner1, // This should be the _id
+        home_page_image: selectedMainBanner1,
       };
+
+      // Clean up empty strings for ObjectId fields
+      if (!payload.home_page_main_category)
+        delete payload.home_page_main_category;
+      if (!payload.home_page_sub_category)
+        delete payload.home_page_sub_category;
+      if (!payload.home_page_products) delete payload.home_page_products;
 
       let response;
       if (isEditMode) {
@@ -140,6 +149,7 @@ export const HomePageProvider = ({ children }) => {
           payload
         );
       }
+
       setFormData({
         home_page_main_category: "",
         home_page_sub_category: "",

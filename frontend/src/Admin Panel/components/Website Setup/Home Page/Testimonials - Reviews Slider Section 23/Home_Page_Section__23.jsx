@@ -5,8 +5,14 @@ import { useHomePageContext } from "../../../../context/HomepageContext";
 export default function Home_Page_Section__23() {
   const { toggleStates, handleToggle, setIsOpenPopupModal } =
     useAdminGlobalContext();
-  const { homePage, setCurrentBanner, setIsEditMode, setFormData } =
-    useHomePageContext();
+  const {
+    homePage,
+    setCurrentBanner,
+    setIsEditMode,
+    setFormData,
+    handleDelete,
+    setSelectedMainBanner1,
+  } = useHomePageContext();
 
   // Filter banners for layoutNumber 23
   const sectionBanners = homePage.filter(
@@ -24,6 +30,21 @@ export default function Home_Page_Section__23() {
       home_page_testimonial: "",
       home_page_image: null,
     }));
+    setIsOpenPopupModal((prev) => ({
+      ...prev,
+      testimonials_Reviews_Slider_Section_23: true,
+    }));
+  };
+
+  const handleEdit = (testimonial) => {
+    setCurrentBanner(testimonial);
+    setIsEditMode(true);
+    setFormData({
+      ...testimonial,
+      layoutNumber: testimonial.home_page_layout_number?.layoutNumber || 23,
+      home_page_image: testimonial.home_page_image?._id || null,
+    });
+    setSelectedMainBanner1(testimonial.home_page_image?._id || null);
     setIsOpenPopupModal((prev) => ({
       ...prev,
       testimonials_Reviews_Slider_Section_23: true,
@@ -70,24 +91,43 @@ export default function Home_Page_Section__23() {
                     <tbody className="divide-y divide-gray-200">
                       {sectionBanners.map((testimonial, index) => (
                         <tr key={index}>
-                          <td>{testimonial.home_page_testimonial}</td>
+                          <td style={{ width: "730px" }}>
+                            {`"${testimonial.home_page_testimonial}"`}
+                          </td>
                           <td className="nowrap">
                             <div className="flex items-center space-x-3">
                               <div className="flex-none">
-                                <img
-                                  className="w-10 h-10 overflow-hidden bg-gray-500 rounded-full"
-                                  src={
-                                    testimonial.customer_image ||
-                                    "images/default-avatar.png"
-                                  }
-                                  alt=""
-                                  loading="lazy"
-                                />
+                                {testimonial.home_page_image?.filePath ? (
+                                  <img
+                                    className="w-10 h-10 overflow-hidden bg-gray-500 rounded-full"
+                                    src={`http://localhost:7000${testimonial.home_page_image.filePath}`}
+                                    alt={testimonial.home_page_image.filename}
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <div className="flex items-center justify-center w-full h-full text-sm text-gray-500">
+                                    <svg
+                                      className="w-6 h-6 text-gray-500"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                )}
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium truncate customer-name">
                                   <span className="text-gray-900">
-                                    {testimonial.customer_name || "Anonymous"}
+                                    {testimonial.home_page_section_title ||
+                                      "Anonymous"}
                                   </span>
                                 </p>
                               </div>
@@ -99,7 +139,7 @@ export default function Home_Page_Section__23() {
                                 className="btn-circle"
                                 aria-label="Edit"
                                 onClick={() => {
-                                  // handleEdit(testimonial);
+                                  handleEdit(testimonial);
                                 }}
                               >
                                 <svg
@@ -122,7 +162,7 @@ export default function Home_Page_Section__23() {
                                 className="btn-circle"
                                 aria-label="Delete"
                                 onClick={() => {
-                                  // handleDelete(testimonial._id);
+                                  handleDelete(testimonial._id);
                                 }}
                               >
                                 <svg
@@ -174,14 +214,14 @@ export default function Home_Page_Section__23() {
               Add Testimonial
             </button>
 
-            <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
+            {/* <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
               <button type="button" className="btn btn-dark-light">
                 Discard
               </button>
               <button type="button" className="btn btn-primary">
                 Save
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       )}

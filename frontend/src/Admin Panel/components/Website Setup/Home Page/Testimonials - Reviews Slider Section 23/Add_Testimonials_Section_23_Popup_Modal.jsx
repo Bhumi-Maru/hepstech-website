@@ -89,7 +89,8 @@ export default function Add_Testimonials_Section_23_Popup_Modal() {
                 {/* Main Title */}
                 <div>
                   <label htmlFor="home_page_section_title">
-                    Main Category Title
+                    {/* Main Category Title */}
+                    Customer Name
                   </label>
                   <input
                     type="text"
@@ -170,7 +171,7 @@ export default function Add_Testimonials_Section_23_Popup_Modal() {
                   >
                     Discard
                   </button>
-                  <button type="button" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary">
                     {isEditMode ? "Update" : "Add"}
                   </button>
                 </div>
