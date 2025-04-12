@@ -306,9 +306,9 @@ export default function Home_Page_Section__2() {
                 <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
                   <button
                     className="btn btn-dark-light"
-                    // onClick={() =>
-                    //   setFormData((prev) => ({ ...prev, sectionTitle: "" }))
-                    // }
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, sectionTitle: "" }))
+                    }
                   >
                     Discard
                   </button>

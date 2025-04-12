@@ -120,7 +120,6 @@ export default function Category_Slider_8_Items_Popup_Modal() {
                   </div>
 
                   {/* MAIN CATEGORY */}
-                  {/* MAIN CATEGORY */}
                   <div>
                     <label htmlFor="selectMainCategory">
                       Select Main Category
