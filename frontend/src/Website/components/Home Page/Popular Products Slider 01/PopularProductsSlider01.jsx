@@ -7,6 +7,8 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
     useHomePageContext();
   const [products, setProducts] = useState([]);
   const [banner, setBanner] = useState(null);
+  // console.log("product issss", products);
+  // console.log("banner is", banner);
 
   // Get the first banner with layoutNumber === 7
   // const banner = homePage.find(
@@ -14,9 +16,9 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   // );
 
   useEffect(() => {
-    const foundBanner = homePage.find(
-      (item) => item?.home_page_layout_number?.layoutNumber === 7
-    );
+    const foundBanner = homePage.find((item) => {
+      return item?.home_page_layout_number?.layoutNumber === 7;
+    });
     setBanner(foundBanner);
   }, [homePage]);
 
