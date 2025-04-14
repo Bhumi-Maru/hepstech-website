@@ -1,8 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import { useHeaderContext } from "../../../../context/Header_Menu_Context";
 
 export default function Home_Page_Section_9() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  const { mainCategory, subCategory, products } = useHeaderContext();
+  const [formData9, setFormData9] = useState({
+    layoutNumber: "9",
+    home_page_section_title: "",
+    home_page_main_category: "",
+    home_page_sub_category: "",
+    home_page_layout_type: "",
+  });
+
+  const handleInputChange9 = (e) => {
+    const { name, value } = e.target;
+    setFormData9((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave9 = async () => {
+    try {
+      // Example API request (replace URL with your actual API endpoint)
+      const response = await fetch("http://localhost:7000/api/homepage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData9),
+      });
+
+      const result = await response.json();
+      console.log("Saved successfully:", result);
+      // alert("Layout 9 data saved!");
+
+      setFormData9({
+        layoutNumber: "9",
+        home_page_section_title: "",
+        home_page_main_category: "",
+        home_page_sub_category: "",
+        home_page_layout_type: "",
+      });
+    } catch (error) {
+      console.error("Error saving layout 9 data:", error);
+      alert("Failed to save layout 9.");
+    }
+  };
+
   return (
     <>
       {/* [HOME PAGE SECTION 9] Popular Products Slider 02  */}
@@ -13,7 +59,7 @@ export default function Home_Page_Section_9() {
             for="popularProducts02Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Popular Products Slider 02
+            Popular Products Slider 02 (Layout 9)
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">
@@ -38,7 +84,9 @@ export default function Home_Page_Section_9() {
                   <div className="mt-1 form-input">
                     <input
                       type="text"
-                      name=""
+                      name="home_page_section_title"
+                      value={formData9.home_page_section_title}
+                      onChange={handleInputChange9}
                       id=""
                       placeholder="Enter section title"
                       className=""
@@ -47,76 +95,65 @@ export default function Home_Page_Section_9() {
                   <div></div>
                 </div>
 
+                {/* MAIN CATEGORY */}
                 <div>
-                  <label for="selectMainCategory">Select Main Category</label>
+                  <label htmlFor="selectMainCategory">
+                    Select Main Category
+                  </label>
                   <div className="relative mt-1">
                     <select
                       className=""
                       id="selectMainCategory"
-                      name="selectMainCategory"
+                      name="home_page_main_category"
+                      value={formData9.home_page_main_category || ""}
+                      onChange={handleInputChange9}
                     >
                       <option value="">Select Main Category</option>
-                      <option value="">Main Category 1</option>
-                      <option value="">Main Category 2</option>
-                      <option value="">Main Category 3</option>
+                      {mainCategory.map((mainCategory) => (
+                        <option key={mainCategory._id} value={mainCategory._id}>
+                          {mainCategory.main_category_title}
+                        </option>
+                      ))}
                     </select>
-
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
+                {/* SUB CATEGORY */}
                 <div>
-                  <label for="selectSubCategory">Select Sub Category</label>
+                  <label htmlFor="selectSubCategory">Select Sub Category</label>
                   <div className="relative mt-1">
                     <select
                       className=""
                       id="selectSubCategory"
-                      name="selectSubCategory"
+                      name="home_page_sub_category"
+                      value={formData9.home_page_sub_category || ""}
+                      onChange={handleInputChange9}
                     >
                       <option value="">Select Sub Category</option>
-                      <option value="">Sub Category 1</option>
-                      <option value="">Sub Category 2</option>
-                      <option value="">Sub Category 3</option>
+                      {subCategory.map((subCategory) => (
+                        <option key={subCategory._id} value={subCategory._id}>
+                          {subCategory.sub_category_title}
+                        </option>
+                      ))}
                     </select>
-
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
+                {/* LAYOUT TYPE [4,5,6] */}
                 <div>
-                  <label for=""> Select Layout Type </label>
+                  <label>Select Layout Type</label>
                   <div className="mt-1 form-input">
-                    <select name="" id="" placeholder="0" className="">
-                      <option value="">4</option>
-                      <option value="">5</option>
-                      <option value="">6</option>
+                    <select
+                      name="home_page_layout_type"
+                      value={formData9.home_page_layout_type || ""}
+                      onChange={handleInputChange9}
+                    >
+                      <option value="">Select Layout</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                   </div>
-                  <div></div>
                 </div>
               </div>
 
@@ -150,7 +187,11 @@ export default function Home_Page_Section_9() {
                     Discard
                   </button>
 
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    // type="submit"
+                    className="btn btn-primary"
+                    onClick={handleSave9}
+                  >
                     Save
                   </button>
                 </div>

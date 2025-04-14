@@ -1,20 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
+import { useHeaderContext } from "../../../../context/Header_Menu_Context";
 
 export default function Home_Page_Section__14() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
+  const { mainCategory, subCategory, products } = useHeaderContext();
+
+  const [formData14, setFormData14] = useState({
+    layoutNumber: "14",
+    home_page_section_title: "",
+    home_page_main_category: "",
+    home_page_sub_category: "",
+    home_page_layout_type: "",
+  });
+
+  const handleInputChange14 = (e) => {
+    const { name, value } = e.target;
+    setFormData14((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave14 = async () => {
+    try {
+      const response = await fetch("http://localhost:7000/api/homepage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData14),
+      });
+
+      const result = await response.json();
+      console.log("Saved successfully:", result);
+
+      setFormData14({
+        layoutNumber: "14",
+        home_page_section_title: "",
+        home_page_main_category: "",
+        home_page_sub_category: "",
+        home_page_layout_type: "",
+      });
+    } catch (error) {
+      console.error("Error saving layout 14 data:", error);
+      alert("Failed to save layout 14.");
+    }
+  };
+
+  const handleDiscard = () => {
+    setFormData14({
+      layoutNumber: "14",
+      home_page_section_title: "",
+      home_page_main_category: "",
+      home_page_sub_category: "",
+      home_page_layout_type: "",
+    });
+  };
+
   return (
     <>
       {/* [HOME PAGE SECTION 14] Best Selling Products Slider 02   */}
       <div className="px-4 py-5 bg-white rounded-lg shadow sm:p-6">
         <div className="flex items-center justify-between space-x-8">
           <label
-            for="bestSellingProducts02Status"
+            htmlFor="bestSellingProducts02Status"
             className="text-lg font-medium leading-6 text-gray-900 cursor-pointer"
           >
-            Best Selling Products Slider 02
-            {/* &nbsp;
-            <span className="badge-success">(Layout 14)</span> */}
+            Best Selling Products Slider 02 (Layout 14)
           </label>
 
           <div className="flex-shrink-0 ml-4 toggle-switch">
@@ -22,108 +75,90 @@ export default function Home_Page_Section__14() {
               type="checkbox"
               id="bestSellingProducts02Status"
               role="checkbox"
-              tabindex="0"
+              tabIndex="0"
               checked={toggleStates.best_Selling_Products_Slider_02_Section_14}
               onChange={() =>
                 handleToggle("best_Selling_Products_Slider_02_Section_14")
               }
             />
-            <label for="bestSellingProducts02Status"></label>
+            <label htmlFor="bestSellingProducts02Status"></label>
           </div>
         </div>
 
         {toggleStates.best_Selling_Products_Slider_02_Section_14 && (
           <>
-            <div
-              className="mt-4"
-              id="bestSellingProducts02Content"
-              style={{ display: "block" }}
-            >
+            <div className="mt-4" id="bestSellingProducts02Content">
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-4">
                 <div>
-                  <label for=""> Section Title </label>
+                  <label>Section Title</label>
                   <div className="mt-1 form-input">
                     <input
                       type="text"
-                      name=""
-                      id=""
+                      name="home_page_section_title"
+                      value={formData14.home_page_section_title}
+                      onChange={handleInputChange14}
                       placeholder="Enter section title"
-                      className=""
                     />
                   </div>
-                  <div></div>
                 </div>
 
+                {/* MAIN CATEGORY */}
                 <div>
-                  <label for="selectMainCategory">Select Main Category</label>
+                  <label htmlFor="selectMainCategory">
+                    Select Main Category
+                  </label>
                   <div className="relative mt-1">
                     <select
-                      className=""
                       id="selectMainCategory"
-                      name="selectMainCategory"
+                      name="home_page_main_category"
+                      value={formData14.home_page_main_category || ""}
+                      onChange={handleInputChange14}
                     >
                       <option value="">Select Main Category</option>
-                      <option value="">Main Category 1</option>
-                      <option value="">Main Category 2</option>
-                      <option value="">Main Category 3</option>
+                      {mainCategory.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.main_category_title}
+                        </option>
+                      ))}
                     </select>
-
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
+                {/* SUB CATEGORY */}
                 <div>
-                  <label for="selectSubCategory">Select Sub Category</label>
+                  <label htmlFor="selectSubCategory">Select Sub Category</label>
                   <div className="relative mt-1">
                     <select
-                      className=""
                       id="selectSubCategory"
-                      name="selectSubCategory"
+                      name="home_page_sub_category"
+                      value={formData14.home_page_sub_category || ""}
+                      onChange={handleInputChange14}
                     >
                       <option value="">Select Sub Category</option>
-                      <option value="">Sub Category 1</option>
-                      <option value="">Sub Category 2</option>
-                      <option value="">Sub Category 3</option>
+                      {subCategory.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.sub_category_title}
+                        </option>
+                      ))}
                     </select>
-
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
+                {/* LAYOUT TYPE [4,5,6] */}
                 <div>
-                  <label for=""> Select Layout Type </label>
+                  <label>Select Layout Type</label>
                   <div className="mt-1 form-input">
-                    <select name="" id="" placeholder="0" className="">
-                      <option value="">4</option>
-                      <option value="">5</option>
-                      <option value="">6</option>
+                    <select
+                      name="home_page_layout_type"
+                      value={formData14.home_page_layout_type || ""}
+                      onChange={handleInputChange14}
+                    >
+                      <option value="">Select Layout</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                   </div>
-                  <div></div>
                 </div>
               </div>
 
@@ -131,8 +166,6 @@ export default function Home_Page_Section__14() {
                 <button
                   type="button"
                   className="w-full btn btn-white sm:w-auto"
-                  data-toggle="modal"
-                  data-target="#selectProductsModal"
                   onClick={() =>
                     toggleModal("best_Selling_Products_Slider_02_Section_14")
                   }
@@ -145,21 +178,29 @@ export default function Home_Page_Section__14() {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    ></path>
+                    />
                   </svg>
                   Add Products
                 </button>
 
                 <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
-                  <button type="button" className="btn btn-dark-light">
+                  <button
+                    type="button"
+                    className="btn btn-dark-light"
+                    onClick={handleDiscard}
+                  >
                     Discard
                   </button>
 
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleSave14}
+                  >
                     Save
                   </button>
                 </div>

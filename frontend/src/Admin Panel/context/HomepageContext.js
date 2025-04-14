@@ -14,9 +14,9 @@ export const HomePageProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentBanner, setCurrentBanner] = useState(null);
-  console.log("current home page", currentBanner);
+  // console.log("current home page", currentBanner);
   const [isEditMode, setIsEditMode] = useState(false);
-  console.log("edit mode", isEditMode);
+  // console.log("edit mode", isEditMode);
 
   const [addMainBannerStatus, setAddMainBannerStatus] = useState(true); // default 'published'
   const [selectedMainBanner1, setSelectedMainBanner1] = useState(null);
@@ -91,6 +91,7 @@ export const HomePageProvider = ({ children }) => {
             currentBanner.home_page_layout_number?.layoutNumber || 1,
           home_page_section_title: currentBanner?.home_page_section_title || "",
           sectionTitle: currentBanner?.sectionTitle || "",
+          home_page_layout_type: currentBanner?.home_page_layout_type || "",
           home_page_testimonial: currentBanner?.home_page_testimonial || "",
         });
         // Set the selected image if it exists
@@ -111,6 +112,7 @@ export const HomePageProvider = ({ children }) => {
           home_page_sub_category: "",
           home_page_products: "",
           home_page_image: "",
+          home_page_layout_type: "",
           home_page_status: "unpublished",
           layoutNumber: 1,
         });
@@ -158,6 +160,7 @@ export const HomePageProvider = ({ children }) => {
         home_page_sub_category: "",
         home_page_products: "",
         home_page_image: null,
+        home_page_layout_type: "",
         home_page_status: "unpublished",
         layoutNumber: 1,
       });
@@ -225,6 +228,7 @@ export const HomePageProvider = ({ children }) => {
       home_page_products: banner.home_page_products?._id || "",
       home_page_status: banner.home_page_status || "unpublished",
       home_page_section_title: banner.home_page_section_title || "",
+      home_page_layout_type: banner.home_page_layout_type || "",
       home_page_testimonial: banner.home_page_testimonial || "",
       home_page_image: banner.home_page_image?._id || null,
       layoutNumber:
