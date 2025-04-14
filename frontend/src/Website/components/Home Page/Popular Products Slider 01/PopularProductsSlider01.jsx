@@ -138,6 +138,12 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
                     className="product-card swiper-slide"
                     style={{ width: "295px" }}
                   >
+                    {product.productLabel === "out of stock" && (
+                      <span className="status-badge out-of-stock">
+                        {product.productLabel}
+                      </span>
+                    )}
+
                     <button type="button" className="btn-wishlist-top">
                       <svg
                         className="w-5 h-5"
