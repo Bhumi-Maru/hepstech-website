@@ -20,10 +20,19 @@ export const ProductVariantProvider = ({ children }) => {
       alert("Please enter a color name");
       return;
     }
+    // Check if color already exists
+    if (
+      colors.some(
+        (color) => color.name.toLowerCase() === newColor.name.toLowerCase()
+      )
+    ) {
+      alert("Color with this name already exists");
+      return;
+    }
     setColors([...colors, newColor]);
-    setNewColor({ name: "", hex: "#000000" }); // Reset after adding
+    setNewColor({ name: "", hex: "#000000" });
   };
-  // Remove a color
+
   const removeColor = (index) => {
     setColors(colors.filter((_, i) => i !== index));
   };

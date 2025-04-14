@@ -22,6 +22,8 @@ const createProduct = async (req, res) => {
       seoTitle,
       seoDescription,
       seoUrl,
+      enableColorOptions,
+      colorOptions,
     } = req.body;
 
     console.log(req.body); // Debugging incoming data
@@ -45,6 +47,24 @@ const createProduct = async (req, res) => {
       gallery: req.files["galleryImages"]?.map((f) => f.originalname),
       variants: req.files["variantImages"]?.map((f) => f.originalname),
     });
+
+    // Handle Color Options if enabled
+    let colorOptionsArray = [];
+    if (enableColorOptions === "true" && colorOptions) {
+      try {
+        colorOptionsArray = JSON.parse(colorOptions); // Parse colorOptions if passed as a JSON string
+      } catch (error) {
+        console.error("Error parsing colorOptions:", error);
+      }
+    }
+
+    console.log("Color Options:", colorOptionsArray); // Check the parsed data
+
+    // Map the colors to match the schema
+    colorOptionsArray = colorOptionsArray.map((color) => ({
+      name: color.name,
+      hexCode: color.hex,
+    }));
 
     // Validate Main & Subcategory
     const mainCategory = await MainCategory.findById(productMainCategory);
@@ -101,6 +121,8 @@ const createProduct = async (req, res) => {
       pricing,
       productType,
       variantOptions: productType === "variant" ? variantOptions : [],
+      enableColorOptions: enableColorOptions === "true",
+      colorOptions: enableColorOptions === "true" ? colorOptionsArray : [], // Store the color options
       productVariants: [],
       tax,
       productStatus,
@@ -190,6 +212,7 @@ const updateProduct = async (req, res) => {
       seoDescription,
       seoUrl,
       productType,
+      enableColorOptions,
     } = req.body;
 
     // Handle File Uploads
@@ -214,6 +237,12 @@ const updateProduct = async (req, res) => {
         },
         { upsert: true, new: true }
       );
+    }
+
+    // Handle Color Options if enabled
+    let colorOptions = productExists.colorOptions;
+    if (enableColorOptions === "true" && req.body["colorOptions"]) {
+      colorOptions = JSON.parse(req.body["colorOptions"]);
     }
 
     // Parse JSON Fields
@@ -354,6 +383,7 @@ const updateProduct = async (req, res) => {
         pricing,
         tax,
         galleryImages, // Ensure images are updated properly
+        colorOptions,
         productType,
         variantOptions,
         productVariants,
@@ -361,12 +391,10 @@ const updateProduct = async (req, res) => {
       { new: true }
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Product updated successfully",
-        product: updatedProduct,
-      });
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
   } catch (error) {
     console.error("Error updating product:", error);
     res.status(500).json({ message: "Failed to update product", error });

@@ -73,13 +73,12 @@ export default function Create_Product_5_Variant() {
   // Update the handleImageUpload function to handle both new and existing images
   const handleImageUpload = (variantId, file) => {
     const imagePreview = file ? URL.createObjectURL(file) : null;
-
     setProductVariants(
       productVariants.map((variant) =>
         variant.id === variantId
           ? {
               ...variant,
-              image: file || variant.image, // Keep existing image if no new file
+              image: file || variant.image, // Store the File object for new uploads
               imagePreview: imagePreview || variant.imagePreview,
             }
           : variant

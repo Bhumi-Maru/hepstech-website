@@ -1,3 +1,4 @@
+const Product = require("../models/CreateProductModel");
 const File = require("../models/fileModel");
 const HomePage = require("../models/HomePageModel");
 const Layout = require("../models/LayoutOfHomePageModel");
@@ -222,6 +223,45 @@ const deleteAll = async (req, res) => {
   }
 };
 
+///////////////////////////GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
+
+const getProductsByMainCategory = async (req, res) => {
+  try {
+    const { mainCategoryId } = req.params;
+
+    const products = await Product.find({ productMainCategory: mainCategoryId })
+      .populate(
+        "productMainCategory",
+        "_id main_category_title main_image main_category_status add_banner_image add_banner_image_status main_category_id"
+      )
+      .populate(
+        "productSubCategory",
+        "_id sub_category_title main_category_id sub_image sub_category_status sub_category_id"
+      )
+      .populate(
+        "productVariants",
+        "_id  productId variantAttributes mrpPrice sellingPrice sku quantity image"
+      )
+      .select(
+        "_id productTitle productMainImage pricing productPurchaseMinQuantity productPurchaseMaxQuantity productType enableColorOptions colorOptions variantOptions productVariants tax productStatus productStockVisibility productLabel createdAt updatedAt description gallery seo"
+      );
+
+    if (products.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this main category" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Products fetched successfully", products });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching products", error: err.message });
+  }
+};
+
 ////////////////////////////////////////////// LAYOUT ///////////////////////////////////////////////////////
 
 // Create a new layout
@@ -402,4 +442,5 @@ module.exports = {
   deleteLayoutById,
   updateLayoutByNumber,
   updateLayoutSectionTitle,
+  getProductsByMainCategory,
 };

@@ -16,7 +16,9 @@ export const HomePageProvider = ({ children }) => {
   const [currentBanner, setCurrentBanner] = useState(null);
   // console.log("current home page", currentBanner);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [productByMain, setProductByMain] = useState([]);
   // console.log("edit mode", isEditMode);
+  console.log("ressssss", productByMain);
 
   const [addMainBannerStatus, setAddMainBannerStatus] = useState(true); // default 'published'
   const [selectedMainBanner1, setSelectedMainBanner1] = useState(null);
@@ -268,6 +270,11 @@ export const HomePageProvider = ({ children }) => {
         selectedMainBanner1,
         setSelectedMainBanner1,
         saveSectionTitle,
+        productByMain,
+        setProductByMain,
+        setLoading,
+        setError,
+        // fetchProductsByMainCategory,
       }}
     >
       {children}

@@ -13,6 +13,7 @@ const {
   deleteLayoutById,
   updateLayoutByNumber,
   updateLayoutSectionTitle,
+  getProductsByMainCategory,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
@@ -33,5 +34,14 @@ HomePageRouter.get("/:id", getHomePageById);
 HomePageRouter.put("/:id", updateHomePageById);
 HomePageRouter.delete("/:id", deleteHomePageById);
 HomePageRouter.delete("/", deleteAll);
+
+///////////////////////////START GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
+
+HomePageRouter.get(
+  "/products/main-category/:mainCategoryId",
+  getProductsByMainCategory
+);
+
+///////////////////////////END GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
 
 module.exports = HomePageRouter;

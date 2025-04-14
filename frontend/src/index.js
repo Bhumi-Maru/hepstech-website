@@ -38,8 +38,8 @@ root.render(
       <AdminGlobalProvider>
         <AllMediaProvider>
           <SubCategoryProvider>
-            <ProductProvider>
-              <ProductVariantProvider>
+            <ProductVariantProvider>
+              <ProductProvider>
                 <HeaderSectionProvider>
                   <FooterSectionProvider>
                     <PageProvider>
@@ -51,8 +51,8 @@ root.render(
                     </PageProvider>
                   </FooterSectionProvider>
                 </HeaderSectionProvider>
-              </ProductVariantProvider>
-            </ProductProvider>
+              </ProductProvider>
+            </ProductVariantProvider>
           </SubCategoryProvider>
         </AllMediaProvider>
       </AdminGlobalProvider>

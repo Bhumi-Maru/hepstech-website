@@ -10,6 +10,8 @@ export default function Horizontal_Banner_Small_1_Item() {
       item.home_page_layout_number.layoutNumber === 22 &&
       item.home_page_status === "published"
   );
+
+  console.log("bannrer 333333", banner);
   return (
     <>
       {/* <!-- HORIZONTAL BANNER - SMALL - 1 ITEM --> */}

@@ -56,6 +56,12 @@ const CreateProductSchema = new mongoose.Schema(
     },
     // Variants - Only for "variant" products
     enableColorOptions: { type: Boolean, default: false },
+    colorOptions: [
+      {
+        name: { type: String, required: true },
+        hexCode: { type: String, required: true },
+      },
+    ],
     variantOptions: [
       {
         name: { type: String, required: true }, // e.g., Color, Size , weight
