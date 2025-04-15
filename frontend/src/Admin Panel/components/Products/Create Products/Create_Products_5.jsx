@@ -15,11 +15,28 @@ export default function Create_Products_5() {
     setProductType,
   } = useProductContext();
 
+  // const handlePricingChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setPricing((prev) => ({
+  //     ...prev,
+  //     [name]: value !== "" ? parseFloat(value) || 0 : "",
+  //   }));
+  // };
+
   const handlePricingChange = (e) => {
     const { name, value } = e.target;
+
+    // Convert SKU to uppercase
+    const processedValue = name === "sku" ? value.toUpperCase() : value;
+
     setPricing((prev) => ({
       ...prev,
-      [name]: value !== "" ? parseFloat(value) || 0 : "",
+      [name]:
+        name === "sku"
+          ? processedValue
+          : value !== ""
+          ? parseFloat(value) || 0
+          : "",
     }));
   };
 

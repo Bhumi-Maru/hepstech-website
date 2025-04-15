@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import { useHeaderContext } from "../../../../context/Header_Menu_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
 
 export default function Home_Page_Section__20() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
   const { mainCategory, subCategory } = useHeaderContext();
+  const { saveSectionTitle } = useHomePageContext();
 
   const [formData20, setFormData20] = useState({
     layoutNumber: "20",
-    home_page_section_title: "",
+    // home_page_section_title: "",
     home_page_main_category: "",
     home_page_sub_category: "",
     home_page_layout_type: "",
+    sectionTitle: localStorage.getItem("sectionTitle-20") || "", // Initialize from localStorage
   });
 
   const handleInputChange20 = (e) => {
@@ -22,8 +25,22 @@ export default function Home_Page_Section__20() {
     }));
   };
 
+  // Save to localStorage whenever sectionTitle changes
+  useEffect(() => {
+    if (formData20.sectionTitle) {
+      localStorage.setItem("sectionTitle-20", formData20.sectionTitle);
+    }
+  }, [formData20.sectionTitle]);
+
   const handleSave20 = async () => {
     try {
+      // First save the section title if it exists
+      if (formData20.sectionTitle) {
+        await saveSectionTitle(formData20.sectionTitle, 20);
+        localStorage.setItem("sectionTitle-20", formData20.sectionTitle); // Ensure it's saved
+      }
+
+      // Example API request (replace URL with your actual API endpoint)
       const response = await fetch("http://localhost:7000/api/homepage", {
         method: "POST",
         headers: {
@@ -35,13 +52,15 @@ export default function Home_Page_Section__20() {
       const result = await response.json();
       console.log("Saved successfully:", result);
 
-      setFormData20({
+      // Reset form but keep the sectionTitle
+      setFormData20((prev) => ({
+        ...prev,
         layoutNumber: "20",
-        home_page_section_title: "",
         home_page_main_category: "",
         home_page_sub_category: "",
         home_page_layout_type: "",
-      });
+        // sectionTitle is not reset here, so it keeps its value
+      }));
     } catch (error) {
       console.error("Error saving layout 20 data:", error);
       alert("Failed to save layout 20.");
@@ -51,7 +70,7 @@ export default function Home_Page_Section__20() {
   const handleDiscard = () => {
     setFormData20({
       layoutNumber: "20",
-      home_page_section_title: "",
+      // home_page_section_title: "",
       home_page_main_category: "",
       home_page_sub_category: "",
       home_page_layout_type: "",
@@ -100,8 +119,8 @@ export default function Home_Page_Section__20() {
                   <div className="mt-1 form-input">
                     <input
                       type="text"
-                      name="home_page_section_title"
-                      value={formData20.home_page_section_title}
+                      name="sectionTitle"
+                      value={formData20.sectionTitle || ""}
                       onChange={handleInputChange20}
                       placeholder="Enter section title"
                     />

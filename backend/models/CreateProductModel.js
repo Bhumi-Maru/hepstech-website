@@ -59,7 +59,7 @@ const CreateProductSchema = new mongoose.Schema(
     colorOptions: [
       {
         name: { type: String, required: true },
-        hexCode: { type: String, required: true },
+        hex: { type: String, required: true },
       },
     ],
     variantOptions: [

@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHomePageContext } from "../../../../Admin Panel/context/HomepageContext";
+import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 
 export default function PopularProductsSlider01({ setIsAddToCartModal }) {
-  const { homePage, setError, setLoading, setProductByMain, productByMain } =
-    useHomePageContext();
-  const [products, setProducts] = useState([]);
-  const [banner, setBanner] = useState(null);
-  // console.log("product issss", products);
-  // console.log("banner is", banner);
+  const { getDisplayPrice } = useHomepageHelpers();
+  const { homePage, fetchProducts, setBanner, products } = useHomePageContext();
 
-  // Get the first banner with layoutNumber === 7
-  // const banner = homePage.find(
-  //   (item) => item?.home_page_layout_number?.layoutNumber === 7
-  // );
+  const sectionTitle = localStorage.getItem("sectionTitle-7");
 
   useEffect(() => {
     const foundBanner = homePage.find((item) => {
@@ -24,85 +18,14 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
 
   // Fetch all products and filter by main category if banner exists
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        // First fetch all products
-        const productsResponse = await axios.get(
-          "http://localhost:7000/api/products/"
-        );
-
-        // If we have a banner with a main category, filter products
-        if (banner?.home_page_main_category?._id) {
-          const filteredProducts = productsResponse.data.filter(
-            (product) =>
-              product.productMainCategory?._id ===
-              banner.home_page_main_category._id
-          );
-          setProducts(filteredProducts);
-        } else {
-          // If no banner or no category, show all products
-          setProducts(productsResponse.data);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
   }, []);
-
-  const fetchProductsByMainCategory = async (mainCategoryId) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}`
-      );
-      setProductByMain(response.data.products);
-    } catch (error) {
-      console.error("Error fetching products by category:", error);
-      setError(error.message);
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Helper function to get display price based on product type
-  const getDisplayPrice = (product) => {
-    if (
-      product.productType === "variant" &&
-      Array.isArray(product.productVariants) &&
-      product.productVariants.length > 0
-    ) {
-      const variant = product.productVariants[0];
-      console.log("variant product", product.productVariants[0]);
-      console.log("Variant Product - Selling Price:", variant.sellingPrice);
-      console.log("Variant Product - MRP Price:", variant.mrpPrice);
-      return {
-        sellingPrice: variant.sellingPrice,
-        mrpPrice: variant.mrpPrice,
-      };
-    } else {
-      const sellingPrice = product.pricing?.sellingPrice || 0;
-      const mrpPrice = product.pricing?.mrpPrice || 0;
-      console.log("Simple Product - Selling Price:", sellingPrice);
-      console.log("Simple Product - MRP Price:", mrpPrice);
-      return {
-        sellingPrice,
-        mrpPrice,
-      };
-    }
-  };
 
   return (
     <section className="section-slider">
       <div className="container">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Popular Products 01</h2>
+          <h2 className="text-lg font-semibold">{sectionTitle}</h2>
           <a href="#" title="" className="btn-link" role="button">
             View All
             <svg

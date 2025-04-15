@@ -38,6 +38,13 @@ export const HomePageProvider = ({ children }) => {
     // layoutNumber: 1,
   });
 
+  // ////////////////////////////////////////START PRODUCT DISPLAY IN WEBSITE FRONTEND//////////////////////////////////
+
+  const [products, setProducts] = useState([]);
+  const [banner, setBanner] = useState(null);
+
+  // ////////////////////////////////////////END PRODUCT DISPLAY IN WEBSITE FRONTEND////////////////////////////////////
+
   // Add this useEffect to keep formData in sync
   // useEffect(() => {
   //   if (selectedMainBanner1) {
@@ -201,6 +208,34 @@ export const HomePageProvider = ({ children }) => {
     }
   };
 
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      // First fetch all products
+      const productsResponse = await axios.get(
+        "http://localhost:7000/api/products/"
+      );
+
+      // If we have a banner with a main category, filter products
+      if (banner?.home_page_main_category?._id) {
+        const filteredProducts = productsResponse.data.filter(
+          (product) =>
+            product.productMainCategory?._id ===
+            banner.home_page_main_category._id
+        );
+        setProducts(filteredProducts);
+      } else {
+        // If no banner or no category, show all products
+        setProducts(productsResponse.data);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchHomePage();
   }, []);
@@ -274,6 +309,12 @@ export const HomePageProvider = ({ children }) => {
         setProductByMain,
         setLoading,
         setError,
+        fetchProducts,
+        products,
+        setProducts,
+        banner,
+        setBanner,
+        setProductByMain,
         // fetchProductsByMainCategory,
       }}
     >

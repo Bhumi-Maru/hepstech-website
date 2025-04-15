@@ -1,4 +1,3 @@
-// Product_Variant_Context.jsx
 import { createContext, useContext, useState } from "react";
 
 export const ProductVariantContext = createContext();
@@ -11,33 +10,63 @@ export const ProductVariantProvider = ({ children }) => {
   const [colors, setColors] = useState([]);
   const [options, setOptions] = useState([]);
   const [variants, setVariants] = useState([]);
+  const [isEditingColor, setIsEditingColor] = useState(false);
   const [nextVariantId, setNextVariantId] = useState(1);
-  const [newColor, setNewColor] = useState({ name: "", hex: "#000000" }); // Add this line
+  const [newColor, setNewColor] = useState({
+    name: "",
+    hex: "#000000",
+    _id: null,
+  });
 
-  // Add a new color
   const addColor = () => {
     if (!newColor.name.trim()) {
       alert("Please enter a color name");
       return;
     }
-    // Check if color already exists
-    if (
-      colors.some(
-        (color) => color.name.toLowerCase() === newColor.name.toLowerCase()
-      )
-    ) {
+
+    const nameExists = colors.some(
+      (color) =>
+        color.name.toLowerCase() === newColor.name.toLowerCase() &&
+        (!isEditingColor || color._id !== newColor._id)
+    );
+
+    if (nameExists) {
       alert("Color with this name already exists");
       return;
     }
-    setColors([...colors, newColor]);
-    setNewColor({ name: "", hex: "#000000" });
+
+    if (isEditingColor) {
+      setColors(
+        colors.map((color) => (color._id === newColor._id ? newColor : color))
+      );
+    } else {
+      setColors([
+        ...colors,
+        {
+          ...newColor,
+          _id: newColor._id || Date.now().toString(),
+        },
+      ]);
+    }
+
+    setNewColor({ name: "", hex: "#000000", _id: null });
+    setIsEditingColor(false);
   };
 
-  const removeColor = (index) => {
-    setColors(colors.filter((_, i) => i !== index));
+  const editColor = (color) => {
+    setNewColor(color);
+    setIsEditingColor(true);
   };
 
-  // Add a new option
+  const cancelEditColor = () => {
+    setNewColor({ name: "", hex: "#000000", _id: null });
+    setIsEditingColor(false);
+  };
+
+  const removeColor = (colorId) => {
+    setColors(colors.filter((color) => color._id !== colorId));
+  };
+
   const addOption = () => {
     if (options.length >= 3) {
       alert("You can only add up to 3 options");
@@ -49,15 +78,12 @@ export const ProductVariantProvider = ({ children }) => {
     ]);
   };
 
-  // Remove an option
   const removeOption = (index) => {
     setOptions(options.filter((_, i) => i !== index));
   };
 
-  // Add a value to an option
   const addOptionValue = (optionIndex, value) => {
     if (!value.trim()) return;
-
     setOptions((prevOptions) => {
       const updatedOptions = [...prevOptions];
       if (!updatedOptions[optionIndex].values.includes(value)) {
@@ -70,7 +96,6 @@ export const ProductVariantProvider = ({ children }) => {
     });
   };
 
-  // Remove a value from an option
   const removeOptionValue = (optionIndex, valueIndex) => {
     setOptions((prevOptions) => {
       const updatedOptions = [...prevOptions];
@@ -81,7 +106,6 @@ export const ProductVariantProvider = ({ children }) => {
     });
   };
 
-  // Add a new variant
   const addVariant = () => {
     const newVariant = {
       id: nextVariantId,
@@ -99,12 +123,10 @@ export const ProductVariantProvider = ({ children }) => {
     setNextVariantId(nextVariantId + 1);
   };
 
-  // Remove a variant
   const removeVariant = (id) => {
     setVariants(variants.filter((v) => v.id !== id));
   };
 
-  // Handle variant field changes
   const handleVariantChange = (id, field, value) => {
     setVariants((prevVariants) =>
       prevVariants.map((variant) =>
@@ -113,7 +135,6 @@ export const ProductVariantProvider = ({ children }) => {
     );
   };
 
-  // Update option name
   const updateOptionName = (index, name) => {
     const oldName = options[index].name;
     setOptions((prevOptions) => {
@@ -122,7 +143,6 @@ export const ProductVariantProvider = ({ children }) => {
       return updatedOptions;
     });
 
-    // Update variant attributes if option name changed
     if (oldName && oldName !== name) {
       setVariants((prevVariants) =>
         prevVariants.map((variant) => {
@@ -141,22 +161,28 @@ export const ProductVariantProvider = ({ children }) => {
       value={{
         colors,
         setColors,
-        addColor,
-        removeColor,
         options,
         setOptions,
+        variants,
+        setVariants,
+        isEditingColor,
+        setIsEditingColor,
+        nextVariantId,
+        setNextVariantId,
+        newColor,
+        setNewColor,
+        addColor,
+        editColor,
+        cancelEditColor,
+        removeColor,
         addOption,
         removeOption,
         addOptionValue,
         removeOptionValue,
-        updateOptionName,
-        variants,
-        setVariants,
         addVariant,
         removeVariant,
         handleVariantChange,
-        newColor, // Add this
-        setNewColor, // Add this
+        updateOptionName,
       }}
     >
       {children}

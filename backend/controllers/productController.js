@@ -23,7 +23,6 @@ const createProduct = async (req, res) => {
       seoDescription,
       seoUrl,
       enableColorOptions,
-      colorOptions,
     } = req.body;
 
     console.log(req.body); // Debugging incoming data
@@ -49,22 +48,9 @@ const createProduct = async (req, res) => {
     });
 
     // Handle Color Options if enabled
-    let colorOptionsArray = [];
-    if (enableColorOptions === "true" && colorOptions) {
-      try {
-        colorOptionsArray = JSON.parse(colorOptions); // Parse colorOptions if passed as a JSON string
-      } catch (error) {
-        console.error("Error parsing colorOptions:", error);
-      }
-    }
-
-    console.log("Color Options:", colorOptionsArray); // Check the parsed data
-
-    // Map the colors to match the schema
-    colorOptionsArray = colorOptionsArray.map((color) => ({
-      name: color.name,
-      hexCode: color.hex,
-    }));
+    const colorOptions = req.body.colorOptions
+      ? JSON.parse(req.body.colorOptions)
+      : [];
 
     // Validate Main & Subcategory
     const mainCategory = await MainCategory.findById(productMainCategory);
@@ -122,7 +108,7 @@ const createProduct = async (req, res) => {
       productType,
       variantOptions: productType === "variant" ? variantOptions : [],
       enableColorOptions: enableColorOptions === "true",
-      colorOptions: enableColorOptions === "true" ? colorOptionsArray : [], // Store the color options
+      colorOptions,
       productVariants: [],
       tax,
       productStatus,
@@ -194,7 +180,6 @@ const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const productExists = await Product.findById(id);
-
     if (!productExists) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -215,6 +200,8 @@ const updateProduct = async (req, res) => {
       enableColorOptions,
     } = req.body;
 
+    console.log("req body", req.body);
+
     // Handle File Uploads
     const productMainImage = req.files?.productMainImage
       ? req.files.productMainImage[0].path.replace(/\\/g, "/")
@@ -227,7 +214,6 @@ const updateProduct = async (req, res) => {
         file.path.replace(/\\/g, "/")
       );
       galleryImages = [...galleryImages, ...newGalleryImages];
-
       // Update gallery images in DB
       await ProductGalleryImage.findOneAndUpdate(
         { productId: id },
@@ -239,10 +225,44 @@ const updateProduct = async (req, res) => {
       );
     }
 
-    // Handle Color Options if enabled
-    let colorOptions = productExists.colorOptions;
-    if (enableColorOptions === "true" && req.body["colorOptions"]) {
-      colorOptions = JSON.parse(req.body["colorOptions"]);
+    // Handle Color Options
+    let updatedColorOptions = productExists.colorOptions || [];
+    if (enableColorOptions === "true" && req.body.colorOptions) {
+      try {
+        const incomingColors = JSON.parse(req.body.colorOptions);
+        updatedColorOptions = []; // Reset previous colors if we're enabling new ones
+
+        incomingColors.forEach((incomingColor) => {
+          if (incomingColor._id) {
+            const existingIndex = updatedColorOptions.findIndex(
+              (c) => String(c._id) === String(incomingColor._id)
+            );
+            if (existingIndex !== -1) {
+              updatedColorOptions[existingIndex] = {
+                ...updatedColorOptions[existingIndex],
+                name: incomingColor.name,
+                hex: incomingColor.hex,
+              };
+            } else {
+              updatedColorOptions.push({
+                name: incomingColor.name,
+                hex: incomingColor.hex,
+              });
+            }
+          } else {
+            updatedColorOptions.push({
+              name: incomingColor.name,
+              hex: incomingColor.hex,
+            });
+          }
+        });
+      } catch (err) {
+        return res
+          .status(400)
+          .json({ message: "Invalid colorOptions format. Must be JSON." });
+      }
+    } else if (enableColorOptions === "false") {
+      updatedColorOptions = []; // If color options are disabled, clear them
     }
 
     // Parse JSON Fields
@@ -256,7 +276,6 @@ const updateProduct = async (req, res) => {
 
     const variantOptions = parseJSON("variantOptions");
     let productVariants = parseJSON("productVariants");
-
     const descriptionSections = parseJSON("descriptionSections").map(
       (section) => ({
         sectionTitle: section.title,
@@ -313,13 +332,12 @@ const updateProduct = async (req, res) => {
       req.files?.variantImages?.map((file) => file.path.replace(/\\/g, "/")) ||
       [];
 
+    // Handle Product Variants if applicable
     if (productType === "variant") {
       let updatedVariants = [];
-
       for (let i = 0; i < productVariants.length; i++) {
         let variant = productVariants[i];
         let existingVariant = await ProductVariant.findById(variant._id);
-
         if (existingVariant) {
           existingVariant.variantAttributes = variant.variantAttributes;
           existingVariant.mrpPrice = variant.mrpPrice;
@@ -356,7 +374,6 @@ const updateProduct = async (req, res) => {
           updatedVariants.push(newVariant._id);
         }
       }
-
       productVariants = updatedVariants;
     }
 
@@ -382,8 +399,8 @@ const updateProduct = async (req, res) => {
         productMainImage,
         pricing,
         tax,
-        galleryImages, // Ensure images are updated properly
-        colorOptions,
+        galleryImages,
+        colorOptions: updatedColorOptions, // Updated color options here
         productType,
         variantOptions,
         productVariants,

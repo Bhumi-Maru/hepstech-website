@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import { useHeaderContext } from "../../../../context/Header_Menu_Context";
+import { useHomePageContext } from "../../../../context/HomepageContext";
 
 export default function Home_Page_Section_11() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
   const { mainCategory, subCategory, products } = useHeaderContext();
+  const { saveSectionTitle } = useHomePageContext();
   const [formData11, setFormData11] = useState({
     layoutNumber: "11",
-    home_page_section_title: "",
+    // home_page_section_title: "",
     home_page_main_category: "",
     home_page_sub_category: "",
     home_page_layout_type: "",
+    sectionTitle: localStorage.getItem("sectionTitle-11") || "", // Initialize from localStorage
   });
 
   const handleInputChange11 = (e) => {
@@ -21,8 +24,21 @@ export default function Home_Page_Section_11() {
     }));
   };
 
+  // Save to localStorage whenever sectionTitle changes
+  useEffect(() => {
+    if (formData11.sectionTitle) {
+      localStorage.setItem("sectionTitle-11", formData11.sectionTitle);
+    }
+  }, [formData11.sectionTitle]);
+
   const handleSave11 = async () => {
     try {
+      // First save the section title if it exists
+      if (formData11.sectionTitle) {
+        await saveSectionTitle(formData11.sectionTitle, 11);
+        localStorage.setItem("sectionTitle-11", formData11.sectionTitle); // Ensure it's saved
+      }
+
       // Example API request (replace URL with your actual API endpoint)
       const response = await fetch("http://localhost:7000/api/homepage", {
         method: "POST",
@@ -34,15 +50,16 @@ export default function Home_Page_Section_11() {
 
       const result = await response.json();
       console.log("Saved successfully:", result);
-      // alert("Layout 9 data saved!");
 
-      setFormData11({
+      // Reset form but keep the sectionTitle
+      setFormData11((prev) => ({
+        ...prev,
         layoutNumber: "11",
-        home_page_section_title: "",
         home_page_main_category: "",
         home_page_sub_category: "",
         home_page_layout_type: "",
-      });
+        // sectionTitle is not reset here, so it keeps its value
+      }));
     } catch (error) {
       console.error("Error saving layout 11 data:", error);
       alert("Failed to save layout 11.");
@@ -85,15 +102,7 @@ export default function Home_Page_Section_11() {
                 <div>
                   <label for=""> Section Title </label>
                   <div className="mt-1 form-input">
-                    <input
-                      type="text"
-                      name="home_page_section_title"
-                      value={formData11.home_page_section_title}
-                      onChange={handleInputChange11}
-                      id=""
-                      placeholder="Enter section title"
-                      className=""
-                    />
+                  sectionTitle: localStorage.getItem("sectionTitle-9") || "", // Initialize from localStorage
                   </div>
                   <div></div>
                 </div>
