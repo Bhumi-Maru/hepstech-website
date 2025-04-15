@@ -5,7 +5,8 @@ import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 
 export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   const { getDisplayPrice } = useHomepageHelpers();
-  const { homePage, fetchProducts, setBanner, products } = useHomePageContext();
+  const { homePage, setBanner, products } = useHomePageContext();
+  const { fetchProductsByMainCategory } = useHomepageHelpers();
 
   const sectionTitle = localStorage.getItem("sectionTitle-7");
 
@@ -18,7 +19,7 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
 
   // Fetch all products and filter by main category if banner exists
   useEffect(() => {
-    fetchProducts();
+    fetchProductsByMainCategory();
   }, []);
 
   return (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useProductContext } from "../../../context/Product_Create_Context";
 import Create_Product_5_Color from "./Create_Product_5_Color";
 import Create_Product_5_AddSection from "./Create_Product_5_AddSection";
+import { useProductVariantContext } from "../../../context/Product_Variant_Context";
 
 export default function Create_Product_5_Variant() {
   const {
@@ -13,7 +14,19 @@ export default function Create_Product_5_Variant() {
     generateAllVariants,
   } = useProductContext();
 
+  const { colors } = useProductVariantContext();
+
   const [expandedVariant, setExpandedVariant] = useState(null);
+
+  const handleColorChange = (variantId, color) => {
+    setProductVariants((prevVariants) =>
+      prevVariants.map((variant) =>
+        variant.id === variantId
+          ? { ...variant, colorName: color.name, colorHex: color.hex }
+          : variant
+      )
+    );
+  };
 
   // Add this useEffect in your component to clean up object URLs
   useEffect(() => {
@@ -184,6 +197,64 @@ export default function Create_Product_5_Variant() {
                   >
                     <div class="accordion-content">
                       <div class="grid items-end grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-4">
+                        {/* <div id="colorbox1">
+                          <label for="">Color</label>
+                          <div class="relative mt-1">
+                            <div class="cselect" onclick="varColor('1')">
+                              <input
+                                type="hidden"
+                                id="colorcodeselect1"
+                                name="colorcodeselect[]"
+                              />
+                              <input
+                                type="hidden"
+                                id="colornameselect1"
+                                name="colornameselect[]"
+                              />
+                              <div class="input-field" id="colorinput1"></div>
+                              <ul
+                                id="colorvarionlist1"
+                                class="dropdown-custom"
+                                style={{ display: "block" }}
+                              >
+                                {colors.map((color) => {
+                                  return (
+                                    <>
+                                      <li
+                                        class="dropdown-custom-item"
+                                        onclick="selectColor('colorcodeselect1','colornameselect1','#f10909','red','colorinput1')"
+                                      >
+                                        <div class="flex items-center space-x-2">
+                                          <div
+                                            class="w-4 h-4 border border-gray-200 rounded-full"
+                                            style={{ background: color.hex }}
+                                          ></div>
+                                          <span class="text-sm font-medium">
+                                            {color.name}
+                                          </span>
+                                        </div>
+                                      </li>
+                                    </>
+                                  );
+                                })}{" "}
+                              </ul>
+                            </div>
+
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                              <svg
+                                class="w-5 h-5 text-gray-500"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </div>
+                          </div>
+                        </div> */}
                         {variantOptions.map((option, index) => (
                           <div>
                             <label for="">{option.name}</label>
@@ -318,7 +389,7 @@ export default function Create_Product_5_Variant() {
                             />
                           </div>
                         </div>
-                        <div class="col-span-2 sm:col-span-1 xl:col-span-3">
+                        {/* <div class="col-span-2 sm:col-span-1 xl:col-span-3">
                           <label for="">Select Image</label>
 
                           <div class="mt-1 file-input">
@@ -334,7 +405,7 @@ export default function Create_Product_5_Variant() {
                             </label>
                             <span class="button">Choose</span>
                           </div>
-                        </div>
+                        </div> */}
                         <div>
                           <button
                             onClick={() => removeVariant(variant.id)}

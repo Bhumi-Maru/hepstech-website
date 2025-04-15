@@ -10,17 +10,17 @@ export default function PopularProductsSlider02_4Items({
 
   const sectionTitle = localStorage.getItem("sectionTitle-9");
 
-  useEffect(() => {
-    const foundBanner = homePage.find((item) => {
-      return item?.home_page_layout_number?.layoutNumber === 9;
-    });
-    setBanner(foundBanner);
-  }, [homePage]);
+  // useEffect(() => {
+  //   const foundBanner = homePage.find((item) => {
+  //     return item?.home_page_layout_number?.layoutNumber === 9;
+  //   });
+  //   setBanner(foundBanner);
+  // }, [homePage]);
 
   // Fetch all products and filter by main category if banner exists
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
   return (
     <>
       {/* <!-- POPULAR PRODUCTS SLIDER 02 - 4 ITEMS  --> */}

@@ -196,7 +196,7 @@ export default function Home_Page_Section_6() {
                                     {" "}
                                     {
                                       category?.home_page_sub_category
-                                        .sub_category_title
+                                        ?.sub_category_title
                                     }
                                   </td>
                                   <td>

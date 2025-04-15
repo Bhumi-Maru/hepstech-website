@@ -53,9 +53,10 @@ export default function Create_Product_5_Color() {
               <div className="mt-1 form-input">
                 <input
                   type="text"
-                  value={newColor.name}
-                  onChange={handleColorNameChange}
-                  placeholder="Color name"
+                  // value={newColor.name}
+                  // onChange={handleColorNameChange}
+                  placeholder="Color"
+                  readOnly
                 />
               </div>
             </div>
@@ -63,6 +64,16 @@ export default function Create_Product_5_Color() {
             <div className="flex-1 mt-2 sm:mt-0">
               <label>&nbsp;</label>
               <div className="flex items-center mt-1 space-x-2">
+                <div>
+                  <input
+                    type="text"
+                    id="colorpickername"
+                    value={newColor.name}
+                    onChange={handleColorNameChange}
+                    placeholder=""
+                    class=""
+                  />
+                </div>
                 <input
                   type="color"
                   value={newColor.hex}
@@ -90,9 +101,10 @@ export default function Create_Product_5_Color() {
                       d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                     />
                   </svg>
-                  {isEditingColor ? "Update" : "Add"}
+                  Add
+                  {/* {isEditingColor ? "Update" : "Add"} */}
                 </button>
-                {isEditingColor && (
+                {/* {isEditingColor && (
                   <button
                     type="button"
                     className="btn btn-dark-light"
@@ -100,7 +112,7 @@ export default function Create_Product_5_Color() {
                   >
                     Cancel
                   </button>
-                )}
+                )} */}
               </div>
 
               <div className="flex flex-wrap items-center gap-3 mt-4">
@@ -114,7 +126,7 @@ export default function Create_Product_5_Color() {
                       style={{ background: color.hex }}
                     ></div>
                     <span className="text-sm font-medium">{color.name}</span>
-                    <button
+                    {/* <button
                       type="button"
                       className="text-blue-500 hover:text-blue-700"
                       onClick={() => editColor(color)}
@@ -133,7 +145,7 @@ export default function Create_Product_5_Color() {
                           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                         />
                       </svg>
-                    </button>
+                    </button> */}
                     <button
                       type="button"
                       className="text-red-500 hover:text-red-700"
