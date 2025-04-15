@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../../context/Admin_Global_Context";
 import { useHeaderContext } from "../../../../context/Header_Menu_Context";
 import { useHomePageContext } from "../../../../context/HomepageContext";
-import { useHomepageHelpers } from "../../../../utils/product";
 
 export default function Home_Page_Section_7() {
   const { toggleStates, handleToggle, toggleModal } = useAdminGlobalContext();
   const { mainCategory, subCategory } = useHeaderContext();
   const { saveSectionTitle } = useHomePageContext();
-  const [selectedMainCat, setSelectedMainCat] = useState("");
-  const { fetchProductsByMainCategory } = useHomepageHelpers();
 
   const [formData7, setFormData7] = useState({
     layoutNumber: "7",
@@ -20,31 +17,12 @@ export default function Home_Page_Section_7() {
     sectionTitle: localStorage.getItem("sectionTitle-7") || "", // Initialize from localStorage
   });
 
-  // const handleInputChange7 = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData7((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-
-  const handleCategoryChange = (e) => {
-    const mainCatId = e.target.value;
-    setSelectedMainCat(mainCatId);
-  };
-
   const handleInputChange7 = (e) => {
     const { name, value } = e.target;
-
     setFormData7((prev) => ({
       ...prev,
       [name]: value,
     }));
-
-    // Fetch products if main category changes
-    if (name === "home_page_main_category") {
-      fetchProductsByMainCategory(value);
-    }
   };
 
   // Save to localStorage whenever sectionTitle changes
@@ -61,7 +39,7 @@ export default function Home_Page_Section_7() {
         await saveSectionTitle(formData7.sectionTitle, 7);
         localStorage.setItem("sectionTitle-7", formData7.sectionTitle); // Ensure it's saved
       }
-      await fetchProductsByMainCategory(selectedMainCat);
+
       // Example API request (replace URL with your actual API endpoint)
       const response = await fetch("http://localhost:7000/api/homepage", {
         method: "POST",

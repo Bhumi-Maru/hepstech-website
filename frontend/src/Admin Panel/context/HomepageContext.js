@@ -10,6 +10,14 @@ export const useHomePageContext = () => {
 
 export const HomePageProvider = ({ children }) => {
   const { isOpenPopupModal, setIsOpenPopupModal } = useAdminGlobalContext();
+  const [formData7, setFormData7] = useState({
+    layoutNumber: "7",
+    // home_page_section_title: "",
+    home_page_main_category: "",
+    home_page_sub_category: "",
+    home_page_layout_type: "",
+    sectionTitle: localStorage.getItem("sectionTitle-7") || "", // Initialize from localStorage
+  });
   const [homePage, setHomePage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,6 +50,8 @@ export const HomePageProvider = ({ children }) => {
 
   const [products, setProducts] = useState([]);
   const [banner, setBanner] = useState(null);
+  console.log("products", products);
+  console.log("homepage", homePage);
 
   // ////////////////////////////////////////END PRODUCT DISPLAY IN WEBSITE FRONTEND////////////////////////////////////
 
@@ -208,33 +218,33 @@ export const HomePageProvider = ({ children }) => {
     }
   };
 
-  // const fetchProducts = async () => {
-  //   setLoading(true);
-  //   try {
-  //     // First fetch all products
-  //     const productsResponse = await axios.get(
-  //       "http://localhost:7000/api/products/"
-  //     );
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      // First fetch all products
+      const productsResponse = await axios.get(
+        "http://localhost:7000/api/products/"
+      );
 
-  //     // If we have a banner with a main category, filter products
-  //     if (banner?.home_page_main_category?._id) {
-  //       const filteredProducts = productsResponse.data.filter(
-  //         (product) =>
-  //           product.productMainCategory?._id ===
-  //           banner.home_page_main_category._id
-  //       );
-  //       setProducts(filteredProducts);
-  //     } else {
-  //       // If no banner or no category, show all products
-  //       setProducts(productsResponse.data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      // If we have a banner with a main category, filter products
+      if (banner?.home_page_main_category?._id) {
+        const filteredProducts = productsResponse.data.filter(
+          (product) =>
+            product.productMainCategory?._id ===
+            banner.home_page_main_category._id
+        );
+        setProducts(filteredProducts);
+      } else {
+        // If no banner or no category, show all products
+        setProducts(productsResponse.data);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchHomePage();
@@ -316,6 +326,8 @@ export const HomePageProvider = ({ children }) => {
         setBanner,
         setProductByMain,
         // fetchProductsByMainCategory,
+        formData7,
+        setFormData7,
       }}
     >
       {children}

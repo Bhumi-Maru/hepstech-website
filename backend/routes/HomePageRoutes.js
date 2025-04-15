@@ -14,12 +14,14 @@ const {
   updateLayoutByNumber,
   updateLayoutSectionTitle,
   getProductsByMainCategory,
+  getLayoutByNumber,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
 ////////////////////////////////////////////// START LAYOUT ///////////////////////////////////////////////////
 HomePageRouter.post("/layout/create", createLayout);
 HomePageRouter.get("/layout", getAllLayouts);
+HomePageRouter.get("/layout/by-number/:layoutNumber", getLayoutByNumber);
 HomePageRouter.delete("/layout", deleteAllLayout);
 HomePageRouter.put("/layout/:id", updateLayoutById);
 HomePageRouter.delete("/layout/:id", deleteLayoutById);

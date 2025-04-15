@@ -4,7 +4,8 @@ import axios from "axios";
 
 // Custom hook
 export const useHomepageHelpers = () => {
-  const { setError, setLoading, setProductByMain } = useHomePageContext();
+  const { setError, setLoading, setProductByMain, setProducts } =
+    useHomePageContext();
 
   const fetchProductsByMainCategory = async (mainCategoryId) => {
     setLoading(true);
@@ -12,11 +13,11 @@ export const useHomepageHelpers = () => {
       const response = await axios.get(
         `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}`
       );
+      setProducts(response.data.products);
       setProductByMain(response.data.products);
     } catch (error) {
       console.error("Error fetching products by category:", error);
       setError(error.message);
-      return [];
     } finally {
       setLoading(false);
     }

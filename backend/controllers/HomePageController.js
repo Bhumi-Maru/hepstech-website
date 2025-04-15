@@ -428,6 +428,30 @@ const updateLayoutSectionTitle = async (req, res) => {
   }
 };
 
+//
+
+const getLayoutByNumber = async (req, res) => {
+  try {
+    const { layoutNumber } = req.params;
+
+    const layout = await Layout.findOne({ layoutNumber: Number(layoutNumber) });
+
+    if (!layout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    return res.status(200).json({
+      message: "Layout fetched successfully by number",
+      layout,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching layout by number",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createHomePage,
   updateHomePageById,
@@ -443,4 +467,5 @@ module.exports = {
   updateLayoutByNumber,
   updateLayoutSectionTitle,
   getProductsByMainCategory,
+  getLayoutByNumber,
 };
