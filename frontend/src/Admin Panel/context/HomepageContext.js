@@ -50,6 +50,43 @@ export const HomePageProvider = ({ children }) => {
 
   const [products, setProducts] = useState([]);
   const [banner, setBanner] = useState(null);
+  const [section7MainCategoryId, setSection7MainCategoryId] = useState(null);
+  const [section7Products, setSection7Products] = useState([]);
+
+  // Modified fetchProductsByMainCategory function
+  const fetchProductsByMainCategory = async (mainCategoryId, sectionNumber) => {
+    if (!mainCategoryId) return [];
+
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}`
+      );
+
+      if (sectionNumber === 7) {
+        setSection7Products(response.data.products || []);
+        setSection7MainCategoryId(mainCategoryId);
+      }
+
+      return response.data.products || [];
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError(error.message);
+      if (sectionNumber === 7) {
+        setSection7Products([]);
+      }
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add this useEffect to fetch products when section7MainCategoryId changes
+  useEffect(() => {
+    if (section7MainCategoryId) {
+      fetchProductsByMainCategory(section7MainCategoryId, 7);
+    }
+  }, [section7MainCategoryId]);
   console.log("products", products);
   console.log("homepage", homePage);
 
@@ -325,9 +362,13 @@ export const HomePageProvider = ({ children }) => {
         banner,
         setBanner,
         setProductByMain,
-        // fetchProductsByMainCategory,
+        fetchProductsByMainCategory,
         formData7,
         setFormData7,
+        section7Products,
+        setSection7Products,
+        section7MainCategoryId,
+        setSection7MainCategoryId,
       }}
     >
       {children}

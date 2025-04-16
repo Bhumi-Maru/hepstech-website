@@ -5,22 +5,40 @@ import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 
 export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   const { getDisplayPrice } = useHomepageHelpers();
-  const { homePage, setBanner, products } = useHomePageContext();
-  const { fetchProductsByMainCategory } = useHomepageHelpers();
+  const {
+    homePage,
+    setBanner,
+    products,
+    fetchProductsByMainCategory,
+    createdMainCategoryId,
+    section7Products,
+  } = useHomePageContext();
 
   const sectionTitle = localStorage.getItem("sectionTitle-7");
 
   useEffect(() => {
+    console.log("Homepage changed, looking for banner");
     const foundBanner = homePage.find((item) => {
       return item?.home_page_layout_number?.layoutNumber === 7;
     });
-    setBanner(foundBanner);
+
+    if (foundBanner) {
+      setBanner(foundBanner);
+
+      // Only fetch products if we have a main category ID and it's different from the current one
+      if (
+        foundBanner?.home_page_main_category?._id &&
+        foundBanner.home_page_main_category._id !== createdMainCategoryId
+      ) {
+        fetchProductsByMainCategory(foundBanner.home_page_main_category._id, 7);
+      }
+    }
   }, [homePage]);
 
-  // Fetch all products and filter by main category if banner exists
-  useEffect(() => {
-    fetchProductsByMainCategory();
-  }, []);
+  // Only render the slider if we have products for section 7
+  if (!section7Products || section7Products.length === 0) {
+    return null;
+  }
 
   return (
     <section className="section-slider">
@@ -50,7 +68,7 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
           ></div>
           <div className="swiper-container swiper-popular-four-01">
             <div className="swiper-wrapper products" style={{ gap: "20px" }}>
-              {products.map((product) => {
+              {section7Products.map((product) => {
                 const prices = getDisplayPrice(product);
                 const imageUrl = product.productMainImage
                   ? `http://localhost:7000/uploads/${product.productMainImage
