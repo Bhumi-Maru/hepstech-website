@@ -28,15 +28,16 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
       );
       setLayoutData(layoutResponse.data);
 
-      // Step 2: Fetch products for each main category
-      const mainCategories = layoutResponse.data.map(
-        (item) => item.home_page_main_category._id
-      );
-      const productsPromises = mainCategories.map((categoryId) =>
-        axios.get(
-          `http://localhost:7000/api/homepage/products/main-category/${categoryId}`
-        )
-      );
+      // Step 2: Fetch products for each main category and subcategory
+      const productsPromises = layoutResponse.data.map(async (item) => {
+        const mainCategoryId = item.home_page_main_category._id;
+        const subCategoryId = item.home_page_sub_category._id;
+
+        // Fetch products for the specific main category and subcategory
+        return axios.get(
+          `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}/sub-category/${subCategoryId}`
+        );
+      });
 
       const productsResponses = await Promise.all(productsPromises);
       const allProducts = productsResponses.flatMap(

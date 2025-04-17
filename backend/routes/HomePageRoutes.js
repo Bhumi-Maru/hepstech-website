@@ -13,7 +13,7 @@ const {
   deleteLayoutById,
   updateLayoutByNumber,
   updateLayoutSectionTitle,
-  getProductsByMainCategory,
+  getProductsByMainCategoryAndSubCategory,
   getLayoutByNumber,
   getHomePageDataByLayoutNumber,
 } = require("../controllers/HomePageController");
@@ -42,8 +42,8 @@ HomePageRouter.delete("/", deleteAll);
 ///////////////////////////START GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
 
 HomePageRouter.get(
-  "/products/main-category/:mainCategoryId",
-  getProductsByMainCategory
+  "/products/main-category/:mainCategoryId/sub-category/:subCategoryId",
+  getProductsByMainCategoryAndSubCategory
 );
 
 ///////////////////////////END GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
