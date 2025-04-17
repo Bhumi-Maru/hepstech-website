@@ -33,37 +33,55 @@ export default function Home_Page_Section_9() {
 
   const handleSave9 = async () => {
     try {
-      // First save the section title if it exists
       if (formData9.sectionTitle) {
         await saveSectionTitle(formData9.sectionTitle, 9);
-        localStorage.setItem("sectionTitle-9", formData9.sectionTitle); // Ensure it's saved
+        localStorage.setItem("sectionTitle-9", formData9.sectionTitle);
       }
 
-      // Example API request (replace URL with your actual API endpoint)
       const response = await fetch("http://localhost:7000/api/homepage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData9),
+        body: JSON.stringify({
+          ...formData9,
+          layoutNumber: "9",
+        }),
       });
 
       const result = await response.json();
-      console.log("Saved successfully:", result);
 
-      // Reset form but keep the sectionTitle
+      // if (result.newHomePage?.home_page_main_category) {
+      //   // Store the main category ID for section 7
+      //   setSection7MainCategoryId(result.newHomePage.home_page_main_category);
+
+      //   // Fetch products for this category
+      //   await fetchProductsByMainCategory(
+      //     result.newHomePage.home_page_main_category,
+      //     7
+      //   );
+      // }
+
       setFormData9((prev) => ({
         ...prev,
-        layoutNumber: "9",
         home_page_main_category: "",
         home_page_sub_category: "",
         home_page_layout_type: "",
-        // sectionTitle is not reset here, so it keeps its value
       }));
     } catch (error) {
-      console.error("Error saving layout 9 data:", error);
+      console.error("Error saving layout 9:", error);
       alert("Failed to save layout 9.");
     }
+  };
+
+  const handleDiscard = () => {
+    setFormData9({
+      layoutNumber: "9",
+      home_page_main_category: "",
+      home_page_sub_category: "",
+      home_page_layout_type: "",
+      sectionTitle: localStorage.getItem("sectionTitle-9") || "",
+    });
   };
 
   return (
@@ -198,7 +216,11 @@ export default function Home_Page_Section_9() {
                 </button>
 
                 <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
-                  <button type="button" className="btn btn-dark-light">
+                  <button
+                    type="button"
+                    className="btn btn-dark-light"
+                    onClick={handleDiscard}
+                  >
                     Discard
                   </button>
 

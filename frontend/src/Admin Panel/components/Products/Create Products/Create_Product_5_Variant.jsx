@@ -255,14 +255,23 @@ export default function Create_Product_5_Variant() {
                             </div>
                           </div>
                         </div> */}
+
+                        <select name="" id="">
+                          <option value="">Select color</option>
+                          {colors.map((color) => {
+                            return (
+                              <>
+                                <option value={color.name}>{color.name}</option>
+                              </>
+                            );
+                          })}
+                        </select>
                         {variantOptions.map((option, index) => (
-                          <div>
-                            <label for="">{option.name}</label>
-                            <div class="relative mt-1">
-                              <div class="select">
+                          <div key={index}>
+                            <label>{option.name}</label>
+                            <div className="relative mt-1">
+                              <div className="select">
                                 <select
-                                  name=""
-                                  id=""
                                   value={
                                     variant.variantAttributes.find(
                                       (attr) => attr.name === option.name
@@ -276,7 +285,6 @@ export default function Create_Product_5_Variant() {
                                     )
                                   }
                                 >
-                                  {" "}
                                   <option value="" disabled>
                                     Select {option.name}
                                   </option>
@@ -287,22 +295,23 @@ export default function Create_Product_5_Variant() {
                                   ))}
                                 </select>
                               </div>
-                              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                 <svg
-                                  class="w-5 h-5 text-gray-500"
+                                  className="w-5 h-5 text-gray-500"
                                   viewBox="0 0 20 20"
                                   fill="currentColor"
                                 >
                                   <path
-                                    fill-rule="evenodd"
+                                    fillRule="evenodd"
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"
+                                    clipRule="evenodd"
                                   ></path>
                                 </svg>
                               </div>
                             </div>
                           </div>
                         ))}
+
                         <div>
                           <label for="">MRP Price</label>
                           <div class="relative mt-1 rounded-md">

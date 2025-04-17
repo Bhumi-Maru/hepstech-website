@@ -23,32 +23,22 @@ export const ProductVariantProvider = ({ children }) => {
       alert("Please enter a color name");
       return;
     }
-
     const nameExists = colors.some(
       (color) =>
         color.name.toLowerCase() === newColor.name.toLowerCase() &&
         (!isEditingColor || color._id !== newColor._id)
     );
-
     if (nameExists) {
       alert("Color with this name already exists");
       return;
     }
-
     if (isEditingColor) {
       setColors(
         colors.map((color) => (color._id === newColor._id ? newColor : color))
       );
     } else {
-      setColors([
-        ...colors,
-        {
-          ...newColor,
-          _id: newColor._id || Date.now().toString(),
-        },
-      ]);
+      setColors([...colors, { ...newColor }]); // Don't assign _id here
     }
-
     setNewColor({ name: "", hex: "#000000", _id: null });
     setIsEditingColor(false);
   };

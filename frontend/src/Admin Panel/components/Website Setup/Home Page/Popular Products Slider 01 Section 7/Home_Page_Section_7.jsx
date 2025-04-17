@@ -56,16 +56,16 @@ export default function Home_Page_Section_7() {
 
       const result = await response.json();
 
-      if (result.newHomePage?.home_page_main_category) {
-        // Store the main category ID for section 7
-        setSection7MainCategoryId(result.newHomePage.home_page_main_category);
+      // if (result.newHomePage?.home_page_main_category) {
+      //   // Store the main category ID for section 7
+      //   setSection7MainCategoryId(result.newHomePage.home_page_main_category);
 
-        // Fetch products for this category
-        await fetchProductsByMainCategory(
-          result.newHomePage.home_page_main_category,
-          7
-        );
-      }
+      //   // Fetch products for this category
+      //   await fetchProductsByMainCategory(
+      //     result.newHomePage.home_page_main_category,
+      //     7
+      //   );
+      // }
 
       setFormData7((prev) => ({
         ...prev,
@@ -78,6 +78,7 @@ export default function Home_Page_Section_7() {
       alert("Failed to save layout 7.");
     }
   };
+
   const handleDiscard = () => {
     setFormData7({
       layoutNumber: "7",
@@ -87,6 +88,7 @@ export default function Home_Page_Section_7() {
       home_page_layout_type: "",
     });
   };
+
   return (
     <>
       {/* [HOME PAGE SECTION 7] Popular Products Slider 01 */}

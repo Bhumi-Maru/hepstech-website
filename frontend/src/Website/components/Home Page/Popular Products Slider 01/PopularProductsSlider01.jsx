@@ -5,15 +5,8 @@ import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 
 export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   const { getDisplayPrice } = useHomepageHelpers();
-  const {
-    homePage,
-    setBanner,
-    products,
-    fetchProductsByMainCategory,
-    createdMainCategoryId,
-    section7Products,
-    setSection7Products,
-  } = useHomePageContext();
+  // const { section7Products, setSection7Products } = useHomePageContext();
+  const [section7Products, setSection7Products] = useState([]);
 
   const sectionTitle = localStorage.getItem("sectionTitle-7");
 
