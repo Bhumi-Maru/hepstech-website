@@ -184,9 +184,6 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
                                   </s>
                                 )}
                             </div>
-                            {product.productMainCategory.main_category_title}{" "}
-                            &nbsp;
-                            {product.productSubCategory.sub_category_title}
                           </div>
 
                           <div className="product-ratings">
