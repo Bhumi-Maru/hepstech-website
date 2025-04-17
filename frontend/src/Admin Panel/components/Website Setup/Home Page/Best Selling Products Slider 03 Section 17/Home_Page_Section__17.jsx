@@ -32,8 +32,6 @@ export default function Home_Page_Section__17() {
     }
   }, [formData17.sectionTitle]);
 
-
-  
   const handleSave17 = async () => {
     try {
       // First save the section title if it exists
@@ -72,10 +70,10 @@ export default function Home_Page_Section__17() {
   const handleDiscard = () => {
     setFormData17({
       layoutNumber: "17",
-      // home_page_section_title: "",
       home_page_main_category: "",
       home_page_sub_category: "",
       home_page_layout_type: "",
+      sectionTitle: localStorage.getItem("sectionTitle-17") || "",
     });
   };
   return (

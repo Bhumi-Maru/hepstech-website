@@ -66,6 +66,16 @@ export default function Home_Page_Section_11() {
     }
   };
 
+  const handleDiscard = () => {
+    setFormData11({
+      layoutNumber: "11",
+      home_page_main_category: "",
+      home_page_sub_category: "",
+      home_page_layout_type: "",
+      sectionTitle: localStorage.getItem("sectionTitle-11") || "",
+    });
+  };
+
   return (
     <>
       {/* [HOME PAGE SECTION 11] Best Selling Products Slider 01  */}
@@ -102,7 +112,13 @@ export default function Home_Page_Section_11() {
                 <div>
                   <label for=""> Section Title </label>
                   <div className="mt-1 form-input">
-                  sectionTitle: localStorage.getItem("sectionTitle-9") || "", // Initialize from localStorage
+                    <input
+                      type="text"
+                      name="sectionTitle"
+                      value={formData11.sectionTitle || ""}
+                      onChange={handleInputChange11}
+                      placeholder="Enter section title"
+                    />
                   </div>
                   <div></div>
                 </div>
@@ -195,7 +211,11 @@ export default function Home_Page_Section_11() {
                 </button>
 
                 <div className="flex items-center justify-end mt-4 space-x-4 sm:mt-0">
-                  <button type="button" className="btn btn-dark-light">
+                  <button
+                    type="button"
+                    className="btn btn-dark-light"
+                    onClick={handleDiscard}
+                  >
                     Discard
                   </button>
 

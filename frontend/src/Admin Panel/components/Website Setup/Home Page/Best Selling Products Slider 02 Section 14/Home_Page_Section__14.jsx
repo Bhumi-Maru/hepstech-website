@@ -70,10 +70,10 @@ export default function Home_Page_Section__14() {
   const handleDiscard = () => {
     setFormData14({
       layoutNumber: "14",
-      // home_page_section_title: "",
       home_page_main_category: "",
       home_page_sub_category: "",
       home_page_layout_type: "",
+      sectionTitle: localStorage.getItem("sectionTitle-14") || "",
     });
   };
 
