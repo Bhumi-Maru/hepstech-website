@@ -15,6 +15,7 @@ const {
   updateLayoutSectionTitle,
   getProductsByMainCategory,
   getLayoutByNumber,
+  getHomePageDataByLayoutNumber,
 } = require("../controllers/HomePageController");
 
 const HomePageRouter = express.Router();
@@ -27,6 +28,7 @@ HomePageRouter.put("/layout/:id", updateLayoutById);
 HomePageRouter.delete("/layout/:id", deleteLayoutById);
 HomePageRouter.put("/layout/number/:layoutNumber", updateLayoutByNumber);
 HomePageRouter.put("/layout/title/:layoutNumber", updateLayoutSectionTitle);
+HomePageRouter.get("/layout/:layoutNumber", getHomePageDataByLayoutNumber);
 
 ////////////////////////////////////////////// END LAYOUT ////////////////////////////////////////////////////
 

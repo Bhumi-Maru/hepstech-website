@@ -12,28 +12,47 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
     fetchProductsByMainCategory,
     createdMainCategoryId,
     section7Products,
+    setSection7Products,
   } = useHomePageContext();
 
   const sectionTitle = localStorage.getItem("sectionTitle-7");
 
-  useEffect(() => {
-    console.log("Homepage changed, looking for banner");
-    const foundBanner = homePage.find((item) => {
-      return item?.home_page_layout_number?.layoutNumber === 7;
-    });
+  const [layoutData, setLayoutData] = useState(null);
 
-    if (foundBanner) {
-      setBanner(foundBanner);
+  // Fetch layout data and products
+  const fetchLayoutDataAndProducts = async () => {
+    try {
+      // Step 1: Fetch layout data
+      const layoutResponse = await axios.get(
+        "http://localhost:7000/api/homepage/layout/7"
+      );
+      setLayoutData(layoutResponse.data);
 
-      // Only fetch products if we have a main category ID and it's different from the current one
-      if (
-        foundBanner?.home_page_main_category?._id &&
-        foundBanner.home_page_main_category._id !== createdMainCategoryId
-      ) {
-        fetchProductsByMainCategory(foundBanner.home_page_main_category._id, 7);
-      }
+      // Step 2: Fetch products for each main category
+      const mainCategories = layoutResponse.data.map(
+        (item) => item.home_page_main_category._id
+      );
+      const productsPromises = mainCategories.map((categoryId) =>
+        axios.get(
+          `http://localhost:7000/api/homepage/products/main-category/${categoryId}`
+        )
+      );
+
+      const productsResponses = await Promise.all(productsPromises);
+      const allProducts = productsResponses.flatMap(
+        (response) => response.data.products
+      );
+
+      console.log("all products", allProducts);
+      setSection7Products(allProducts);
+    } catch (error) {
+      console.error("Error fetching layout data or products:", error);
     }
-  }, [homePage]);
+  };
+
+  useEffect(() => {
+    fetchLayoutDataAndProducts();
+  }, []);
 
   // Only render the slider if we have products for section 7
   if (!section7Products || section7Products.length === 0) {
@@ -69,6 +88,9 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
           <div className="swiper-container swiper-popular-four-01">
             <div className="swiper-wrapper products" style={{ gap: "20px" }}>
               {section7Products.map((product) => {
+                {
+                  console.log("5555555555555 product", product);
+                }
                 const prices = getDisplayPrice(product);
                 const imageUrl = product.productMainImage
                   ? `http://localhost:7000/uploads/${product.productMainImage
@@ -161,6 +183,9 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
                                   </s>
                                 )}
                             </div>
+                            {product.productMainCategory.main_category_title}{" "}
+                            &nbsp;
+                            {product.productSubCategory.sub_category_title}
                           </div>
 
                           <div className="product-ratings">

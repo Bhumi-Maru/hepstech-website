@@ -223,6 +223,33 @@ const deleteAll = async (req, res) => {
   }
 };
 
+/////////////////get homepage data by layout number//////////////////////
+
+const getHomePageDataByLayoutNumber = async (req, res) => {
+  try {
+    const { layoutNumber } = req.params;
+
+    // Step 1: Find the layout by layoutNumber
+    const layout = await Layout.findOne({ layoutNumber });
+
+    if (!layout) {
+      return res.status(404).json({ message: "Layout not found" });
+    }
+
+    // Step 2: Find HomePage data that references this layout's _id
+    const data = await HomePage.find({ home_page_layout_number: layout._id })
+      .populate("home_page_layout_number")
+      .populate("home_page_main_category")
+      .populate("home_page_sub_category")
+      .populate("home_page_products"); // if needed
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching homepage data by layout number:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 ///////////////////////////GET PRODUCT FROM MAIN CATEGORY///////////////////////////////////////
 
 const getProductsByMainCategory = async (req, res) => {
@@ -468,4 +495,5 @@ module.exports = {
   updateLayoutSectionTitle,
   getProductsByMainCategory,
   getLayoutByNumber,
+  getHomePageDataByLayoutNumber,
 };
