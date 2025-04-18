@@ -47,7 +47,7 @@ export default function Product_Details() {
         />
       </div>
 
-      <Product_details_section_1_3 />
+      <Product_details_section_1_3 productDetails={productDetails} />
 
       {/* Size Chart Modal */}
       {isSizeChartModalOpen && (

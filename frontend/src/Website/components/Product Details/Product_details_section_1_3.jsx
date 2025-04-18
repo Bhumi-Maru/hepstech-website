@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Product_details_section_1_3() {
+export default function Product_details_section_1_3({ productDetails }) {
   const [isOpen, setIsOpen] = useState({
     Description: false,
     ReturnAndRefund: false,
@@ -39,7 +39,7 @@ export default function Product_details_section_1_3() {
             </svg>
           </button>
 
-          {isOpen.Description && (
+          {/* {isOpen.Description && (
             <div className="px-4 pt-1 pb-4">
               <p className="text-sm text-gray-600">
                 Aenean ut tellus tellus. Suspendisse potenti. Nullam tincidunt
@@ -64,6 +64,32 @@ export default function Product_details_section_1_3() {
                 fringilla, ante nec consectetur placerat, velit libero cursus
                 risus, sit amet hendrerit velit enim non leo.
               </p>
+            </div>
+          )} */}
+
+          {isOpen.Description && (
+            <div className="px-4 pt-1 pb-4 space-y-4">
+              {Array.isArray(
+                productDetails?.description?.descriptionSections
+              ) &&
+              productDetails?.description?.descriptionSections.length > 0 ? (
+                productDetails?.description?.descriptionSections.map(
+                  (section) => (
+                    <div key={section._id}>
+                      <h4 className="font-semibold text-sm text-gray-800 mb-1">
+                        {section.sectionTitle}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {section.description}
+                      </p>
+                    </div>
+                  )
+                )
+              ) : (
+                <p className="text-sm text-gray-600">
+                  No description available.
+                </p>
+              )}
             </div>
           )}
         </div>

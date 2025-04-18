@@ -1,11 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Product_details_section_1_2({
   setIsSizeChartModalOpen,
-  prodcutDetails,
+  productDetails,
 }) {
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  // Initialize with first variant if product has variants
+  useEffect(() => {
+    if (
+      productDetails?.productType === "variant" &&
+      productDetails?.productVariants?.length > 0
+    ) {
+      setSelectedVariant(productDetails.productVariants[0]);
+    }
+  }, [productDetails]);
+
+  // Get current pricing based on product type
+  const getCurrentPricing = () => {
+    if (productDetails?.productType === "variant" && selectedVariant) {
+      return {
+        mrpPrice: selectedVariant.mrpPrice,
+        sellingPrice: selectedVariant.sellingPrice,
+      };
+    } else if (productDetails?.productType === "simple") {
+      return {
+        mrpPrice: productDetails.pricing?.mrpPrice,
+        sellingPrice: productDetails.pricing?.sellingPrice,
+      };
+    }
+    return { mrpPrice: 0, sellingPrice: 0 };
+  };
+
+  const { mrpPrice, sellingPrice } = getCurrentPricing();
+
+  // Calculate discount percentage
+  const discountPercentage =
+    mrpPrice && sellingPrice && mrpPrice > sellingPrice
+      ? Math.round(((mrpPrice - sellingPrice) / mrpPrice) * 100)
+      : 0;
+
+  // Handle variant selection
+  const handleVariantSelect = (variant) => {
+    setSelectedVariant(variant);
+  };
+
+  // Handle color selection
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    // You might want to filter variants based on color selection
+  };
+
+  // Handle size selection
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+    // You might want to filter variants based on size selection
+  };
+
+  // Get available sizes from variant options
+  const availableSizes =
+    productDetails?.variantOptions?.find((option) => option.name === "size")
+      ?.values || [];
+
+  // Get available colors
+  const availableColors = productDetails?.colorOptions || [];
+
+  // Check if product is in stock
+  const isInStock = productDetails?.productStatus === "Active";
+
   return (
     <>
       {/* PRODUCT DETAILS SECTION 1 PART 2 */}
@@ -83,12 +149,27 @@ export default function Product_details_section_1_2({
         </nav>
 
         <h1 className="text-xl font-extrabold text-gray-900 sm:mt-5 sm:text-2xl xl:text-3xl">
-          Sassie Basic 31 LTR Navy Backpack Waterproof School Bag
+          {productDetails?.productTitle}
         </h1>
 
+        {/* <div className="flex items-center flex-1 mt-4 space-x-3"> */}
+        {/* Price Display */}
         <div className="flex items-center flex-1 mt-4 space-x-3">
-          <span className="inline-block text-xl font-medium">₹12,899/-</span>
-          <s className="inline-block text-base text-gray-500">₹12,899/-</s>
+          <span className="inline-block text-xl font-medium text-skin-primary">
+            ₹{sellingPrice.toLocaleString("en-IN")}/-
+          </span>
+          {mrpPrice > sellingPrice && (
+            <>
+              <s className="inline-block text-base text-gray-500">
+                ₹{mrpPrice.toLocaleString("en-IN")}/-
+              </s>
+              {/* {discountPercentage > 0 && (
+                <span className="inline-block px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded">
+                  {discountPercentage}% OFF
+                </span>
+              )} */}
+            </>
+          )}
         </div>
 
         <div className="mt-5 sm:flex sm:items-center sm:justify-between sm:space-x-4">
@@ -263,97 +344,73 @@ export default function Product_details_section_1_2({
               </div>
             </li>
 
-            <li className="py-4 sm:flex sm:items-center sm:justify-between">
-              <p className="text-sm font-semibold">Color</p>
-
-              <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
-                <div>
-                  <label className="form-colorinput">
-                    <input
-                      name="color"
-                      type="radio"
-                      value="white"
-                      className="form-colorinput-input"
-                    />
-                    <span className="bg-blue-600 form-colorinput-color"></span>
-                  </label>
+            {/* Color Selection */}
+            {availableColors.length > 0 && (
+              <li className="py-4 sm:flex sm:items-center sm:justify-between">
+                <p className="text-sm font-semibold">Color</p>
+                <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
+                  {availableColors.map((color) => (
+                    <div key={color.name}>
+                      <label className="form-colorinput">
+                        <input
+                          name="color"
+                          type="radio"
+                          value={color.name}
+                          className="form-colorinput-input"
+                          checked={selectedColor?.name === color.name}
+                          onChange={() => handleColorSelect(color)}
+                        />
+                        <span
+                          className="form-colorinput-color"
+                          style={{ backgroundColor: color.hex }}
+                        ></span>
+                      </label>
+                    </div>
+                  ))}
                 </div>
-
-                <div>
-                  <label className="form-colorinput">
-                    <input
-                      name="color"
-                      type="radio"
-                      value="white"
-                      className="form-colorinput-input"
-                    />
-                    <span className="bg-red-600 form-colorinput-color"></span>
-                  </label>
-                </div>
-
-                <div>
-                  <label className="form-colorinput">
-                    <input
-                      name="color"
-                      type="radio"
-                      value="white"
-                      className="form-colorinput-input"
-                    />
-                    <span className="bg-purple-500 form-colorinput-color"></span>
-                  </label>
-                </div>
-
-                <div>
-                  <label className="form-colorinput">
-                    <input
-                      name="color"
-                      type="radio"
-                      value="white"
-                      className="form-colorinput-input"
-                    />
-                    <span className="bg-indigo-600 form-colorinput-color"></span>
-                  </label>
-                </div>
-
-                <div>
-                  <label className="form-colorinput">
-                    <input
-                      name="color"
-                      type="radio"
-                      value="white"
-                      className="form-colorinput-input"
-                    />
-                    <span className="bg-yellow-500 form-colorinput-color"></span>
-                  </label>
-                </div>
-              </div>
-            </li>
+              </li>
+            )}
           </ul>
         </div>
 
         <div className="mt-6 space-y-3 sm:flex sm:items-end sm:justify-between sm:space-y-0">
           <div className="flex items-end space-x-4">
             <div>
-              <label htmlFor="productQty">Quantity</label>
+              <label
+                htmlFor="productQty"
+                className="text-sm font-medium text-gray-700"
+              >
+                Quantity
+              </label>
 
-              <div className="relative w-24 mt-1 overflow-hidden border border-gray-300 rounded-md focus-within:border-skin-primary focus-within:ring-1 focus-within:ring-skin-primary">
-                {/* INCREMENT BUTTON */}
+              <div class="relative w-24 mt-1 overflow-hidden border border-gray-300 rounded-md focus-within:border-skin-primary focus-within:ring-1 focus-within:ring-skin-primary">
                 <button
                   type="button"
-                  className="absolute top-0 right-0 px-1 py-[2.5px] border-l border-gray-300 rounded-none focus:outline-none addQty hover:bg-gray-100"
-                  onClick={() => setQuantity(quantity + 1)}
+                  class="absolute top-0 right-0 px-1 py-[2.5px] border-l border-gray-300 rounded-none focus:outline-none addQty hover:bg-gray-100"
+                  onClick={() =>
+                    setQuantity(
+                      Math.min(
+                        quantity + 1,
+                        productDetails?.productPurchaseMaxQuantity || 100
+                      )
+                    )
+                  }
+                  disabled={
+                    quantity >=
+                    (productDetails?.productPurchaseMaxQuantity || 100)
+                  }
                 >
                   <svg
-                    className="w-3.5 h-3.5"
+                    class="w-3.5 h-3.5"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
                       d="M5 15l7-7 7 7"
                     ></path>
                   </svg>
@@ -364,59 +421,89 @@ export default function Product_details_section_1_2({
                   name="productQty"
                   id="productQty"
                   value={quantity}
-                  min="1"
-                  max="100"
-                  onChange={(e) =>
-                    setQuantity(Math.max(1, Math.min(100, e.target.value)))
-                  }
-                  className="!w-24 py-2 sm:py-2.5 !border-none font-semibold rounded-none"
+                  min={productDetails?.productPurchaseMinQuantity || 1}
+                  max={productDetails?.productPurchaseMaxQuantity || 100}
+                  onChange={(e) => {
+                    const value = Math.max(
+                      productDetails?.productPurchaseMinQuantity || 1,
+                      Math.min(
+                        productDetails?.productPurchaseMaxQuantity || 100,
+                        Number(e.target.value) || 1
+                      )
+                    );
+                    setQuantity(value);
+                  }}
+                  class="!w-24 py-2 sm:py-2.5 !border-none font-semibold rounded-none"
                 />
 
-                {/* DECREMENT BUTTON */}
                 <button
                   type="button"
-                  className="absolute bottom-0 right-0 px-1 py-[2.5px] border-t border-l border-gray-300 rounded-none focus:outline-none subQty hover:bg-gray-100"
-                  onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                  class="absolute bottom-0 right-0 px-1 py-[2.5px] border-t border-l border-gray-300 rounded-none focus:outline-none subQty hover:bg-gray-100"
+                  onClick={() =>
+                    setQuantity(
+                      Math.max(
+                        quantity - 1,
+                        productDetails?.productPurchaseMinQuantity || 1
+                      )
+                    )
+                  }
+                  disabled={
+                    quantity <=
+                    (productDetails?.productPurchaseMinQuantity || 1)
+                  }
                 >
                   <svg
-                    className="w-3.5 h-3.5"
+                    class="w-3.5 h-3.5"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
                       d="M19 9l-7 7-7-7"
                     ></path>
                   </svg>
                 </button>
               </div>
             </div>
-
-            <button type="button" className="w-full btn btn-primary sm:w-auto">
+            <button
+              type="button"
+              className={`w-full btn sm:w-auto ${
+                isInStock
+                  ? "btn-primary"
+                  : "btn-disabled bg-gray-400 cursor-not-allowed"
+              }`}
+              disabled={
+                !isInStock ||
+                (productDetails?.productType === "variant" && !selectedVariant)
+              }
+            >
               <svg
                 className="w-4 h-4 mr-2 lg:hidden xl:block"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
-                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
+                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
               </svg>
-              Add to Cart
+              {isInStock ? "Add to Cart" : "Out of Stock"}
             </button>
           </div>
-
           <div className="space-y-3 sm:flex sm:items-center sm:space-x-4 sm:space-y-0">
             <button
               type="button"
-              className="w-full mr-auto sm:ml-4 btn btn-primary-light sm:w-auto"
+              className={`w-full mr-auto sm:ml-4 btn sm:w-auto ${
+                isInStock
+                  ? "btn-primary-light"
+                  : "btn-disabled bg-gray-300 cursor-not-allowed"
+              }`}
+              disabled={!isInStock}
             >
               Buy Now
             </button>
-
             <button type="button" className="w-full btn btn-white sm:w-auto">
               <svg
                 className="w-4 h-4 mr-2 lg:hidden xl:block"

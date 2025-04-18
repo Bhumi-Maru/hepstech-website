@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function Product_details_section_1_1({ productDetails }) {
+  console.log("productDetails", productDetails);
   const [selectedImage, setSelectedImage] = useState(null);
   const [xZoomLoaded, setXZoomLoaded] = useState(false);
   const [jQueryLoaded, setJQueryLoaded] = useState(false);
@@ -135,7 +136,9 @@ export default function Product_details_section_1_1({ productDetails }) {
       <div className="product-carousel">
         {/* Main Image Section */}
         <div className="swiper-container gallery-top">
-          <div className="status-badge lg sale">Sale</div>
+          <div className="status-badge lg sale">
+            {productDetails?.productLabel}
+          </div>
           <div
             className="swiper-wrapper xzoom-container"
             style={{ height: "450px" }}
