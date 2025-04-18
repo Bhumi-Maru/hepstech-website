@@ -87,7 +87,7 @@ export default function BestSellingProductsSlider_04_6_Items({
 
             <div class="swiper-container swiper-best-selling-six-03">
               <div class="swiper-wrapper products gap-4">
-                {section20Products.map((product) => {
+                {section20Products.map((product, index) => {
                   const prices = getDisplayPrice(product);
                   const imageUrl = product.productMainImage
                     ? `http://localhost:7000/uploads/${product.productMainImage
@@ -99,7 +99,7 @@ export default function BestSellingProductsSlider_04_6_Items({
                       <div
                         class="product-card swiper-slide"
                         style={{ width: "190px" }}
-                        key={product._id}
+                        key={index}
                       >
                         <button type="button" class="btn-wishlist-top">
                           <svg

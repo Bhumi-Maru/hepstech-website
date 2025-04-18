@@ -208,7 +208,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                 className="swiper-wrapper products"
                 style={{ width: "226px", gap: "10px", height: "350px" }}
               >
-                {section4Products.map((product) => {
+                {section4Products.map((product, index) => {
                   const prices = getDisplayPrice(product);
                   const imageUrl = product.productMainImage
                     ? `http://localhost:7000/uploads/${product.productMainImage
@@ -217,10 +217,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                     : null;
                   return (
                     <>
-                      <div
-                        className="product-card swiper-slide"
-                        key={product._id}
-                      >
+                      <div className="product-card swiper-slide" key={index}>
                         <button
                           type="button"
                           className={`btn-wishlist-top ${

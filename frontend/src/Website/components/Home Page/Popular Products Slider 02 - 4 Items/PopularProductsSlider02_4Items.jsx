@@ -84,7 +84,7 @@ export default function PopularProductsSlider02_4Items({
           ></div>
           <div className="swiper-container swiper-popular-four-01">
             <div className="swiper-wrapper products" style={{ gap: "20px" }}>
-              {section9Products.map((product) => {
+              {section9Products.map((product, index) => {
                 {
                   console.log("5555555555555 product", product);
                 }
@@ -97,7 +97,7 @@ export default function PopularProductsSlider02_4Items({
 
                 return (
                   <div
-                    key={product._id}
+                    key={index}
                     className="product-card swiper-slide"
                     style={{ width: "295px" }}
                   >

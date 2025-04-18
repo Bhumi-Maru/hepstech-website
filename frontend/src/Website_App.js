@@ -98,288 +98,302 @@ export default function WebsiteApp() {
   const [isSetPassword, setIsSetPassword] = useState(false);
 
   return (
-    <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <Navbar
-          setLoginModalOpen={setLoginModalOpen}
-          setIsMobileNavigationModal={setIsMobileNavigationModal}
-        />
-        {/* offer image modal */}
-        {isOfferImageModalOpen === true && (
-          <>
-            <Offer_Image isOfferImageModalOpen={isOfferImageModalOpen} />
-          </>
-        )}
-        {/* login popup modal */}
-        {isLoginModalOpen && (
-          <>
-            <Login
-              setLoginModalOpen={setLoginModalOpen}
-              setSignupModalOpen={setSignupModalOpen}
-              isLoginModalOpen={isLoginModalOpen}
-              setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
-            />
-          </>
-        )}
+    <>
+      <style>{`
+    :root {
+      --swiper-navigation-size: 12px !important;
+    }
+  `}</style>
 
-        {/* SIGNUP POPUP MODAL */}
-        {isSignupModalOpen && (
-          <>
-            {" "}
-            <SignUp
-              setLoginModalOpen={setLoginModalOpen}
-              setSignupModalOpen={setSignupModalOpen}
-              setOtpModalOpen={setOtpModalOpen}
-            />
-          </>
-        )}
-        {/* verify otp by mobile number from signup form */}
-        {isOtpModalOpen && (
-          <>
-            <SignupOtpConfirmationForm
-              isOtpModalOpen={isOtpModalOpen}
-              closeOtpModal={() => setOtpModalOpen(false)}
-            />
-          </>
-        )}
+      <BrowserRouter>
+        <div className="flex flex-col min-h-screen">
+          <Navbar
+            setLoginModalOpen={setLoginModalOpen}
+            setIsMobileNavigationModal={setIsMobileNavigationModal}
+          />
+          {/* offer image modal */}
+          {isOfferImageModalOpen === true && (
+            <>
+              <Offer_Image isOfferImageModalOpen={isOfferImageModalOpen} />
+            </>
+          )}
+          {/* login popup modal */}
+          {isLoginModalOpen && (
+            <>
+              <Login
+                setLoginModalOpen={setLoginModalOpen}
+                setSignupModalOpen={setSignupModalOpen}
+                isLoginModalOpen={isLoginModalOpen}
+                setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+              />
+            </>
+          )}
 
-        {/* forgot password modal */}
-        {isForgotPasswordModalOpen && (
-          <>
-            <ForgotPasswordModal
-              setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
-              isForgotPasswordModalOpen={isForgotPasswordModalOpen}
-              setIsOtpFromLogin={setIsOtpFromLogin}
-            />
-          </>
-        )}
+          {/* SIGNUP POPUP MODAL */}
+          {isSignupModalOpen && (
+            <>
+              {" "}
+              <SignUp
+                setLoginModalOpen={setLoginModalOpen}
+                setSignupModalOpen={setSignupModalOpen}
+                setOtpModalOpen={setOtpModalOpen}
+              />
+            </>
+          )}
+          {/* verify otp by mobile number from signup form */}
+          {isOtpModalOpen && (
+            <>
+              <SignupOtpConfirmationForm
+                isOtpModalOpen={isOtpModalOpen}
+                closeOtpModal={() => setOtpModalOpen(false)}
+              />
+            </>
+          )}
 
-        {/* verify otp by mobile number from Login form */}
-        {isOtpFromLogin && (
-          <>
-            <LoginOtpConfirmationForm
-              isOtpFromLogin={isOtpFromLogin}
-              closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
-              setIsSetPassword={setIsSetPassword}
-            />
-          </>
-        )}
+          {/* forgot password modal */}
+          {isForgotPasswordModalOpen && (
+            <>
+              <ForgotPasswordModal
+                setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+                isForgotPasswordModalOpen={isForgotPasswordModalOpen}
+                setIsOtpFromLogin={setIsOtpFromLogin}
+              />
+            </>
+          )}
 
-        {/* set password [old password and || new password || confirm password] */}
-        {isSetPassword && (
-          <>
-            <SetPassword_From_Login setIsSetPassword={setIsSetPassword} />
-          </>
-        )}
+          {/* verify otp by mobile number from Login form */}
+          {isOtpFromLogin && (
+            <>
+              <LoginOtpConfirmationForm
+                isOtpFromLogin={isOtpFromLogin}
+                closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
+                setIsSetPassword={setIsSetPassword}
+              />
+            </>
+          )}
 
-        <main className="flex-1">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  {/* Components outside Routes */}
-                  {/* LAYOUT 1 */}
-                  <Slider />
-                  {/* LAYOUT 2 */}
-                  <CategorySlider />
-                  {/* LAYOUT 3 */}
-                  <HorizontalBanner1 />
-                  {/* LAYOUT 4 */}
-                  <FlashSaleSlider setIsAddToCartModal={setIsAddToCartModal} />
-                  {/* LAYOUT 5 */}
-                  <HorizontalBanners3Items />
-                  {/* LAYOUT 6 */}
-                  <CategorySlider5Items />
-                  {/* LAYOUT 7 */}
-                  <PopularProductsSlider01
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 8 */}
-                  <HorizontalBannersLarge2Items_section8 />
-                  {/* LAYOUT 9 */}
-                  <PopularProductsSlider02_4Items
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 10 */}
-                  <HorizontalBanners_2Items />
-                  {/* LAYOUT 11 */}
-                  <BestSellingProductsSlider01_6Items
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 12 */}
-                  <VeticalBanners_4Items />
-                  {/* LAYOUT 13 */}
-                  <HorizontalBanner_Large_1Item />
-                  {/* LAYOUT 14 */}
-                  <BestSellingProductsSlider02_6Items
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 15 */}
-                  <HorizontalBannerSmall_1Item />
-                  {/* LAYOUT 16 */}
-                  <VerticalBanners_4Items />
-                  {/* LAYOUT 17 */}
-                  <BestSellingProductsSlider_03_6Items
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 18 */}
-                  <HorizontalBannersLarge2Items_section18 />
-                  {/* LAYOUT 19 */}
-                  <Horizontal_Banner_Large_1_Item />
-                  {/* LAYOUT 20 */}
-                  <BestSellingProductsSlider_04_6_Items
-                    setIsAddToCartModal={setIsAddToCartModal}
-                  />
-                  {/* LAYOUT 21 */}
-                  <Vertical_Banners_4_Items />
-                  {/* LAYOUT 22 */}
-                  <Horizontal_Banner_Small_1_Item />
-                  {/* LAYOUT 23 */}
-                  <Testimonials />
-                  {/* LAYOUT 24 */}
-                  <Information />
-                </>
-              }
-            />
-            {/* SHOP */}
-            <Route
-              path="/shop"
-              element={<ShopLayout setIsAddToCartModal={setIsAddToCartModal} />}
-            />
+          {/* set password [old password and || new password || confirm password] */}
+          {isSetPassword && (
+            <>
+              <SetPassword_From_Login setIsSetPassword={setIsSetPassword} />
+            </>
+          )}
 
-            {/* LOGIN */}
-            {/* <Route path="/login" element={<Login />} /> */}
-            {/* SIGNUP */}
-            {/* <Route
+          <main className="flex-1">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    {/* Components outside Routes */}
+                    {/* LAYOUT 1 */}
+                    <Slider />
+                    {/* LAYOUT 2 */}
+                    <CategorySlider />
+                    {/* LAYOUT 3 */}
+                    <HorizontalBanner1 />
+                    {/* LAYOUT 4 */}
+                    <FlashSaleSlider
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 5 */}
+                    <HorizontalBanners3Items />
+                    {/* LAYOUT 6 */}
+                    <CategorySlider5Items />
+                    {/* LAYOUT 7 */}
+                    <PopularProductsSlider01
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 8 */}
+                    <HorizontalBannersLarge2Items_section8 />
+                    {/* LAYOUT 9 */}
+                    <PopularProductsSlider02_4Items
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 10 */}
+                    <HorizontalBanners_2Items />
+                    {/* LAYOUT 11 */}
+                    <BestSellingProductsSlider01_6Items
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 12 */}
+                    <VeticalBanners_4Items />
+                    {/* LAYOUT 13 */}
+                    <HorizontalBanner_Large_1Item />
+                    {/* LAYOUT 14 */}
+                    <BestSellingProductsSlider02_6Items
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 15 */}
+                    <HorizontalBannerSmall_1Item />
+                    {/* LAYOUT 16 */}
+                    <VerticalBanners_4Items />
+                    {/* LAYOUT 17 */}
+                    <BestSellingProductsSlider_03_6Items
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 18 */}
+                    <HorizontalBannersLarge2Items_section18 />
+                    {/* LAYOUT 19 */}
+                    <Horizontal_Banner_Large_1_Item />
+                    {/* LAYOUT 20 */}
+                    <BestSellingProductsSlider_04_6_Items
+                      setIsAddToCartModal={setIsAddToCartModal}
+                    />
+                    {/* LAYOUT 21 */}
+                    <Vertical_Banners_4_Items />
+                    {/* LAYOUT 22 */}
+                    <Horizontal_Banner_Small_1_Item />
+                    {/* LAYOUT 23 */}
+                    <Testimonials />
+                    {/* LAYOUT 24 */}
+                    <Information />
+                  </>
+                }
+              />
+              {/* SHOP */}
+              <Route
+                path="/shop"
+                element={
+                  <ShopLayout setIsAddToCartModal={setIsAddToCartModal} />
+                }
+              />
+
+              {/* LOGIN */}
+              {/* <Route path="/login" element={<Login />} /> */}
+              {/* SIGNUP */}
+              {/* <Route
               path="/signup"
               element={<SignUp setLoginModalOpen={setLoginModalOpen} />}
             /> */}
 
-            {/* WISHLIST */}
-            <Route
-              path="/wishlist"
-              element={
-                <section className="py-10 bg-white">
-                  <div className="container">
-                    <WishList setIsAddToCartModal={setIsAddToCartModal} />
-                  </div>
-                </section>
-              }
-            />
-
-            {/* CART */}
-            <Route path="/shopping-cart" element={<ShoppingCart />} />
-            <Route path="/checkout" element={<Checkout />} />
-
-            {/* MY-ADDRESSES */}
-            <Route
-              path="/my-addresses"
-              element={
-                <section className="py-10 bg-white">
-                  <div className="container">
-                    <MyAddresses />
-                  </div>
-                </section>
-              }
-            />
-            {/* MY-ORDERS */}
-            <Route
-              path="/my-orders"
-              element={
-                <section className="py-10 bg-white">
-                  <div className="container">
-                    <MyOrders isCancelOrderModalOpen={isCancelOrderModalOpen} />
-                  </div>
-                </section>
-              }
-            />
-            {/* ORDER DETAILS */}
-            <Route
-              path="/order-details"
-              element={
-                <OrderDetails
-                  setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
-                />
-              }
-            />
-
-            {/* MY ACCOUNT */}
-            <Route
-              path="/my-account"
-              element={
-                <section className="py-10 bg-white">
-                  <div className="container">
-                    <MyAccount />
-                  </div>
-                </section>
-              }
-            />
-
-            {/* PRODUCT DETAILS */}
-            <Route
-              path="/product-details/:productId"
-              element={
-                <>
-                  <section className="pt-10 pb-20 bg-white">
+              {/* WISHLIST */}
+              <Route
+                path="/wishlist"
+                element={
+                  <section className="py-10 bg-white">
                     <div className="container">
-                      <Product_Details />
+                      <WishList setIsAddToCartModal={setIsAddToCartModal} />
                     </div>
                   </section>
+                }
+              />
 
-                  {/* CUSTOMER REVIEWS */}
-                  <section class="py-16 border-t border-gray-200">
-                    <div class="container">
-                      <Customer_Reviews />
+              {/* CART */}
+              <Route path="/shopping-cart" element={<ShoppingCart />} />
+              <Route path="/checkout" element={<Checkout />} />
+
+              {/* MY-ADDRESSES */}
+              <Route
+                path="/my-addresses"
+                element={
+                  <section className="py-10 bg-white">
+                    <div className="container">
+                      <MyAddresses />
                     </div>
                   </section>
-                </>
-              }
-            />
+                }
+              />
+              {/* MY-ORDERS */}
+              <Route
+                path="/my-orders"
+                element={
+                  <section className="py-10 bg-white">
+                    <div className="container">
+                      <MyOrders
+                        isCancelOrderModalOpen={isCancelOrderModalOpen}
+                      />
+                    </div>
+                  </section>
+                }
+              />
+              {/* ORDER DETAILS */}
+              <Route
+                path="/order-details"
+                element={
+                  <OrderDetails
+                    setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
+                  />
+                }
+              />
 
-            {/* PRIVACY POLICY */}
-            <Route path="/privacy-policy" element={<Privacy_Policy />} />
+              {/* MY ACCOUNT */}
+              <Route
+                path="/my-account"
+                element={
+                  <section className="py-10 bg-white">
+                    <div className="container">
+                      <MyAccount />
+                    </div>
+                  </section>
+                }
+              />
 
-            {/* 404 ERROR  PAGE */}
-            <Route path="*" element={<Error />} />
+              {/* PRODUCT DETAILS */}
+              <Route
+                path="/product-details/:productId"
+                element={
+                  <>
+                    <section className="pt-10 pb-20 bg-white">
+                      <div className="container">
+                        <Product_Details />
+                      </div>
+                    </section>
 
-            {/*EMPTY SHOPPING CART  */}
-            <Route
-              path="/empty-shopping-cart"
-              element={<EmptyShoppingCart />}
-            />
+                    {/* CUSTOMER REVIEWS */}
+                    <section class="py-16 border-t border-gray-200">
+                      <div class="container">
+                        <Customer_Reviews />
+                      </div>
+                    </section>
+                  </>
+                }
+              />
 
-            {/* THANK YOU */}
-            <Route path="/thank-you" element={<Thank_You />} />
-          </Routes>
-          {/* Global Cancel Order Modal */}
-          {isCancelOrderModalOpen && (
-            <Cancel_Order_Modal
-              setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
-            />
+              {/* PRIVACY POLICY */}
+              <Route path="/privacy-policy" element={<Privacy_Policy />} />
+
+              {/* 404 ERROR  PAGE */}
+              <Route path="*" element={<Error />} />
+
+              {/*EMPTY SHOPPING CART  */}
+              <Route
+                path="/empty-shopping-cart"
+                element={<EmptyShoppingCart />}
+              />
+
+              {/* THANK YOU */}
+              <Route path="/thank-you" element={<Thank_You />} />
+            </Routes>
+            {/* Global Cancel Order Modal */}
+            {isCancelOrderModalOpen && (
+              <Cancel_Order_Modal
+                setIsCancelOrderModalOpen={setIsCancelOrderModalOpen}
+              />
+            )}
+          </main>
+          {/* MOBILE NAVIGATION MODAL [SMALL SCREEN MENU BTN] */}
+          {isMobileNavigationModal && (
+            <>
+              <Mobile_Navigation_Modal
+                setIsMobileNavigationModal={setIsMobileNavigationModal}
+              />
+            </>
           )}
-        </main>
-        {/* MOBILE NAVIGATION MODAL [SMALL SCREEN MENU BTN] */}
-        {isMobileNavigationModal && (
-          <>
-            <Mobile_Navigation_Modal
-              setIsMobileNavigationModal={setIsMobileNavigationModal}
-            />
-          </>
-        )}
 
-        {isAddToCartModal && (
-          <>
-            <AddToCart_Quick_View_Modal
-              isAddToCartModal={isAddToCartModal}
-              setIsAddToCartModal={setIsAddToCartModal}
-            />
-          </>
-        )}
-        {/* LAYOUT 24 */}
-        {/* <Information /> */}
-        <Footer />
-      </div>
-    </BrowserRouter>
+          {isAddToCartModal && (
+            <>
+              <AddToCart_Quick_View_Modal
+                isAddToCartModal={isAddToCartModal}
+                setIsAddToCartModal={setIsAddToCartModal}
+              />
+            </>
+          )}
+          {/* LAYOUT 24 */}
+          {/* <Information /> */}
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </>
   );
 }

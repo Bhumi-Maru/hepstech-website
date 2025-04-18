@@ -133,11 +133,6 @@ export default function Product_details_section_1_1({ productDetails }) {
 
   return (
     <>
-      <style>{`
-    :root {
-      --swiper-navigation-size: 12px !important;
-    }
-  `}</style>
       <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
         <div className="product-carousel">
           {/* Main Image Section */}
