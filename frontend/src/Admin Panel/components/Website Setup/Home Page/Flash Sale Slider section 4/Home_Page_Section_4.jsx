@@ -33,38 +33,57 @@ export default function Home_Page_Section_4() {
 
   const handleSave4 = async () => {
     try {
-      // First save the section title if it exists
       if (formData4.sectionTitle) {
         await saveSectionTitle(formData4.sectionTitle, 4);
-        localStorage.setItem("sectionTitle-4", formData4.sectionTitle); // Ensure it's saved
+        localStorage.setItem("sectionTitle-4", formData4.sectionTitle);
       }
 
-      // Example API request (replace URL with your actual API endpoint)
       const response = await fetch("http://localhost:7000/api/homepage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData4),
+        body: JSON.stringify({
+          ...formData4,
+          layoutNumber: "4",
+        }),
       });
 
       const result = await response.json();
-      console.log("Saved successfully:", result);
 
-      // Reset form but keep the sectionTitle
+      // if (result.newHomePage?.home_page_main_category) {
+      //   // Store the main category ID for section 7
+      //   setSection7MainCategoryId(result.newHomePage.home_page_main_category);
+
+      //   // Fetch products for this category
+      //   await fetchProductsByMainCategory(
+      //     result.newHomePage.home_page_main_category,
+      //     7
+      //   );
+      // }
+
       setFormData4((prev) => ({
         ...prev,
-        layoutNumber: "4",
         home_page_main_category: "",
         home_page_sub_category: "",
         home_page_layout_type: "",
-        // sectionTitle is not reset here, so it keeps its value
       }));
     } catch (error) {
-      console.error("Error saving layout 4 data:", error);
+      console.error("Error saving layout 4:", error);
       alert("Failed to save layout 4.");
     }
   };
+
+  const handleDiscard = () => {
+    setFormData4({
+      layoutNumber: "4",
+      // home_page_section_title: "",
+      home_page_main_category: "",
+      home_page_sub_category: "",
+      home_page_layout_type: "",
+    });
+  };
+
   return (
     <>
       {/* [HOME PAGE SECTION 4] Flash Sale Slider  */}
