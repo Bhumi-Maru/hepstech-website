@@ -18,6 +18,7 @@ import {
   HeaderProvider,
 } from "./Admin Panel/context/Header_Menu_Context";
 import { HomePageProvider } from "./Admin Panel/context/HomepageContext";
+import { ProductDetailProvider } from "./Website/context/ProductDetails_Context";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -63,7 +64,9 @@ root.render(
             <FooterSectionProvider>
               <HeaderMenuProvider>
                 <HomePageProvider>
-                  <Website_App />
+                  <ProductDetailProvider>
+                    <Website_App />
+                  </ProductDetailProvider>
                 </HomePageProvider>
               </HeaderMenuProvider>
             </FooterSectionProvider>

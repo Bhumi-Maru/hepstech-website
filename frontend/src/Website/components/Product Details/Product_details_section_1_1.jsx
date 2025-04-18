@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useProductDetails } from "../../context/ProductDetails_Context";
 
-export default function Product_details_section_1_1({ productDetails }) {
-  console.log("productDetails", productDetails);
+export default function Product_details_section_1_1() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [xZoomLoaded, setXZoomLoaded] = useState(false);
   const [jQueryLoaded, setJQueryLoaded] = useState(false);
+  const { productDetails, imagesLoaded } = useProductDetails();
 
   // Extract main image and gallery images
   const mainImage = productDetails?.productMainImage;

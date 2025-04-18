@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useProductDetails } from "../../context/ProductDetails_Context";
 
 export default function Product_details_section_1_2({
   setIsSizeChartModalOpen,
-  productDetails,
 }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const { productDetails, imagesLoaded } = useProductDetails();
 
   console.log("selectedSize", selectedSize);
 

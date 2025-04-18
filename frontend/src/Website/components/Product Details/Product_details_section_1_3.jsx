@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useProductDetails } from "../../context/ProductDetails_Context";
 
-export default function Product_details_section_1_3({ productDetails }) {
+export default function Product_details_section_1_3() {
+  const { productDetails, imagesLoaded } = useProductDetails();
   const [isOpen, setIsOpen] = useState({
     Description: false,
     ReturnAndRefund: false,

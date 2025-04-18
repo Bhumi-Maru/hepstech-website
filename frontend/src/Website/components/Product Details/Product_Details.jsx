@@ -6,14 +6,19 @@ import Size_Chart_Modal from "./Size_Chart_Modal";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useProductDetails } from "../../context/ProductDetails_Context";
 
 export default function Product_Details() {
   const { productId } = useParams();
   const [isSizeChartModalOpen, setIsSizeChartModalOpen] = useState(false);
   const { setIsOfferImageModalOpen, offerType } = useGlobalContext();
-  const [productDetails, setProductDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const {
+    setProductDetails,
+    productDetails,
+    imagesLoaded,
+    setImagesLoaded,
+    setLoading,
+  } = useProductDetails();
 
   // useEffect(() => {
   //   if (offerType === "general") {
