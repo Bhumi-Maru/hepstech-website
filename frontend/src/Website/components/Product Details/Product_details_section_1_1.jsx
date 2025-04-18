@@ -132,77 +132,89 @@ export default function Product_details_section_1_1({ productDetails }) {
   };
 
   return (
-    <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
-      <div className="product-carousel">
-        {/* Main Image Section */}
-        <div className="swiper-container gallery-top">
-          <div className="status-badge lg sale">
-            {productDetails?.productLabel}
-          </div>
-          <div
-            className="swiper-wrapper xzoom-container"
-            style={{ height: "450px" }}
-          >
-            <div className="bg-white swiper-slide">
-              {selectedImage && (
-                <img
-                  className="xzoom"
-                  src={getImageUrl(selectedImage, selectedImage !== mainImage)}
-                  xoriginal={getImageUrl(
-                    selectedImage,
-                    selectedImage !== mainImage
-                  )}
-                  alt={productDetails?.productTitle || "Product"}
-                />
-              )}
+    <>
+      <style>{`
+    :root {
+      --swiper-navigation-size: 12px !important;
+    }
+  `}</style>
+      <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
+        <div className="product-carousel">
+          {/* Main Image Section */}
+          <div className="swiper-container gallery-top">
+            <div className="status-badge lg sale">
+              {productDetails?.productLabel}
+            </div>
+            <div
+              className="swiper-wrapper xzoom-container"
+              style={{ height: "450px" }}
+            >
+              <div className="bg-white swiper-slide">
+                {selectedImage && (
+                  <img
+                    className="xzoom"
+                    src={getImageUrl(
+                      selectedImage,
+                      selectedImage !== mainImage
+                    )}
+                    xoriginal={getImageUrl(
+                      selectedImage,
+                      selectedImage !== mainImage
+                    )}
+                    alt={productDetails?.productTitle || "Product"}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Thumbnail Images */}
-        <div className="relative">
-          <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
-          <div className="swiper-container gallery-thumbs">
-            <div className="swiper-wrapper">
-              {/* Main image thumbnail */}
-              {mainImage && (
-                <div
-                  className="bg-white swiper-slide cursor-pointer"
-                  style={{ height: "100px", width: "100px" }}
-                  onClick={resetToMainImage}
-                >
-                  <img
-                    src={getImageUrl(mainImage)}
-                    alt="Main Product"
-                    className={`object-cover w-full h-full ${
-                      selectedImage === mainImage ? "ring-2 ring-blue-500" : ""
-                    }`}
-                  />
-                </div>
-              )}
+          {/* Thumbnail Images */}
+          <div className="relative">
+            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
+            <div className="swiper-container gallery-thumbs">
+              <div className="swiper-wrapper">
+                {/* Main image thumbnail */}
+                {mainImage && (
+                  <div
+                    className="bg-white swiper-slide cursor-pointer"
+                    style={{ height: "100px", width: "100px" }}
+                    onClick={resetToMainImage}
+                  >
+                    <img
+                      src={getImageUrl(mainImage)}
+                      alt="Main Product"
+                      className={`object-cover w-full h-full ${
+                        selectedImage === mainImage
+                          ? "ring-2 ring-blue-500"
+                          : ""
+                      }`}
+                    />
+                  </div>
+                )}
 
-              {/* Gallery images thumbnails */}
-              {galleryImages.map((img, index) => (
-                <div
-                  key={index}
-                  className="bg-white swiper-slide cursor-pointer"
-                  style={{ height: "100px", width: "100px" }}
-                  onClick={() => handleGalleryImageClick(img)}
-                >
-                  <img
-                    src={getImageUrl(img, true)}
-                    alt={`Gallery ${index + 1}`}
-                    className={`object-cover w-full h-full ${
-                      selectedImage === img ? "ring-2 ring-blue-500" : ""
-                    }`}
-                  />
-                </div>
-              ))}
+                {/* Gallery images thumbnails */}
+                {galleryImages.map((img, index) => (
+                  <div
+                    key={index}
+                    className="bg-white swiper-slide cursor-pointer"
+                    style={{ height: "100px", width: "100px" }}
+                    onClick={() => handleGalleryImageClick(img)}
+                  >
+                    <img
+                      src={getImageUrl(img, true)}
+                      alt={`Gallery ${index + 1}`}
+                      className={`object-cover w-full h-full ${
+                        selectedImage === img ? "ring-2 ring-blue-500" : ""
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
+            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
           </div>
-          <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

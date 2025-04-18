@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function BestSellingProductsSlider_04_6_Items({
   setIsAddToCartModal,
@@ -117,7 +118,11 @@ export default function BestSellingProductsSlider_04_6_Items({
                           </svg>
                         </button>
 
-                        <a href="#" title="" class="block">
+                        <Link
+                          to={`/product-details/${product._id}`}
+                          title={product.productTitle}
+                          className="block"
+                        >
                           <div class="product-image">
                             {imageUrl ? (
                               <img
@@ -145,7 +150,7 @@ export default function BestSellingProductsSlider_04_6_Items({
                               </div>
                             )}
                           </div>
-                        </a>
+                        </Link>
 
                         <div class="product-details">
                           <div class="flex flex-col flex-1">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHomePageContext } from "../../../../Admin Panel/context/HomepageContext";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
+import { Link } from "react-router-dom";
 
 export default function PopularProductsSlider02_4Items({
   setIsAddToCartModal,
@@ -123,7 +124,11 @@ export default function PopularProductsSlider02_4Items({
                       </svg>
                     </button>
 
-                    <a href="#" title="" className="block">
+                    <Link
+                      to={`/product-details/${product._id}`}
+                      title={product.productTitle}
+                      className="block"
+                    >
                       <div className="product-image">
                         {imageUrl ? (
                           <img
@@ -151,7 +156,7 @@ export default function PopularProductsSlider02_4Items({
                           </div>
                         )}
                       </div>
-                    </a>
+                    </Link>
 
                     <div className="product-details">
                       <div className="flex flex-col flex-1">
