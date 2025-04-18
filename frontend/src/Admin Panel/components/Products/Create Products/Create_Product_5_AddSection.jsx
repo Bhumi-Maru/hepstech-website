@@ -120,7 +120,7 @@ export default function Create_Product_5_AddSection() {
                   value={option.name}
                   onChange={(e) => updateOptionName(index, e.target.value)}
                   id=""
-                  name=""
+                  name="Size"
                   placeholder=""
                   class=""
                 />
@@ -135,7 +135,7 @@ export default function Create_Product_5_AddSection() {
                   type="text"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      addOptionValue(index, e.target.value);
+                      addOptionValue(index, e.target.value.toUpperCase());
                       e.target.value = "";
                     }
                   }}

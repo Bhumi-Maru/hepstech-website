@@ -10,6 +10,8 @@ export default function Product_details_section_1_2({
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
+  console.log("selectedSize", selectedSize);
+
   // Initialize with first variant if product has variants
   useEffect(() => {
     if (
@@ -173,6 +175,7 @@ export default function Product_details_section_1_2({
         </div>
 
         <div className="mt-5 sm:flex sm:items-center sm:justify-between sm:space-x-4">
+          {/* RATING STARTS */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center">
               <svg
@@ -225,6 +228,7 @@ export default function Product_details_section_1_2({
             </a>
           </div>
 
+          {/* VIEW SIZE CHART */}
           <Link
             title="View Size Chart"
             className="inline-flex items-center mt-5 text-xs font-semibold uppercase sm:mt-0 text-skin-primary"
@@ -253,96 +257,42 @@ export default function Product_details_section_1_2({
 
         <div className="flow-root">
           <ul className="-my-4 divide-y divide-gray-200">
-            <li className="py-4 sm:flex sm:items-center sm:justify-between">
-              <p className="text-sm font-semibold">Size</p>
+            {/* SIZE SELECTION */}
+            {availableSizes.length > 0 && (
+              <li className="py-4 sm:flex sm:items-center sm:justify-between">
+                <p className="text-sm font-semibold">Size</p>
 
-              <div className="mt-3 sm:mt-0">
-                <span className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
-                  <div className="relative flex-1 custom-radio sm:flex-none">
-                    <label for="extraSmallSize" className="sr-only">
-                      Extra Small
-                    </label>
-                    <div className="toggle-radio">
-                      <input
-                        type="radio"
-                        id="extraSmallSize"
-                        role="radio"
-                        tabindex="0"
-                        name="type"
-                      />
-                      <label for="extraSmallSize"> XS </label>
-                    </div>
-                  </div>
-
-                  <div className="relative flex-1 custom-radio sm:flex-none">
-                    <label for="smallSize" className="sr-only">
-                      {" "}
-                      SM{" "}
-                    </label>
-                    <div className="toggle-radio">
-                      <input
-                        type="radio"
-                        id="smallSize"
-                        role="radio"
-                        tabindex="0"
-                        name="type"
-                      />
-                      <label for="smallSize"> SM </label>
-                    </div>
-                  </div>
-
-                  <div className="relative flex-1 custom-radio sm:flex-none">
-                    <label for="mediumSize" className="sr-only">
-                      {" "}
-                      MD{" "}
-                    </label>
-                    <div className="toggle-radio">
-                      <input
-                        type="radio"
-                        id="mediumSize"
-                        role="radio"
-                        tabindex="0"
-                        name="type"
-                      />
-                      <label for="mediumSize"> MD </label>
-                    </div>
-                  </div>
-
-                  <div className="relative flex-1 custom-radio sm:flex-none">
-                    <label for="largeSize" className="sr-only">
-                      {" "}
-                      LG{" "}
-                    </label>
-                    <div className="toggle-radio">
-                      <input
-                        type="radio"
-                        id="largeSize"
-                        role="radio"
-                        tabindex="0"
-                        name="type"
-                      />
-                      <label for="largeSize"> LG </label>
-                    </div>
-                  </div>
-
-                  <div className="relative flex-1 custom-radio sm:flex-none">
-                    <label for="extraLargeSize" className="sr-only">
-                      XL
-                    </label>
-                    <div className="toggle-radio">
-                      <input
-                        type="radio"
-                        id="extraLargeSize"
-                        role="radio"
-                        tabindex="0"
-                        name="type"
-                      />
-                      <label for="extraLargeSize"> XL </label>
-                    </div>
-                  </div>
-                </span>
-              </div>
-            </li>
+                <div className="mt-3 sm:mt-0">
+                  <span className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
+                    {availableSizes.map((size, index) => {
+                      const inputId = `size-${index}`;
+                      return (
+                        <div
+                          className="relative flex-1 custom-radio sm:flex-none"
+                          key={size}
+                        >
+                          <label htmlFor={inputId} className="sr-only">
+                            {size}
+                          </label>
+                          <div className="toggle-radio">
+                            <input
+                              type="radio"
+                              id={inputId}
+                              role="radio"
+                              tabIndex="0"
+                              name="size"
+                              checked={selectedSize === size}
+                              onChange={() => handleSizeSelect(size)}
+                            />
+                            <label htmlFor={inputId}> {size} </label>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </span>
+                </div>
+              </li>
+            )}
 
             {/* Color Selection */}
             {availableColors.length > 0 && (
