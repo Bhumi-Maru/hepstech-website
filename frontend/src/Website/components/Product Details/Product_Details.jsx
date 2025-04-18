@@ -20,11 +20,11 @@ export default function Product_Details() {
     setLoading,
   } = useProductDetails();
 
-  // useEffect(() => {
-  //   if (offerType === "general") {
-  //     setIsOfferImageModalOpen(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (offerType === "general") {
+      setIsOfferImageModalOpen(true);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
