@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Swiper from "swiper";
+import Swiper from "swiper/bundle";
+import "swiper/swiper-bundle.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 
 export default function FlashSaleSlider({ setIsAddToCartModal }) {
@@ -22,7 +24,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
 
   // Function to update the timer
   const updateTimer = () => {
-    const endDate = new Date("2025-02-28T23:59:59"); // Set your sale end date here
+    const endDate = new Date("2025-04-19T23:59:59"); // Set your sale end date here
     const now = new Date();
     const timeDifference = endDate - now;
 
@@ -139,9 +141,9 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                 fill="currentColor"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </a>
@@ -157,9 +159,9 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
@@ -217,7 +219,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                     <>
                       <div
                         className="product-card swiper-slide"
-                        key={product.id}
+                        key={product._id}
                       >
                         <button
                           type="button"
@@ -241,7 +243,15 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                             ></path>
                           </svg>
                         </button>
-                        <a href="#" title="" className="block">
+                        <Link
+                          to={`/product-details/${product._id}`}
+                          title={product.productTitle}
+                          className="block"
+                          // onClick={(e) => {
+                          //   e.preventDefault();
+                          //   navigate(`/product/${product._id}`);
+                          // }}
+                        >
                           <div className="product-image">
                             {imageUrl ? (
                               <img
@@ -269,7 +279,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                               </div>
                             )}
                           </div>
-                        </a>
+                        </Link>
                         <div className="product-details">
                           <div className="flex flex-col flex-1">
                             <p className="product-title">

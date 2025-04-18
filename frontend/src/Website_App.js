@@ -318,7 +318,7 @@ export default function WebsiteApp() {
 
             {/* PRODUCT DETAILS */}
             <Route
-              path="/product-details"
+              path="/product-details/:productId"
               element={
                 <>
                   <section className="pt-10 pb-20 bg-white">

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Product_details_section_1_2({
   setIsSizeChartModalOpen,
+  prodcutDetails,
 }) {
   const [quantity, setQuantity] = useState(1);
   return (

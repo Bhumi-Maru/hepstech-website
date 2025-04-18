@@ -1,24 +1,38 @@
 import React, { useEffect, useState } from "react";
 
-export default function Product_details_section_1_1() {
-  const images = [
-    "nature-1.jpg",
-    "nature-2.jpg",
-    "nature-3.jpg",
-    "nature-4.jpg",
-  ];
-
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+export default function Product_details_section_1_1({ productDetails }) {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [xZoomLoaded, setXZoomLoaded] = useState(false);
   const [jQueryLoaded, setJQueryLoaded] = useState(false);
 
-  // Correct image path handling
-  const getImagePath = (imageName) => {
-    return `/website_assets/images/${imageName}`;
+  // Extract main image and gallery images
+  const mainImage = productDetails?.productMainImage;
+  const galleryImages = productDetails?.gallery?.galleryImages || [];
+
+  // Set default image to main image on component mount
+  useEffect(() => {
+    if (mainImage) {
+      setSelectedImage(mainImage);
+    }
+  }, [mainImage]);
+
+  // Helper function to extract filename from path
+  const extractFileName = (fullPath) => {
+    if (!fullPath) return "";
+    return fullPath.split("/").pop();
   };
 
+  // Get complete image URL
+  const getImageUrl = (imagePath, isGallery = false) => {
+    if (!imagePath) return "";
+    const basePath = isGallery
+      ? "http://localhost:7000/uploads/gallery/"
+      : "http://localhost:7000/uploads/";
+    return basePath + extractFileName(imagePath);
+  };
+
+  // Load jQuery
   useEffect(() => {
-    // Load jQuery if not already loaded
     if (!window.jQuery) {
       const jqueryScript = document.createElement("script");
       jqueryScript.src = "https://code.jquery.com/jquery-3.6.1.min.js";
@@ -37,8 +51,8 @@ export default function Product_details_section_1_1() {
     }
   }, []);
 
+  // Load xZoom after jQuery
   useEffect(() => {
-    // Load xZoom after jQuery is loaded
     if (jQueryLoaded && !window.$.fn.xzoom) {
       const xzoomScript = document.createElement("script");
       xzoomScript.src =
@@ -56,10 +70,16 @@ export default function Product_details_section_1_1() {
     }
   }, [jQueryLoaded]);
 
+  // Initialize xZoom when both libraries are loaded
   useEffect(() => {
-    // Initialize xZoom when both libraries are loaded
-    if (xZoomLoaded && jQueryLoaded) {
+    if (xZoomLoaded && jQueryLoaded && selectedImage) {
       try {
+        // Destroy previous xZoom instance if exists
+        if (window.$(".xzoom").data("xzoom")) {
+          window.$(".xzoom").xzoom().destroy();
+        }
+
+        // Initialize new xZoom
         window.$(".xzoom").xzoom({
           zoomWidth: 400,
           title: true,
@@ -72,8 +92,8 @@ export default function Product_details_section_1_1() {
     }
   }, [xZoomLoaded, jQueryLoaded, selectedImage]);
 
+  // Initialize Swiper for thumbnails
   useEffect(() => {
-    // Initialize Swiper
     const swiperScript = document.createElement("script");
     swiperScript.src =
       "https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js";
@@ -100,6 +120,16 @@ export default function Product_details_section_1_1() {
     };
   }, []);
 
+  // Handle image click from gallery
+  const handleGalleryImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  // Reset to main image
+  const resetToMainImage = () => {
+    setSelectedImage(mainImage);
+  };
+
   return (
     <div className="lg:sticky lg:left-0 lg:col-span-2 lg:top-24">
       <div className="product-carousel">
@@ -111,12 +141,17 @@ export default function Product_details_section_1_1() {
             style={{ height: "450px" }}
           >
             <div className="bg-white swiper-slide">
-              <img
-                className="xzoom"
-                src={getImagePath(selectedImage)}
-                xoriginal={getImagePath(selectedImage)}
-                alt="Main Product"
-              />
+              {selectedImage && (
+                <img
+                  className="xzoom"
+                  src={getImageUrl(selectedImage, selectedImage !== mainImage)}
+                  xoriginal={getImageUrl(
+                    selectedImage,
+                    selectedImage !== mainImage
+                  )}
+                  alt={productDetails?.productTitle || "Product"}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -126,14 +161,38 @@ export default function Product_details_section_1_1() {
           <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-thumbnails"></div>
           <div className="swiper-container gallery-thumbs">
             <div className="swiper-wrapper">
-              {images.map((img, index) => (
+              {/* Main image thumbnail */}
+              {mainImage && (
+                <div
+                  className="bg-white swiper-slide cursor-pointer"
+                  style={{ height: "100px", width: "100px" }}
+                  onClick={resetToMainImage}
+                >
+                  <img
+                    src={getImageUrl(mainImage)}
+                    alt="Main Product"
+                    className={`object-cover w-full h-full ${
+                      selectedImage === mainImage ? "ring-2 ring-blue-500" : ""
+                    }`}
+                  />
+                </div>
+              )}
+
+              {/* Gallery images thumbnails */}
+              {galleryImages.map((img, index) => (
                 <div
                   key={index}
                   className="bg-white swiper-slide cursor-pointer"
                   style={{ height: "100px", width: "100px" }}
-                  onClick={() => setSelectedImage(img)}
+                  onClick={() => handleGalleryImageClick(img)}
                 >
-                  <img src={getImagePath(img)} alt={`Thumbnail ${index + 1}`} />
+                  <img
+                    src={getImageUrl(img, true)}
+                    alt={`Gallery ${index + 1}`}
+                    className={`object-cover w-full h-full ${
+                      selectedImage === img ? "ring-2 ring-blue-500" : ""
+                    }`}
+                  />
                 </div>
               ))}
             </div>
