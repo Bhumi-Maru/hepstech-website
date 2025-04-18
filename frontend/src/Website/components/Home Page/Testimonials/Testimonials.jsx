@@ -1,14 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Testimonials.css";
 import { useHomePageContext } from "../../../../Admin Panel/context/HomepageContext";
+import Swiper from "swiper";
+import "swiper/swiper-bundle.css";
 
 export default function Testimonials() {
   const swiperRef = useRef(null);
+  const [isSwiperReady, setIsSwiperReady] = useState(false);
   const { homePage } = useHomePageContext();
 
+  // Initialize Swiper after homePage data is available
   useEffect(() => {
-    if (window.Swiper && swiperRef.current === null) {
-      swiperRef.current = new window.Swiper(".swiper-testimonials", {
+    if (window.Swiper && homePage.length > 0 && !swiperRef.current) {
+      swiperRef.current = new Swiper(".swiper-testimonials", {
         slidesPerView: 1,
         spaceBetween: 16,
         autoplay: {
@@ -30,15 +34,18 @@ export default function Testimonials() {
           768: { slidesPerView: 3 },
         },
       });
+      setIsSwiperReady(true); // Indicate that Swiper is ready
     }
 
+    // Cleanup swiper instance when component unmounts or homePage changes
     return () => {
       if (swiperRef.current) {
         swiperRef.current.destroy(true, true);
         swiperRef.current = null;
+        setIsSwiperReady(false); // Reset the Swiper state
       }
     };
-  }, []);
+  }, [homePage]); // Depend on homePage to re-run if the data changes
 
   const testimonials = homePage.filter(
     (item) => item?.home_page_layout_number?.layoutNumber === 23
