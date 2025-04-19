@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAdminGlobalContext } from "../../../context/Admin_Global_Context";
 import { useProductContext } from "../../../context/Product_Create_Context";
+import ReactQuill from "react-quill";
 
 export default function Create_Products_6() {
   const { setDescriptionSections, descriptionSections } = useProductContext();
@@ -8,6 +9,7 @@ export default function Create_Products_6() {
 
   const [sections, setSections] = useState(descriptionSections);
   const [editingTitleId, setEditingTitleId] = useState(null); // Track which title is being edited
+  const [pageDescription, setPageDescription] = useState("");
 
   // 🔄 Sync local state when descriptionSections changes
   useEffect(() => {
@@ -128,7 +130,7 @@ export default function Create_Products_6() {
                             <div>
                               <label>Description</label>
                               <div className="mt-1">
-                                <textarea
+                                {/* <textarea
                                   className="w-full p-2 border rounded"
                                   placeholder="Write description"
                                   value={section.description}
@@ -139,6 +141,20 @@ export default function Create_Products_6() {
                                       e.target.value
                                     )
                                   }
+                                /> */}
+
+                                <ReactQuill
+                                  theme="snow"
+                                  value={section.description}
+                                  onChange={(value) =>
+                                    handleSectionChange(
+                                      section.id,
+                                      "description",
+                                      value
+                                    )
+                                  }
+                                  placeholder="Write content here..."
+                                  className="bg-white"
                                 />
                               </div>
                             </div>

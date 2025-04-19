@@ -10,6 +10,22 @@ export default function Product_details_section_1_2({
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const { productDetails, imagesLoaded } = useProductDetails();
+  const [selectedVariantOptions, setSelectedVariantOptions] = useState({});
+
+  const handleVariantOptionChange = (optionName, value) => {
+    const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
+    setSelectedVariantOptions(updatedOptions);
+
+    const matchedVariant = productDetails?.productVariants?.find((variant) => {
+      return Object.entries(updatedOptions).every(
+        ([key, val]) => variant.options?.[key] === val
+      );
+    });
+
+    if (matchedVariant) {
+      setSelectedVariant(matchedVariant);
+    }
+  };
 
   console.log("selectedSize", selectedSize);
 
@@ -65,9 +81,11 @@ export default function Product_details_section_1_2({
   };
 
   // Get available sizes from variant options
-  const availableSizes =
-    productDetails?.variantOptions?.find((option) => option.name === "size")
-      ?.values || [];
+  // const availableSizes =
+  //   productDetails?.variantOptions?.find((option) => {
+  //     console.log("options", option);
+  //     return option.name;
+  //   })?.values || [];
 
   // Get available colors
   const availableColors = productDetails?.colorOptions || [];
@@ -258,42 +276,56 @@ export default function Product_details_section_1_2({
 
         <div className="flow-root">
           <ul className="-my-4 divide-y divide-gray-200">
-            {/* SIZE SELECTION */}
-            {availableSizes.length > 0 && (
-              <li className="py-4 sm:flex sm:items-center sm:justify-between">
-                <p className="text-sm font-semibold">Size</p>
+            {/* Variant options SELECTION */}
+            {/* Variant options SELECTION */}
+            {productDetails?.variantOptions?.map((option, index) => (
+              <li
+                className="py-4 sm:flex sm:items-center sm:justify-between"
+                key={option.name}
+              >
+                {/* Display the variant option name (e.g., "Size" or "Color") */}
+                <p className="text-sm font-semibold">{option.name}</p>
 
                 <div className="mt-3 sm:mt-0">
                   <span className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
-                    {availableSizes.map((size, index) => {
-                      const inputId = `size-${index}`;
-                      return (
-                        <div
-                          className="relative flex-1 custom-radio sm:flex-none"
-                          key={size}
-                        >
-                          <label htmlFor={inputId} className="sr-only">
-                            {size}
+                    {/* Iterate over the values of the current variant option */}
+                    {option.values.map((value, vIdx) => (
+                      <div
+                        className="relative flex-1 custom-radio sm:flex-none"
+                        key={`${option.name}-${vIdx}`}
+                      >
+                        <div className="toggle-radio">
+                          <input
+                            type="radio"
+                            id={`variant-${option.name}-${vIdx}`}
+                            role="radio"
+                            tabIndex="0"
+                            name={option.name}
+                            checked={
+                              selectedVariantOptions[option.name] === value
+                            }
+                            onChange={() =>
+                              handleVariantOptionChange(option.name, value)
+                            }
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor={`variant-${option.name}-${vIdx}`}
+                            className={`cursor-pointer inline-flex items-center justify-center w-full px-3 py-1.5 border rounded-md text-sm font-medium transition-colors ${
+                              selectedVariantOptions[option.name] === value
+                                ? "bg-skin-primary text-white border-skin-primary"
+                                : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                            }`}
+                          >
+                            {value}
                           </label>
-                          <div className="toggle-radio">
-                            <input
-                              type="radio"
-                              id={inputId}
-                              role="radio"
-                              tabIndex="0"
-                              name="size"
-                              checked={selectedSize === size}
-                              onChange={() => handleSizeSelect(size)}
-                            />
-                            <label htmlFor={inputId}> {size} </label>
-                          </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </span>
                 </div>
               </li>
-            )}
+            ))}
 
             {/* Color Selection */}
             {availableColors.length > 0 && (

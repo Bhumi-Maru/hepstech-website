@@ -75,15 +75,18 @@ export default function Product_details_section_1_3() {
                 productDetails?.description?.descriptionSections
               ) &&
               productDetails?.description?.descriptionSections.length > 0 ? (
-                productDetails?.description?.descriptionSections.map(
+                productDetails.description.descriptionSections.map(
                   (section) => (
                     <div key={section._id}>
                       <h4 className="font-semibold text-sm text-gray-800 mb-1">
                         {section.sectionTitle}
                       </h4>
-                      <p className="text-sm text-gray-600">
-                        {section.description}
-                      </p>
+                      <div
+                        className="text-sm text-gray-600"
+                        dangerouslySetInnerHTML={{
+                          __html: section.description,
+                        }}
+                      />
                     </div>
                   )
                 )
