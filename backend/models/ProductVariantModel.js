@@ -12,6 +12,7 @@ const ProductVariantSchema = new mongoose.Schema(
       {
         name: { type: String }, // e.g., Color, Size
         value: { type: String }, // e.g., Red, M
+        hex: { type: String },
       },
     ],
     mrpPrice: { type: Number, min: 0 },

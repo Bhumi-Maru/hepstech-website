@@ -92,6 +92,15 @@ export default function All_Products_4({
     startIndex,
     startIndex + itemsPerPage
   );
+
+  const getSellingPrice = (product) => {
+    if (product.productType === "simple") {
+      return product.pricing?.sellingPrice ?? "N/A";
+    } else {
+      return product.productVariants?.[0]?.sellingPrice ?? "N/A";
+    }
+  };
+
   return (
     <>
       {/* ALL PRODUCTS SECTION 4 [TABLE FOR PRODUCT] */}
@@ -161,12 +170,7 @@ export default function All_Products_4({
                               </span>
                             </div>
                           </td>
-                          <td>
-                            ₹{" "}
-                            {product.productType === "simple"
-                              ? product.pricing?.sellingPrice
-                              : product.productVariants[0].sellingPrice}
-                          </td>
+                          <td>₹ {getSellingPrice(product)}</td>
                           <td className="nowrap">
                             <span className="!px-2 badge badge-info">
                               {product.productPurchaseMaxQuantity}

@@ -138,12 +138,19 @@ export const ProductProvider = ({ children }) => {
         return;
       }
       formData.append("variantOptions", JSON.stringify(variantOptions));
-      formData.append("productVariants", JSON.stringify(productVariants));
-      productVariants.forEach((variant) => {
-        if (variant.image instanceof File) {
-          formData.append("variantImages", variant.image, variant.image.name);
-        }
-      });
+      formData.append(
+        "productVariants",
+        JSON.stringify(
+          productVariants.map((variant) => ({
+            ...variant,
+            variantAttributes: variant.variantAttributes.map((attr) => ({
+              name: attr.name,
+              value: attr.value,
+              ...(attr.hex ? { hex: attr.hex } : {}),
+            })),
+          }))
+        )
+      );
     } else {
       formData.append("pricing.mrpPrice", Number(pricing.mrpPrice) || 0);
       formData.append(
