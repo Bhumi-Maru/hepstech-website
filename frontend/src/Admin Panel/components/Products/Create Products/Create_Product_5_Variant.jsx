@@ -11,7 +11,6 @@ export default function Create_Product_5_Variant() {
     productVariants,
     setProductVariants,
     updateVariantField,
-    generateAllVariants,
   } = useProductContext();
 
   const { colors } = useProductVariantContext();
@@ -22,13 +21,20 @@ export default function Create_Product_5_Variant() {
     setProductVariants((prevVariants) =>
       prevVariants.map((variant) =>
         variant.id === variantId
-          ? { ...variant, colorName: color.name, colorHex: color.hex }
+          ? {
+              ...variant,
+              variantAttributes: variant.variantAttributes.map((attr) =>
+                attr.name === "Color"
+                  ? { ...attr, value: color.name, hex: color.hex }
+                  : attr
+              ),
+            }
           : variant
       )
     );
   };
 
-  // Add this useEffect in your component to clean up object URLs
+  // Clean up object URLs
   useEffect(() => {
     return () => {
       productVariants.forEach((variant) => {
@@ -48,10 +54,17 @@ export default function Create_Product_5_Variant() {
   const addVariant = () => {
     const newVariant = {
       id: Date.now(), // unique ID
-      variantAttributes: variantOptions.map((option) => ({
-        name: option.name,
-        value: option.values[0] || "",
-      })),
+      variantAttributes: [
+        {
+          name: "Color",
+          value: colors[0]?.name || "",
+          hex: colors[0]?.hex || "",
+        }, // Default color
+        ...variantOptions.map((option) => ({
+          name: option.name,
+          value: option.values[0] || "", // Default to the first value
+        })),
+      ],
       mrpPrice: "",
       sellingPrice: "",
       sku: "",
@@ -67,7 +80,6 @@ export default function Create_Product_5_Variant() {
   };
 
   // Handle variant attribute changes
-  // Corrected handleAttributeChange function
   const handleAttributeChange = (variantId, optionName, newValue) => {
     setProductVariants((prevVariants) =>
       prevVariants.map((variant) =>
@@ -83,7 +95,7 @@ export default function Create_Product_5_Variant() {
     );
   };
 
-  // Update the handleImageUpload function to handle both new and existing images
+  // Handle image upload
   const handleImageUpload = (variantId, file) => {
     const imagePreview = file ? URL.createObjectURL(file) : null;
     setProductVariants(
@@ -91,7 +103,7 @@ export default function Create_Product_5_Variant() {
         variant.id === variantId
           ? {
               ...variant,
-              image: file || variant.image, // Store the File object for new uploads
+              image: file || variant.image,
               imagePreview: imagePreview || variant.imagePreview,
             }
           : variant
@@ -115,25 +127,6 @@ export default function Create_Product_5_Variant() {
       <div className="px-4 py-5 border-t border-gray-200 sm:px-5">
         <div className="flex items-center justify-between">
           <p className="text-xs font-medium text-gray-600">Variant Details</p>
-          {/* <button
-            type="button"
-            className="btn btn-light"
-            onClick={generateAllVariants}
-          >
-            <svg
-              className="w-5 h-5 mr-2 -ml-1 text-gray-500"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            Generate All Variants
-          </button> */}
         </div>
 
         <div className="flow-root mt-2">
@@ -142,17 +135,17 @@ export default function Create_Product_5_Variant() {
             id="variantsAccordion"
           >
             {productVariants.map((variant, index) => (
-              <li class="accordion-item" key={variant.id}>
-                <dt class="accordion-header">
+              <li className="accordion-item" key={variant.id}>
+                <dt className="accordion-header">
                   <button
                     type="button"
-                    class="accordion-button"
+                    className="accordion-button"
                     onClick={() => toggleVariant(variant.id)}
                   >
-                    <span class="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900">
                       Variant {index}
                     </span>
-                    <span class="flex items-center ml-6 accordion-control h-7">
+                    <span className="flex items-center ml-6 accordion-control h-7">
                       {expandedVariant === variant.id ? (
                         <svg
                           className="w-4 h-4 rotate-180"
@@ -191,138 +184,78 @@ export default function Create_Product_5_Variant() {
                 {expandedVariant === variant.id && (
                   <dd
                     id={`variant${variant.id}`}
-                    class="accordion-collapse"
+                    className="accordion-collapse"
                     data-parent="#variantsAccordion"
                     style={{ display: "block" }}
                   >
-                    <div class="accordion-content">
-                      <div class="grid items-end grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-4">
-                        {/* <div id="colorbox1">
-                          <label for="">Color</label>
-                          <div class="relative mt-1">
-                            <div class="cselect" onclick="varColor('1')">
-                              <input
-                                type="hidden"
-                                id="colorcodeselect1"
-                                name="colorcodeselect[]"
-                              />
-                              <input
-                                type="hidden"
-                                id="colornameselect1"
-                                name="colornameselect[]"
-                              />
-                              <div class="input-field" id="colorinput1"></div>
-                              <ul
-                                id="colorvarionlist1"
-                                class="dropdown-custom"
-                                style={{ display: "block" }}
-                              >
-                                {colors.map((color) => {
-                                  return (
-                                    <>
-                                      <li
-                                        class="dropdown-custom-item"
-                                        onclick="selectColor('colorcodeselect1','colornameselect1','#f10909','red','colorinput1')"
-                                      >
-                                        <div class="flex items-center space-x-2">
-                                          <div
-                                            class="w-4 h-4 border border-gray-200 rounded-full"
-                                            style={{ background: color.hex }}
-                                          ></div>
-                                          <span class="text-sm font-medium">
-                                            {color.name}
-                                          </span>
-                                        </div>
-                                      </li>
-                                    </>
-                                  );
-                                })}{" "}
-                              </ul>
-                            </div>
-
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                              <svg
-                                class="w-5 h-5 text-gray-500"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                  clip-rule="evenodd"
-                                ></path>
-                              </svg>
-                            </div>
-                          </div>
-                        </div> */}
-
-                        <select name="" id="">
-                          <option value="">Select color</option>
-                          {colors.map((color) => {
-                            return (
-                              <>
-                                <option value={color.name}>{color.name}</option>
-                              </>
-                            );
-                          })}
-                        </select>
-                        {variantOptions.map((option, index) => (
-                          <div key={index}>
-                            <label>{option.name}</label>
-                            <div className="relative mt-1">
-                              <div className="select">
-                                <select
-                                  value={
-                                    variant.variantAttributes.find(
-                                      (attr) => attr.name === option.name
-                                    )?.value || ""
-                                  }
-                                  onChange={(e) =>
-                                    handleAttributeChange(
-                                      variant.id,
-                                      option.name,
-                                      e.target.value
-                                    )
-                                  }
-                                >
-                                  <option value="" disabled>
-                                    Select {option.name}
-                                  </option>
-                                  {option.values.map((value) => (
-                                    <option key={value} value={value}>
-                                      {value}
+                    <div className="accordion-content">
+                      <div className="grid items-end grid-cols-2 xl:grid-cols-4 gap-x-5 gap-y-4">
+                        <div>
+                          <label htmlFor="">Color</label>
+                          <select
+                            onChange={(e) =>
+                              handleColorChange(
+                                variant.id,
+                                colors.find(
+                                  (color) => color.name === e.target.value
+                                )
+                              )
+                            }
+                          >
+                            <option value="">Select color</option>
+                            {colors.map((color) => (
+                              <option key={color._id} value={color.name}>
+                                {color.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        {variant.variantAttributes
+                          .filter((attr) => attr.name !== "Color") // ✅ Remove the "Color" attribute from second dropdown
+                          .map((attr) => (
+                            <div key={attr.name}>
+                              <label>{attr.name}</label>
+                              <div className="relative mt-1">
+                                <div className="select">
+                                  <select
+                                    value={attr.value}
+                                    onChange={(e) =>
+                                      handleAttributeChange(
+                                        variant.id,
+                                        attr.name,
+                                        e.target.value
+                                      )
+                                    }
+                                  >
+                                    <option value="" disabled>
+                                      Select {attr.name}
                                     </option>
-                                  ))}
-                                </select>
-                              </div>
-                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg
-                                  className="w-5 h-5 text-gray-500"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
+                                    {variantOptions
+                                      .find(
+                                        (option) => option.name === attr.name
+                                      )
+                                      ?.values.map((value) => (
+                                        <option key={value} value={value}>
+                                          {value}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
 
                         <div>
-                          <label for="">MRP Price</label>
-                          <div class="relative mt-1 rounded-md">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                              <span class="text-gray-500 sm:text-sm">₹</span>
+                          <label htmlFor="">MRP Price</label>
+                          <div className="relative mt-1 rounded-md">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <span className="text-gray-500 sm:text-sm">
+                                ₹
+                              </span>
                             </div>
                             <input
                               type="number"
-                              name=""
-                              id=""
-                              class="!pl-7"
+                              className="!pl-7"
                               placeholder="0.00"
                               value={variant.mrpPrice}
                               onChange={(e) =>
@@ -336,16 +269,16 @@ export default function Create_Product_5_Variant() {
                           </div>
                         </div>
                         <div>
-                          <label for="">Selling Price</label>
-                          <div class="relative mt-1 rounded-md">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                              <span class="text-gray-500 sm:text-sm">₹</span>
+                          <label htmlFor="">Selling Price</label>
+                          <div className="relative mt-1 rounded-md">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <span className="text-gray-500 sm:text-sm">
+                                ₹
+                              </span>
                             </div>
                             <input
                               type="number"
-                              name=""
-                              id=""
-                              class="!pl-7"
+                              className="!pl-7"
                               placeholder="0.00"
                               value={variant.sellingPrice}
                               onChange={(e) =>
@@ -359,14 +292,11 @@ export default function Create_Product_5_Variant() {
                           </div>
                         </div>
                         <div>
-                          <label for="">SKU</label>
-                          <div class="mt-1">
+                          <label htmlFor="">SKU</label>
+                          <div className="mt-1">
                             <input
                               type="text"
-                              name=""
-                              id=""
                               placeholder="0"
-                              class=""
                               value={variant.sku}
                               onChange={(e) =>
                                 updateVariantField(
@@ -378,15 +308,13 @@ export default function Create_Product_5_Variant() {
                             />
                           </div>
                         </div>
+
                         <div>
-                          <label for="">Quantity</label>
-                          <div class="mt-1">
+                          <label htmlFor="">Quantity</label>
+                          <div className="mt-1">
                             <input
                               type="number"
-                              name=""
-                              id=""
                               placeholder="0"
-                              class=""
                               value={variant.quantity}
                               onChange={(e) =>
                                 updateVariantField(
@@ -398,40 +326,23 @@ export default function Create_Product_5_Variant() {
                             />
                           </div>
                         </div>
-                        {/* <div class="col-span-2 sm:col-span-1 xl:col-span-3">
-                          <label for="">Select Image</label>
-
-                          <div class="mt-1 file-input">
-                            <input
-                              type="file"
-                              name="image"
-                              onChange={(e) =>
-                                handleImageUpload(variant.id, e.target.files[0])
-                              }
-                            />
-                            <label class="label" data-js-label="">
-                              No file selected
-                            </label>
-                            <span class="button">Choose</span>
-                          </div>
-                        </div> */}
                         <div>
                           <button
                             onClick={() => removeVariant(variant.id)}
                             type="button"
-                            class="btn btn-error-light"
+                            className="btn btn-error-light"
                           >
                             <svg
-                              class="w-4 h-4 mr-2 -ml-1"
+                              className="w-4 h-4 mr-2 -ml-1"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                               ></path>
                             </svg>
@@ -441,9 +352,6 @@ export default function Create_Product_5_Variant() {
 
                         {variant.image && (
                           <div className="w-100">
-                            {/* <p className="text-sm text-gray-500">
-                              {variant.image?.name}
-                            </p> */}
                             {variant.imagePreview && (
                               <img
                                 src={variant.imagePreview}

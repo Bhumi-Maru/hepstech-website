@@ -25,17 +25,19 @@ const createProduct = async (req, res) => {
       enableColorOptions,
     } = req.body;
 
-    console.log(req.body); // Debugging incoming data
+    const enableColorOptionsParsed = String(enableColorOptions) === "true";
+
+    console.log("request body", req.body);
 
     // Handle File Uploads
     const productMainImage =
       req.files["productMainImage"]?.[0]?.path.replace(/\\/g, "/") || null;
+
     const galleryImages =
       req.files["galleryImages"]?.map((file) =>
         file.path.replace(/\\/g, "/")
       ) || [];
 
-    // Handle Variant Images
     const variantImages =
       req.files["variantImages"]?.map((file) =>
         file.path.replace(/\\/g, "/")
@@ -47,12 +49,26 @@ const createProduct = async (req, res) => {
       variants: req.files["variantImages"]?.map((f) => f.originalname),
     });
 
-    // Handle Color Options if enabled
-    const colorOptions = req.body.colorOptions
-      ? JSON.parse(req.body.colorOptions)
-      : [];
+    // Helper to parse JSON fields safely
+    const parseJSON = (field) => {
+      try {
+        return req.body[field] ? JSON.parse(req.body[field]) : [];
+      } catch (err) {
+        throw new Error(`Invalid ${field} format`);
+      }
+    };
 
-    // Validate Main & Subcategory
+    const colorOptions = parseJSON("colorOptions");
+    const variantOptions = parseJSON("variantOptions");
+    const productVariants = parseJSON("productVariants");
+    const descriptionSections = parseJSON("descriptionSections").map(
+      (section) => ({
+        sectionTitle: section.title,
+        description: section.description,
+      })
+    );
+
+    // Validate Categories
     const mainCategory = await MainCategory.findById(productMainCategory);
     const subCategory = await SubCategory.findById(productSubCategory);
     if (!mainCategory || !subCategory) {
@@ -77,25 +93,6 @@ const createProduct = async (req, res) => {
       value: Number(req.body["tax.value"]),
     };
 
-    // Helper function to parse JSON fields safely
-    const parseJSON = (field) => {
-      try {
-        return req.body[field] ? JSON.parse(req.body[field]) : [];
-      } catch (error) {
-        return res.status(400).json({ message: `Invalid ${field} format` });
-      }
-    };
-
-    const variantOptions = parseJSON("variantOptions");
-    let productVariants = parseJSON("productVariants");
-
-    const descriptionSections = parseJSON("descriptionSections").map(
-      (section) => ({
-        sectionTitle: section.title,
-        description: section.description,
-      })
-    );
-
     // Create Product
     const newProduct = new Product({
       productTitle,
@@ -107,8 +104,8 @@ const createProduct = async (req, res) => {
       pricing,
       productType,
       variantOptions: productType === "variant" ? variantOptions : [],
-      enableColorOptions: enableColorOptions === "true",
-      colorOptions,
+      enableColorOptions: enableColorOptionsParsed,
+      colorOptions: enableColorOptionsParsed ? colorOptions : [],
       productVariants: [],
       tax,
       productStatus,
@@ -118,13 +115,13 @@ const createProduct = async (req, res) => {
 
     await newProduct.save();
 
-    // Create Product Description
+    // Create Description
     await new ProductDescription({
       productId: newProduct._id,
       descriptionSections,
     }).save();
 
-    // Create Gallery Images
+    // Create Gallery
     await new ProductGalleryImage({
       productId: newProduct._id,
       galleryImages,
@@ -138,26 +135,39 @@ const createProduct = async (req, res) => {
       url: seoUrl,
     }).save();
 
-    // Create Variants if applicable
-    if (productType === "variant") {
+    // Handle Variants
+    if (productType === "variant" && productVariants.length > 0) {
       let createdVariants = [];
 
       for (let i = 0; i < productVariants.length; i++) {
-        let variant = productVariants[i];
+        const variant = productVariants[i];
+
+        const enrichedAttributes = variant.variantAttributes.map((attr) => ({
+          name: attr.name,
+          value: attr.value,
+          ...(enableColorOptionsParsed &&
+          attr.name.toLowerCase() === "color" &&
+          attr.colorName &&
+          attr.hex
+            ? {
+                colorName: attr.colorName,
+                hex: attr.hex,
+              }
+            : {}),
+        }));
+
+        console.log("enrichedAttributes", enrichedAttributes);
 
         const newVariant = new ProductVariant({
           productId: newProduct._id,
-          variantAttributes: variant.variantAttributes,
+          variantAttributes: enrichedAttributes,
           mrpPrice: variant.mrpPrice,
           sellingPrice: variant.sellingPrice,
           sku: variant.sku,
           quantity: variant.quantity,
-          variantImages:
-            variantImages.slice(
-              i * variant.variantAttributes.length,
-              (i + 1) * variant.variantAttributes.length
-            ) || [], // ✅ Assign multiple images per variant
+          image: variantImages[i] || null,
         });
+        console.log("new variant", newVariant);
 
         await newVariant.save();
         createdVariants.push(newVariant._id);
@@ -172,6 +182,7 @@ const createProduct = async (req, res) => {
       product: newProduct,
     });
   } catch (error) {
+    console.error("Create Product Error:", error);
     res.status(500).json({ error: error.message });
   }
 };
