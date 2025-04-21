@@ -27,7 +27,7 @@ export default function VeticalBanners_4Items() {
                   {banner ? (
                     banner.home_page_image?.filePath ? (
                       <img
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         // className="w-full h-full"
                         src={`http://localhost:7000${banner.home_page_image.filePath}`}
                         alt={banner.home_page_image.filename || "Banner"}
