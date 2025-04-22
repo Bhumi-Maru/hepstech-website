@@ -56,9 +56,23 @@ export default function CategorySlider5Items() {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Shop by Category</h2>
 
-          <div className="relative flex items-center space-x-4">
-            <div className="swiper-button-prev swiper-button-custom swiper-button-category-five"></div>
-            <div className="swiper-button-next swiper-button-custom swiper-button-category-five"></div>
+          <div class="relative flex items-center space-x-4">
+            <div
+              class="swiper-button-prev swiper-button-custom swiper-button-category-five swiper-button-disabled"
+              tabindex="-1"
+              role="button"
+              aria-label="Previous slide"
+              aria-controls="swiper-wrapper-8e4157ecdd729364"
+              aria-disabled="true"
+            ></div>
+            <div
+              class="swiper-button-next swiper-button-custom swiper-button-category-five"
+              tabindex="0"
+              role="button"
+              aria-label="Next slide"
+              aria-controls="swiper-wrapper-8e4157ecdd729364"
+              aria-disabled="false"
+            ></div>
           </div>
         </div>
 

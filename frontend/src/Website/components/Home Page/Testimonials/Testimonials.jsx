@@ -57,9 +57,21 @@ export default function Testimonials() {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Latest Reviews</h2>
 
-          <div className="relative flex items-center space-x-4">
-            <div className="swiper-button-prev swiper-button-testimonial swiper-button-custom"></div>
-            <div className="swiper-button-next swiper-button-testimonial swiper-button-custom"></div>
+          <div class="relative flex items-center space-x-4">
+            <div
+              class="swiper-button-prev swiper-button-testimonial swiper-button-custom"
+              tabindex="0"
+              role="button"
+              aria-label="Previous slide"
+              aria-controls="swiper-wrapper-7b6285f0f955c418"
+            ></div>
+            <div
+              class="swiper-button-next swiper-button-testimonial swiper-button-custom"
+              tabindex="0"
+              role="button"
+              aria-label="Next slide"
+              aria-controls="swiper-wrapper-7b6285f0f955c418"
+            ></div>
           </div>
         </div>
 
