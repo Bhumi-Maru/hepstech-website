@@ -12,8 +12,8 @@ export default function CategorySlider() {
         spaceBetween: 16,
         loop: true,
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: ".swiper-button-nex.swiper-button-category-eight",
+          prevEl: ".swiper-button-prev.swiper-button-category-eight",
         },
         pagination: {
           el: ".swiper-pagination",
@@ -47,18 +47,22 @@ export default function CategorySlider() {
       <div className="container">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Shop by Category</h2>
-          <div className="relative flex items-center space-x-4">
+          <div class="relative flex items-center space-x-4">
             <div
-              className="swiper-button-prev swiper-button-custom swiper-button-category-eight"
-              tabIndex="0"
+              class="swiper-button-prev swiper-button-custom swiper-button-category-eight swiper-button-disabled"
+              tabindex="-1"
               role="button"
               aria-label="Previous slide"
+              aria-controls="swiper-wrapper-edf5cdbbca178d20"
+              aria-disabled="true"
             ></div>
             <div
-              className="swiper-button-next swiper-button-custom swiper-button-category-eight"
-              tabIndex="0"
+              class="swiper-button-next swiper-button-custom swiper-button-category-eight"
+              tabindex="0"
               role="button"
               aria-label="Next slide"
+              aria-controls="swiper-wrapper-edf5cdbbca178d20"
+              aria-disabled="false"
             ></div>
           </div>
         </div>
