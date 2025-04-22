@@ -14,8 +14,8 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
     minutes: 0,
     seconds: 0,
   });
-  const [layoutData, setLayoutData] = useState(null);
   const [section4Products, setSection4Products] = useState([]);
+  const [layoutData, setLayoutData] = useState(null);
   const [productsToShow, setProductsToShow] = useState(5); // Default to 4 products
   const [showNavigation, setShowNavigation] = useState(false);
   const sectionTitle = localStorage.getItem("sectionTitle-4");
