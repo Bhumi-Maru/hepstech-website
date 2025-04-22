@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 import axios from "axios";
+import Swiper from "swiper/bundle";
+import "swiper/swiper-bundle.css";
 import { Link } from "react-router-dom";
 
 export default function BestSellingProductsSlider02_6Items({
@@ -9,10 +11,11 @@ export default function BestSellingProductsSlider02_6Items({
   const { getDisplayPrice } = useHomepageHelpers();
   // const { section7Products, setSection7Products } = useHomePageContext();
   const [section14Products, setSection14Products] = useState([]);
+  const [layoutData, setLayoutData] = useState(null);
+  const [productsToShow, setProductsToShow] = useState(5); // Default to 4 products
+  const [showNavigation, setShowNavigation] = useState(false);
 
   const sectionTitle = localStorage.getItem("sectionTitle-14");
-
-  const [layoutData, setLayoutData] = useState(null);
 
   // Fetch layout data and products
   const fetchLayoutDataAndProducts = async () => {
@@ -21,7 +24,13 @@ export default function BestSellingProductsSlider02_6Items({
       const layoutResponse = await axios.get(
         "http://localhost:7000/api/homepage/layout/14"
       );
-      setLayoutData(layoutResponse.data);
+      const sortedLayouts = layoutResponse.data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setLayoutData(sortedLayouts);
+      const latestLayout = sortedLayouts[0];
+      console.log("latestLayout", latestLayout);
+      setProductsToShow(latestLayout?.home_page_layout_type || 4); // Set products to show based on layout type
 
       // Step 2: Fetch products for each main category and subcategory
       const productsPromises = layoutResponse.data.map(async (item) => {
@@ -50,10 +59,43 @@ export default function BestSellingProductsSlider02_6Items({
     fetchLayoutDataAndProducts();
   }, []);
 
+  useEffect(() => {
+    if (section14Products.length > 0) {
+      // Show navigation only if we have more products than what we're displaying
+      setShowNavigation(section14Products.length > productsToShow);
+
+      new Swiper(".swiper-best-selling-six-02", {
+        slidesPerView: productsToShow,
+        spaceBetween: 10,
+        navigation: showNavigation
+          ? {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }
+          : {},
+        breakpoints: {
+          320: { slidesPerView: 1 },
+          640: { slidesPerView: Math.min(2, productsToShow) },
+          768: { slidesPerView: Math.min(3, productsToShow) },
+          1024: { slidesPerView: Math.min(4, productsToShow) },
+          1280: { slidesPerView: productsToShow },
+        },
+      });
+    }
+  }, [section14Products, productsToShow, showNavigation]);
+
   // Only render the slider if we have products for section 7
   if (!section14Products || section14Products.length === 0) {
     return null;
   }
+
+  // Show up to 2x the visible products for better sliding experience
+  // Slice the products array based on the layout type
+  const displayedProducts = section14Products.slice(
+    0,
+    Math.max(productsToShow, section14Products.length)
+  );
+
   return (
     <>
       {/* <!-- BEST SELLING PRODUCTS SLIDER 02 - 6 ITEMS --> */}
@@ -80,14 +122,16 @@ export default function BestSellingProductsSlider02_6Items({
           </div>
 
           <div class="relative mt-3">
-            <div
-              class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"
-              style={{ display: "none" }}
-            ></div>
+            {showNavigation && (
+              <div class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+            )}
 
-            <div class="swiper-container swiper-best-selling-six-03">
-              <div class="swiper-wrapper products gap-4">
-                {section14Products.map((product, index) => {
+            <div class="swiper-container swiper-best-selling-six-02">
+              <div
+                class="swiper-wrapper products"
+                style={{ transform: "translate3d(0px, 0px, 0px)" }}
+              >
+                {displayedProducts.map((product, index) => {
                   const prices = getDisplayPrice(product);
                   const imageUrl = product.productMainImage
                     ? `http://localhost:7000/uploads/${product.productMainImage
@@ -98,7 +142,7 @@ export default function BestSellingProductsSlider02_6Items({
                     <>
                       <div
                         class="product-card swiper-slide"
-                        style={{ width: "190px" }}
+                        // style={{ width: "190px" }}
                         key={index}
                       >
                         <button type="button" class="btn-wishlist-top">
@@ -288,10 +332,9 @@ export default function BestSellingProductsSlider02_6Items({
               </div>
             </div>
 
-            <div
-              class="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"
-              style={{ display: "none" }}
-            ></div>
+            {showNavigation && (
+              <div class="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+            )}
           </div>
         </div>
       </section>
