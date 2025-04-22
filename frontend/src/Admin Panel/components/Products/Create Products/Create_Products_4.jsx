@@ -100,20 +100,21 @@ export default function Create_Products_4() {
 
           {/* Image Preview Section */}
           {selectedImages.length > 0 && (
-            <div className="grid grid-cols-4 gap-2 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
               {selectedImages.map((image, index) => (
                 <div key={index} className="relative group">
                   <img
                     src={image.previewURL}
                     alt="Preview"
-                    className="w-100 h-100 object-cover rounded-md border mt-2"
+                    className="w-full aspect-square object-cover rounded-md border"
                   />
-                  <button
+                  {/* <button
                     onClick={() => handleRemoveImage(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 opacity-75 hover:opacity-100"
+                    className="absolute top-2 right-2  text-white sm:text-xs rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center hover:bg-red-700 shadow-md"
+                    style={{ fontSize: "13px" }}
                   >
                     ✕
-                  </button>
+                  </button> */}
                 </div>
               ))}
             </div>

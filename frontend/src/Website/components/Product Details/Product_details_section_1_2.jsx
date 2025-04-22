@@ -248,7 +248,7 @@ export default function Product_details_section_1_2({
           </div>
 
           {/* VIEW SIZE CHART */}
-          <Link
+          {/* <Link
             title="View Size Chart"
             className="inline-flex items-center mt-5 text-xs font-semibold uppercase sm:mt-0 text-skin-primary"
             role="button"
@@ -269,7 +269,7 @@ export default function Product_details_section_1_2({
                 clip-rule="evenodd"
               />
             </svg>
-          </Link>
+          </Link> */}
         </div>
 
         <hr className="mt-6 mb-4 border-gray-200" />
