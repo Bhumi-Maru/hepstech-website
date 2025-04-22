@@ -193,6 +193,11 @@ export default function Create_Product_5_Variant() {
                         <div>
                           <label htmlFor="">Color</label>
                           <select
+                            value={
+                              variant.variantAttributes.find(
+                                (attr) => attr.name === "Color"
+                              )?.value || ""
+                            }
                             onChange={(e) =>
                               handleColorChange(
                                 variant.id,
