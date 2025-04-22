@@ -10,7 +10,7 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
   // const { section7Products, setSection7Products } = useHomePageContext();
   const [section7Products, setSection7Products] = useState([]);
   const [layoutData, setLayoutData] = useState(null);
-  const [productsToShow, setProductsToShow] = useState(5); // Default to 4 products
+  const [productsToShow, setProductsToShow] = useState(4); // Default to 4 products
   const [showNavigation, setShowNavigation] = useState(false);
   const sectionTitle = localStorage.getItem("sectionTitle-7");
 
@@ -20,27 +20,36 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
       const layoutResponse = await axios.get(
         "http://localhost:7000/api/homepage/layout/7"
       );
-      const sortedLayouts = layoutResponse.data.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-      setLayoutData(sortedLayouts);
-      const latestLayout = sortedLayouts[0];
-      console.log("latestLayout", latestLayout);
-      setProductsToShow(latestLayout?.home_page_layout_type || 4); // Set products to show based on layout type
 
-      const productsPromises = sortedLayouts.map(async (item) => {
-        const mainCategoryId = item.home_page_main_category._id;
-        const subCategoryId = item.home_page_sub_category._id;
-        return axios.get(
-          `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}/sub-category/${subCategoryId}`
+      // Check if layoutResponse has data
+      if (layoutResponse.data && layoutResponse.data.length > 0) {
+        const sortedLayouts = layoutResponse.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-      });
+        setLayoutData(sortedLayouts);
+        const latestLayout = sortedLayouts[0];
+        console.log("latestLayout", latestLayout);
 
-      const productsResponses = await Promise.all(productsPromises);
-      const allProducts = productsResponses.flatMap(
-        (response) => response.data.products
-      );
-      setSection7Products(allProducts);
+        // Set products to show based on layout type
+        setProductsToShow(latestLayout?.home_page_layout_type || 4);
+
+        // Fetch products for each main category and subcategory
+        const productsPromises = sortedLayouts.map(async (item) => {
+          const mainCategoryId = item.home_page_main_category._id;
+          const subCategoryId = item.home_page_sub_category._id;
+          return axios.get(
+            `http://localhost:7000/api/homepage/products/main-category/${mainCategoryId}/sub-category/${subCategoryId}`
+          );
+        });
+
+        const productsResponses = await Promise.all(productsPromises);
+        const allProducts = productsResponses.flatMap(
+          (response) => response.data.products
+        );
+        setSection7Products(allProducts);
+      } else {
+        console.error("No layout data found");
+      }
     } catch (error) {
       console.error("Error fetching layout data or products:", error);
     }
@@ -56,19 +65,20 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
       setShowNavigation(section7Products.length > productsToShow);
 
       new Swiper(".swiper-popular-four-01", {
-        slidesPerView: 2,
-        spaceBetween: 16,
-        navigation: {
-          nextEl: ".swiper-button-next.swiper-button-popular-four-01",
-          prevEl: ".swiper-button-prev.swiper-button-popular-four-01",
-        },
+        slidesPerView: productsToShow,
+        spaceBetween: 10,
+        navigation: showNavigation
+          ? {
+              nextEl: ".swiper-button-next.swiper-button-popular-four-01",
+              prevEl: ".swiper-button-prev.swiper-button-popular-four-01",
+            }
+          : {},
         breakpoints: {
-          640: {
-            slidesPerView: 3,
-          },
-          768: {
-            slidesPerView: 4,
-          },
+          320: { slidesPerView: 1 },
+          640: { slidesPerView: Math.min(2, productsToShow) },
+          768: { slidesPerView: Math.min(3, productsToShow) },
+          1024: { slidesPerView: Math.min(4, productsToShow) },
+          1280: { slidesPerView: productsToShow },
         },
       });
     }

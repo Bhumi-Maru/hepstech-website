@@ -100,15 +100,11 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
           prevEl: ".swiper-button-prev.swiper-button-flash-sale",
         },
         breakpoints: {
-          640: {
-            slidesPerView: 3,
-          },
-          768: {
-            slidesPerView: 4,
-          },
-          1024: {
-            slidesPerView: 5,
-          },
+          320: { slidesPerView: 1 },
+          640: { slidesPerView: Math.min(2, productsToShow) },
+          768: { slidesPerView: Math.min(3, productsToShow) },
+          1024: { slidesPerView: Math.min(4, productsToShow) },
+          1280: { slidesPerView: productsToShow },
         },
       });
     }
