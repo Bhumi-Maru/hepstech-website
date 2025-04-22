@@ -69,8 +69,8 @@ export default function BestSellingProductsSlider02_6Items({
         spaceBetween: 10,
         navigation: showNavigation
           ? {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+              nextEl: ".swiper-button-next.swiper-button-best-selling-six-02",
+              prevEl: ".swiper-button-prev.swiper-button-best-selling-six-02",
             }
           : {},
         breakpoints: {
@@ -123,7 +123,7 @@ export default function BestSellingProductsSlider02_6Items({
 
           <div class="relative mt-3">
             {showNavigation && (
-              <div class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+              <div class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-02 swiper-button-disabled"></div>
             )}
 
             <div class="swiper-container swiper-best-selling-six-02">
@@ -333,7 +333,7 @@ export default function BestSellingProductsSlider02_6Items({
             </div>
 
             {showNavigation && (
-              <div class="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+              <div class="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-02 swiper-button-disabled"></div>
             )}
           </div>
         </div>

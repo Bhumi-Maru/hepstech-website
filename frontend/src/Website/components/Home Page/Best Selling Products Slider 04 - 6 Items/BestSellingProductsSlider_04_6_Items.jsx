@@ -105,7 +105,7 @@ export default function BestSellingProductsSlider_04_6_Items({
 
         <div className="relative mt-3">
           {showNavigation && (
-            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+            <div class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-04 swiper-button-disabled"></div>
           )}
 
           <div className="swiper-container swiper-best-selling-six-04">
@@ -246,7 +246,7 @@ export default function BestSellingProductsSlider_04_6_Items({
           </div>
 
           {showNavigation && (
-            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
+            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-best-selling-six-04 swiper-button-disabled"></div>
           )}
         </div>
       </div>
