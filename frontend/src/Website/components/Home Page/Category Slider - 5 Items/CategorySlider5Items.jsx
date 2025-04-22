@@ -4,6 +4,11 @@ import { useHomePageContext } from "../../../../Admin Panel/context/HomepageCont
 export default function CategorySlider5Items() {
   const { homePage } = useHomePageContext();
 
+  // Filter layout 6 (Category Slider with 5 items)
+  const banners = homePage.filter(
+    (item) => item.home_page_layout_number?.layoutNumber === 6
+  );
+
   useEffect(() => {
     // Wait for Swiper to be available globally after the script is loaded
     const swiper = new window.Swiper(".swiper-category-five", {
@@ -44,11 +49,6 @@ export default function CategorySlider5Items() {
       }
     };
   }, []);
-
-  // Filter layout 6 (Category Slider with 5 items)
-  const banners = homePage.filter(
-    (item) => item.home_page_layout_number?.layoutNumber === 6
-  );
 
   return (
     <section className="section-slider">

@@ -56,20 +56,19 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
       setShowNavigation(section7Products.length > productsToShow);
 
       new Swiper(".swiper-popular-four-01", {
-        slidesPerView: productsToShow,
-        spaceBetween: 10,
-        navigation: showNavigation
-          ? {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }
-          : {},
+        slidesPerView: 2,
+        spaceBetween: 16,
+        navigation: {
+          nextEl: ".swiper-button-next.swiper-button-popular-four-01",
+          prevEl: ".swiper-button-prev.swiper-button-popular-four-01",
+        },
         breakpoints: {
-          320: { slidesPerView: 1 },
-          640: { slidesPerView: Math.min(2, productsToShow) },
-          768: { slidesPerView: Math.min(3, productsToShow) },
-          1024: { slidesPerView: Math.min(4, productsToShow) },
-          1280: { slidesPerView: productsToShow },
+          640: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 4,
+          },
         },
       });
     }
@@ -109,10 +108,13 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
         </div>
         <div className="relative mt-3">
           {showNavigation && (
-            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-popular-four-01"></div>
+            <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-popular-four-01 swiper-button-disabled"></div>
           )}
           <div className="swiper-container swiper-popular-four-01">
-            <div className="swiper-wrapper products">
+            <div
+              className="swiper-wrapper products"
+              style={{ transform: "translate3d(0px, 0px, 0px)" }}
+            >
               {displayedProducts.map((product) => {
                 {
                   console.log("5555555555555 product", product);
@@ -322,7 +324,7 @@ export default function PopularProductsSlider01({ setIsAddToCartModal }) {
             </div>
           </div>
           {showNavigation && (
-            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-popular-four-01"></div>
+            <div className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-popular-four-01 swiper-button-disabled"></div>
           )}
         </div>
       </div>

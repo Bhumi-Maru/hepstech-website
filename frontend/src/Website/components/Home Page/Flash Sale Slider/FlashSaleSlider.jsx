@@ -93,20 +93,22 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
       setShowNavigation(section4Products.length > productsToShow);
 
       new Swiper(".swiper-flash-sale", {
-        slidesPerView: productsToShow,
-        spaceBetween: 10,
-        navigation: showNavigation
-          ? {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }
-          : {},
+        slidesPerView: 2,
+        spaceBetween: 20,
+        navigation: {
+          nextEl: ".swiper-button-next.swiper-button-flash-sale",
+          prevEl: ".swiper-button-prev.swiper-button-flash-sale",
+        },
         breakpoints: {
-          320: { slidesPerView: 1 },
-          640: { slidesPerView: Math.min(2, productsToShow) },
-          768: { slidesPerView: Math.min(3, productsToShow) },
-          1024: { slidesPerView: Math.min(4, productsToShow) },
-          1280: { slidesPerView: productsToShow },
+          640: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 4,
+          },
+          1024: {
+            slidesPerView: 5,
+          },
         },
       });
     }
@@ -199,7 +201,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
         <div className="relative mt-4">
           {showNavigation && (
             <div
-              className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-flash-sale"
+              class="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-flash-sale swiper-button-disabled"
               // style={{ display: "block" }}
             ></div>
           )}
@@ -349,7 +351,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
           </div>
           {showNavigation && (
             <div
-              className="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-flash-sale"
+              class="swiper-button-next swiper-button-custom swiper-button-inside swiper-button-flash-sale swiper-button-disabled"
               // style={{ display: "none" }}
             ></div>
           )}
