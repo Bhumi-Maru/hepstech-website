@@ -55,21 +55,23 @@ export default function BestSellingProductsSlider_04_6_Items({
     if (section20Products.length > 0) {
       setShowNavigation(section20Products.length > productsToShow);
 
-      const swiper = new Swiper(".swiper-best-selling-six-03", {
-        slidesPerView: productsToShow,
-        spaceBetween: 20,
-        navigation: showNavigation
-          ? {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }
-          : {},
+      const swiper = new Swiper(".swiper-best-selling-six-04", {
+        slidesPerView: 2,
+        spaceBetween: 16,
+        navigation: {
+          nextEl: ".swiper-button-next.swiper-button-best-selling-six-04",
+          prevEl: ".swiper-button-prev.swiper-button-best-selling-six-04",
+        },
         breakpoints: {
-          320: { slidesPerView: 1 },
-          640: { slidesPerView: Math.min(2, productsToShow) },
-          768: { slidesPerView: Math.min(3, productsToShow) },
-          1024: { slidesPerView: Math.min(4, productsToShow) },
-          1280: { slidesPerView: Math.min(6, productsToShow) },
+          640: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 4,
+          },
+          1024: {
+            slidesPerView: 6,
+          },
         },
       });
     }
@@ -106,8 +108,11 @@ export default function BestSellingProductsSlider_04_6_Items({
             <div className="swiper-button-prev swiper-button-custom swiper-button-inside swiper-button-best-selling-six-03"></div>
           )}
 
-          <div className="swiper-container swiper-best-selling-six-03">
-            <div className="swiper-wrapper products">
+          <div className="swiper-container swiper-best-selling-six-04">
+            <div
+              className="swiper-wrapper products"
+              style={{ transform: "translate3d(0px, 0px, 0px)" }}
+            >
               {section20Products.map((product, index) => {
                 const prices = getDisplayPrice(product);
                 const imageUrl = product.productMainImage

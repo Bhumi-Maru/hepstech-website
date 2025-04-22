@@ -14,7 +14,7 @@ export default function BestSellingProductsSlider_03_6Items({
 
   const sectionTitle = localStorage.getItem("sectionTitle-17");
   const [layoutData, setLayoutData] = useState(null);
-  const [productsToShow, setProductsToShow] = useState(4); // Default to 4 products
+  const [productsToShow, setProductsToShow] = useState(5); // Default to 4 products
   const [showNavigation, setShowNavigation] = useState(false);
 
   // Fetch layout data and products
@@ -30,7 +30,7 @@ export default function BestSellingProductsSlider_03_6Items({
       setLayoutData(sortedLayouts);
       const latestLayout = sortedLayouts[0];
       console.log("latestLayout", latestLayout);
-      setProductsToShow(latestLayout?.home_page_layout_type || 4); // Set products to show based on layout type
+      setProductsToShow(latestLayout?.home_page_layout_type || 17); // Set products to show based on layout type
 
       // Step 2: Fetch products for each main category and subcategory
       const productsPromises = layoutResponse.data.map(async (item) => {
@@ -126,8 +126,8 @@ export default function BestSellingProductsSlider_03_6Items({
 
             <div class="swiper-container swiper-best-selling-six-03">
               <div
-                class="swiper-wrapper products gap-4"
-                id="swiper-wrapper-0eb40cb4d9f35c78"
+                class="swiper-wrapper products"
+                style={{ transform: "translate3d(0px, 0px, 0px)" }}
               >
                 {displayedProducts.map((product, index) => {
                   const prices = getDisplayPrice(product);
@@ -140,7 +140,7 @@ export default function BestSellingProductsSlider_03_6Items({
                     <>
                       <div
                         class="product-card swiper-slide"
-                        style={{ width: "190px" }}
+                        // style={{ width: "190px" }}
                         key={index}
                       >
                         <button type="button" class="btn-wishlist-top">
