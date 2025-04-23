@@ -13,6 +13,8 @@ export default function Product_details_section_1_2({
   const [selectedVariantOptions, setSelectedVariantOptions] = useState({});
   const [selectedAttribute, setSelectedAttribute] = useState({});
 
+  console.log("selectedAttribute", selectedAttribute);
+
   // const handleVariantOptionChange = (optionName, value) => {
   //   const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
   //   setSelectedVariantOptions(updatedOptions);
@@ -104,8 +106,8 @@ export default function Product_details_section_1_2({
   // Handle attribute selection
   const handleAttributeSelect = (attributeName, value) => {
     setSelectedAttribute((prev) => ({ ...prev, [attributeName]: value }));
-    setSelectedColor(null); // Reset color selection
-    setSelectedVariant(null); // Reset variant selection
+    // setSelectedColor(null); // Reset color selection
+    // setSelectedVariant(null); // Reset variant selection
   };
 
   // Handle color selection
