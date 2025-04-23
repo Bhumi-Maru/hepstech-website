@@ -12,6 +12,7 @@ const footerSectionRouter = require("./routes/FooterSectionRoutes");
 const headerMenuRouter = require("./routes/headerMenuRoutes");
 const pageRouter = require("./routes/StoreSetting_pageRoutes");
 const HomePageRouter = require("./routes/HomePageRoutes");
+const customerReviewRouter = require("./routes/CustomerReviewRoutes");
 
 dotenv.config();
 
@@ -52,6 +53,9 @@ app.use("/api/homepage", HomePageRouter);
 
 // store settings [page]
 app.use("/api/store-setting/page", pageRouter);
+
+//products customer reviewss
+app.use("/api/customer", customerReviewRouter);
 
 // Home route
 app.get("/", (req, res) => {
