@@ -378,54 +378,12 @@ export default function Product_details_section_1_2({
           <ul className="-my-4 divide-y divide-gray-200">
             {/* Variant options SELECTION */}
             {/* Variant options SELECTION */}
-            {attributeNames?.map((attributeName, index) => {
-              // Special handling for color attribute
-              if (attributeName.toLowerCase() === "color") {
-                return (
-                  <li
-                    key={attributeName}
-                    className="py-4 sm:flex sm:items-center sm:justify-between"
-                  >
-                    <p className="text-sm font-semibold">Color</p>
-                    <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
-                      {getAvailableOptions(attributeName).map((value, vIdx) => {
-                        // Find the color object that matches this value
-                        const colorObj = getAvailableColors().find(
-                          (c) => c.value === value
-                        );
-                        return (
-                          <div key={`${attributeName}-${vIdx}`}>
-                            <label className="form-colorinput">
-                              <input
-                                type="radio"
-                                name={`variant-${attributeName}`}
-                                value={value}
-                                className="form-colorinput-input"
-                                checked={
-                                  selectedAttribute[attributeName] === value
-                                }
-                                onChange={() =>
-                                  handleAttributeSelect(attributeName, value)
-                                } 
-                              />
-                              <span
-                                className="form-colorinput-color"
-                                style={{
-                                  backgroundColor: colorObj?.hex || "#000000",
-                                }}
-                                title={value} // Show color name as tooltip
-                              />
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </li>
-                );
-              }
+            {/* // Special handling for color attribute */}
 
-              // Default handling for other attributes (size, etc.)
-              return (
+            {/* // Default handling for other attributes (size, etc.) */}
+            {attributeNames
+              ?.filter((attr) => attr.toLowerCase() !== "color")
+              ?.map((attributeName) => (
                 <li
                   key={attributeName}
                   className="py-4 sm:flex sm:items-center sm:justify-between"
@@ -467,8 +425,52 @@ export default function Product_details_section_1_2({
                     </div>
                   </div>
                 </li>
-              );
-            })}
+              ))}
+
+            {attributeNames
+              ?.filter((attr) => attr.toLowerCase() === "color")
+              ?.map((attributeName) => (
+                <li
+                  key={attributeName}
+                  className="py-4 sm:flex sm:items-center sm:justify-between"
+                >
+                  <p className="text-sm font-semibold">Color</p>
+                  {/* <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5"> */}
+                  <div className="flex flex-wrap justify-end gap-x-3 gap-y-1.5">
+                    {getAvailableOptions(attributeName).map((value, vIdx) => {
+                      // Find the color object that matches this value
+                      const colorObj = getAvailableColors().find(
+                        (c) => c.value === value
+                      );
+                      return (
+                        <div key={`${attributeName}-${vIdx}`}>
+                          <label className="form-colorinput">
+                            <input
+                              type="radio"
+                              name={`variant-${attributeName}`}
+                              value={value}
+                              className="form-colorinput-input"
+                              checked={
+                                selectedAttribute[attributeName] === value
+                              }
+                              onChange={() =>
+                                handleAttributeSelect(attributeName, value)
+                              }
+                            />
+                            <span
+                              className="form-colorinput-color"
+                              style={{
+                                backgroundColor: colorObj?.hex || "#000000",
+                              }}
+                              title={value} // Show color name as tooltip
+                            />
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </li>
+              ))}
           </ul>
         </div>
 
