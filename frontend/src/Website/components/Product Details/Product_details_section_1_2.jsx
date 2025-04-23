@@ -11,21 +11,22 @@ export default function Product_details_section_1_2({
   const [selectedSize, setSelectedSize] = useState(null);
   const { productDetails, imagesLoaded } = useProductDetails();
   const [selectedVariantOptions, setSelectedVariantOptions] = useState({});
+  const [selectedAttribute, setSelectedAttribute] = useState({});
 
-  const handleVariantOptionChange = (optionName, value) => {
-    const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
-    setSelectedVariantOptions(updatedOptions);
+  // const handleVariantOptionChange = (optionName, value) => {
+  //   const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
+  //   setSelectedVariantOptions(updatedOptions);
 
-    const matchedVariant = productDetails?.productVariants?.find((variant) => {
-      return Object.entries(updatedOptions).every(
-        ([key, val]) => variant.options?.[key] === val
-      );
-    });
+  //   const matchedVariant = productDetails?.productVariants?.find((variant) => {
+  //     return Object.entries(updatedOptions).every(
+  //       ([key, val]) => variant.options?.[key] === val
+  //     );
+  //   });
 
-    if (matchedVariant) {
-      setSelectedVariant(matchedVariant);
-    }
-  };
+  //   if (matchedVariant) {
+  //     setSelectedVariant(matchedVariant);
+  //   }
+  // };
 
   console.log("selectedSize", selectedSize);
 
@@ -39,17 +40,100 @@ export default function Product_details_section_1_2({
     }
   }, [productDetails]);
 
-  // Get current pricing based on product type
+  const attributeNames = productDetails?.productVariants?.reduce(
+    (acc, variant) => {
+      variant.variantAttributes.forEach((attr) => {
+        if (!acc.includes(attr.name)) {
+          acc.push(attr.name);
+        }
+      });
+      return acc;
+    },
+    []
+  );
+
+  // Get available options for a specific attribute based on selected attributes
+  const getAvailableOptions = (attributeName) => {
+    const filteredVariants = productDetails.productVariants.filter(
+      (variant) => {
+        return Object.entries(selectedAttribute).every(([key, value]) => {
+          return (
+            key === attributeName ||
+            variant.variantAttributes.some(
+              (attr) => attr.name === key && attr.value === value
+            )
+          );
+        });
+      }
+    );
+
+    return [
+      ...new Set(
+        filteredVariants.flatMap((variant) =>
+          variant.variantAttributes
+            .filter((attr) => attr.name === attributeName)
+            .map((attr) => attr.value)
+        )
+      ),
+    ];
+  };
+
+  // Extract available color options with hex codes
+  const getAvailableColors = () => {
+    if (!productDetails?.productVariants) return [];
+
+    return productDetails.productVariants.reduce((acc, variant) => {
+      const colorAttr = variant.variantAttributes.find(
+        (attr) => attr.name.toLowerCase() === "color"
+      );
+      if (colorAttr) {
+        const existingColor = acc.find(
+          (color) => color.value === colorAttr.value
+        );
+        if (!existingColor) {
+          acc.push({
+            value: colorAttr.value,
+            hex: colorAttr.hex || "#000000", // Default to black if hex not present
+          });
+        }
+      }
+      return acc;
+    }, []);
+  };
+
+  // Handle attribute selection
+  const handleAttributeSelect = (attributeName, value) => {
+    setSelectedAttribute((prev) => ({ ...prev, [attributeName]: value }));
+    setSelectedColor(null); // Reset color selection
+    setSelectedVariant(null); // Reset variant selection
+  };
+
+  // Handle color selection
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    const updatedAttributes = { ...selectedAttribute, color: color.value };
+
+    const matchedVariant = productDetails.productVariants.find((variant) =>
+      Object.entries(updatedAttributes).every(([key, value]) =>
+        variant.variantAttributes.some(
+          (attr) =>
+            attr.name.toLowerCase() === key.toLowerCase() &&
+            attr.value === value
+        )
+      )
+    );
+
+    if (matchedVariant) {
+      setSelectedVariant(matchedVariant);
+    }
+  };
+
+  // Get current pricing based on selected variant
   const getCurrentPricing = () => {
-    if (productDetails?.productType === "variant" && selectedVariant) {
+    if (selectedVariant) {
       return {
         mrpPrice: selectedVariant.mrpPrice,
         sellingPrice: selectedVariant.sellingPrice,
-      };
-    } else if (productDetails?.productType === "simple") {
-      return {
-        mrpPrice: productDetails.pricing?.mrpPrice,
-        sellingPrice: productDetails.pricing?.sellingPrice,
       };
     }
     return { mrpPrice: 0, sellingPrice: 0 };
@@ -57,6 +141,22 @@ export default function Product_details_section_1_2({
 
   const { mrpPrice, sellingPrice } = getCurrentPricing();
 
+  // Initialize with first variant if product has variants
+  useEffect(() => {
+    const matchedVariant = productDetails?.productVariants?.find((variant) =>
+      Object.entries(selectedAttribute).every(([key, value]) =>
+        variant.variantAttributes.some(
+          (attr) =>
+            attr.name.toLowerCase() === key.toLowerCase() &&
+            attr.value === value
+        )
+      )
+    );
+
+    if (matchedVariant) {
+      setSelectedVariant(matchedVariant);
+    }
+  }, [selectedAttribute]);
   // Calculate discount percentage
   const discountPercentage =
     mrpPrice && sellingPrice && mrpPrice > sellingPrice
@@ -69,10 +169,10 @@ export default function Product_details_section_1_2({
   };
 
   // Handle color selection
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    // You might want to filter variants based on color selection
-  };
+  // const handleColorSelect = (color) => {
+  //   setSelectedColor(color);
+  //   // You might want to filter variants based on color selection
+  // };
 
   // Handle size selection
   const handleSizeSelect = (size) => {
@@ -278,81 +378,97 @@ export default function Product_details_section_1_2({
           <ul className="-my-4 divide-y divide-gray-200">
             {/* Variant options SELECTION */}
             {/* Variant options SELECTION */}
-            {productDetails?.variantOptions?.map((option, index) => (
-              <li
-                className="py-4 sm:flex sm:items-center sm:justify-between"
-                key={option.name}
-              >
-                {/* Display the variant option name (e.g., "Size" or "Color") */}
-                <p className="text-sm font-semibold">{option.name}</p>
-
-                <div className="mt-3 sm:mt-0">
-                  <span className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
-                    {/* Iterate over the values of the current variant option */}
-                    {option.values.map((value, vIdx) => (
-                      <div
-                        className="relative flex-1 custom-radio sm:flex-none"
-                        key={`${option.name}-${vIdx}`}
-                      >
-                        <div className="toggle-radio">
-                          <input
-                            type="radio"
-                            id={`variant-${option.name}-${vIdx}`}
-                            role="radio"
-                            tabIndex="0"
-                            name={option.name}
-                            checked={
-                              selectedVariantOptions[option.name] === value
-                            }
-                            onChange={() =>
-                              handleVariantOptionChange(option.name, value)
-                            }
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor={`variant-${option.name}-${vIdx}`}
-                            className={`cursor-pointer inline-flex items-center justify-center w-full px-3 py-1.5 border rounded-md text-sm font-medium transition-colors ${
-                              selectedVariantOptions[option.name] === value
-                                ? "bg-skin-primary text-white border-skin-primary"
-                                : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                            }`}
-                          >
-                            {value}
-                          </label>
-                        </div>
-                      </div>
-                    ))}
-                  </span>
-                </div>
-              </li>
-            ))}
-
-            {/* Color Selection */}
-            {availableColors.length > 0 && (
-              <li className="py-4 sm:flex sm:items-center sm:justify-between">
-                <p className="text-sm font-semibold">Color</p>
-                <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
-                  {availableColors.map((color) => (
-                    <div key={color.name}>
-                      <label className="form-colorinput">
-                        <input
-                          name="color"
-                          type="radio"
-                          value={color.name}
-                          className="form-colorinput-input"
-                          checked={selectedColor?.name === color.name}
-                          onChange={() => handleColorSelect(color)}
-                        />
-                        <span
-                          className="form-colorinput-color"
-                          style={{ backgroundColor: color.hex }}
-                        ></span>
-                      </label>
+            {attributeNames?.map((attributeName, index) => {
+              // Special handling for color attribute
+              if (attributeName.toLowerCase() === "color") {
+                return (
+                  <li
+                    key={attributeName}
+                    className="py-4 sm:flex sm:items-center sm:justify-between"
+                  >
+                    <p className="text-sm font-semibold">Color</p>
+                    <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
+                      {getAvailableOptions(attributeName).map((value, vIdx) => {
+                        // Find the color object that matches this value
+                        const colorObj = getAvailableColors().find(
+                          (c) => c.value === value
+                        );
+                        return (
+                          <div key={`${attributeName}-${vIdx}`}>
+                            <label className="form-colorinput">
+                              <input
+                                type="radio"
+                                name={`variant-${attributeName}`}
+                                value={value}
+                                className="form-colorinput-input"
+                                checked={
+                                  selectedAttribute[attributeName] === value
+                                }
+                                onChange={() =>
+                                  handleAttributeSelect(attributeName, value)
+                                } 
+                              />
+                              <span
+                                className="form-colorinput-color"
+                                style={{
+                                  backgroundColor: colorObj?.hex || "#000000",
+                                }}
+                                title={value} // Show color name as tooltip
+                              />
+                            </label>
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
-              </li>
-            )}
+                  </li>
+                );
+              }
+
+              // Default handling for other attributes (size, etc.)
+              return (
+                <li
+                  key={attributeName}
+                  className="py-4 sm:flex sm:items-center sm:justify-between"
+                >
+                  <p className="text-sm font-semibold">{attributeName}</p>
+                  <div className="mt-3 sm:mt-0">
+                    <div className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
+                      {getAvailableOptions(attributeName).map((value, vIdx) => (
+                        <div
+                          className="relative flex-1 custom-radio sm:flex-none"
+                          key={`${attributeName}-${vIdx}`}
+                        >
+                          <div className="toggle-radio">
+                            <input
+                              type="radio"
+                              id={`variant-${attributeName}-${vIdx}`}
+                              name={`variant-${attributeName}`}
+                              checked={
+                                selectedAttribute[attributeName] === value
+                              }
+                              onChange={() =>
+                                handleAttributeSelect(attributeName, value)
+                              }
+                              className="hidden"
+                            />
+                            <label
+                              htmlFor={`variant-${attributeName}-${vIdx}`}
+                              className={`cursor-pointer inline-flex items-center justify-center w-full px-3 py-1.5 border rounded-md text-sm font-medium transition-colors ${
+                                selectedAttribute[attributeName] === value
+                                  ? "bg-skin-primary text-white border-skin-primary"
+                                  : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                              }`}
+                            >
+                              {value}
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
