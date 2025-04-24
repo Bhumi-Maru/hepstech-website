@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useProductDetails } from "../../context/ProductDetails_Context";
+import { useWishlist } from "../../../Admin Panel/context/WishlistContext";
 
 export default function Product_details_section_1_2({
   setIsSizeChartModalOpen,
 }) {
+  const { addToWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -194,6 +196,53 @@ export default function Product_details_section_1_2({
 
   // Check if product is in stock
   const isInStock = productDetails?.productStatus === "Active";
+
+  //////////////////////////// START ADD TO WISHLIST/////////////////
+  const handleAddToWishlist = () => {
+    if (!productDetails) return;
+
+    // Function to properly format image URLs for frontend
+    const formatImageUrl = (imagePath) => {
+      if (!imagePath) return "";
+      // If it's already a URL, return as is
+      if (imagePath.startsWith("http")) return imagePath;
+      // Extract just the filename
+      const filename = imagePath.split(/[\\/]/).pop();
+      // Construct proper URL (adjust based on your backend)
+      return `/uploads/${filename}`;
+      // Or if using absolute URLs:
+      // return `${process.env.REACT_APP_API_URL}/uploads/${filename}`;
+    };
+
+    const variantDetails = selectedVariant
+      ? {
+          variantId: selectedVariant._id,
+          attributes: selectedVariant.variantAttributes.reduce((acc, attr) => {
+            acc[attr.name.toLowerCase()] = attr.value;
+            return acc;
+          }, {}),
+          sku: selectedVariant.sku,
+        }
+      : null;
+
+    const productToAdd = {
+      id: productDetails._id,
+      title: productDetails.productTitle,
+      price: sellingPrice,
+      oldPrice: mrpPrice,
+      imageUrl: formatImageUrl(productDetails.productMainImage),
+      rating: 4,
+      variant: variantDetails,
+      color: selectedColor,
+      size: selectedSize,
+      productType: productDetails.productType,
+      stock: selectedVariant?.quantity || 0,
+    };
+
+    console.log("Adding product to wishlist:", productToAdd);
+    addToWishlist(productToAdd);
+  };
+  //////////////////////////// END ADD TO WISHLIST/////////////////
 
   return (
     <>
@@ -609,7 +658,11 @@ export default function Product_details_section_1_2({
             >
               Buy Now
             </button>
-            <button type="button" className="w-full btn btn-white sm:w-auto">
+            <button
+              type="button"
+              className="w-full btn btn-white sm:w-auto"
+              onClick={handleAddToWishlist}
+            >
               <svg
                 className="w-4 h-4 mr-2 lg:hidden xl:block"
                 xmlns="http://www.w3.org/2000/svg"

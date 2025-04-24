@@ -19,6 +19,7 @@ import {
 } from "./Admin Panel/context/Header_Menu_Context";
 import { HomePageProvider } from "./Admin Panel/context/HomepageContext";
 import { ProductDetailProvider } from "./Website/context/ProductDetails_Context";
+import { WishlistProvider } from "./Admin Panel/context/WishlistContext";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -65,7 +66,9 @@ root.render(
               <HeaderMenuProvider>
                 <HomePageProvider>
                   <ProductDetailProvider>
-                    <Website_App />
+                    <WishlistProvider>
+                      <Website_App />
+                    </WishlistProvider>
                   </ProductDetailProvider>
                 </HomePageProvider>
               </HeaderMenuProvider>
