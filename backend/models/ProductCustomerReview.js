@@ -27,6 +27,9 @@ const customerReviewSchema = new mongoose.Schema({
     type: String,
     default: "Anonymous",
   },
+  reviewerPhotos: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
