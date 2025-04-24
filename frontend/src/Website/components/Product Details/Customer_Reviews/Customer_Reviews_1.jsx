@@ -26,8 +26,6 @@ export default function Customer_Reviews_1() {
         // Calculate average rating
         const totalRatings = response.data.reduce(
           (sum, review) => {
-            console.log("sum", sum);
-            console.log("review", review);
             return sum + review.rating;
           },
           0 // Added initial value for reduce

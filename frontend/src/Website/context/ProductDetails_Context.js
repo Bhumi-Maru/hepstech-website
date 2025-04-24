@@ -16,18 +16,7 @@ export const ProductDetailProvider = ({ children }) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   ////////////////////////////START CUSTOMER REVIEWS //////////////////////////
-  const [reviews, setReviews] = useState([]);
-  const fetchReviews = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:7000/api/customer/products/${productId}/reviews`
-      );
-      setReviews(response.data);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-    }
-  };
+
   ////////////////////////////END CUSTOMER REVIEWS ////////////////////////////
 
   return (
@@ -40,8 +29,6 @@ export const ProductDetailProvider = ({ children }) => {
         setLoading,
 
         ////////START CUSTOMER REVIEWS //////////////
-        fetchReviews,
-        reviews,
         loading,
         /////////////END CUSTOMER REVIEWS ///////////
       }}
