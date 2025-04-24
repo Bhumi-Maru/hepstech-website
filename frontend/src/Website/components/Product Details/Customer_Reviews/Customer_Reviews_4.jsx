@@ -6,7 +6,6 @@ export default function Customer_Reviews_4() {
   const { productId } = useParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -17,7 +16,6 @@ export default function Customer_Reviews_4() {
         setReviews(response.data);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
         setLoading(false);
       }
     };
@@ -26,7 +24,6 @@ export default function Customer_Reviews_4() {
   }, [productId, reviews]);
 
   if (loading) return <div>Loading reviews...</div>;
-  if (error) return <div>Error: {error}</div>;
   if (reviews.length === 0) return <div>No reviews yet for this product.</div>;
   return (
     <>

@@ -18,14 +18,18 @@ export default function Customer_Reviews_1() {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:7000/api/customer/reviews"
+          `http://localhost:7000/api/customer/products/${productId}/reviews`
         );
 
         setReviews(response.data);
 
         // Calculate average rating
         const totalRatings = response.data.reduce(
-          (sum, review) => sum + review.rating,
+          (sum, review) => {
+            console.log("sum", sum);
+            console.log("review", review);
+            return sum + review.rating;
+          },
           0 // Added initial value for reduce
         );
 
