@@ -455,9 +455,11 @@ export default function Product_details_section_1_2({
                               checked={
                                 selectedAttribute[attributeName] === value
                               }
-                              onChange={() =>
-                                handleAttributeSelect(attributeName, value)
-                              }
+                              onChange={() => {
+                                handleAttributeSelect(attributeName, value);
+                                console.log("attributeName", attributeName);
+                                console.log("value", value);
+                              }}
                             />
                             <span
                               className="form-colorinput-color"
