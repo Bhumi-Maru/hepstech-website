@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -21,28 +22,20 @@ export default function Customer_Reviews_2() {
     };
 
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `http://localhost:7000/api/customer/products/${productId}/reviews`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(reviewData),
-        }
+        reviewData // Include the review data in the request body
       );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const result = await response.json();
-
       event.target.reset(); // This clears all form inputs
+      // Reset rating after a delay
       setRating(0);
-      console.log("Review submitted successfully:", result);
+      setHover(0);
     } catch (error) {
       console.error("Error submitting review:", error);
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+      }
     }
   };
 
