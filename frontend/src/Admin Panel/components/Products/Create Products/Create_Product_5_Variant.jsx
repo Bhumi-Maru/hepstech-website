@@ -23,11 +23,12 @@ export default function Create_Product_5_Variant() {
         variant.id === variantId
           ? {
               ...variant,
-              variantAttributes: variant.variantAttributes.map((attr) =>
-                attr.name === "Color"
+              variantAttributes: variant.variantAttributes.map((attr) => {
+                console.log("attr", attr);
+                return attr.name === "Color"
                   ? { ...attr, value: color.name, hex: color.hex }
-                  : attr
-              ),
+                  : attr;
+              }),
             }
           : variant
       )
@@ -210,7 +211,23 @@ export default function Create_Product_5_Variant() {
                             <option value="">Select color</option>
                             {colors.map((color) => (
                               <option key={color._id} value={color.name}>
-                                {color.name}
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: "15px",
+                                      height: "15px",
+                                      backgroundColor: color.hex,
+                                      marginRight: "8px",
+                                      display: "inline-block",
+                                    }}
+                                  ></div>
+                                  {color.name}
+                                </div>
                               </option>
                             ))}
                           </select>

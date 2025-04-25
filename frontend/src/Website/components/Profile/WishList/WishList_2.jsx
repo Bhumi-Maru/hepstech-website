@@ -43,7 +43,6 @@ export default function WishList_2({ setIsAddToCartModal }) {
                 key={`${product.id}-${product.variant?.variantId || ""}`}
                 className="product-card"
               >
-                {console.log("wishlist ", product)}
                 <button type="button" className="btn-wishlist-top">
                   <svg
                     className="w-5 h-5"
