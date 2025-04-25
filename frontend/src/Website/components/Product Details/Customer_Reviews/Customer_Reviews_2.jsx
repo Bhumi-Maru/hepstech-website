@@ -1,8 +1,44 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function Customer_Reviews_2() {
+  const { productId } = useParams();
   const [rating, setRating] = useState(0); // Store selected rating
   const [hover, setHover] = useState(0); // Store hover effect
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const headline = event.target.headline.value; // Get the headline value
+    const review = event.target.review.value; // Get the review value
+    const reviewerName = "Anonymous"; // Default reviewer name
+
+    const reviewData = {
+      headline,
+      review,
+      rating,
+      reviewerName,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:7000/api/customer/products/${productId}/reviews`,
+        reviewData // Include the review data in the request body
+      );
+
+      event.target.reset(); // This clears all form inputs
+      // Reset rating after a delay
+      setRating(0);
+      setHover(0);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+      }
+    }
+  };
+
   return (
     <>
       {/* CUSTOMER REVIEWS 2 */}
@@ -10,13 +46,18 @@ export default function Customer_Reviews_2() {
         <h3 className="text-xl font-bold">Review this product</h3>
         <p>Share your thoughts with other customers</p>
 
-        <form action="#" method="POST" className="mt-5">
+        <form onSubmit={handleSubmit} className="mt-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
             {/* Add a Headline */}
             <div>
               <label for=""> Add a Headline </label>
               <div className="mt-1">
-                <input type="text" name="" id="" placeholder="" className="" />
+                <input
+                  type="text"
+                  name="headline"
+                  placeholder=""
+                  className="w-full border border-gray-300 p-2 rounded"
+                />
               </div>
             </div>
             {/* Overall Rating with Stars */}
@@ -65,12 +106,11 @@ export default function Customer_Reviews_2() {
               <label for=""> Add a Review </label>
               <div className="mt-1">
                 <textarea
-                  name=""
-                  id=""
+                  name="review"
                   placeholder=""
                   rows="3"
-                  className="resize-y"
-                ></textarea>
+                  className="w-full border border-gray-300 p-2 rounded resize-y"
+                />
               </div>
             </div>
             {/* Add Photos */}
