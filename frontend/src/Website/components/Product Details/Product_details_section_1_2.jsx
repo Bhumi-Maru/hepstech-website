@@ -500,11 +500,12 @@ export default function Product_details_section_1_2({
                         ></span>
                       </label>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  ))}
+                </div>
+              </li>
+            )}
 
-            {attributeNames
+            {/* {attributeNames
               ?.filter((attr) => attr.toLowerCase() === "color")
               ?.map((attributeName) => (
                 <li
@@ -512,10 +513,10 @@ export default function Product_details_section_1_2({
                   className="py-4 sm:flex sm:items-center sm:justify-between"
                 >
                   <p className="text-sm font-semibold">Color</p>
-                  {/* <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5"> */}
+                  <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
                   <div className="flex flex-wrap justify-end gap-x-3 gap-y-1.5">
                     {getAvailableOptions(attributeName).map((value, vIdx) => {
-                      // Find the color object that matches this value
+                      Find the color object that matches this value
                       const colorObj = getAvailableColors().find(
                         (c) => c.value === value
                       );
@@ -549,7 +550,7 @@ export default function Product_details_section_1_2({
                     })}
                   </div>
                 </li>
-              ))}
+              ))} */}
           </ul>
         </div>
 
