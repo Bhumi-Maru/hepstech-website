@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useProductDetails } from "../../context/ProductDetails_Context";
+import { useWishlist } from "../../../Admin Panel/context/WishlistContext";
 
 export default function Product_details_section_1_2({
   setIsSizeChartModalOpen,
 }) {
+  const { addToWishlist } = useWishlist();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const { productDetails, imagesLoaded } = useProductDetails();
   const [selectedVariantOptions, setSelectedVariantOptions] = useState({});
+  const [selectedAttribute, setSelectedAttribute] = useState({});
 
-  const handleVariantOptionChange = (optionName, value) => {
-    const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
-    setSelectedVariantOptions(updatedOptions);
+  console.log("selectedAttribute", selectedAttribute);
 
-    const matchedVariant = productDetails?.productVariants?.find((variant) => {
-      return Object.entries(updatedOptions).every(
-        ([key, val]) => variant.options?.[key] === val
-      );
-    });
+  // const handleVariantOptionChange = (optionName, value) => {
+  //   const updatedOptions = { ...selectedVariantOptions, [optionName]: value };
+  //   setSelectedVariantOptions(updatedOptions);
 
-    if (matchedVariant) {
-      setSelectedVariant(matchedVariant);
-    }
-  };
+  //   const matchedVariant = productDetails?.productVariants?.find((variant) => {
+  //     return Object.entries(updatedOptions).every(
+  //       ([key, val]) => variant.options?.[key] === val
+  //     );
+  //   });
+
+  //   if (matchedVariant) {
+  //     setSelectedVariant(matchedVariant);
+  //   }
+  // };
 
   console.log("selectedSize", selectedSize);
 
+  // Initialize with first variant if product has variants
   // Initialize with first variant if product has variants
   useEffect(() => {
     if (
@@ -39,17 +45,112 @@ export default function Product_details_section_1_2({
     }
   }, [productDetails]);
 
-  // Get current pricing based on product type
+  const attributeNames = productDetails?.productVariants?.reduce(
+    (acc, variant) => {
+      variant.variantAttributes.forEach((attr) => {
+        if (!acc.includes(attr.name)) {
+          acc.push(attr.name);
+        }
+      });
+      return acc;
+    },
+    []
+  );
+
+  // Get available options for a specific attribute based on selected attributes
+  const getAvailableOptions = (attributeName) => {
+    const filteredVariants = productDetails.productVariants.filter(
+      (variant) => {
+        return Object.entries(selectedAttribute).every(([key, value]) => {
+          return (
+            key === attributeName ||
+            variant.variantAttributes.some(
+              (attr) => attr.name === key && attr.value === value
+            )
+          );
+        });
+      }
+    );
+
+    return [
+      ...new Set(
+        filteredVariants.flatMap((variant) =>
+          variant.variantAttributes
+            .filter((attr) => attr.name === attributeName)
+            .map((attr) => attr.value)
+        )
+      ),
+    ];
+  };
+
+  // Extract available color options with hex codes
+  const getAvailableColors = () => {
+    if (!productDetails?.productVariants) return [];
+
+    return productDetails.productVariants.reduce((acc, variant) => {
+      console.log("acc", acc);
+      console.log("variant", variant);
+      const colorAttr = variant.variantAttributes.find(
+        (attr) => attr.name.toLowerCase() === "color"
+      );
+      if (colorAttr) {
+        const existingColor = acc.find(
+          (color) =>
+            color.value === colorAttr.value && color.hex === colorAttr.hex
+        );
+        if (!existingColor) {
+          acc.push({
+            value: colorAttr.value,
+            hex: colorAttr.hex || "#000000", // Default to black if hex not present
+          });
+        }
+      }
+
+      console.log("accccccccc", acc);
+      return acc;
+    }, []);
+  };
+
+  // Handle attribute selection
+  const handleAttributeSelect = (attributeName, value) => {
+    console.log("attributeName", attributeName);
+    console.log("value", value);
+    setSelectedAttribute((prev) => ({ ...prev, [attributeName]: value }));
+    // setSelectedColor(null); // Reset color selection
+    // setSelectedVariant(null); // Reset variant selection
+  };
+
+  // Handle color selection
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    console.log("color", color);
+    const updatedAttributes = {
+      ...selectedAttribute,
+      color: color.name,
+      hexCode: color.hex,
+    };
+    console.log("updatedAttributes", updatedAttributes);
+
+    const matchedVariant = productDetails.productVariants.find((variant) =>
+      Object.entries(updatedAttributes).every(([key, value]) =>
+        variant.variantAttributes.some(
+          (attr) =>
+            attr.name.toLowerCase() === key.toLowerCase() &&
+            attr.value === value
+        )
+      )
+    );
+
+    if (matchedVariant) {
+      setSelectedVariant(matchedVariant);
+    }
+  };
+
   const getCurrentPricing = () => {
-    if (productDetails?.productType === "variant" && selectedVariant) {
+    if (selectedVariant) {
       return {
         mrpPrice: selectedVariant.mrpPrice,
         sellingPrice: selectedVariant.sellingPrice,
-      };
-    } else if (productDetails?.productType === "simple") {
-      return {
-        mrpPrice: productDetails.pricing?.mrpPrice,
-        sellingPrice: productDetails.pricing?.sellingPrice,
       };
     }
     return { mrpPrice: 0, sellingPrice: 0 };
@@ -57,6 +158,23 @@ export default function Product_details_section_1_2({
 
   const { mrpPrice, sellingPrice } = getCurrentPricing();
 
+  // Initialize with first variant if product has variants
+  useEffect(() => {
+    const matchedVariant = productDetails?.productVariants?.find((variant) => {
+      console.log("ffff", variant);
+      return Object.entries(selectedAttribute).every(([key, value]) =>
+        variant.variantAttributes.some(
+          (attr) =>
+            attr.name.toLowerCase() === key.toLowerCase() &&
+            attr.value === value
+        )
+      );
+    });
+
+    if (matchedVariant) {
+      setSelectedVariant(matchedVariant);
+    }
+  }, [selectedAttribute]);
   // Calculate discount percentage
   const discountPercentage =
     mrpPrice && sellingPrice && mrpPrice > sellingPrice
@@ -69,10 +187,10 @@ export default function Product_details_section_1_2({
   };
 
   // Handle color selection
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    // You might want to filter variants based on color selection
-  };
+  // const handleColorSelect = (color) => {
+  //   setSelectedColor(color);
+  //   // You might want to filter variants based on color selection
+  // };
 
   // Handle size selection
   const handleSizeSelect = (size) => {
@@ -92,6 +210,53 @@ export default function Product_details_section_1_2({
 
   // Check if product is in stock
   const isInStock = productDetails?.productStatus === "Active";
+
+  //////////////////////////// START ADD TO WISHLIST/////////////////
+  const handleAddToWishlist = () => {
+    if (!productDetails) return;
+
+    // Function to properly format image URLs for frontend
+    const formatImageUrl = (imagePath) => {
+      if (!imagePath) return "";
+      // If it's already a URL, return as is
+      if (imagePath.startsWith("http")) return imagePath;
+      // Extract just the filename
+      const filename = imagePath.split(/[\\/]/).pop();
+      // Construct proper URL (adjust based on your backend)
+      return `/uploads/${filename}`;
+      // Or if using absolute URLs:
+      // return `${process.env.REACT_APP_API_URL}/uploads/${filename}`;
+    };
+
+    const variantDetails = selectedVariant
+      ? {
+          variantId: selectedVariant._id,
+          attributes: selectedVariant.variantAttributes.reduce((acc, attr) => {
+            acc[attr.name.toLowerCase()] = attr.value;
+            return acc;
+          }, {}),
+          sku: selectedVariant.sku,
+        }
+      : null;
+
+    const productToAdd = {
+      id: productDetails._id,
+      title: productDetails.productTitle,
+      price: sellingPrice,
+      oldPrice: mrpPrice,
+      imageUrl: formatImageUrl(productDetails.productMainImage),
+      rating: 4,
+      variant: variantDetails,
+      color: selectedColor,
+      size: selectedSize,
+      productType: productDetails.productType,
+      stock: selectedVariant?.quantity || 0,
+    };
+
+    console.log("Adding product to wishlist:", productToAdd);
+    addToWishlist(productToAdd);
+  };
+  //////////////////////////// END ADD TO WISHLIST/////////////////
 
   return (
     <>
@@ -278,57 +443,57 @@ export default function Product_details_section_1_2({
           <ul className="-my-4 divide-y divide-gray-200">
             {/* Variant options SELECTION */}
             {/* Variant options SELECTION */}
-            {productDetails?.variantOptions?.map((option, index) => (
-              <li
-                className="py-4 sm:flex sm:items-center sm:justify-between"
-                key={option.name}
-              >
-                {/* Display the variant option name (e.g., "Size" or "Color") */}
-                <p className="text-sm font-semibold">{option.name}</p>
+            {/* // Special handling for color attribute */}
 
-                <div className="mt-3 sm:mt-0">
-                  <span className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
-                    {/* Iterate over the values of the current variant option */}
-                    {option.values.map((value, vIdx) => (
-                      <div
-                        className="relative flex-1 custom-radio sm:flex-none"
-                        key={`${option.name}-${vIdx}`}
-                      >
-                        <div className="toggle-radio">
-                          <input
-                            type="radio"
-                            id={`variant-${option.name}-${vIdx}`}
-                            role="radio"
-                            tabIndex="0"
-                            name={option.name}
-                            checked={
-                              selectedVariantOptions[option.name] === value
-                            }
-                            onChange={() =>
-                              handleVariantOptionChange(option.name, value)
-                            }
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor={`variant-${option.name}-${vIdx}`}
-                            className={`cursor-pointer inline-flex items-center justify-center w-full px-3 py-1.5 border rounded-md text-sm font-medium transition-colors ${
-                              selectedVariantOptions[option.name] === value
-                                ? "bg-skin-primary text-white border-skin-primary"
-                                : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                            }`}
-                          >
-                            {value}
-                          </label>
+            {/* // Default handling for other attributes (size, etc.) */}
+            {attributeNames
+              ?.filter((attr) => attr.toLowerCase() !== "color")
+              ?.map((attributeName) => (
+                <li
+                  key={attributeName}
+                  className="py-4 sm:flex sm:items-center sm:justify-between"
+                >
+                  <p className="text-sm font-semibold">{attributeName}</p>
+                  <div className="mt-3 sm:mt-0">
+                    <div className="relative z-0 flex flex-shrink-0 space-x-3 radio-group">
+                      {getAvailableOptions(attributeName).map((value, vIdx) => (
+                        <div
+                          className="relative flex-1 custom-radio sm:flex-none"
+                          key={`${attributeName}-${vIdx}`}
+                        >
+                          <div className="toggle-radio">
+                            <input
+                              type="radio"
+                              id={`variant-${attributeName}-${vIdx}`}
+                              name={`variant-${attributeName}`}
+                              checked={
+                                selectedAttribute[attributeName] === value
+                              }
+                              onChange={() =>
+                                handleAttributeSelect(attributeName, value)
+                              }
+                              className="hidden"
+                            />
+                            <label
+                              htmlFor={`variant-${attributeName}-${vIdx}`}
+                              className={`cursor-pointer inline-flex items-center justify-center w-full px-3 py-1.5 border rounded-md text-sm font-medium transition-colors ${
+                                selectedAttribute[attributeName] === value
+                                  ? "bg-skin-primary text-white border-skin-primary"
+                                  : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                              }`}
+                            >
+                              {value}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </span>
-                </div>
-              </li>
-            ))}
+                      ))}
+                    </div>
+                  </div>
+                </li>
+              ))}
 
             {/* Color Selection */}
-            {availableColors.length > 0 && (
+            {/* {availableColors.length > 0 && (
               <li className="py-4 sm:flex sm:items-center sm:justify-between">
                 <p className="text-sm font-semibold">Color</p>
                 <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
@@ -352,7 +517,56 @@ export default function Product_details_section_1_2({
                   ))}
                 </div>
               </li>
-            )}
+            )} */}
+
+            {attributeNames
+              ?.filter((attr) => attr.toLowerCase() === "color")
+              ?.map((attributeName) => (
+                <li
+                  key={attributeName}
+                  className="py-4 sm:flex sm:items-center sm:justify-between"
+                >
+                  <p className="text-sm font-semibold">Color</p>
+                  {/* <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5"> */}
+                  <div className="flex flex-wrap justify-end gap-x-3 gap-y-1.5">
+                    {getAvailableOptions(attributeName).map((value, vIdx) => {
+                      // Find the color object that matches this value
+                      const colorObj = getAvailableColors().find(
+                        (c) => c.value === value
+                      );
+                      return (
+                        <div key={`${attributeName}-${vIdx}`}>
+                          <label className="form-colorinput">
+                            <input
+                              type="radio"
+                              name={`variant-${attributeName}`}
+                              value={value}
+                              className="form-colorinput-input"
+                              checked={
+                                selectedAttribute[attributeName] === value
+                              }
+                              onChange={() => {
+                                handleAttributeSelect(attributeName, value);
+                                console.log("attributeName", attributeName);
+                                console.log("value", value);
+                              }}
+                            />
+                            <span
+                              className="form-colorinput-color"
+                              style={{
+                                backgroundColor: colorObj?.hex || "#000000",
+                              }}
+                              title={value} // Show color name as tooltip
+                            >
+                              {/* {value} */}
+                            </span>
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </li>
+              ))}
           </ul>
         </div>
 
@@ -487,21 +701,27 @@ export default function Product_details_section_1_2({
             >
               Buy Now
             </button>
-            <button type="button" className="w-full btn btn-white sm:w-auto">
-              <svg
-                className="w-4 h-4 mr-2 lg:hidden xl:block"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+            <Link to="">
+              <button
+                type="button"
+                className="w-full btn btn-white sm:w-auto"
+                onClick={handleAddToWishlist}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Add to Wishlist
-            </button>
+                <svg
+                  className="w-4 h-4 mr-2 lg:hidden xl:block"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Add to Wishlist
+              </button>
+            </Link>
           </div>
         </div>
 

@@ -146,7 +146,7 @@ export const ProductProvider = ({ children }) => {
             variantAttributes: variant.variantAttributes.map((attr) => ({
               name: attr.name,
               value: attr.value,
-              ...(attr.hex ? { hex: attr.hex } : {}),
+              hex: attr.hex,
             })),
           }))
         )

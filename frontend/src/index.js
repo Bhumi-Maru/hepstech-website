@@ -66,9 +66,11 @@ root.render(
               <HeaderMenuProvider>
                 <HomePageProvider>
                   <ProductDetailProvider>
-                    <WishlistProvider>
-                      <Website_App />
-                    </WishlistProvider>
+                    <ProductVariantProvider>
+                      <WishlistProvider>
+                        <Website_App />
+                      </WishlistProvider>
+                    </ProductVariantProvider>
                   </ProductDetailProvider>
                 </HomePageProvider>
               </HeaderMenuProvider>
