@@ -35,6 +35,7 @@ export default function Product_details_section_1_2({
   console.log("selectedSize", selectedSize);
 
   // Initialize with first variant if product has variants
+  // Initialize with first variant if product has variants
   useEffect(() => {
     if (
       productDetails?.productType === "variant" &&
@@ -132,7 +133,6 @@ export default function Product_details_section_1_2({
     }
   };
 
-  // Get current pricing based on selected variant
   const getCurrentPricing = () => {
     if (selectedVariant) {
       return {
@@ -473,6 +473,32 @@ export default function Product_details_section_1_2({
                           </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                </li>
+              ))}
+
+            {/* Color Selection */}
+            {availableColors.length > 0 && (
+              <li className="py-4 sm:flex sm:items-center sm:justify-between">
+                <p className="text-sm font-semibold">Color</p>
+                <div className="inline-grid grid-cols-5 mt-3 gap-x-3 gap-y-1.5">
+                  {availableColors.map((color) => (
+                    <div key={color.name}>
+                      <label className="form-colorinput">
+                        <input
+                          name="color"
+                          type="radio"
+                          value={color.name}
+                          className="form-colorinput-input"
+                          checked={selectedColor?.name === color.name}
+                          onChange={() => handleColorSelect(color)}
+                        />
+                        <span
+                          className="form-colorinput-color"
+                          style={{ backgroundColor: color.hex }}
+                        ></span>
+                      </label>
                     </div>
                   </div>
                 </li>

@@ -24,6 +24,8 @@ export default function Create_Product_5_Color() {
     setNewColor((prev) => ({ ...prev, hex: e.target.value }));
   };
 
+  console.log("admin panel color", colors);
+
   return (
     <>
       {/* CREATE PRODUCT 5[1] COLOR CREATE */}
