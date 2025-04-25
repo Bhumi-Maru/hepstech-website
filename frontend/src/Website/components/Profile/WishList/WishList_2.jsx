@@ -1,56 +1,49 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import { useWishlist } from "../../../../Admin Panel/context/WishlistContext";
 
 export default function WishList_2({ setIsAddToCartModal }) {
-  const [wishlist, setWishlist] = useState([
-    {
-      id: 1,
-      title: "Sassie Basic 31 LTR",
-      price: 12899,
-      oldPrice: 12899,
-      imageUrl: "",
-      rating: 4,
-    },
-    {
-      id: 2,
-      title: "Sassie Basic 31 LTR Navy Backpack Waterproof School Bag",
-      price: 12899,
-      oldPrice: 12899,
-      imageUrl: "",
-      rating: 4,
-    },
-  ]);
+  const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
 
   return (
     <>
       <div class="md:col-span-3">
         <div class="sm:flex sm:items-center sm:justify-between">
           <h1 class="text-2xl font-bold text-gray-900">Wishlist</h1>
-
-          <button type="button" class="mt-4 btn btn-sm btn-error-light sm:mt-0">
-            <svg
-              class="w-5 h-5 mr-2 -ml-1"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {wishlist.lenght > 0 && (
+            <button
+              type="button"
+              class="mt-4 btn btn-sm btn-error-light sm:mt-0"
+              onClick={clearWishlist}
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            Clear Wishlist
-          </button>
+              <svg
+                class="w-5 h-5 mr-2 -ml-1"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Clear Wishlist
+            </button>
+          )}
         </div>
 
         <div class="mt-5">
           <div class="grid-cols-2 products products-grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 wishlist-products">
             {wishlist.map((product) => (
-              <div key={product.id} className="product-card">
+              <div
+                key={`${product.id}-${product.variant?.variantId || ""}`}
+                className="product-card"
+              >
+                {console.log("wishlist ", product)}
                 <button type="button" className="btn-wishlist-top">
                   <svg
                     className="w-5 h-5"
@@ -68,16 +61,19 @@ export default function WishList_2({ setIsAddToCartModal }) {
                   </svg>
                 </button>
 
-                <a href="#" title="" className="block">
+                <Link
+                  to={`/product-details/${product.id}`}
+                  title=""
+                  className="block"
+                >
                   <div className="product-image">
                     <img
                       className="object-cover w-full h-full"
-                      src={product.imageUrl}
+                      src={`http://localhost:7000${product.imageUrl}`}
                       alt=""
-                      loading="lazy"
                     />
                   </div>
-                </a>
+                </Link>
 
                 <div className="product-details">
                   <div className="flex flex-col flex-1">
@@ -161,7 +157,11 @@ export default function WishList_2({ setIsAddToCartModal }) {
                     </div>
                   </div>
 
-                  <button type="button" className="btn-wishlist">
+                  <button
+                    type="button"
+                    className="btn-wishlist"
+                    onClick={() => removeFromWishlist(product.id)}
+                  >
                     <svg
                       className="w-4 h-4 mr-2"
                       xmlns="http://www.w3.org/2000/svg"
