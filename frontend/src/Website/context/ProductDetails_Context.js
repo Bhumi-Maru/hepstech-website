@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ProductDetailsContext = createContext();
 
@@ -9,9 +10,14 @@ export const useProductDetails = () => {
 };
 
 export const ProductDetailProvider = ({ children }) => {
+  const { productId } = useParams();
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  ////////////////////////////START CUSTOMER REVIEWS //////////////////////////
+
+  ////////////////////////////END CUSTOMER REVIEWS ////////////////////////////
 
   return (
     <ProductDetailsContext.Provider
@@ -21,6 +27,10 @@ export const ProductDetailProvider = ({ children }) => {
         imagesLoaded,
         setImagesLoaded,
         setLoading,
+
+        ////////START CUSTOMER REVIEWS //////////////
+        loading,
+        /////////////END CUSTOMER REVIEWS ///////////
       }}
     >
       {children}

@@ -17,7 +17,7 @@ export default function Product_details_section_1_3() {
   };
 
   return (
-    <>
+    <>  
       {/* PRODUCT DETAILS SECTION 1 PART 3 */}
       <div className="mt-10 space-y-4">
         {/* Description Section */}
