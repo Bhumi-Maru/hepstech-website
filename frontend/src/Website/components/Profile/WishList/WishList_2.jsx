@@ -6,6 +6,8 @@ import { useWishlist } from "../../../../Admin Panel/context/WishlistContext";
 export default function WishList_2({ setIsAddToCartModal }) {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
 
+  console.log("remove from wislist", removeFromWishlist());
+
   return (
     <>
       <div class="md:col-span-3">

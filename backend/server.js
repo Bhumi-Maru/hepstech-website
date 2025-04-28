@@ -13,6 +13,7 @@ const headerMenuRouter = require("./routes/headerMenuRoutes");
 const pageRouter = require("./routes/StoreSetting_pageRoutes");
 const HomePageRouter = require("./routes/HomePageRoutes");
 const customerReviewRouter = require("./routes/CustomerReviewRoutes");
+const AuthRouter = require("./routes/Auth");
 
 dotenv.config();
 
@@ -29,6 +30,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Use API routes
 app.use("/api", uploadRouter);
+
+// Authentication
+app.use("/api/auth", AuthRouter);
 
 //main category routes
 app.use("/api/main-category", mainCategoryRouter);
