@@ -18,6 +18,8 @@ export const AuthenticationProvider = ({ children }) => {
   });
   const [registerData, setRegisterData] = useState(null);
   const [loginData, setLoginData] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,34 +55,34 @@ export const AuthenticationProvider = ({ children }) => {
   };
 
   // Handle form submission (Login)
-  //   const handleSubmitLogin = async (e) => {
-  //     e?.preventDefault(); // Add e.preventDefault() safely
+  const handleSubmitLogin = async (e) => {
+    e?.preventDefault(); // Add e.preventDefault() safely
 
-  //     try {
-  //       setLoading(true);
-  //       setError("");
+    try {
+      setLoading(true);
+      setError("");
 
-  //       // Here we only send email/mobileNumber and password
-  //       const loginPayload = {
-  //         emailOrMobile: formData.email || formData.mobileNumber,
-  //         password: formData.password,
-  //       };
+      // Here we only send email/mobileNumber and password
+      const loginPayload = {
+        emailOrMobile: formData.email || formData.mobileNumber,
+        password: formData.password,
+      };
 
-  //       const response = await axios.post(
-  //         "http://localhost:7000/api/auth/login",
-  //         loginPayload
-  //       );
-  //       console.log("Login successful:", response.data);
-  //       setLoginData(response.data);
+      const response = await axios.post(
+        "http://localhost:7000/api/auth/login",
+        loginPayload
+      );
+      console.log("Login successful:", response.data);
+      setLoginData(response.data);
 
-  //       return response;
-  //     } catch (error) {
-  //       console.error("Error during login:", error);
-  //       setError(error.response?.data?.message || "Login failed");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+      return response;
+    } catch (error) {
+      console.error("Error during login:", error);
+      setError(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthenticationContext.Provider
@@ -88,7 +90,7 @@ export const AuthenticationProvider = ({ children }) => {
         handleSubmitRegister,
         formData,
         handleChange,
-        // handleSubmitLogin,
+        handleSubmitLogin,
       }}
     >
       {children}

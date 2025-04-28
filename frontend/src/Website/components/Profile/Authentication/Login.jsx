@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthentication } from "../../../context/AuthenticationContext";
 
 export default function Login({
   setLoginModalOpen,
@@ -9,6 +10,7 @@ export default function Login({
 }) {
   // HIDE AND SHOW PASSWORD
   const [showPassword, setShowPassword] = useState(false);
+  const { handleSubmitLogin, formData, handleChange } = useAuthentication();
 
   const handleAuthenticationToggleModal = () => {
     setLoginModalOpen(false); // Close the login modal
@@ -174,16 +176,38 @@ export default function Login({
                   </div>
                 </div> */}
 
-                <form className="mt-6 space-y-4" action="#" method="POST">
+                <form
+                  className="mt-6 space-y-4"
+                  onSubmit={async (e) => {
+                    e.preventDefault(); // Prevent default browser submit
+                    try {
+                      const response = await handleSubmitLogin(e); // <== PASS `e` here
+                      console.log("Response:", response);
+
+                      if (response && response.data) {
+                        setLoginModalOpen(false); // Close login modal
+                      } else {
+                        console.log("Error: Response data is missing");
+                      }
+                    } catch (error) {
+                      console.error("Error during login:", error);
+                    }
+                  }}
+                >
                   {/* MOBILE NUMBER / EMAIL */}
                   <div>
-                    <label for="email"> Enter Email / Mobile Number </label>
+                    <label for="emailOrMobile">
+                      {" "}
+                      Enter Email / Mobile Number{" "}
+                    </label>
                     <div className="mt-1">
                       <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        autocomplete="email"
+                        type="text"
+                        name="emailOrMobile"
+                        id="emailOrMobile"
+                        value={formData.emailOrMobile}
+                        onChange={handleChange}
+                        autocomplete="emailOrMobile"
                         required=""
                         className=""
                       />
@@ -218,6 +242,8 @@ export default function Login({
                           id="password"
                           autocomplete="off"
                           required=""
+                          value={formData.password}
+                          onChange={handleChange}
                           className="hideShowPassword-field hideShowPassword-hidden"
                           style={{ margin: "0px", paddingRight: "20px" }}
                           autocapitalize="off"
