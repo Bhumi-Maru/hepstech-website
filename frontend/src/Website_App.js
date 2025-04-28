@@ -144,8 +144,10 @@ export default function WebsiteApp() {
           {isOtpModalOpen && (
             <>
               <SignupOtpConfirmationForm
+                setSignupModalOpen={setSignupModalOpen}
                 isOtpModalOpen={isOtpModalOpen}
                 closeOtpModal={() => setOtpModalOpen(false)}
+                setOtpModalOpen={setOtpModalOpen}
               />
             </>
           )}

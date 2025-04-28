@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Auth = require("../models/Auth");
+const nodemailer = require("nodemailer");
 
 // Helper: Generate random 6-digit OTP
 const generateOTP = () =>
@@ -60,6 +61,35 @@ const Register = async (req, res) => {
       { expiresIn: "7d" } // Token expires in 7 days
     );
 
+    // Send OTP via Email using Nodemailer
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+        // pass: "lbax wckq xfou albo",
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: "Your Verification OTP",
+      text: `Hello ${user.userName},\n\nYour verification OTP is: ${otp}\n\nThis OTP will expire in 10 minutes.`,
+      html: `<p>Hello ${user.userName},</p>
+               <p>Your verification OTP is: <strong>${otp}</strong></p>
+               <p>This OTP will expire in 10 minutes.</p>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
     // TODO: Send OTP via Email/SMS (optional here)
     console.log(`OTP for verification: ${otp}`);
     console.log("user is", user);
@@ -79,6 +109,7 @@ const Register = async (req, res) => {
     res.status(500).json({ message: "Server error during registration" });
   }
 };
+
 // ================== Login ==================
 const Login = async (req, res) => {
   try {
