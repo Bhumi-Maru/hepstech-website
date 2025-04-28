@@ -17,6 +17,7 @@ export const AuthenticationProvider = ({ children }) => {
     confirmPassword: "",
   });
   const [registerData, setRegisterData] = useState(null);
+  const [loginData, setLoginData] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,9 +51,45 @@ export const AuthenticationProvider = ({ children }) => {
       console.error("Error during registration:", error);
     }
   };
+
+  // Handle form submission (Login)
+  //   const handleSubmitLogin = async (e) => {
+  //     e?.preventDefault(); // Add e.preventDefault() safely
+
+  //     try {
+  //       setLoading(true);
+  //       setError("");
+
+  //       // Here we only send email/mobileNumber and password
+  //       const loginPayload = {
+  //         emailOrMobile: formData.email || formData.mobileNumber,
+  //         password: formData.password,
+  //       };
+
+  //       const response = await axios.post(
+  //         "http://localhost:7000/api/auth/login",
+  //         loginPayload
+  //       );
+  //       console.log("Login successful:", response.data);
+  //       setLoginData(response.data);
+
+  //       return response;
+  //     } catch (error) {
+  //       console.error("Error during login:", error);
+  //       setError(error.response?.data?.message || "Login failed");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
   return (
     <AuthenticationContext.Provider
-      value={{ handleSubmitRegister, formData, handleChange }}
+      value={{
+        handleSubmitRegister,
+        formData,
+        handleChange,
+        // handleSubmitLogin,
+      }}
     >
       {children}
     </AuthenticationContext.Provider>

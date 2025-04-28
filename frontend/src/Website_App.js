@@ -125,6 +125,7 @@ export default function WebsiteApp() {
                 setSignupModalOpen={setSignupModalOpen}
                 isLoginModalOpen={isLoginModalOpen}
                 setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+                setIsOtpFromLogin={setIsOtpFromLogin}
               />
             </>
           )}
@@ -170,6 +171,7 @@ export default function WebsiteApp() {
                 isOtpFromLogin={isOtpFromLogin}
                 closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
                 setIsSetPassword={setIsSetPassword}
+                setIsOtpFromLogin={setIsOtpFromLogin}
               />
             </>
           )}

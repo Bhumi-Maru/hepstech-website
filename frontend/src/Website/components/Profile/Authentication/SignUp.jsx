@@ -13,15 +13,6 @@ export default function SignUp({
   });
   const { handleSubmitRegister, formData, handleChange } = useAuthentication();
 
-  // const [formData, setFormData] = useState({
-  //   userName: "",
-  //   email: "",
-  //   mobileNumber: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
-  // const [registerData, setRegisterData] = useState(null);
-
   // Handle toggle password visibility
   const handleTogglePassword = (field) => {
     setShowPassword((prev) => ({
@@ -37,36 +28,10 @@ export default function SignUp({
   };
 
   // Handle clicking the "Verify Mobile Number" button
-  const handleVerifyMobile = (e) => {
-    e.preventDefault(); // Prevent form submission
-    setSignupModalOpen(false); // Close the sign-up modal
-    setOtpModalOpen(true); // Open the OTP modal
-  };
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
-
-  // // Handle form submission (register)
-  // const handleSubmitRegister = async (e) => {
-  //   e.preventDefault(); // Prevent the default form submission
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:7000/api/auth/register",
-  //       formData
-  //     );
-  //     console.log("Register data is: ", response.data);
-  //     setRegisterData(response.data); // Store response data
-
-  //     setSignupModalOpen(false);
-  //     setOtpModalOpen(true);
-  //   } catch (error) {
-  //     console.error("Error during registration:", error);
-  //   }
+  // const handleVerifyMobile = (e) => {
+  //   e.preventDefault(); // Prevent form submission
+  //   setSignupModalOpen(false); // Close the sign-up modal
+  //   setOtpModalOpen(true); // Open the OTP modal
   // };
 
   return (

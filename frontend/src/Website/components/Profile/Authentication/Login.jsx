@@ -5,6 +5,7 @@ export default function Login({
   setLoginModalOpen,
   setSignupModalOpen,
   setIsForgotPasswordModalOpen,
+  setIsOtpFromLogin,
 }) {
   // HIDE AND SHOW PASSWORD
   const [showPassword, setShowPassword] = useState(false);
@@ -34,14 +35,14 @@ export default function Login({
           <div className="modal-content" role="document">
             <button
               type="button"
-              className="btn-close"
+              class="btn-close"
               data-dismiss="modal"
               aria-label="Close"
               onClick={() => setLoginModalOpen(false)}
             >
-              <span className="sr-only"> Close </span>
+              <span class="sr-only">Close</span>
               <svg
-                className="w-6 h-6"
+                class="w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -52,7 +53,7 @@ export default function Login({
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M6 18L18 6M6 6l12 1  2"
+                  d="M6 18L18 6M6 6l12 12"
                 ></path>
               </svg>
             </button>
@@ -320,7 +321,11 @@ export default function Login({
                   </div>
                 </div>
 
-                <button type="button" className="w-full mt-1 btn btn-white">
+                <button
+                  type="button"
+                  className="w-full mt-1 btn btn-white"
+                  onClick={() => setIsOtpFromLogin(true)}
+                >
                   Request OTP
                 </button>
 
