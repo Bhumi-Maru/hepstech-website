@@ -195,6 +195,8 @@ export default function WebsiteApp() {
                     {/* LAYOUT 4 */}
                     <FlashSaleSlider
                       setIsAddToCartModal={setIsAddToCartModal}
+                      isLoginModalOpen={isLoginModalOpen}
+                      setLoginModalOpen={setLoginModalOpen}
                     />
                     {/* LAYOUT 5 */}
                     <HorizontalBanners3Items />

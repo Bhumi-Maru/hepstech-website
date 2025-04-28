@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
 import { useWishlist } from "../../../../Admin Panel/context/WishlistContext";
 
-export default function FlashSaleSlider({ setIsAddToCartModal }) {
+export default function FlashSaleSlider({
+  setIsAddToCartModal,
+  isLoginModalOpen,
+  setLoginModalOpen,
+}) {
   const { getDisplayPrice } = useHomepageHelpers();
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
@@ -230,7 +234,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                       className={`btn-wishlist-top ${
                         isActive ? "bg-red-500" : ""
                       }`}
-                      onClick={handleAddToWishlist}
+                      onClick={() => setLoginModalOpen(true)}
                     >
                       <svg
                         className="w-5 h-5"
