@@ -13,7 +13,7 @@ const AuthRouter = express.Router();
 AuthRouter.post("/register", Register);
 
 // Login Route
-AuthRouter.post("/login", verifyToken, Login);
+AuthRouter.post("/login", Login);
 
 // Forgot Password Route
 AuthRouter.post("/forgot-password", forgotPassword);

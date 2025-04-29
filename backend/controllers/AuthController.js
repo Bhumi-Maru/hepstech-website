@@ -113,30 +113,45 @@ const Register = async (req, res) => {
 // ================== Login ==================
 const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailOrMobile, password } = req.body;
 
-    // Find user by email
-    const user = await Auth.findOne({ email });
+    // 1. Find user by email
+    const user = await Auth.findOne({
+      $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }],
+    });
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Compare the provided password with the hashed password
+    // 2. Check if user is verified
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message: "Please verify your account first",
+        isVerified: false,
+        userId: user._id,
+      });
+    }
+
+    // 3. Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    // 4. Generate JWT token
+    // const token = jwt.sign(
+    //   {
+    //     id: user._id,
+    //     email: user.email,
+    //   },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "7d" }
+    // );
 
+    // 5. Return success response
     return res.status(200).json({
       message: "Login successful",
-      token: token,
+      // token,
       user: {
         id: user._id,
         userName: user.userName,
@@ -146,7 +161,7 @@ const Login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error("Login controller error:", error);
     res.status(500).json({ message: "Server error during login" });
   }
 };

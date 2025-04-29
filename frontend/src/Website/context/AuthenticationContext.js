@@ -15,6 +15,7 @@ export const AuthenticationProvider = ({ children }) => {
     mobileNumber: "",
     password: "",
     confirmPassword: "",
+    emailOrMobile: "",
   });
   const [registerData, setRegisterData] = useState(null);
   const [loginData, setLoginData] = useState(null);
@@ -50,35 +51,43 @@ export const AuthenticationProvider = ({ children }) => {
       // setSignupModalOpen(false);
       // setOtpModalOpen(true);
     } catch (error) {
+      if (error.response?.data?.message?.includes("already registered")) {
+        alert("This email or mobile number is already registered");
+      }
       console.error("Error during registration:", error);
     }
   };
 
   // Handle form submission (Login)
-  const handleSubmitLogin = async (e) => {
-    e?.preventDefault(); // Add e.preventDefault() safely
-
+  const handleSubmitLogin = async () => {
     try {
       setLoading(true);
       setError("");
 
-      // Here we only send email/mobileNumber and password
-      const loginPayload = {
-        emailOrMobile: formData.email || formData.mobileNumber,
-        password: formData.password,
-      };
-
       const response = await axios.post(
         "http://localhost:7000/api/auth/login",
-        loginPayload
+        {
+          emailOrMobile: formData.emailOrMobile,
+          password: formData.password,
+        }
       );
-      console.log("Login successful:", response.data);
+
+      // if (response.data.token) {
+      //   // Store token and user data
+      //   localStorage.setItem("token", response.data.token);
+      //   localStorage.setItem("user", JSON.stringify(response.data.user));
+      //   setLoginData(response.data.user);
+      // }
+
       setLoginData(response.data);
 
       return response;
     } catch (error) {
-      console.error("Error during login:", error);
-      setError(error.response?.data?.message || "Login failed");
+      console.error("Login error details:", error.response?.data);
+      const errorMsg =
+        error.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMsg);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -91,6 +100,7 @@ export const AuthenticationProvider = ({ children }) => {
         formData,
         handleChange,
         handleSubmitLogin,
+        setError,
       }}
     >
       {children}
