@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Auth = require("../models/Auth");
 const nodemailer = require("nodemailer");
+const twilio = require("twilio");
 
 // Helper: Generate random 6-digit OTP
 const generateOTP = () =>
@@ -241,4 +242,185 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login, forgotPassword, verifyOTP };
+// Request OTP for Passwordless Login
+const requestOtpForLogin = async (req, res) => {
+  try {
+    const { emailOrMobile } = req.body;
+
+    if (!emailOrMobile) {
+      return res
+        .status(400)
+        .json({ message: "Email or mobile number is required" });
+    }
+
+    console.log("login otp", req.body);
+
+    // 1️⃣ Find user by email OR mobileNumber
+    const user = await Auth.findOne({
+      $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2️⃣ Generate OTP
+    const otp = generateOTP();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // 3️⃣ Save OTP to DB
+    user.otp = otp;
+    user.otpExpiry = otpExpiry;
+    await user.save();
+
+    // 4️⃣ Send OTP:
+    if (emailOrMobile.includes("@")) {
+      // ✅ Send via Email
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Your Login OTP",
+        html: `<p>Hello ${user.userName},</p>
+               <p>Your login OTP is: <strong>${otp}</strong></p>
+               <p>This OTP will expire in 10 minutes.</p>`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("Error sending email:", error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+
+      console.log("OTP sent via Email to:", user.email);
+    } else {
+      // ✅ Send via SMS (💡 Example using Twilio)
+      const accountSid = process.env.TWILIO_ACCOUNT_SID;
+      const authToken = process.env.TWILIO_AUTH_TOKEN;
+      const client = require("twilio")(accountSid, authToken);
+
+      // Make sure the mobile number is in E.164 format
+      const mobileNumber = user.mobileNumber; // Assuming user.mobileNumber is something like '971472XXXX'
+
+      client.messages
+        .create({
+          body: `Hello ${user.userName}, your login OTP is: ${otp}`,
+          from: process.env.TWILIO_PHONE_NUMBER, // Ensure this is a valid Twilio number
+          to: mobileNumber, // Ensure it's in the correct format
+        })
+        .then((message) =>
+          console.log(
+            `OTP sent via SMS to: ${mobileNumber}, SID: ${message.sid}`
+          )
+        )
+        .catch((error) => {
+          console.error("Error sending SMS:", error);
+          // You can handle this more gracefully, depending on your requirements
+        });
+    }
+
+    return res.json({
+      message: "OTP sent successfully",
+      method: emailOrMobile.includes("@") ? "email" : "sms",
+      email: user.email,
+      mobileNumber: user.mobileNumber,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error during OTP request" });
+  }
+};
+
+// Verify OTP for Passwordless Login
+const verifyOtpForLogin = async (req, res) => {
+  try {
+    const { emailOrMobile, otp } = req.body;
+
+    if (!emailOrMobile || !otp) {
+      return res
+        .status(400)
+        .json({ message: "Email/mobile and OTP are required" });
+    }
+
+    console.log("otppppp", req.body);
+
+    // 🔍 Find user by email OR mobileNumber
+    const user = await Auth.findOne({
+      $or: [{ email: emailOrMobile }, { mobileNumber: emailOrMobile }],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // ✅ Check OTP validity
+    if (user.otp !== otp || user.otpExpiry < new Date()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // 🔄 Clear OTP fields after successful login
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
+
+    // 🔑 Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    // ✅ Send OTP SMS (Optional: send a confirmation message after successful login)
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = require("twilio")(accountSid, authToken);
+
+    client.messages
+      .create({
+        body: `Hello ${user.userName}, your login was successful. Welcome back!`,
+        from: "1e6f1bc90e63cfc30362f649dc28c1bd", // Ensure this number can send SMS to the region
+        to: user.mobileNumber,
+      })
+      .then((message) =>
+        console.log(
+          `Confirmation SMS sent to: ${user.mobileNumber}, SID: ${message.sid}`
+        )
+      )
+      .catch((error) => {
+        console.error("Error sending confirmation SMS:", error);
+        // Handle the error if the SMS fails
+      });
+
+    // Return successful login response
+    return res.json({
+      message: "Login successful",
+      user: {
+        id: user._id,
+        userName: user.userName,
+        email: user.email,
+        mobileNumber: user.mobileNumber,
+        isVerified: user.isVerified,
+        token,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error during OTP verification" });
+  }
+};
+
+module.exports = {
+  Register,
+  Login,
+  forgotPassword,
+  verifyOTP,
+  requestOtpForLogin,
+  verifyOtpForLogin,
+};
