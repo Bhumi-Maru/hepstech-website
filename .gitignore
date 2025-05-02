@@ -11,3 +11,10 @@ backend/uploads/variants/1743095408057_variant-0-image
 backend/uploads/1743483252317_favicon.ico
 backend/uploads/1743752190974_Google-Pay-India-Tez-new-icon.avif
 *.avif
+backend/node_modules/.package-lock.json
+backend/node_modules/.package-lock.json
+backend/node_modules/asynckit/bench.js
+backend/node_modules/asynckit/index.js
+backend/node_modules/asynckit/lib/abort.js
+backend/node_modules/asynckit/lib/async.js
+backend/node_modules/asynckit/lib/iterate.js
