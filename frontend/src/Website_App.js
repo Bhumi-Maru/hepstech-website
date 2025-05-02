@@ -53,6 +53,7 @@ import Offer_Image from "./Website/components/Home Page/Offer Image/Offer_Image"
 import { useGlobalContext } from "./Website/context/GlobalContext";
 import HorizontalBannersLarge2Items_section8 from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items Section 8/HorizontalBannersLarge2Items_section8";
 import HorizontalBannersLarge2Items_section18 from "./Website/components/Home Page/Horizontal Banners - Large - 2 Items Section 18/HorizontalBannersLarge2Items_section18";
+import { useAuthentication } from "./Website/context/AuthenticationContext";
 
 export default function WebsiteApp() {
   const { isOfferImageModalOpen } = useGlobalContext();
@@ -96,6 +97,7 @@ export default function WebsiteApp() {
   const [isOtpFromLogin, setIsOtpFromLogin] = useState(false);
   //set password in login form for forgot password
   const [isSetPassword, setIsSetPassword] = useState(false);
+  const { setOtpVerificationStatus } = useAuthentication();
 
   return (
     <>
@@ -172,6 +174,7 @@ export default function WebsiteApp() {
                 closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
                 setIsSetPassword={setIsSetPassword}
                 setIsOtpFromLogin={setIsOtpFromLogin}
+                setOtpVerificationStatus={setOtpVerificationStatus}
               />
             </>
           )}
