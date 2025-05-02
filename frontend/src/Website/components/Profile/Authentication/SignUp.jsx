@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuthentication } from "../../../context/AuthenticationContext";
 
 export default function SignUp({
   setLoginModalOpen,
@@ -10,6 +11,7 @@ export default function SignUp({
     password: false,
     confirmPassword: false,
   });
+  const { handleSubmitRegister, formData, handleChange } = useAuthentication();
 
   // Handle toggle password visibility
   const handleTogglePassword = (field) => {
@@ -26,11 +28,11 @@ export default function SignUp({
   };
 
   // Handle clicking the "Verify Mobile Number" button
-  const handleVerifyMobile = (e) => {
-    e.preventDefault(); // Prevent form submission
-    setSignupModalOpen(false); // Close the sign-up modal
-    setOtpModalOpen(true); // Open the OTP modal
-  };
+  // const handleVerifyMobile = (e) => {
+  //   e.preventDefault(); // Prevent form submission
+  //   setSignupModalOpen(false); // Close the sign-up modal
+  //   setOtpModalOpen(true); // Open the OTP modal
+  // };
 
   return (
     <>
@@ -79,17 +81,71 @@ export default function SignUp({
                 get started
               </p>
 
-              <form className="mt-6 space-y-4" action="#" method="POST">
-                {/* MOBILE NUMBER / EMAIL */}
+              <form
+                className="mt-6 space-y-4"
+                onSubmit={async (e) => {
+                  e.preventDefault(); // Prevents the default form submission
+
+                  try {
+                    // Call handleSubmitRegister and wait for the response
+                    const response = await handleSubmitRegister();
+                    console.log("Response:", response); // Log the entire response object to check what is being returned
+
+                    if (response && response.data) {
+                      setSignupModalOpen(false); // Close sign-up modal
+                      setOtpModalOpen(true); // Open OTP modal
+                    } else {
+                      console.log("Error: Response data is missing");
+                    }
+                  } catch (error) {
+                    console.error("Error during registration:", error); // Log the error if the request fails
+                  }
+                }}
+              >
+                {/* USERNAME */}
                 <div>
-                  <label htmlFor="mobile">Enter Email / Mobile Number</label>
+                  <label htmlFor="userName">UserName</label>
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="mobile"
-                      id="mobile"
-                      //   required
+                      name="userName"
+                      id="userName"
+                      required
                       className=""
+                      value={formData.userName}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                {/* EMAIL */}
+                <div>
+                  <label htmlFor="email">Enter Email</label>
+                  <div className="mt-1">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      required
+                      className=""
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                {/* MOBILE NUMBER  */}
+                <div>
+                  <label htmlFor="mobileNumber">Enter Mobile Number</label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      name="mobileNumber"
+                      id="mobileNumber"
+                      required
+                      className=""
+                      value={formData.mobileNumber}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -114,11 +170,13 @@ export default function SignUp({
                         name="password"
                         id="password"
                         autoComplete="off"
-                        // required
+                        required
                         className="hideShowPassword-field hideShowPassword-hidden"
                         style={{ margin: "0px", paddingRight: "20px" }}
                         autoCapitalize="off"
                         spellCheck="true"
+                        value={formData.password}
+                        onChange={handleChange}
                       />
                       <button
                         type="button"
@@ -195,14 +253,16 @@ export default function SignUp({
                         type={
                           showPassword.confirmPassword ? "text" : "password"
                         }
-                        name="password"
-                        id="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
                         autoComplete="off"
-                        // required
+                        required
                         className="hideShowPassword-field hideShowPassword-hidden"
                         style={{ margin: "0px", paddingRight: "20px" }}
                         autoCapitalize="off"
                         spellCheck="true"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
                       />
                       <button
                         type="button"
@@ -265,7 +325,7 @@ export default function SignUp({
                   <button
                     type="submit"
                     className="w-full btn btn-primary mt-4"
-                    onClick={handleVerifyMobile}
+                    // onClick={handleVerifyMobile}
                   >
                     Verify Mobile Number
                   </button>

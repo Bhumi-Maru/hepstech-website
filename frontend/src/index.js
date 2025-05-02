@@ -20,6 +20,7 @@ import {
 import { HomePageProvider } from "./Admin Panel/context/HomepageContext";
 import { ProductDetailProvider } from "./Website/context/ProductDetails_Context";
 import { WishlistProvider } from "./Admin Panel/context/WishlistContext";
+import { AuthenticationProvider } from "./Website/context/AuthenticationContext";
 
 // Get the root elements
 const websiteRoot = document.getElementById("website_root");
@@ -68,7 +69,9 @@ root.render(
                   <ProductDetailProvider>
                     <ProductVariantProvider>
                       <WishlistProvider>
-                        <Website_App />
+                        <AuthenticationProvider>
+                          <Website_App />
+                        </AuthenticationProvider>
                       </WishlistProvider>
                     </ProductVariantProvider>
                   </ProductDetailProvider>

@@ -125,6 +125,7 @@ export default function WebsiteApp() {
                 setSignupModalOpen={setSignupModalOpen}
                 isLoginModalOpen={isLoginModalOpen}
                 setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+                setIsOtpFromLogin={setIsOtpFromLogin}
               />
             </>
           )}
@@ -144,8 +145,10 @@ export default function WebsiteApp() {
           {isOtpModalOpen && (
             <>
               <SignupOtpConfirmationForm
+                setSignupModalOpen={setSignupModalOpen}
                 isOtpModalOpen={isOtpModalOpen}
                 closeOtpModal={() => setOtpModalOpen(false)}
+                setOtpModalOpen={setOtpModalOpen}
               />
             </>
           )}
@@ -168,6 +171,7 @@ export default function WebsiteApp() {
                 isOtpFromLogin={isOtpFromLogin}
                 closeOtpModalFromLogin={() => setIsOtpFromLogin(false)}
                 setIsSetPassword={setIsSetPassword}
+                setIsOtpFromLogin={setIsOtpFromLogin}
               />
             </>
           )}
@@ -195,6 +199,8 @@ export default function WebsiteApp() {
                     {/* LAYOUT 4 */}
                     <FlashSaleSlider
                       setIsAddToCartModal={setIsAddToCartModal}
+                      isLoginModalOpen={isLoginModalOpen}
+                      setLoginModalOpen={setLoginModalOpen}
                     />
                     {/* LAYOUT 5 */}
                     <HorizontalBanners3Items />

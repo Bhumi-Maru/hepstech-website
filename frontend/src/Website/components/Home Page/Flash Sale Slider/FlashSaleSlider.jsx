@@ -4,8 +4,13 @@ import "swiper/swiper-bundle.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useHomepageHelpers } from "../../../../Admin Panel/utils/product";
+import { useWishlist } from "../../../../Admin Panel/context/WishlistContext";
 
-export default function FlashSaleSlider({ setIsAddToCartModal }) {
+export default function FlashSaleSlider({
+  setIsAddToCartModal,
+  isLoginModalOpen,
+  setLoginModalOpen,
+}) {
   const { getDisplayPrice } = useHomepageHelpers();
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
@@ -19,6 +24,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
   const [productsToShow, setProductsToShow] = useState(5); // Default to 4 products
   const [showNavigation, setShowNavigation] = useState(false);
   const sectionTitle = localStorage.getItem("sectionTitle-4");
+  const { handleAddToWishlist } = useWishlist();
 
   const updateTimer = () => {
     const endDate = new Date("2025-04-19T23:59:59");
@@ -228,7 +234,7 @@ export default function FlashSaleSlider({ setIsAddToCartModal }) {
                       className={`btn-wishlist-top ${
                         isActive ? "bg-red-500" : ""
                       }`}
-                      onClick={handleClick}
+                      onClick={() => setLoginModalOpen(true)}
                     >
                       <svg
                         className="w-5 h-5"
