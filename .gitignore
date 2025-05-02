@@ -18,3 +18,8 @@ backend/node_modules/asynckit/index.js
 backend/node_modules/asynckit/lib/abort.js
 backend/node_modules/asynckit/lib/async.js
 backend/node_modules/asynckit/lib/iterate.js
+backend/.env
+backend/.env
+backend/controllers/AuthController.js
+backend/node_modules/.package-lock.json
+backend/node_modules/asynckit/lib/defer.js
