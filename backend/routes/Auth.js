@@ -4,6 +4,8 @@ const {
   Login,
   forgotPassword,
   verifyOTP,
+  requestOtpForLogin,
+  verifyOtpForLogin,
 } = require("../controllers/AuthController");
 const verifyToken = require("../Middleware/verifyTokenMiddleware");
 
@@ -20,5 +22,11 @@ AuthRouter.post("/forgot-password", forgotPassword);
 
 // Verify OTP Route (for Registration or Forgot Password)
 AuthRouter.post("/verify-otp", verifyOTP);
+
+// Request OTP for Login
+AuthRouter.post("/request-otp", requestOtpForLogin);
+
+// Verify OTP for Login
+AuthRouter.post("/verify-otp-login", verifyOtpForLogin);
 
 module.exports = AuthRouter;
