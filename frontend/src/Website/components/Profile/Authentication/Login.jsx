@@ -10,9 +10,22 @@ export default function Login({
 }) {
   // Show/Hide Password State
   const [showPassword, setShowPassword] = useState(false);
+  const [otpRequested, setOtpRequested] = useState(false);
+  const [emailOrMobileForOtp, setEmailOrMobileForOtp] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isOtpPhase, setIsOtpPhase] = useState(false); // Flag to show OTP input
 
-  const { handleSubmitLogin, formData, handleChange, setError } =
-    useAuthentication();
+  const {
+    handleSubmitLogin,
+    formData,
+    handleChange,
+    setError,
+    requestOTP,
+    setIsRequestingOTP,
+    requestOtpForLogin,
+    isRequestingOTP,
+    setOtpVerificationStatus,
+  } = useAuthentication();
 
   // Toggle between login and signup modals
   const handleAuthenticationToggleModal = () => {
@@ -26,28 +39,34 @@ export default function Login({
     setLoginModalOpen(false);
   };
 
+  const handleRequestOtp = async () => {
+    if (!formData.emailOrMobile) {
+      alert("Please enter your email or mobile number.");
+      return;
+    }
+
+    try {
+      await requestOtpForLogin(formData.emailOrMobile);
+      setLoginModalOpen(false);
+      setIsOtpFromLogin(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await handleSubmitLogin();
       if (response && response.data) {
-        // Store token and user data in localStorage
-        // localStorage.setItem("token", response.data.token);
-        // localStorage.setItem("user", JSON.stringify(response.data.user));
         alert("Login Successfully!...");
         setLoginModalOpen(false);
-        // Optional: Redirect or refresh user state
-        window.location.reload(); // Or use navigate('/') if using react-router
+        window.location.reload();
       }
     } catch (error) {
       console.error("Login error:", error);
-      // Display more specific error message to user
-      setError(
-        error.response?.data?.message || "Login failed. Please try again."
-      );
     }
   };
-
   return (
     <>
       {/* Login Modal */}
@@ -245,7 +264,8 @@ export default function Login({
               <button
                 type="button"
                 className="w-full mt-1 btn btn-white"
-                onClick={() => setIsOtpFromLogin(true)}
+                onClick={handleRequestOtp}
+                disabled={!formData.emailOrMobile || isRequestingOTP}
               >
                 Request OTP
               </button>

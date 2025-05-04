@@ -1,12 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAuthentication } from "../../../context/AuthenticationContext";
+import axios from "axios";
 
 export default function LoginOtpConfirmationForm({
   closeOtpModalFromLogin,
   setIsSetPassword,
+  setIsOtpFromLogin,
+  setOtpVerificationStatus,
 }) {
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const { handleSubmitRegister, formData, verifyOtpForLogin, isVerifyingOTP } =
+    useAuthentication();
+
   const handleOtpLoginModal = () => {
     setIsSetPassword(true);
     closeOtpModalFromLogin();
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    if (!otp) {
+      setError("Please enter the OTP.");
+      return;
+    }
+
+    try {
+      const response = await verifyOtpForLogin(formData.emailOrMobile, otp);
+      if (response) {
+        alert("succcessfully login !...");
+        setIsOtpFromLogin(false);
+      }
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      setError(
+        error.response?.data?.message ||
+          "OTP verification failed. Please try again."
+      );
+    }
   };
 
   return (
@@ -50,7 +82,7 @@ export default function LoginOtpConfirmationForm({
             <p className="text-center text-gray-600 mt-2">
               Please enter the OTP sent to your mobile number.
             </p>
-            <form className="mt-6 space-y-4">
+            <form className="mt-6 space-y-4" onSubmit={handleOtpSubmit}>
               <div>
                 <label htmlFor="otp">Enter OTP</label>
                 <div className="mt-1">
@@ -58,8 +90,10 @@ export default function LoginOtpConfirmationForm({
                     type="text"
                     name="otp"
                     id="otp"
-                    // required
+                    required
                     className="input-field"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter OTP"
                   />
                 </div>
@@ -69,9 +103,9 @@ export default function LoginOtpConfirmationForm({
                 <button
                   type="submit"
                   className="w-full btn btn-primary mt-4"
-                  onClick={handleOtpLoginModal}
+                  disabled={isVerifyingOTP}
                 >
-                  Verify OTP
+                  {isVerifyingOTP ? "Verifying..." : "Verify OTP"}
                 </button>
               </div>
             </form>
